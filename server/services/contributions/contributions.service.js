@@ -1,8 +1,8 @@
-// Initializes the `posts` service on path `/posts`
+// Initializes the `contributions` service on path `/contributions`
 const createService = require('feathers-mongoose');
-const createModel = require('../../models/posts.model');
-const hooks = require('./posts.hooks');
-const filters = require('./posts.filters');
+const createModel = require('../../models/contributions.model');
+const hooks = require('./contributions.hooks');
+const filters = require('./contributions.filters');
 
 module.exports = function () {
   const app = this;
@@ -10,16 +10,16 @@ module.exports = function () {
   const paginate = app.get('paginate');
 
   const options = {
-    name: 'posts',
+    name: 'contributions',
     Model,
     paginate
   };
 
   // Initialize our service with any options it requires
-  app.use('/posts', createService(options));
+  app.use('/contributions', createService(options));
 
   // Get our initialized service so that we can register hooks and filters
-  const service = app.service('posts');
+  const service = app.service('contributions');
 
   service.hooks(hooks);
 

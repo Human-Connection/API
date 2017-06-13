@@ -10,6 +10,8 @@ const configuration = require('feathers-configuration');
 const hooks = require('feathers-hooks');
 const rest = require('feathers-rest');
 const socketio = require('feathers-socketio');
+const seeder = require('./seeder');
+
 
 const middleware = require('./middleware');
 const services = require('./services');
@@ -38,6 +40,9 @@ app.configure(hooks());
 app.configure(mongodb);
 app.configure(rest());
 app.configure(socketio());
+
+// Configure Database Seeder
+app.configure(seeder());
 
 app.configure(authentication);
 

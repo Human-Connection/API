@@ -1,6 +1,6 @@
 const { authenticate } = require('feathers-authentication').hooks;
 const {
-  queryWithCurrentUser,
+  //queryWithCurrentUser,
   associateCurrentUser,
   restrictToOwner
 } = require('feathers-authentication-hooks');
@@ -8,15 +8,10 @@ const {
 module.exports = {
   before: {
     all: [],
-    find: [
-      authenticate('jwt'),
-      queryWithCurrentUser()
-    ],
-    get: [
-      authenticate('jwt'),
-      restrictToOwner()
-    ],
+    find: [],
+    get: [],
     create: [
+      authenticate('jwt'),
       associateCurrentUser()
     ],
     update: [
