@@ -8,7 +8,20 @@ module.exports = function (app) {
   
     email: {type: String, unique: true},
     password: { type: String },
-  
+    username: { type: String },
+    slug: { type: String },
+    gender: { type: String },
+    firstname: { type: String },
+    lastname: { type: String },
+    timezone: { type: String },
+    avatar: {
+      large: { type: String },
+      small: { type: String },
+      medium: { type: String }
+    },
+    doiToken: { type: String },
+    confirmedAt: { type: Date },
+    deletedAt: { type: Date },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }
   });

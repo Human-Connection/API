@@ -15,19 +15,54 @@ module.exports = function () {
         template: {
           email: '{{internet.email}}',
           password: '{{internet.password}}',
+          username: '{{name.firstName}} {{name.lastName}}',
+          slug: '{{lorem.slug}}',
+          gender: '',
+          firstname: '{{name.firstName}}',
+          lastname: '{{name.lastName}}',
+          timezone: 'Europe/Berlin',
+          avatar: {
+            large: '{{internet.avatar}}',
+            small: '{{internet.avatar}}',
+            medium: '{{internet.avatar}}'
+          },
+          doiToken: null,
+          confirmedAt: null,
+          deletedAt: null
         },
 
         callback(user, seed) {
           // Create 5 contributions for each user
-          const userId = () => user._id;
-
           return seed({
-            count: 5,
+            count: 1,
             path: 'contributions',
-            template: {
-              text: '{{lorem.text}}',
-              userId: userId
-            },
+            templates: [
+              {
+                userId: () => user._id,
+                title: '{{lorem.sentence}}',
+                slug: '{{lorem.slug}}',
+                type: 'post',
+                content: '{{lorem.text}}',
+                contentExcerpt: '{{lorem.sentence}}',
+                teaserImg: '{{random.image}}',
+                language: 'de_DE',
+                visibilityTypeId: 3,
+                createdAt: '{{date.recent}}',
+                updatedAt: '{{date.recent}}'
+              },
+              {
+                userId: () => user._id,
+                title: '{{lorem.sentence}}',
+                slug: '{{lorem.slug}}',
+                type: 'post',
+                content: '{{lorem.text}}',
+                contentExcerpt: '{{lorem.sentence}}',
+                language: 'de_DE',
+                visibilityTypeId: 3,
+                createdAt: '{{date.recent}}',
+                updatedAt: '{{date.recent}}'
+              }
+            ],
           });
         }
       }
