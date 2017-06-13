@@ -7,6 +7,9 @@ const seeder = require('feathers-seeder');
 
 module.exports = function () {
   const options = {
+    delete: true,
+    // Disable, if we are not in production
+    disabled: process.env.NODE_ENV === 'production',
     services: [
       {
         // Create 10 user
@@ -43,7 +46,7 @@ module.exports = function () {
                 slug: '{{lorem.slug}}',
                 type: 'post',
                 content: '{{lorem.text}}',
-                contentExcerpt: '{{lorem.sentence}}',
+                contentExcerpt: '{{lorem.sentence}} {{lorem.sentence}}',
                 teaserImg: '{{random.image}}',
                 language: 'de_DE',
                 visibilityTypeId: 3,
@@ -56,7 +59,7 @@ module.exports = function () {
                 slug: '{{lorem.slug}}',
                 type: 'post',
                 content: '{{lorem.text}}',
-                contentExcerpt: '{{lorem.sentence}}',
+                contentExcerpt: '{{lorem.sentence}} {{lorem.sentence}}',
                 language: 'de_DE',
                 visibilityTypeId: 3,
                 createdAt: '{{date.recent}}',

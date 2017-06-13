@@ -25,7 +25,7 @@
     "test": "npm run eslint && npm run mocha",
     "eslint": "eslint server/. test/. --config .eslintrc.json",
     "start": "mongod | NODE_ENV=production node server/",
-    "dev": "mongod | nodemon server/",
+    "dev": "mongod | nodemon --debug server/",
     "mocha": "mocha test/ --recursive"
   },
   "dependencies": {
