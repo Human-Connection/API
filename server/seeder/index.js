@@ -7,7 +7,7 @@ const seeder = require('feathers-seeder');
 
 module.exports = function () {
   const options = {
-    delete: true,
+    delete: false,
     // Disable, if we are not in production
     disabled: process.env.NODE_ENV === 'production',
     services: [
@@ -36,13 +36,13 @@ module.exports = function () {
         },
 
         callback(user, seed) {
-          // Create 5 contributions for each user
+          // Create contributions for each user
           return seed({
             count: 1,
             path: 'contributions',
             templates: [
               {
-                userId: () => user._id,
+                userId: () => user.id,
                 title: '{{lorem.sentence}}',
                 slug: '{{lorem.slug}}',
                 type: 'post',
@@ -55,7 +55,7 @@ module.exports = function () {
                 updatedAt: '{{date.recent}}'
               },
               {
-                userId: () => user._id,
+                userId: () => user.id,
                 title: '{{lorem.sentence}}',
                 slug: '{{lorem.slug}}',
                 type: 'post',

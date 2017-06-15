@@ -11,6 +11,11 @@ module.exports = function () {
   app.setup = function (...args) {
     let promise = Promise.resolve();
 
+    // Drop table before seeding, if we are not in production
+    if(process.env.NODE_ENV !== 'production') {
+      promise = promise.then(() => r.dbDrop('hc_api'));
+    }
+
     // Go through all services and call the RethinkDB `init`
     // which creates the database and tables if they do not exist
     Object.keys(app.services).forEach(path => {
@@ -25,10 +30,7 @@ module.exports = function () {
     // right away that depend on the database and tables being created
     this.set('rethinkInit', promise);
 
-    promise.then(() => {
-      this.emit('rethinkInit');
-      oldSetup.apply(this, args);
-    });
+    promise.then(() => oldSetup.apply(this, args));
 
     return this;
   };
