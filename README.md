@@ -23,6 +23,12 @@ Getting up and running is as easy as 1, 2, 3.
     npm run dev
     ```
 
+### Dev Urls
+
+RethinkDB Administration: [http://localhost:8080/](http://localhost:8080/)
+
+Feathers API: [http://localhost:3030/](http://localhost:3030/)
+
 ## Testing
 
 Simply run `npm test` and all your tests in the `test/` directory will be run.

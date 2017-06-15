@@ -6,8 +6,8 @@ const { hashPassword } = require('feathers-authentication-local').hooks;
 const restrict = [
   authenticate('jwt'),
   restrictToOwner({
-    idField: '_id',
-    ownerField: '_id'
+    idField: 'id',
+    ownerField: 'id'
   })
 ];
 
