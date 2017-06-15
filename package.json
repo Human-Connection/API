@@ -25,7 +25,7 @@
     "test": "npm run eslint && npm run mocha",
     "eslint": "eslint server/. test/. --config .eslintrc.json",
     "start": "concurrently 'rethinkdb' 'wait-on tcp:28015 && NODE_ENV=production node server/'",
-    "dev": "concurrently 'rethinkdb' 'wait-on tcp:28015 && nodemon --debug server/'",
+    "dev": "concurrently 'rethinkdb' 'wait-on tcp:28015 && nodemon --inspect server/'",
     "mocha": "mocha test/ --recursive"
   },
   "dependencies": {

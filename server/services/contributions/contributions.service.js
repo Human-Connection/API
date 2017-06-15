@@ -3,6 +3,9 @@ const createService = require('feathers-rethinkdb');
 const hooks = require('./contributions.hooks');
 const filters = require('./contributions.filters');
 
+// ToDo: Schema und Validierung
+// https://github.com/BenZed/feathers-schema
+
 module.exports = function () {
   const app = this;
   const Model = app.get('rethinkdbClient');
