@@ -24,13 +24,14 @@
   "scripts": {
     "test": "npm run eslint && npm run mocha",
     "eslint": "eslint server/. test/. --config .eslintrc.json",
-    "start": "mongod | NODE_ENV=production node server/",
-    "dev": "mongod | nodemon --debug server/",
+    "start": "concurrently 'rethinkdb' 'wait-on tcp:28015 && NODE_ENV=production node server/'",
+    "dev": "concurrently 'rethinkdb' 'wait-on tcp:28015 && nodemon --debug server/'",
     "mocha": "mocha test/ --recursive"
   },
   "dependencies": {
     "body-parser": "^1.17.2",
     "compression": "^1.6.2",
+    "concurrently": "^3.4.0",
     "cors": "^2.8.3",
     "feathers": "^2.1.3",
     "feathers-authentication": "^1.2.4",
@@ -43,11 +44,14 @@
     "feathers-hooks-common": "^3.5.1",
     "feathers-mongoose": "^5.1.0",
     "feathers-rest": "^1.7.3",
+    "feathers-rethinkdb": "^0.4.3",
     "feathers-seeder": "^1.0.8",
     "feathers-socketio": "^2.0.0",
     "helmet": "^3.6.1",
     "mongoose": "^4.10.5",
+    "rethinkdbdash": "^2.3.29",
     "serve-favicon": "^2.4.3",
+    "wait-on": "^2.0.2",
     "winston": "^2.3.1"
   },
   "devDependencies": {

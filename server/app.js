@@ -10,16 +10,17 @@ const configuration = require('feathers-configuration');
 const hooks = require('feathers-hooks');
 const rest = require('feathers-rest');
 const socketio = require('feathers-socketio');
+
 const seeder = require('./seeder');
+const rethinkdb = require('./rethinkdb');
 
 
 const middleware = require('./middleware');
 const services = require('./services');
 const appHooks = require('./app.hooks');
 
-const mongodb = require('./mongodb');
-
 const authentication = require('./authentication');
+
 
 const app = feathers();
 
@@ -37,7 +38,7 @@ app.use('/', feathers.static(app.get('public')));
 
 // Set up Plugins and providers
 app.configure(hooks());
-app.configure(mongodb);
+app.configure(rethinkdb);
 app.configure(rest());
 app.configure(socketio());
 

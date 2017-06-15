@@ -21,6 +21,7 @@ module.exports = function () {
           username: '{{name.firstName}} {{name.lastName}}',
           slug: '{{lorem.slug}}',
           gender: '',
+          isnothere: 'true',
           firstname: '{{name.firstName}}',
           lastname: '{{name.lastName}}',
           timezone: 'Europe/Berlin',

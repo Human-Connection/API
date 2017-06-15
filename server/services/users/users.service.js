@@ -1,12 +1,11 @@
 // Initializes the `users` service on path `/users`
-const createService = require('feathers-mongoose');
-const createModel = require('../../models/users.model');
+const createService = require('feathers-rethinkdb');
 const hooks = require('./users.hooks');
 const filters = require('./users.filters');
 
 module.exports = function () {
   const app = this;
-  const Model = createModel(app);
+  const Model = app.get('rethinkdbClient');
   const paginate = app.get('paginate');
 
   const options = {

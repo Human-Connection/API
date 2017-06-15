@@ -8,13 +8,9 @@ process.on('unhandledRejection', (reason, p) =>
   logger.error('Unhandled Rejection at: Promise ', p, reason)
 );
 
-app.seed().then(() => {
-  const server = app.listen(port);
-  server.on('listening', () =>
-    logger.info(`Feathers application started on ${app.get('host')}:${port}`)
-  );
-}).catch(err => {
-  logger.error('Seeder error ', err);
-});
+const server = app.listen(port);
+server.on('listening', () =>
+  logger.info(`Feathers application started on ${app.get('host')}:${port}`)
+);
 
-
+app.on('rethinkInit', () => app.seed());
