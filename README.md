@@ -11,10 +11,12 @@ This project uses [Feathers](http://feathersjs.com). An open source web framewor
 Getting up and running is as easy as 1, 2, 3 ... 4.
 
 1. Make sure you have [NodeJS](https://nodejs.org/), [npm](https://www.npmjs.com/) and [rethinkdb](https://www.rethinkdb.com/docs/install/)  installed.
+
 2. Clone this repo
     ```
     git clone https://git@team.human-connection.org/bitbucket/scm/hc/hc-api-feathers.git
     ```
+    
 3. Install your dependencies
 
     ```
@@ -27,7 +29,7 @@ Getting up and running is as easy as 1, 2, 3 ... 4.
     npm run dev
     ```
 
-### Dev Urls
+## Dev Urls
 
 RethinkDB Administration: [http://localhost:8080/](http://localhost:8080/)
 
