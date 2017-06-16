@@ -48,7 +48,6 @@
     "feathers-seeder": "^1.0.8",
     "feathers-socketio": "^2.0.0",
     "helmet": "^3.6.1",
-    "mongoose": "^4.10.5",
     "rethinkdbdash": "^2.3.29",
     "serve-favicon": "^2.4.3",
     "wait-on": "^2.0.2",

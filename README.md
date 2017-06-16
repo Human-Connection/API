@@ -1,6 +1,6 @@
 # hc-api
 
-> Humanc Connection API
+> Human Connection API
 
 ## About
 
@@ -8,16 +8,20 @@ This project uses [Feathers](http://feathersjs.com). An open source web framewor
 
 ## Getting Started
 
-Getting up and running is as easy as 1, 2, 3.
+Getting up and running is as easy as 1, 2, 3 ... 4.
 
-1. Make sure you have [NodeJS](https://nodejs.org/), [npm](https://www.npmjs.com/) and [mongoDB](https://www.mongodb.com/download-center#community)  installed.
-2. Install your dependencies
+1. Make sure you have [NodeJS](https://nodejs.org/), [npm](https://www.npmjs.com/) and [rethinkdb](https://www.rethinkdb.com/docs/install/)  installed.
+2. Clone this repo
+    ```
+    git clone https://git@team.human-connection.org/bitbucket/scm/hc/hc-api-feathers.git
+    ```
+3. Install your dependencies
 
     ```
-    cd path/to/hc-api; npm install
+    cd ./hc-api-feathers; npm install
     ```
 
-3. Start developing
+4. Start developing
 
     ```
     npm run dev
