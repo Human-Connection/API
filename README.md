@@ -10,30 +10,31 @@ This project uses [Feathers](http://feathersjs.com). An open source web framewor
 
 Getting up and running is as easy as 1, 2, 3 ... 4.
 
-1. Make sure you have [NodeJS](https://nodejs.org/), [npm](https://www.npmjs.com/) and [rethinkdb](https://www.rethinkdb.com/docs/install/)  installed.
+1. Make sure you have [NodeJS](https://nodejs.org/), [npm](https://www.npmjs.com/) and [mongoDB](https://www.mongodb.com/download-center#community)  installed.
 
 2. Clone this repo
-    ```
-    git clone https://git@team.human-connection.org/bitbucket/scm/hc/hc-api-feathers.git
+    ``` bash
+    $ git clone https://git@team.human-connection.org/bitbucket/scm/hc/hc-api-feathers.git
     ```
     
 3. Install your dependencies
 
-    ```
-    cd ./hc-api-feathers; npm install
-    ```
-
-4. Start developing
-
-    ```
-    npm run dev
+    ``` bash
+    $ cd ./hc-api-feathers; npm install
     ```
 
-## Dev Urls
+4. Start server
 
-RethinkDB Administration: [http://localhost:8080/](http://localhost:8080/)
-
-Feathers API: [http://localhost:3030/](http://localhost:3030/)
+    ``` bash
+    # start mongodb, feathers and seed database
+    $ npm run dev
+   
+    # start mongodb, feathers without seeding the database
+    $ npm run dev-noseed
+    
+    # start mongodb, feathers for production
+    $ npm start
+    ```
 
 ## Testing
 
@@ -43,7 +44,7 @@ Simply run `npm test` and all your tests in the `test/` directory will be run.
 
 Feathers has a powerful command line interface. Here are a few things it can do:
 
-```
+``` bash
 $ npm install -g feathers-cli             # Install Feathers CLI
 
 $ feathers generate service               # Generate a new Service
@@ -55,15 +56,3 @@ $ feathers help                           # Show all commands
 ## Help
 
 For more information on all the things you can do with Feathers visit [docs.feathersjs.com](http://docs.feathersjs.com).
-
-## Changelog
-
-__0.1.0__
-
-- Initial release
-
-## License
-
-Copyright (c) 2016
-
-Licensed under the [MIT license](LICENSE).

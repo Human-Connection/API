@@ -8,20 +8,20 @@ const seeder = require('feathers-seeder');
 module.exports = function () {
   const options = {
     delete: false,
-    // Disable, if we are not in production
-    disabled: process.env.NODE_ENV === 'production',
+    // Only enable in development
+    disabled: process.env.NODE_ENV !== 'development',
     services: [
       {
         // Create 10 user
         path: 'users',
-        count: 10,
+        count: 20,
         template: {
           email: '{{internet.email}}',
           password: '{{internet.password}}',
           username: '{{name.firstName}} {{name.lastName}}',
           slug: '{{lorem.slug}}',
           gender: '',
-          isnothere: 'true',
+          isnothere: true,
           firstname: '{{name.firstName}}',
           lastname: '{{name.lastName}}',
           timezone: 'Europe/Berlin',
@@ -42,7 +42,7 @@ module.exports = function () {
             path: 'contributions',
             templates: [
               {
-                userId: () => user.id,
+                userId: () => user._id,
                 title: '{{lorem.sentence}}',
                 slug: '{{lorem.slug}}',
                 type: 'post',
@@ -55,7 +55,7 @@ module.exports = function () {
                 updatedAt: '{{date.recent}}'
               },
               {
-                userId: () => user.id,
+                userId: () => user._id,
                 title: '{{lorem.sentence}}',
                 slug: '{{lorem.slug}}',
                 type: 'post',

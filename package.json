@@ -24,8 +24,9 @@
   "scripts": {
     "test": "npm run eslint && npm run mocha",
     "eslint": "eslint server/. test/. --config .eslintrc.json",
-    "start": "concurrently 'rethinkdb' 'wait-on tcp:28015 && NODE_ENV=production node server/'",
-    "dev": "concurrently 'rethinkdb' 'wait-on tcp:28015 && nodemon --inspect server/'",
+    "start": "concurrently 'mongod' 'wait-on tcp:27017 && NODE_ENV=production node server/'",
+    "dev": "concurrently 'mongod' 'mongo hc_api --eval \"db.dropDatabase()\"' 'wait-on tcp:27017 && NODE_ENV=development nodemon --inspect server/'",
+    "dev-noseed": "concurrently 'mongod' 'wait-on tcp:27017 && nodemon --inspect server/'",
     "mocha": "mocha test/ --recursive"
   },
   "dependencies": {
@@ -44,11 +45,10 @@
     "feathers-hooks-common": "^3.5.1",
     "feathers-mongoose": "^5.1.0",
     "feathers-rest": "^1.7.3",
-    "feathers-rethinkdb": "^0.4.3",
     "feathers-seeder": "^1.0.8",
     "feathers-socketio": "^2.0.0",
     "helmet": "^3.6.1",
-    "rethinkdbdash": "^2.3.29",
+    "mongoose": "^4.10.5",
     "serve-favicon": "^2.4.3",
     "wait-on": "^2.0.2",
     "winston": "^2.3.1"
