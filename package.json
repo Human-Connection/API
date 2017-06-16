@@ -25,7 +25,7 @@
     "test": "npm run eslint && npm run mocha",
     "eslint": "eslint server/. test/. --config .eslintrc.json",
     "start": "concurrently 'mongod' 'wait-on tcp:27017 && NODE_ENV=production node server/'",
-    "dev": "concurrently 'mongod' 'mongo hc_api --eval \"db.dropDatabase()\"' 'wait-on tcp:27017 && NODE_ENV=development nodemon --inspect server/'",
+    "dev": "concurrently 'mongod' 'wait-on tcp:27017 && NODE_ENV=development nodemon --inspect server/'",
     "dev-noseed": "concurrently 'mongod' 'wait-on tcp:27017 && nodemon --inspect server/'",
     "mocha": "mocha test/ --recursive"
   },

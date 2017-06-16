@@ -7,7 +7,11 @@ module.exports = function () {
   mongoose.Promise = global.Promise;
   app.set('mongooseClient', mongoose);
 
-  mongoose.connection.dropDatabase().then(() => {
+  if(process.env.NODE_ENV === 'development') {
+    mongoose.connection.dropDatabase().then(() => {
+      app.emit('mongooseInit');
+    });
+  } else {
     app.emit('mongooseInit');
-  });
+  }
 };
