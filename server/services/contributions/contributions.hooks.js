@@ -11,7 +11,7 @@ const userSchema = {
     service: 'users',
     nameAs: 'user',
     parentField: 'userId',
-    childField: 'id'
+    childField: '_id'
   }
 }
 
