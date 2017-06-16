@@ -48,8 +48,11 @@
     "feathers-seeder": "^1.0.8",
     "feathers-socketio": "^2.0.0",
     "helmet": "^3.6.1",
+    "html-excerpt": "^0.1.0",
     "mongoose": "^4.10.5",
     "serve-favicon": "^2.4.3",
+    "shortid": "^2.2.8",
+    "slug": "^0.9.1",
     "wait-on": "^2.0.2",
     "winston": "^2.3.1"
   },

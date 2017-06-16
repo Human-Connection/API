@@ -44,10 +44,8 @@ module.exports = function () {
               {
                 userId: () => user._id,
                 title: '{{lorem.sentence}}',
-                slug: '{{lorem.slug}}',
                 type: 'post',
                 content: '{{lorem.text}}',
-                contentExcerpt: '{{lorem.sentence}} {{lorem.sentence}}',
                 teaserImg: '{{random.image}}',
                 language: 'de_DE',
                 visibilityTypeId: 3,
@@ -57,10 +55,8 @@ module.exports = function () {
               {
                 userId: () => user._id,
                 title: '{{lorem.sentence}}',
-                slug: '{{lorem.slug}}',
                 type: 'post',
                 content: '{{lorem.text}}',
-                contentExcerpt: '{{lorem.sentence}} {{lorem.sentence}}',
                 language: 'de_DE',
                 visibilityTypeId: 3,
                 createdAt: '{{date.recent}}',

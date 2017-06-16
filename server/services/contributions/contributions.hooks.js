@@ -5,6 +5,8 @@ const {
   associateCurrentUser,
   restrictToOwner
 } = require('feathers-authentication-hooks');
+const createSlug = require('./hooks/create-slug');
+const createExcerpt = require('./hooks/create-excerpt');
 
 const userSchema = {
   include: {
@@ -22,15 +24,19 @@ module.exports = {
     get: [],
     create: [
       authenticate('jwt'),
-      associateCurrentUser()
+      associateCurrentUser(),
+      createSlug(),
+      createExcerpt()
     ],
     update: [
       authenticate('jwt'),
-      restrictToOwner()
+      restrictToOwner(),
+      createExcerpt()
     ],
     patch: [
       authenticate('jwt'),
-      restrictToOwner()
+      restrictToOwner(),
+      createExcerpt()
     ],
     remove: [
       authenticate('jwt'),
