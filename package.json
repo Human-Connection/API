@@ -24,13 +24,15 @@
   "scripts": {
     "test": "npm run eslint && npm run mocha",
     "eslint": "eslint server/. test/. --config .eslintrc.json",
-    "start": "mongod | NODE_ENV=production node server/",
-    "dev": "mongod | nodemon --debug server/",
+    "start": "concurrently 'mongod' 'wait-on tcp:27017 && NODE_ENV=production node server/'",
+    "dev": "concurrently 'mongod' 'mongo hc_api --eval \"db.dropDatabase()\"' 'wait-on tcp:27017 && NODE_ENV=development nodemon --inspect server/'",
+    "dev-noseed": "concurrently 'mongod' 'wait-on tcp:27017 && nodemon --inspect server/'",
     "mocha": "mocha test/ --recursive"
   },
   "dependencies": {
     "body-parser": "^1.17.2",
     "compression": "^1.6.2",
+    "concurrently": "^3.4.0",
     "cors": "^2.8.3",
     "feathers": "^2.1.3",
     "feathers-authentication": "^1.2.4",
@@ -48,6 +50,7 @@
     "helmet": "^3.6.1",
     "mongoose": "^4.10.5",
     "serve-favicon": "^2.4.3",
+    "wait-on": "^2.0.2",
     "winston": "^2.3.1"
   },
   "devDependencies": {

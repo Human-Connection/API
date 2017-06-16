@@ -11,6 +11,7 @@ module.exports = function (app) {
     username: { type: String },
     slug: { type: String },
     gender: { type: String },
+    isnothere: { type: Boolean },
     firstname: { type: String },
     lastname: { type: String },
     timezone: { type: String },

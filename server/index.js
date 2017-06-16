@@ -8,13 +8,12 @@ process.on('unhandledRejection', (reason, p) =>
   logger.error('Unhandled Rejection at: Promise ', p, reason)
 );
 
-app.seed().then(() => {
-  const server = app.listen(port);
-  server.on('listening', () =>
-    logger.info(`Feathers application started on ${app.get('host')}:${port}`)
-  );
-}).catch(err => {
-  logger.error('Seeder error ', err);
+// Start server
+const server = app.listen(port);
+server.on('listening', () => {
+  // Start seeder, after database is setup
+  app.on('mongooseInit', () => {
+    app.seed()
+      .then(() => logger.info(`Feathers application started on ${app.get('host')}:${port}`));
+  });
 });
-
-
