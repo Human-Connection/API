@@ -3,7 +3,7 @@ const excerpt = require('html-excerpt');
 
 module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
   return function (hook) {
-    hook.data.contentExcerpt = excerpt.text(hook.data.content, 30, '...');
+    hook.data.contentExcerpt = excerpt.text(hook.data.content, 120, '...');
     return Promise.resolve(hook);
   };
 };
