@@ -16,7 +16,11 @@ module.exports = function (app) {
     contentExcerpt: { type: String, required: true },
     teaserImg: { type: String },
     language: { type: String, required: true },
-    visibilityTypeId: { type: Number, required: true },
+    visibility: {
+      type: String,
+      enum: ['public', 'friends', 'private'],
+      default: 'public'
+    },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }
   });
