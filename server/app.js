@@ -39,6 +39,7 @@ app.use('/', feathers.static(app.get('public')));
 app.configure(hooks());
 app.configure(mongodb);
 app.configure(rest());
+
 app.configure(socketio());
 
 // Configure Database Seeder

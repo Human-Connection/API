@@ -1,6 +1,6 @@
 // https://www.npmjs.com/package/slug
 const slug = require('slug');
-const getUniqueSlug = require('../../../helper/get-unique-slug');
+const getUniqueSlug = require('../helper/get-unique-slug');
 
 module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
   return function (hook) {

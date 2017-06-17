@@ -5,8 +5,8 @@ const {
   associateCurrentUser,
   restrictToOwner
 } = require('feathers-authentication-hooks');
-const createSlug = require('../../hooks/create-slug');
 const createExcerpt = require('../../hooks/create-excerpt');
+const associateContribution = require('../../hooks/associate-contribution');
 
 const userSchema = {
   include: {
@@ -14,15 +14,6 @@ const userSchema = {
     nameAs: 'user',
     parentField: 'userId',
     childField: '_id'
-  }
-}
-
-const commentsSchema = {
-  include: {
-    service: 'comments',
-    nameAs: 'comments',
-    parentField: '_id',
-    childField: 'contributionId'
   }
 }
 
@@ -34,7 +25,7 @@ module.exports = {
     create: [
       authenticate('jwt'),
       associateCurrentUser(),
-      createSlug(),
+      associateContribution(),
       createExcerpt()
     ],
     update: [
@@ -55,8 +46,7 @@ module.exports = {
 
   after: {
     all: [
-      populate({ schema: userSchema }),
-      populate({ schema: commentsSchema })
+      populate({ schema: userSchema })
     ],
     find: [],
     get: [],

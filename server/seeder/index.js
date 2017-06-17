@@ -48,7 +48,6 @@ module.exports = function () {
                 content: '{{lorem.text}} {{lorem.text}}',
                 teaserImg: '{{random.image}}',
                 language: 'de_DE',
-                visibilityTypeId: 3,
                 createdAt: '{{date.recent}}',
                 updatedAt: '{{date.recent}}'
               },
@@ -58,11 +57,27 @@ module.exports = function () {
                 type: 'post',
                 content: '{{lorem.text}} {{lorem.text}}',
                 language: 'de_DE',
-                visibilityTypeId: 3,
                 createdAt: '{{date.recent}}',
                 updatedAt: '{{date.recent}}'
               }
             ],
+            callback(contribution, seed) {
+              // Create comments for each contribution
+              return seed({
+                count: 2,
+                path: 'comments',
+                templates: [
+                  {
+                    userId: () => user._id,
+                    contributionId: () => contribution._id,
+                    content: '{{lorem.text}} {{lorem.text}}',
+                    language: 'de_DE',
+                    createdAt: '{{date.recent}}',
+                    updatedAt: '{{date.recent}}'
+                  },
+                ],
+              });
+            }
           });
         }
       }
