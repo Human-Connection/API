@@ -34,7 +34,7 @@ module.exports = {
     create: [
       authenticate('jwt'),
       associateCurrentUser(),
-      createSlug(),
+      createSlug({ field: 'title' }),
       createExcerpt()
     ],
     update: [
