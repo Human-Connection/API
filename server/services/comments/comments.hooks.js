@@ -6,7 +6,7 @@ const {
   restrictToOwner
 } = require('feathers-authentication-hooks');
 const createExcerpt = require('../../hooks/create-excerpt');
-const associateContribution = require('../../hooks/associate-contribution');
+const createNotifications = require('./hooks/create-notifications');
 
 const userSchema = {
   include: {
@@ -17,6 +17,7 @@ const userSchema = {
   }
 }
 
+//ToDo: Only let users create comments for contributions they are allowed to
 module.exports = {
   before: {
     all: [],
@@ -25,7 +26,6 @@ module.exports = {
     create: [
       authenticate('jwt'),
       associateCurrentUser(),
-      associateContribution(),
       createExcerpt()
     ],
     update: [
@@ -50,7 +50,9 @@ module.exports = {
     ],
     find: [],
     get: [],
-    create: [],
+    create: [
+      createNotifications()
+    ],
     update: [],
     patch: [],
     remove: []
