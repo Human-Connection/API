@@ -10,10 +10,11 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
       contributionService.get(contributionId)
         .then(result => {
           const userId = result.userId;
-          const username = result.user.username;
+          let username = hook.result.user.username;
+          username = username !== undefined ? username : 'Someone';
 
           // Only create notification for other users
-          if(userId == hook.data.userId) {
+          if(userId == hook.result.userId) {
             resolve(hook);
             return false;
           }

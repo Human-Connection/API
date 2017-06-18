@@ -1,7 +1,6 @@
 const { authenticate } = require('feathers-authentication').hooks;
 const { populate } = require('feathers-hooks-common');
 const {
-  associateCurrentUser,
   restrictToOwner
 } = require('feathers-authentication-hooks');
 const restrict = [
@@ -9,19 +8,10 @@ const restrict = [
   restrictToOwner()
 ];
 
-const userSchema = {
-  include: {
-    service: 'users',
-    nameAs: 'user',
-    parentField: 'relatedUserId',
-    childField: '_id'
-  }
-}
-
 const commentSchema = {
   include: {
     service: 'comments',
-    nameAs: 'comments',
+    nameAs: 'comment',
     parentField: 'relatedCommentId',
     childField: '_id'
   }
@@ -30,7 +20,7 @@ const commentSchema = {
 const contributionSchema = {
   include: {
     service: 'contributions',
-    nameAs: 'contributions',
+    nameAs: 'contribution',
     parentField: 'relatedContributionId',
     childField: '_id'
   }
@@ -48,7 +38,10 @@ module.exports = {
   },
 
   after: {
-    all: [],
+    all: [
+      populate({ schema: contributionSchema }),
+      populate({ schema: commentSchema })
+    ],
     find: [],
     get: [],
     create: [],
@@ -58,11 +51,7 @@ module.exports = {
   },
 
   error: {
-    all: [
-      populate({ schema: userSchema }),
-      populate({ schema: contributionSchema }),
-      populate({ schema: commentSchema })
-    ],
+    all: [],
     find: [],
     get: [],
     create: [],
