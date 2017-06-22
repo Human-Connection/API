@@ -1,5 +1,5 @@
 {
   "host": "api",
   "port": "PORT",
-  "mongodb": "mongodb://db:27017/hc_api"
+  "mongodb": "mongodb://mongo-cluster:27017/hc_api"
 }
