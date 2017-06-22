@@ -2,6 +2,8 @@ const { authenticate } = require('feathers-authentication').hooks;
 const commonHooks = require('feathers-hooks-common');
 const { restrictToOwner } = require('feathers-authentication-hooks');
 
+const sendVerificationEmail = require('../../hooks/send-verification-email');
+
 const { hashPassword } = require('feathers-authentication-local').hooks;
 const restrict = [
   authenticate('jwt'),
@@ -33,7 +35,9 @@ module.exports = {
     ],
     find: [],
     get: [],
-    create: [],
+    create: [
+      sendVerificationEmail()
+    ],
     update: [],
     patch: [],
     remove: []

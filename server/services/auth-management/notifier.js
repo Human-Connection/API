@@ -27,9 +27,11 @@ module.exports = function(app) {
       console.log(`-- Preparing email for ${type}`);
       var hashLink;
       var email;
-      var emailAccountTemplatesPath = path.join(app.get('src'), 'email-templates', 'account');
+      var emailAccountTemplatesPath = path.join('email-templates', 'account');
       var templatePath;
       var compiledHTML;
+      let mailConfig = app.get('mail');
+      let logo = mailConfig.logo;
       switch (type) {
       case 'resendVerifySignup': // send another email with link for verifying user's email addr
 
@@ -38,14 +40,14 @@ module.exports = function(app) {
         templatePath = path.join(emailAccountTemplatesPath, 'verify-email.jade');
 
         compiledHTML = jade.compileFile(templatePath)({
-          logo: '',
+          logo: logo,
           name: user.name || user.email,
           hashLink,
           returnEmail
         });
 
         email = {
-          from: process.env.GMAIL,
+          from: returnEmail,
           to: user.email,
           subject: 'Confirm Signup',
           html: compiledHTML
@@ -59,14 +61,14 @@ module.exports = function(app) {
         templatePath = path.join(emailAccountTemplatesPath, 'email-verified.jade');
 
         compiledHTML = jade.compileFile(templatePath)({
-          logo: '',
+          logo: logo,
           name: user.name || user.email,
           hashLink,
           returnEmail
         });
 
         email = {
-          from: process.env.GMAIL,
+          from: returnEmail,
           to: user.email,
           subject: 'Thank you, your email has been verified',
           html: compiledHTML
@@ -80,14 +82,14 @@ module.exports = function(app) {
         templatePath = path.join(emailAccountTemplatesPath, 'reset-password.jade');
 
         compiledHTML = jade.compileFile(templatePath)({
-          logo: '',
+          logo: logo,
           name: user.name || user.email,
           hashLink,
           returnEmail
         });
 
         email = {
-          from: process.env.GMAIL,
+          from: returnEmail,
           to: user.email,
           subject: 'Reset Password',
           html: compiledHTML
@@ -101,14 +103,14 @@ module.exports = function(app) {
         templatePath = path.join(emailAccountTemplatesPath, 'password-was-reset.jade');
 
         compiledHTML = jade.compileFile(templatePath)({
-          logo: '',
+          logo: logo,
           name: user.name || user.email,
           hashLink,
           returnEmail
         });
 
         email = {
-          from: process.env.GMAIL,
+          from: returnEmail,
           to: user.email,
           subject: 'Your password was reset',
           html: compiledHTML
@@ -120,13 +122,13 @@ module.exports = function(app) {
         templatePath = path.join(emailAccountTemplatesPath, 'password-change.jade');
 
         compiledHTML = jade.compileFile(templatePath)({
-          logo: '',
+          logo: logo,
           name: user.name || user.email,
           returnEmail
         });
 
         email = {
-          from: process.env.GMAIL,
+          from: returnEmail,
           to: user.email,
           subject: 'Your password was changed',
           html: compiledHTML
@@ -139,7 +141,7 @@ module.exports = function(app) {
         templatePath = path.join(emailAccountTemplatesPath, 'identity-change.jade');
 
         compiledHTML = jade.compileFile(templatePath)({
-          logo: '',
+          logo: logo,
           name: user.name || user.email,
           hashLink,
           returnEmail,
@@ -147,7 +149,7 @@ module.exports = function(app) {
         });
 
         email = {
-          from: process.env.GMAIL,
+          from: returnEmail,
           to: user.email,
           subject: 'Your account was changed. Please verify the changes',
           html: compiledHTML

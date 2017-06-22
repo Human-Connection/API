@@ -31,5 +31,8 @@
       "usernameField": "email",
       "passwordField": "password"
     }
+  },
+  "mail": {
+    "logo": "https://humanconnection.org/wp-content/uploads/2017/02/Logo_vertical.png"
   }
 }
