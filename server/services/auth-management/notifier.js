@@ -1,6 +1,10 @@
 const isProd = process.env.NODE_ENV === 'production';
 const path = require('path');
 const jade = require('jade');
+const handlebars = require('handlebars');
+const layouts = require('handlebars-layouts');
+handlebars.registerHelper(layouts(handlebars));
+const EmailTemplate = require('email-templates').EmailTemplate;
 
 module.exports = function(app) {
 
@@ -37,23 +41,27 @@ module.exports = function(app) {
 
         hashLink = getLink('verify', user.verifyToken);
 
-        templatePath = path.join(emailAccountTemplatesPath, 'verify-email.jade');
-
-        compiledHTML = jade.compileFile(templatePath)({
-          logo: logo,
+        templatePath = path.join(emailAccountTemplatesPath, 'verify-email');
+        let template = new EmailTemplate(templatePath);
+        let options = {
+          templatePath: templatePath,
+          title: 'Confirm Signup',
           name: user.name || user.email,
           hashLink,
           returnEmail
-        });
-
-        email = {
-          from: returnEmail,
-          to: user.email,
-          subject: 'Confirm Signup',
-          html: compiledHTML
         };
 
-        return sendEmail(email);
+        template.render(options, (err, result) => {
+          email = {
+            from: returnEmail,
+            to: user.email,
+            subject: 'Confirm Signup',
+            html: result.html
+          };
+
+          return sendEmail(email);
+        })
+        break;
       case 'verifySignup': // inform that user's email is now confirmed
 
         hashLink = getLink('verify', user.verifyToken);
