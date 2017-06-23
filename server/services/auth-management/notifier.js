@@ -2,8 +2,7 @@ const isProd = process.env.NODE_ENV === 'production';
 const path = require('path');
 const jade = require('jade');
 const handlebars = require('handlebars');
-const layouts = require('handlebars-layouts');
-handlebars.registerHelper(layouts(handlebars));
+const fs = require('fs');
 const EmailTemplate = require('email-templates').EmailTemplate;
 
 module.exports = function(app) {
@@ -29,9 +28,16 @@ module.exports = function(app) {
   return {
     notifier: function(type, user) {
       console.log(`-- Preparing email for ${type}`);
+      handlebars.registerPartial('header',
+        fs.readFileSync(path.join(__dirname, '../../../email-templates', 'layout', 'header.hbs'),'utf8')
+      );
+      handlebars.registerPartial('footer',
+        fs.readFileSync(path.join(__dirname, '../../../email-templates', 'layout', 'footer.hbs'),'utf8')
+      );
+
       var hashLink;
       var email;
-      var emailAccountTemplatesPath = path.join('email-templates', 'account');
+      var emailAccountTemplatesPath = path.join(__dirname, 'email-templates', 'account');
       var templatePath;
       var compiledHTML;
       let mailConfig = app.get('mail');
@@ -41,6 +47,7 @@ module.exports = function(app) {
 
         hashLink = getLink('verify', user.verifyToken);
 
+        emailAccountTemplatesPath = path.join(__dirname, '../../../email-templates', 'account');
         templatePath = path.join(emailAccountTemplatesPath, 'verify-email');
         let template = new EmailTemplate(templatePath);
         let options = {
@@ -52,6 +59,7 @@ module.exports = function(app) {
         };
 
         template.render(options, (err, result) => {
+          console.log(err);
           email = {
             from: returnEmail,
             to: user.email,
