@@ -1,0 +1,43 @@
+{{> header }}
+<tr>
+	<td class="content-wrap">
+		<meta itemprop="name" content="Confirm Email"/>
+		<table width="100%" cellpadding="0" cellspacing="0">
+		  <tr>
+				<td class="aligncenter content-block">
+					<h1 class="aligncenter">Please confirm these changes</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="aligncenter content-block">
+					Hi {{ name }}, your user information was just changed. Please verify that you made these changes.
+				</td>
+			</tr>
+			<tr>
+				<td class="aligncenter content-block">
+				  <ul>
+				  {{#each changes}}
+            <li>{{ this.label }}: {{ this.value }}</li>
+          {{/each}}
+          </ul>
+				</td>
+			</tr>
+			<tr>
+				<td class="aligncenter content-block" itemprop="handler" itemscope itemtype="http://schema.org/HttpActionHandler">
+					<a href="{{ link }}" class="btn-primary" itemprop="url">I accept the changes</a>
+				</td>
+			</tr>
+			<tr>
+				<td class="aligncenter content-block" itemprop="handler" itemscope itemtype="http://schema.org/HttpActionHandler">
+          If you didn't request this change please <a href='mailto:{{returnEmail}}?subject=I did not change my email&body=Someone unauthorized changed my email. Can you help me change it back?'>let us know</a>
+				</td>
+			</tr>
+			<tr>
+				<td class="aligncenter content-block">
+					&mdash; Human Connection
+				</td>
+			</tr>
+		</table>
+	</td>
+</tr>
+{{> footer }}

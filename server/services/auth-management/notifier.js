@@ -62,7 +62,7 @@ module.exports = function(app) {
           title: 'Confirm Signup',
           name: user.name || user.email,
           link: hashLink,
-          returnEmail
+          returnEmail: returnEmail
         };
 
         template.render(options, (err, result) => {
