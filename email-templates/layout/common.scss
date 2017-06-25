@@ -5,7 +5,7 @@
 ------------------------------------- */
 * {
   margin: 0;
-  font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  font-family: $family-sans-serif;
   font-style: normal;
   box-sizing: border-box;
   font-size: $body-size;
@@ -66,7 +66,7 @@ body {
 }
 
 .content-wrap {
-  padding: 20px;
+  padding: 5px 20px 20px 20px;
 }
 
 .content-block {
@@ -94,24 +94,23 @@ body {
     TYPOGRAPHY
 ------------------------------------- */
 h1, h2, h3 {
-  font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-  color: $grey;
+  font-family: $family-sans-serif;
+  color: $grey-dark;
   margin: 40px 0 0;
   line-height: 1.2em;
-  font-weight: 400;
+  font-weight: 300;
 }
 
 h1 {
-  font-size: 32px;
-  font-weight: 500;
+  font-size: 28px;
   /* 1.2em * 32px = 38.4px, use px to get airier line-height also in Thunderbird, and Yahoo!, Outlook.com, AOL webmail clients */
-  /*line-height: 38px;*/
+  line-height: 34px;
 }
 
 h2 {
-  font-size: 24px;
+  font-size: 22px;
   /* 1.2em * 24px = 28.8px, use px to get airier line-height also in Thunderbird, and Yahoo!, Outlook.com, AOL webmail clients */
-  /*line-height: 29px;*/
+  line-height: 26.4px;
 }
 
 h3 {
@@ -151,7 +150,7 @@ a {
   line-height: 2em;
   /* 2em * 14px = 28px, use px to get airier line-height also in Thunderbird, and Yahoo!, Outlook.com, AOL webmail clients */
   /*line-height: 28px;*/
-  font-weight: bold;
+  font-weight: normal;
   text-align: center;
   cursor: pointer;
   display: inline-block;
@@ -190,7 +189,7 @@ a {
     Change the class depending on warning email, good email or bad email
 ------------------------------------- */
 .alert {
-  font-size: 16px;
+  font-size: $body-size;
   color: #fff;
   font-weight: 500;
   padding: 20px;
@@ -201,16 +200,16 @@ a {
   color: #fff;
   text-decoration: none;
   font-weight: 500;
-  font-size: 16px;
+  font-size: $body-size;
 }
 .alert.alert-warning {
-  background-color: #FF9F00;
+  background-color: $yellow;
 }
 .alert.alert-bad {
-  background-color: #D0021B;
+  background-color: $red;
 }
 .alert.alert-good {
-  background-color: #68B90F;
+  background-color: $green;
 }
 
 /* -------------------------------------
@@ -235,49 +234,6 @@ a {
   border-top: 2px solid #333;
   border-bottom: 2px solid #333;
   font-weight: 700;
-}
-
-/* -------------------------------------
-    RESPONSIVE AND MOBILE FRIENDLY STYLES
-------------------------------------- */
-@media only screen and (max-width: 640px) {
-  body {
-    padding: 0 !important;
-  }
-
-  h1, h2, h3, h4 {
-    font-weight: 800 !important;
-    margin: 20px 0 5px !important;
-  }
-
-  h1 {
-    font-size: 22px !important;
-  }
-
-  h2 {
-    font-size: 18px !important;
-  }
-
-  h3 {
-    font-size: 16px !important;
-  }
-
-  .container {
-    padding: 0 !important;
-    width: 100% !important;
-  }
-
-  .content {
-    padding: 0 !important;
-  }
-
-  .content-wrap {
-    padding: 10px !important;
-  }
-
-  .invoice {
-    width: 100% !important;
-  }
 }
 
 /*# sourceMappingURL=styles.css.map */

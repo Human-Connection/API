@@ -18,6 +18,9 @@ module.exports = function(app) {
   }
 
   function sendEmail(email) {
+    const filename = String(Date.now()) + '.html';
+    fs.writeFile(path.join(__dirname, '../../../data/emails/', filename), email.html);
+
     return app.service('emails').create(email).then(function (result) {
       console.log('Sent email', result);
     }).catch(err => {
@@ -49,12 +52,16 @@ module.exports = function(app) {
 
         emailAccountTemplatesPath = path.join(__dirname, '../../../email-templates', 'account');
         templatePath = path.join(emailAccountTemplatesPath, 'verify-email');
-        let template = new EmailTemplate(templatePath);
+        let template = new EmailTemplate(templatePath, {juiceOptions: {
+          preserveMediaQueries: true,
+          preserveImportant: true,
+          removeStyleTags: false
+        }});
         let options = {
           templatePath: templatePath,
           title: 'Confirm Signup',
           name: user.name || user.email,
-          hashLink,
+          link: hashLink,
           returnEmail
         };
 
@@ -63,8 +70,9 @@ module.exports = function(app) {
           email = {
             from: returnEmail,
             to: user.email,
-            subject: 'Confirm Signup',
-            html: result.html
+            subject: result.subject,
+            html: result.html,
+            text: result.text
           };
 
           return sendEmail(email);
