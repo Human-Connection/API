@@ -5,6 +5,7 @@ const {
   associateCurrentUser,
   restrictToOwner
 } = require('feathers-authentication-hooks');
+const { isVerified } = require('feathers-authentication-management').hooks;
 const createSlug = require('../../hooks/create-slug');
 const createExcerpt = require('../../hooks/create-excerpt');
 
@@ -33,22 +34,26 @@ module.exports = {
     get: [],
     create: [
       authenticate('jwt'),
+      isVerified(),
       associateCurrentUser(),
       createSlug({ field: 'title' }),
       createExcerpt()
     ],
     update: [
       authenticate('jwt'),
+      isVerified(),
       restrictToOwner(),
       createExcerpt()
     ],
     patch: [
       authenticate('jwt'),
+      isVerified(),
       restrictToOwner(),
       createExcerpt()
     ],
     remove: [
       authenticate('jwt'),
+      isVerified(),
       restrictToOwner()
     ]
   },
