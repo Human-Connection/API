@@ -1,6 +1,7 @@
 const { authenticate } = require('feathers-authentication').hooks;
 const commonHooks = require('feathers-hooks-common');
 const { restrictToOwner } = require('feathers-authentication-hooks');
+const { addVerification, removeVerification } = require('feathers-authentication-management').hooks;
 
 const sendVerificationEmail = require('../../hooks/send-verification-email');
 
@@ -20,6 +21,7 @@ module.exports = {
     get: [ ...restrict ],
     create: [
       hashPassword(),
+      addVerification()
     ],
     update: [ ...restrict, hashPassword() ],
     patch: [ ...restrict, hashPassword() ],
@@ -36,7 +38,8 @@ module.exports = {
     find: [],
     get: [],
     create: [
-      sendVerificationEmail()
+      sendVerificationEmail(),
+      removeVerification()
     ],
     update: [],
     patch: [],

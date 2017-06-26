@@ -5,15 +5,14 @@ const fs = require('fs');
 const EmailTemplate = require('email-templates').EmailTemplate;
 
 module.exports = function(app) {
-
   const returnEmail = app.get('defaultEmail');
 
   function getLink(type, hash) {
-    var port = (!app.get('frontport') || isProd) ? '' : ':' + app.get('frontport');
-    var host = app.get('host')|| 'localhost';
-    var protocal = app.get('protocol') || 'http';
-    protocal += '://';
-    return `${protocal}${host}${port}/login/${type}/${hash}`;
+    const port = (!app.get('frontport') || isProd) ? '' : ':' + app.get('frontport');
+    const host = app.get('host')|| 'localhost';
+    let protocol = app.get('protocol') || 'http';
+    protocol += '://';
+    return `${protocol}${host}${port}/auth/${type}/${hash}`;
   }
 
   function buildEmail(templatename, title, linktype, user, additionaloptions) {
@@ -75,10 +74,9 @@ module.exports = function(app) {
 
       switch (type) {
       case 'resendVerifySignup':
-        return buildEmail('verify-email', 'Confirm Signup', 'verify', user);
-        break;
+        return buildEmail('verify-email', 'Confirm signup', 'verify', user);
       case 'verifySignup':
-        return buildEmail('email-verified', 'Email Address verified', 'verify', user);
+        return buildEmail('email-verified', 'Email address verified', 'verify', user);
       case 'resetPwd':
         return buildEmail('reset-password', 'Password reset', 'reset', user);
       case 'sendResetPwd':

@@ -19,7 +19,7 @@ module.exports = {
           authenticate('jwt'),
           isEnabled()
         ]
-      ),      
+      ),
     ],
     update: [],
     patch: [],
