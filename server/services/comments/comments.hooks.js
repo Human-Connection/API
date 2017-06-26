@@ -1,5 +1,5 @@
 const { authenticate } = require('feathers-authentication').hooks;
-const { populate } = require('feathers-hooks-common');
+const { unless, isProvider, populate } = require('feathers-hooks-common');
 const {
   //queryWithCurrentUser,
   associateCurrentUser,
@@ -26,7 +26,9 @@ module.exports = {
     get: [],
     create: [
       authenticate('jwt'),
-      isVerified(),
+      unless(isProvider('server'),
+        isVerified()
+      ),
       associateCurrentUser(),
       createExcerpt()
     ],

@@ -1,5 +1,5 @@
 const { authenticate } = require('feathers-authentication').hooks;
-const commonHooks = require('feathers-hooks-common');
+const { unless, isProvider, when, discard } = require('feathers-hooks-common');
 const { restrictToOwner } = require('feathers-authentication-hooks');
 const { addVerification, removeVerification } = require('feathers-authentication-management').hooks;
 
@@ -13,6 +13,7 @@ const restrict = [
     ownerField: '_id'
   })
 ];
+
 
 module.exports = {
   before: {
@@ -30,16 +31,19 @@ module.exports = {
 
   after: {
     all: [
-      commonHooks.when(
+      when(
         hook => hook.params.provider,
-        commonHooks.discard('password')
+        discard('password')
       )
     ],
     find: [],
     get: [],
     create: [
-      sendVerificationEmail(),
+      unless(isProvider('server'),
+        sendVerificationEmail()
+      ),
       removeVerification()
+
     ],
     update: [],
     patch: [],
