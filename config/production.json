@@ -1,4 +1,5 @@
 {
-  "host": "hc-api-app.feathersjs.com",
-  "port": "PORT"
+  "host": "api",
+  "port": "PORT",
+  "mongodb": "mongodb://mongo-cluster:27017/hc_api"
 }

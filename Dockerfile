@@ -11,14 +11,15 @@ COPY . /var/www/
 WORKDIR /var/www/
 
 # expose the app port
-EXPOSE 8080
+EXPOSE 3030
+EXPOSE 9229
 
 # set environment variables
 # ENV NPM_CONFIG_PRODUCTION=false
-ENV HOST=0.0.0.0
+# ENV HOST=0.0.0.0
 ENV NODE_ENV=production
 
 # buld application
 RUN npm install --production
 
-CMD [ "node", "server/index.js" ]
+ENTRYPOINT [ "node", "server/index.js" ]
