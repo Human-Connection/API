@@ -34,6 +34,7 @@ module.exports = {
     get: [],
     create: [
       authenticate('jwt'),
+      // Allow seeder to seed contributions
       unless(isProvider('server'),
         isVerified()
       ),

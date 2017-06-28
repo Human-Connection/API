@@ -1,5 +1,5 @@
 const { authenticate } = require('feathers-authentication').hooks;
-const { unless, isProvider, when, discard } = require('feathers-hooks-common');
+const { isProvider, when, discard } = require('feathers-hooks-common');
 const { restrictToOwner } = require('feathers-authentication-hooks');
 const { addVerification, removeVerification } = require('feathers-authentication-management').hooks;
 
@@ -22,7 +22,15 @@ module.exports = {
     get: [ ...restrict ],
     create: [
       hashPassword(),
-      addVerification()
+      addVerification(),
+      // We don't need email verification
+      // for server generated users
+      when(isProvider('server'),
+        hook => {
+          hook.data.isVerified = true;
+          return hook;
+        }
+      )
     ],
     update: [ ...restrict, hashPassword() ],
     patch: [ ...restrict, hashPassword() ],
@@ -31,15 +39,14 @@ module.exports = {
 
   after: {
     all: [
-      when(
-        hook => hook.params.provider,
-        discard('password')
+      when(isProvider('external'),
+        discard('password', '_computed', 'verifyExpires', 'resetExpires', 'verifyChanges')
       )
     ],
     find: [],
     get: [],
     create: [
-      unless(isProvider('server'),
+      when(isProvider('external'),
         sendVerificationEmail()
       ),
       removeVerification()

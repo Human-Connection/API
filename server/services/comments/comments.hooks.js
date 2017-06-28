@@ -26,6 +26,7 @@ module.exports = {
     get: [],
     create: [
       authenticate('jwt'),
+      // Allow seeder to seed comments
       unless(isProvider('server'),
         isVerified()
       ),
