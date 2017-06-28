@@ -1,7 +1,7 @@
 const isProd = process.env.NODE_ENV === 'production';
 const path = require('path');
 const handlebars = require('handlebars');
-const fs = require('fs');
+const fs = require('fs-extra');
 const EmailTemplate = require('email-templates').EmailTemplate;
 
 module.exports = function(app) {
@@ -59,13 +59,20 @@ module.exports = function(app) {
   function sendEmail(email) {
     // Save copy to /data/emails
     const filename = String(Date.now()) + '.html';
-    fs.writeFile(path.join(__dirname, '../../../data/emails/', filename), email.html);
+    const filepath = path.join(__dirname, '../../../data/emails/', filename);
+    fs.outputFile(filepath, email.html)
+      .then(result => {
+        console.log('Saved email', result);
+      }).catch(err => {
+        console.log('Error saving email', err);
+      });
 
-    return app.service('emails').create(email).then(function (result) {
-      console.log('Sent email', result);
-    }).catch(err => {
-      console.log('Error sending email', err);
-    });
+    return app.service('emails').create(email)
+      .then(result => {
+        console.log('Sent email', result);
+      }).catch(err => {
+        console.log('Error sending email', err);
+      });
   }
 
   return {
