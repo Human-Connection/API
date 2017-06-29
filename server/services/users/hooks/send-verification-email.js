@@ -1,4 +1,4 @@
-const accountService = require('../services/auth-management/notifier');
+const accountService = require('../../../services/auth-management/notifier');
 
 module.exports = () => hook => {
 
