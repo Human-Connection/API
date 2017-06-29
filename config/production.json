@@ -1,5 +1,15 @@
 {
   "host": "api",
   "port": "PORT",
-  "mongodb": "mongodb://mongo-cluster:27017/hc_api"
+  "mongodb": "mongodb://mongo-cluster:27017/hc_api",
+  "smtpConfig": {
+    "host": "SMTP_HOST",
+    "port": 587,
+    "secure": false,
+    "auth": {
+      "user": "SMTP_USER",
+      "pass": "SMTP_PASS"
+    }
+  },
+  "defaultEmail": "EMAIL_ADDRESS"
 }
