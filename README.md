@@ -8,7 +8,7 @@ This project uses [Feathers](http://feathersjs.com). An open source web framewor
 
 ## Getting Started
 
-Getting up and running is as easy as 1, 2, 3 ... 4.
+Getting up and running is as easy as 1, 2, 3, 4 ... 5.
 
 1. Make sure you have [NodeJS](https://nodejs.org/), [npm](https://www.npmjs.com/) and [mongoDB](https://www.mongodb.com/download-center#community)  installed.
 
@@ -22,8 +22,10 @@ Getting up and running is as easy as 1, 2, 3 ... 4.
     ``` bash
     $ cd ./hc-api-feathers; npm install
     ```
+    
+4. If you want to use email verification, copy `config/local.example.json` to `config/local.json` and put in your smtp connection details
 
-4. Start server
+5. Start server
 
     ``` bash
     # start mongodb, feathers and seed database

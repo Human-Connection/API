@@ -1,10 +1,11 @@
 const { authenticate } = require('feathers-authentication').hooks;
-const { populate } = require('feathers-hooks-common');
+const { unless, isProvider, populate } = require('feathers-hooks-common');
 const {
   //queryWithCurrentUser,
   associateCurrentUser,
   restrictToOwner
 } = require('feathers-authentication-hooks');
+const { isVerified } = require('feathers-authentication-management').hooks;
 const createExcerpt = require('../../hooks/create-excerpt');
 const createNotifications = require('./hooks/create-notifications');
 
@@ -25,21 +26,28 @@ module.exports = {
     get: [],
     create: [
       authenticate('jwt'),
+      // Allow seeder to seed comments
+      unless(isProvider('server'),
+        isVerified()
+      ),
       associateCurrentUser(),
       createExcerpt()
     ],
     update: [
       authenticate('jwt'),
+      isVerified(),
       restrictToOwner(),
       createExcerpt()
     ],
     patch: [
       authenticate('jwt'),
+      isVerified(),
       restrictToOwner(),
       createExcerpt()
     ],
     remove: [
       authenticate('jwt'),
+      isVerified(),
       restrictToOwner()
     ]
   },
