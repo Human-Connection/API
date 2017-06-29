@@ -7,6 +7,7 @@ module.exports = function () {
   mongoose.Promise = global.Promise;
   app.set('mongooseClient', mongoose);
 
+  // Create a fresh database for development
   if(process.env.NODE_ENV === 'development') {
     mongoose.connection.dropDatabase().then(() => {
       app.emit('mongooseInit');

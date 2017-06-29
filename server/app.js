@@ -53,4 +53,9 @@ app.configure(services);
 app.configure(middleware);
 app.hooks(appHooks);
 
+// Set debug mode while in development
+if(process.env.NODE_ENV === 'development') {
+  app.set('debug', true);
+}
+
 module.exports = app;

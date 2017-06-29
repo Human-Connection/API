@@ -7,12 +7,17 @@ const EmailTemplate = require('email-templates').EmailTemplate;
 module.exports = function(app) {
   const returnEmail = app.get('defaultEmail');
 
-  function getLink(type, hash) {
+  function getBaseUrl() {
     const port = (!app.get('frontport') || isProd) ? '' : ':' + app.get('frontport');
     const host = app.get('host')|| 'localhost';
     let protocol = app.get('protocol') || 'http';
     protocol += '://';
-    return `${protocol}${host}${port}/auth/${type}/${hash}`;
+    return `${protocol}${host}${port}`;
+  }
+
+  function getLink(type, hash) {
+    const baseUrl = getBaseUrl();
+    return `${baseUrl}/auth/${type}/${hash}`;
   }
 
   function buildEmail(templatename, title, linktype, user, additionaloptions) {
@@ -26,6 +31,7 @@ module.exports = function(app) {
     const templatePath = path.join(__dirname, '../../../email-templates/account', templatename);
 
     const hashLink = getLink(linktype, user.verifyToken);
+    const baseUrl = getBaseUrl();
 
     const template = new EmailTemplate(templatePath, {juiceOptions: {
       preserveMediaQueries: true,
@@ -38,13 +44,14 @@ module.exports = function(app) {
       title: title,
       name: user.name || user.email,
       link: hashLink,
-      returnEmail: returnEmail
+      returnEmail: returnEmail,
+      baseUrl: baseUrl
     };
 
     Object.assign(options, additionaloptions);
 
     template.render(options, (err, result) => {
-      console.log(err);
+      app.get('debug') && console.log(err);
       const email = {
         from: returnEmail,
         to: user.email,
@@ -57,25 +64,27 @@ module.exports = function(app) {
   }
 
   function sendEmail(email) {
-    // Save copy to /data/emails
-    const filename = String(Date.now()) + '.html';
-    const filepath = path.join(__dirname, '../../../data/emails/', filename);
-    fs.outputFile(filepath, email.html)
-      .catch(err => {
-        console.log('Error saving email', err);
-      });
+    // Save copy to /data/emails while in debug mode
+    if (app.get('debug')) {
+      const filename = String(Date.now()) + '.html';
+      const filepath = path.join(__dirname, '../../../data/emails/', filename);
+      fs.outputFile(filepath, email.html)
+        .catch(err => {
+          app.get('debug') && console.log('Error saving email', err);
+        });
+    }
 
     return app.service('emails').create(email)
       .then(result => {
-        console.log('Sent email', result);
+        app.get('debug') && console.log('Sent email', result);
       }).catch(err => {
-        console.log('Error sending email', err);
+        app.get('debug') && console.log('Error sending email', err);
       });
   }
 
   return {
     notifier: function(type, user) {
-      console.log(`-- Preparing email for ${type}`);
+      app.get('debug') && console.log(`-- Preparing email for ${type}`);
 
       switch (type) {
       case 'resendVerifySignup':
