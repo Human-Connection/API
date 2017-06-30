@@ -20,12 +20,10 @@ module.exports = function () {
         template: {
           email: 'test@test.de',
           password: '1234',
-          username: 'Peter Pan',
+          name: 'Peter Pan',
           slug: 'peter-pan',
           gender: 'm',
           isnothere: true,
-          firstname: 'Peter',
-          lastname: 'Pan',
           timezone: 'Europe/Berlin',
           avatar: {
             large: '{{internet.avatar}}',
@@ -66,12 +64,10 @@ module.exports = function () {
         template: {
           email: '{{internet.email}}',
           password: '{{internet.password}}',
-          username: '{{name.firstName}} {{name.lastName}}',
+          name: '{{name.firstName}} {{name.lastName}}',
           slug: '{{lorem.slug}}',
           gender: '',
           isnothere: true,
-          firstname: '{{name.firstName}}',
-          lastname: '{{name.lastName}}',
           timezone: 'Europe/Berlin',
           avatar: {
             large: '{{internet.avatar}}',
