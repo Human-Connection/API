@@ -40,7 +40,7 @@ module.exports = {
       // Only set slug once
       when(
         hook => {
-          return !hook.params.user.slug;
+          return hook.params && hook.params.user && !hook.params.user.slug;
         },
         createSlug({ field: 'name' })
       )
@@ -54,7 +54,11 @@ module.exports = {
         discard('password', '_computed', 'verifyExpires', 'resetExpires', 'verifyChanges')
       )
     ],
-    find: [],
+    find: [
+      when(isProvider('external'),
+        discard('email')
+      )
+    ],
     get: [],
     create: [
       when(isProvider('external'),

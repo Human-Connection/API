@@ -10,8 +10,8 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
       contributionService.get(contributionId)
         .then(result => {
           const userId = result.userId;
-          let username = hook.result.user.username;
-          username = username !== undefined ? username : 'Someone';
+          let name = hook.result.user.name;
+          name = name !== undefined ? name : 'Someone';
 
           // Only create notification for other users
           if(userId == hook.result.userId) {
@@ -21,7 +21,7 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
 
           const notification = {
             userId: userId,
-            message: `${username} has commented your contribution.`,
+            message: `${name} has commented your contribution.`,
             relatedContributionId: contributionId,
             relatedCommentId: commentId,
           };
