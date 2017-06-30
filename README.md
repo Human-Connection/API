@@ -23,7 +23,22 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
     $ cd ./hc-api-feathers; npm install
     ```
     
-4. If you want to use email verification, copy `config/local.example.json` to `config/local.json` and put in your smtp connection details
+4. If you want to use email verification, copy `config/local.example.json` to `config/local.json` and install the [MailDev](https://github.com/djfarrelly/MailDev) 
+    server to catch all sent emails in a nice web interface. 
+    ``` bash
+    # install mail dev (only has to be done once)
+    $ npm install -g maildev
+    
+    # start the server, it will output the web url 
+    # which normaly is http://localhost:1080
+    $ maildev
+    ```
+    
+    You could also insert your smtp credentials into the local.json but that is not recomanded as all emails would be send
+    to the given addresses which should not happen in development.
+    
+    *NOTE: You only have to start that mailserver when you want to register, reset your password or test emails in any form, it
+           does not affect the rest of the application.*
 
 5. Start server
 

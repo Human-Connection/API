@@ -1,12 +1,13 @@
 {
   "smtpConfig": {
-    "host": "smtp.example.com",
-    "port": 587,
+    "host": "localhost",
+    "port": 1025,
     "secure": false,
+    "ignoreTLS": true,
     "auth": {
-        "user": "username",
-        "pass": "password"
+      "user": "",
+      "pass": ""
     }
   },
-  "defaultEmail": "developer@human-connection.org"
+  "defaultEmail": "no-replay@human-connection.org"
 }
