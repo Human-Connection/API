@@ -54,11 +54,7 @@ module.exports = {
         discard('password', '_computed', 'verifyExpires', 'resetExpires', 'verifyChanges')
       )
     ],
-    find: [
-      when(isProvider('external'),
-        discard('email')
-      )
-    ],
+    find: [],
     get: [],
     create: [
       when(isProvider('external'),
