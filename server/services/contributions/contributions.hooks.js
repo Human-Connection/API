@@ -23,7 +23,13 @@ const commentsSchema = {
     service: 'comments',
     nameAs: 'comments',
     parentField: '_id',
-    childField: 'contributionId'
+    childField: 'contributionId',
+    include: {
+      service: 'users',
+      nameAs: 'user',
+      parentField: 'userId',
+      childField: '_id'
+    }
   }
 }
 
