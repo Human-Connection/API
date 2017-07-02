@@ -25,7 +25,7 @@ module.exports = function () {
 
   // Initialize our service with any options it requires
   app.use('/uploads',
-    // multer parses the file named 'uri'.
+    // multer parses the file named 'file'.
     // Without extra params the data is
     // temporary kept in memory
     multipartMiddleware.single('uri'),

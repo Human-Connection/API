@@ -8,8 +8,8 @@ module.exports = function (app) {
     userId: { type: String, required: true },
     title: { type: String },
     // During image creation, we expect to have
-    // file: { type: Imagefile, required: true }
-    fileId: { type: String, required: true },
+    // uri: { type: Imagefile Data URI, required: true }
+    fileName: { type: String, required: true },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }
   });

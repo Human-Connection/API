@@ -25,11 +25,7 @@ module.exports = function () {
           gender: 'm',
           isnothere: true,
           timezone: 'Europe/Berlin',
-          avatar: {
-            large: '{{internet.avatar}}',
-            small: '{{internet.avatar}}',
-            medium: '{{internet.avatar}}'
-          },
+          avatar: '{{internet.avatar}}',
           doiToken: null,
           confirmedAt: null,
           deletedAt: null
@@ -69,11 +65,7 @@ module.exports = function () {
           gender: '',
           isnothere: true,
           timezone: 'Europe/Berlin',
-          avatar: {
-            large: '{{internet.avatar}}',
-            small: '{{internet.avatar}}',
-            medium: '{{internet.avatar}}'
-          },
+          avatar: '{{internet.avatar}}',
           doiToken: null,
           confirmedAt: null,
           deletedAt: null

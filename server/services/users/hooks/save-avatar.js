@@ -4,15 +4,15 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
     return new Promise(resolve => {
       const uploadService = hook.app.service('uploads');
       const uploadsUrl = hook.app.get('uploads');
-      const uri = hook.data.uri;
+      const uri = hook.data.avatarUri;
 
       if(!uri) {
-        resolve(hook);
+        return resolve(hook);
       }
 
       uploadService.create({ uri: uri })
         .then(result => {
-          hook.data.fileName = uploadsUrl + result.id;
+          hook.data.avatar = uploadsUrl + result.id;
           resolve(hook);
         })
         .catch(error => {
