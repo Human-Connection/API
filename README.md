@@ -34,7 +34,7 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
     $ maildev
     ```
     
-    You could also insert your smtp credentials into the local.json but that is not recomanded as all emails would be send
+    You could also insert your smtp credentials into the local.json but that is not recommended as all emails would be send
     to the given addresses which should not happen in development.
     
     *NOTE: You only have to start that mailserver when you want to register, reset your password or test emails in any form, it

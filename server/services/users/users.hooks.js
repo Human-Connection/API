@@ -4,6 +4,7 @@ const { restrictToOwner } = require('feathers-authentication-hooks');
 const { addVerification, removeVerification } = require('feathers-authentication-management').hooks;
 
 const sendVerificationEmail = require('./hooks/send-verification-email');
+const createSlug = require('../../hooks/create-slug');
 
 const { hashPassword } = require('feathers-authentication-local').hooks;
 const restrict = [
@@ -33,7 +34,17 @@ module.exports = {
       )
     ],
     update: [ ...restrict, hashPassword() ],
-    patch: [ ...restrict, hashPassword() ],
+    patch: [
+      ...restrict,
+      hashPassword(),
+      // Only set slug once
+      when(
+        hook => {
+          return hook.params && hook.params.user && !hook.params.user.slug;
+        },
+        createSlug({ field: 'name' })
+      )
+    ],
     remove: [ ...restrict ]
   },
 
