@@ -9,7 +9,7 @@ const blobService = require('feathers-blob');
 // but you can use feathers-blob with any other
 // storage service like AWS or Google Drive.
 const fs = require('fs-blob-store');
-const blobStorage = fs(__dirname + '/../../../uploads');
+const blobStorage = fs(__dirname + '/../../../public/uploads');
 
 // For Multipart Uploads
 const multer = require('multer');
