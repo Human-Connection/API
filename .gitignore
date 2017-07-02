@@ -110,6 +110,7 @@ $RECYCLE.BIN/
 # Others
 lib/
 /data/
+/tmp/
 /uploads/
 rethinkdb_data
 .env

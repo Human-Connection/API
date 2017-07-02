@@ -22,10 +22,11 @@
     "yarn": ">= 0.18.0"
   },
   "scripts": {
+    "clear": "rm -Rf tmp && rm -Rf public/uploads",
     "test": "npm run eslint && npm run mocha",
     "eslint": "eslint server/. test/. --config .eslintrc.json",
     "start": "concurrently 'mongod' 'wait-on tcp:27017 && NODE_ENV=production node server/'",
-    "dev": "concurrently 'mongod' 'wait-on tcp:27017 && NODE_ENV=development nodemon --inspect server/'",
+    "dev": "npm run clear && concurrently 'mongod' 'wait-on tcp:27017 && NODE_ENV=development nodemon --inspect server/'",
     "dev-noseed": "concurrently 'mongod' 'wait-on tcp:27017 && nodemon --inspect server/'",
     "mocha": "mocha test/ --recursive"
   },

@@ -64,10 +64,10 @@ module.exports = function(app) {
   }
 
   function sendEmail(email) {
-    // Save copy to /data/emails while in debug mode
+    // Save copy to /tmp/emails while in debug mode
     if (app.get('debug')) {
       const filename = String(Date.now()) + '.html';
-      const filepath = path.join(__dirname, '../../../data/emails/', filename);
+      const filepath = path.join(__dirname, '../../../tmp/emails/', filename);
       fs.outputFile(filepath, email.html)
         .catch(err => {
           app.get('debug') && console.log('Error saving email', err);
