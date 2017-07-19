@@ -5,7 +5,6 @@
 module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
   const users = new mongooseClient.Schema({
-  
     email: {type: String, required: true, unique: true},
     password: { type: String },
     name: { type: String },
@@ -25,6 +24,11 @@ module.exports = function (app) {
     updatedAt: { type: Date, default: Date.now },
     // Needed for verification
     isVerified: { type: Boolean },
+    role: {
+      type: String,
+      enum: ['admin', 'manager', 'editor', 'user'],
+      default: 'user'
+    },
     verifyToken: { type: String },
     verifyShortToken: { type: String },
     verifyExpires: { type: Date },
