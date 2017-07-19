@@ -6,6 +6,7 @@ module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
   const contributions = new mongooseClient.Schema({
     userId: { type: String, required: true },
+    // categoryId: { type: String, required: true },
     title: { type: String, required: true },
     // Generated from title
     slug: { type: String, required: true, unique: true },

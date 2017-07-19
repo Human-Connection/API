@@ -6,8 +6,6 @@
 const seeder = require('feathers-seeder');
 
 module.exports = function () {
-  let testContributionId = false;
-
   const options = {
     delete: false,
     // Only enable in development
@@ -49,9 +47,9 @@ module.exports = function () {
               createdAt: '{{date.recent}}',
               updatedAt: '{{date.recent}}'
             },
-            callback(contribution) {
+            callback(contribution, seed) {
               // Save test contribution for later use
-              testContributionId = contribution._id;
+              let testContributionId = contribution._id;
 
               // Create 10 user
               return seed({
