@@ -1,7 +1,7 @@
 {
   "host": "api",
   "port": "PORT",
-  "uploads": "http://apiurl.de/uploads/",
+  "uploads": "BASE_URL:API_PORT/uploads/",
   "mongodb": "mongodb://mongo-cluster:27017/hc_api",
   "smtpConfig": {
     "host": "SMTP_HOST",
