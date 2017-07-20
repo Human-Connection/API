@@ -4,6 +4,7 @@ const { restrictToOwner } = require('feathers-authentication-hooks');
 const { addVerification, removeVerification } = require('feathers-authentication-management').hooks;
 
 const sendVerificationEmail = require('./hooks/send-verification-email');
+const saveAvatar = require('./hooks/save-avatar');
 const createSlug = require('../../hooks/create-slug');
 
 const { hashPassword } = require('feathers-authentication-local').hooks;
@@ -31,9 +32,14 @@ module.exports = {
           hook.data.isVerified = true;
           return hook;
         }
-      )
+      ),
+      saveAvatar()
     ],
-    update: [ ...restrict, hashPassword() ],
+    update: [
+      ...restrict,
+      hashPassword(),
+      saveAvatar()
+    ],
     patch: [
       ...restrict,
       hashPassword(),
@@ -43,7 +49,8 @@ module.exports = {
           return hook.params && hook.params.user && !hook.params.user.slug;
         },
         createSlug({ field: 'name' })
-      )
+      ),
+      saveAvatar()
     ],
     remove: [ ...restrict ]
   },
