@@ -6,6 +6,8 @@ module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
   const categories = new mongooseClient.Schema({
     title: { type: String, required: true },
+    // Generated from title
+    slug: { type: String, required: true, unique: true },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }
   });
