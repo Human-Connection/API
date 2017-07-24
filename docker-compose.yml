@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+  mongo-cluster:
+    image: mongo
+    ports:
+      - "27017:27017"
+    command: "--smallfiles --logpath=/dev/null"
+  api:
+    build: .
+    ports:
+      - "3030:3030"
+    links:
+      - mongo-cluster
+    environment:
+      PORT: 3030

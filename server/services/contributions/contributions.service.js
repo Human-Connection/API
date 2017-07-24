@@ -1,11 +1,12 @@
 // Initializes the `contributions` service on path `/contributions`
-const createService = require('feathers-rethinkdb');
+const createService = require('feathers-mongoose');
+const createModel = require('../../models/contributions.model');
 const hooks = require('./contributions.hooks');
 const filters = require('./contributions.filters');
 
 module.exports = function () {
   const app = this;
-  const Model = app.get('rethinkdbClient');
+  const Model = createModel(app);
   const paginate = app.get('paginate');
 
   const options = {

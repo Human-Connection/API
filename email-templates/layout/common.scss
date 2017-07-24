@@ -1,0 +1,238 @@
+@import 'variables';
+/* -------------------------------------
+    GLOBAL
+    A very basic CSS reset
+------------------------------------- */
+* {
+  margin: 0;
+  font-family: $family-sans-serif;
+  font-style: normal;
+  box-sizing: border-box;
+  font-size: $body-size;
+}
+
+img {
+  max-width: 100%;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: none;
+  width: 100% !important;
+  height: 100%;
+  line-height: 1.6em;
+  /* 1.6em * 14px = 22.4px, use px to get airier line-height also in Thunderbird, and Yahoo!, Outlook.com, AOL webmail clients */
+  /*line-height: 22px;*/
+}
+
+/* Let's make sure all tables have defaults */
+table td {
+  vertical-align: top;
+}
+
+/* -------------------------------------
+    BODY & CONTAINER
+------------------------------------- */
+body {
+  background-color: $white-ter;
+}
+
+.body-wrap {
+  background-color: $white-ter;
+  width: 100%;
+}
+
+.container {
+  display: block !important;
+  max-width: 600px !important;
+  margin: 0 auto !important;
+  /* makes it centered */
+  clear: both !important;
+}
+
+.content {
+  max-width: 600px;
+  margin: 0 auto;
+  display: block;
+  padding: 20px;
+}
+
+/* -------------------------------------
+    HEADER, FOOTER, MAIN
+------------------------------------- */
+.main {
+  background-color: $white;
+  border-bottom: 3px solid $primary;
+}
+
+.content-wrap {
+  padding: 5px 20px 20px 20px;
+}
+
+.content-block {
+  padding: 0 0 20px;
+  color: $grey;
+}
+
+.header {
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.footer {
+  width: 100%;
+  clear: both;
+  color: $grey-light;
+  padding: 20px;
+}
+.footer p, .footer a, .footer td {
+  color: $grey-light;
+  font-size: 12px;
+}
+
+/* -------------------------------------
+    TYPOGRAPHY
+------------------------------------- */
+h1, h2, h3 {
+  font-family: $family-sans-serif;
+  color: $grey-dark;
+  margin: 40px 0 0;
+  line-height: 1.2em;
+  font-weight: 300;
+}
+
+h1 {
+  font-size: 28px;
+  /* 1.2em * 32px = 38.4px, use px to get airier line-height also in Thunderbird, and Yahoo!, Outlook.com, AOL webmail clients */
+  line-height: 34px;
+}
+
+h2 {
+  font-size: 22px;
+  /* 1.2em * 24px = 28.8px, use px to get airier line-height also in Thunderbird, and Yahoo!, Outlook.com, AOL webmail clients */
+  line-height: 26.4px;
+}
+
+h3 {
+  font-size: 18px;
+  /* 1.2em * 18px = 21.6px, use px to get airier line-height also in Thunderbird, and Yahoo!, Outlook.com, AOL webmail clients */
+  /*line-height: 22px;*/
+}
+
+h4 {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+p, ul, ol {
+  margin-bottom: 10px;
+  font-weight: normal;
+}
+p li, ul li, ol li {
+  margin-left: 5px;
+  list-style-position: inside;
+}
+
+/* -------------------------------------
+    LINKS & BUTTONS
+------------------------------------- */
+a {
+  color: $primary;
+  text-decoration: underline;
+}
+
+.btn-primary {
+  text-decoration: none;
+  color: $white;
+  background-color: $primary;
+  border: solid $primary;
+  border-width: 10px 20px;
+  line-height: 2em;
+  /* 2em * 14px = 28px, use px to get airier line-height also in Thunderbird, and Yahoo!, Outlook.com, AOL webmail clients */
+  /*line-height: 28px;*/
+  font-weight: normal;
+  text-align: center;
+  cursor: pointer;
+  display: inline-block;
+}
+
+/* -------------------------------------
+    OTHER STYLES THAT MIGHT BE USEFUL
+------------------------------------- */
+.last {
+  margin-bottom: 0;
+}
+
+.first {
+  margin-top: 0;
+}
+
+.aligncenter {
+  text-align: center;
+}
+
+.alignright {
+  text-align: right;
+}
+
+.alignleft {
+  text-align: left;
+}
+
+.clear {
+  clear: both;
+}
+
+/* -------------------------------------
+    ALERTS
+    Change the class depending on warning email, good email or bad email
+------------------------------------- */
+.alert {
+  font-size: $body-size;
+  color: #fff;
+  font-weight: 500;
+  padding: 20px;
+  text-align: center;
+  border-radius: 3px 3px 0 0;
+}
+.alert a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: $body-size;
+}
+.alert.alert-warning {
+  background-color: $yellow;
+}
+.alert.alert-bad {
+  background-color: $red;
+}
+.alert.alert-good {
+  background-color: $green;
+}
+
+/* -------------------------------------
+    INVOICE
+    Styles for the billing table
+------------------------------------- */
+.invoice {
+  margin: 40px auto;
+  text-align: left;
+  width: 80%;
+}
+.invoice td {
+  padding: 5px 0;
+}
+.invoice .invoice-items {
+  width: 100%;
+}
+.invoice .invoice-items td {
+  border-top: #eee 1px solid;
+}
+.invoice .invoice-items .total td {
+  border-top: 2px solid #333;
+  border-bottom: 2px solid #333;
+  font-weight: 700;
+}
+
+/*# sourceMappingURL=styles.css.map */

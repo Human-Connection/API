@@ -1,0 +1,39 @@
+{{> header }}
+<tr>
+	<td class="content-wrap">
+		<meta itemprop="name" content="Confirm password reset"/>
+		<table width="100%" cellpadding="0" cellspacing="0">
+		  <tr>
+				<td class="aligncenter content-block">
+					<h1 class="aligncenter">Confirm password reset</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="aligncenter content-block">
+					Hi {{ name }}, we got a request to reset your password.
+				</td>
+			</tr>
+			<tr>
+				<td class="aligncenter content-block" itemprop="handler" itemscope itemtype="http://schema.org/HttpActionHandler">
+					<a href="{{ link }}" class="btn-primary" itemprop="url">Reset password</a>
+				</td>
+			</tr>
+			<tr>
+				<td class="aligncenter content-block">
+					If you ignore this message your password won't be changed.
+				</td>
+			</tr>
+			<tr>
+				<td class="aligncenter content-block" itemprop="handler" itemscope itemtype="http://schema.org/HttpActionHandler">
+          If you didn't request this change please <a href='mailto:{{returnEmail}}?subject=I did not reset my password&body=Someone unauthorized sent this reset password request.'>let us know</a>
+				</td>
+			</tr>
+			<tr>
+				<td class="aligncenter content-block">
+					&mdash; Human Connection
+				</td>
+			</tr>
+		</table>
+	</td>
+</tr>
+{{> footer }}

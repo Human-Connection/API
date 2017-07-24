@@ -1,17 +1,35 @@
 const { authenticate } = require('feathers-authentication').hooks;
-const { populate } = require('feathers-hooks-common');
+const { unless, isProvider, populate } = require('feathers-hooks-common');
 const {
   //queryWithCurrentUser,
   associateCurrentUser,
   restrictToOwner
 } = require('feathers-authentication-hooks');
+const { isVerified } = require('feathers-authentication-management').hooks;
+const createSlug = require('../../hooks/create-slug');
+const createExcerpt = require('../../hooks/create-excerpt');
 
 const userSchema = {
   include: {
     service: 'users',
     nameAs: 'user',
     parentField: 'userId',
-    childField: 'id'
+    childField: '_id'
+  }
+}
+
+const commentsSchema = {
+  include: {
+    service: 'comments',
+    nameAs: 'comments',
+    parentField: '_id',
+    childField: 'contributionId',
+    include: {
+      service: 'users',
+      nameAs: 'user',
+      parentField: 'userId',
+      childField: '_id'
+    }
   }
 }
 
@@ -22,25 +40,37 @@ module.exports = {
     get: [],
     create: [
       authenticate('jwt'),
-      associateCurrentUser()
+      // Allow seeder to seed contributions
+      unless(isProvider('server'),
+        isVerified()
+      ),
+      associateCurrentUser(),
+      createSlug({ field: 'title' }),
+      createExcerpt()
     ],
     update: [
       authenticate('jwt'),
-      restrictToOwner()
+      isVerified(),
+      restrictToOwner(),
+      createExcerpt()
     ],
     patch: [
       authenticate('jwt'),
-      restrictToOwner()
+      isVerified(),
+      restrictToOwner(),
+      createExcerpt()
     ],
     remove: [
       authenticate('jwt'),
+      isVerified(),
       restrictToOwner()
     ]
   },
 
   after: {
     all: [
-      populate({ schema: userSchema })
+      populate({ schema: userSchema }),
+      populate({ schema: commentsSchema })
     ],
     find: [],
     get: [],
