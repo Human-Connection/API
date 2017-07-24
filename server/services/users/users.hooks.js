@@ -6,6 +6,7 @@ const { addVerification, removeVerification } = require('feathers-authentication
 const sendVerificationEmail = require('./hooks/send-verification-email');
 const restrictUserRole = require('./hooks/restrict-user-role');
 const createAdmin = require('./hooks/create-admin');
+const saveAvatar = require('./hooks/save-avatar');
 const createSlug = require('../../hooks/create-slug');
 
 const { hashPassword } = require('feathers-authentication-local').hooks;
@@ -35,9 +36,15 @@ module.exports = {
         }
       ),
       restrictUserRole(),
-      createAdmin()
+      createAdmin(),
+      saveAvatar()
     ],
-    update: [ ...restrict, hashPassword(), restrictUserRole() ],
+    update: [
+      ...restrict,
+      hashPassword(),
+      restrictUserRole(),
+      saveAvatar()
+    ],
     patch: [
       ...restrict,
       hashPassword(),
@@ -48,7 +55,8 @@ module.exports = {
         },
         createSlug({ field: 'name' })
       ),
-      restrictUserRole()
+      restrictUserRole(),
+      saveAvatar()
     ],
     remove: [ ...restrict ]
   },

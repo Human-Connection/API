@@ -12,11 +12,7 @@ module.exports = function (app) {
     gender: { type: String },
     isnothere: { type: Boolean },
     timezone: { type: String },
-    avatar: {
-      large: { type: String },
-      small: { type: String },
-      medium: { type: String }
-    },
+    avatar: { type: String },
     doiToken: { type: String },
     confirmedAt: { type: Date },
     deletedAt: { type: Date },

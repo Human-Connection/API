@@ -109,7 +109,9 @@ $RECYCLE.BIN/
 
 # Others
 lib/
-data/
+/data/
+/tmp/
+/public/uploads/
 rethinkdb_data
 .env
 /config/local.json
