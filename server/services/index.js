@@ -4,6 +4,7 @@ const contributions = require('./contributions/contributions.service.js');
 const comments = require('./comments/comments.service.js');
 const notifications = require('./notifications/notifications.service.js');
 const emails = require('./emails/emails.service.js');
+const categories = require('./categories/categories.service.js');
 const uploads = require('./uploads/uploads.service.js');
 const images = require('./images/images.service.js');
 module.exports = function () {
@@ -14,6 +15,7 @@ module.exports = function () {
   app.configure(comments);
   app.configure(notifications);
   app.configure(emails);
+  app.configure(categories);
   app.configure(uploads);
   app.configure(images);
 };
