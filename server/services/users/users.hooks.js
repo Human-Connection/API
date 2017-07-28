@@ -1,5 +1,5 @@
 const { authenticate } = require('feathers-authentication').hooks;
-const { isProvider, when, discard } = require('feathers-hooks-common');
+const { isProvider, when, discard, populate } = require('feathers-hooks-common');
 const { restrictToOwner } = require('feathers-authentication-hooks');
 const { addVerification, removeVerification } = require('feathers-authentication-management').hooks;
 
@@ -8,6 +8,7 @@ const saveAvatar = require('./hooks/save-avatar');
 const createSlug = require('../../hooks/create-slug');
 
 const { hashPassword } = require('feathers-authentication-local').hooks;
+
 const restrict = [
   authenticate('jwt'),
   restrictToOwner({
@@ -16,6 +17,14 @@ const restrict = [
   })
 ];
 
+const badgesSchema = {
+  include: {
+    service: 'badges',
+    nameAs: 'badges',
+    parentField: 'badgesIds',
+    childField: '_id'
+  }
+}
 
 module.exports = {
   before: {
@@ -57,6 +66,7 @@ module.exports = {
 
   after: {
     all: [
+      populate({ schema: badgesSchema }),
       when(isProvider('external'),
         discard('password', '_computed', 'verifyExpires', 'resetExpires', 'verifyChanges')
       )
