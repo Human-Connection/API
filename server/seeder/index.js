@@ -12,8 +12,21 @@ module.exports = function () {
     delete: false,
     // Only enable in development
     disabled: process.env.NODE_ENV !== 'development',
-    services: [
-      {
+    services: [{
+      path:'badges',
+      count: 1,
+      template: {
+        image : {
+          path: 'https://cdn.frontify.com/api/screen/thumbnail/XX9MuecGg2sy_CuMKs6FulhegxuoRIqi-7nhTI65O6DOzyS6YQc2s5XIQJgeScEJjTq8puwTMSRzlVkpWRnP3A/1524',
+          alt: '{{lorem.word}}',
+        },
+        text: '{{lorem.word}}',
+        status: 'permanent',
+        type: '{{lorem.word}}'
+      },
+      callback(badge, seed) {
+
+      return seed({
         // Create test user
         path: 'users',
         count: 1,
@@ -28,6 +41,7 @@ module.exports = function () {
           avatar: '{{internet.avatar}}',
           doiToken: null,
           confirmedAt: null,
+          badgesIds: [() => badge._id],
           deletedAt: null
         },
         callback(user, seed) {
@@ -48,12 +62,15 @@ module.exports = function () {
             callback(contribution) {
               // Save test contribution for later use
               testContributionId = contribution._id;
-              return true;
+              return new Promise((resolve) => {
+                return resolve({})
+              });
             }
           });
         }
-      },
-      {
+      })}
+    },
+    {
         // Create 10 user
         path: 'users',
         count: 20,
@@ -112,7 +129,11 @@ module.exports = function () {
                 },
                 callback(comment, seed) {
                   // Create a view comments for test contribution
-                  if(Math.random() > 0.2) return true;
+                  if (Math.random() > 0.2  || !testContributionId) {
+                    return new Promise((resolve) => {
+                      return resolve({})
+                    });
+                  }
                   return seed({
                     count: 1,
                     path: 'comments',
