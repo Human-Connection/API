@@ -5,10 +5,10 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [authenticate('jwt'),],
-    update: [authenticate('jwt'),],
-    patch: [authenticate('jwt'),],
-    remove: [authenticate('jwt'),]
+    create: [authenticate('jwt')],
+    update: [authenticate('jwt')],
+    patch: [authenticate('jwt')],
+    remove: [authenticate('jwt')]
   },
 
   after: {

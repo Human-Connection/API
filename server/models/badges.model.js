@@ -12,7 +12,7 @@ module.exports = function (app) {
   const imageSchema = mongooseClient.Schema({
     path: {type: String, required: true},
     alt: {type: String, required: true}
-  })
+  });
   const badges = new Schema({
     image: imageSchema,
     text: { type: String, required: true },

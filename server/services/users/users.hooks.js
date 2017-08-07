@@ -24,7 +24,7 @@ const badgesSchema = {
     parentField: 'badgesIds',
     childField: '_id'
   }
-}
+};
 
 module.exports = {
   before: {
