@@ -14,6 +14,11 @@ server.on('listening', () => {
   // Start seeder, after database is setup
   app.on('mongooseInit', () => {
     app.seed()
-      .then(() => logger.info(`Feathers application started on ${app.get('host')}:${port}`));
+      .then(() => {
+        logger.info(`Feathers application started on ${app.get('host')}:${port}`);
+      })
+      .catch((e) => {
+        logger.error(e);
+      });
   });
 });
