@@ -12,7 +12,6 @@ const rest = require('feathers-rest');
 const socketio = require('feathers-socketio');
 const seeder = require('./seeder');
 
-
 const middleware = require('./middleware');
 const services = require('./services');
 const appHooks = require('./app.hooks');
