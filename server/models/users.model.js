@@ -4,6 +4,10 @@
 // for more of what you can do here.
 module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
+  const followsSchema = mongooseClient.Schema({
+    type: String,
+    id: String
+  });
   const users = new mongooseClient.Schema({
 
     email: {type: String, required: true, unique: true},
@@ -12,10 +16,7 @@ module.exports = function (app) {
     slug: { type: String },
     gender: { type: String },
     followerIds: [],
-    follows: {
-      id: String,
-      type: String
-    },
+    follows: [followsSchema],
     isnothere: { type: Boolean },
     timezone: { type: String },
     avatar: { type: String },
