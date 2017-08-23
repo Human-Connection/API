@@ -18,6 +18,15 @@ const userSchema = {
   }
 }
 
+const categoriesSchema = {
+  include: {
+    service: 'categories',
+    nameAs: 'categories',
+    parentField: 'categoryIds',
+    childField: '_id'
+  }
+}
+
 const commentsSchema = {
   include: {
     service: 'comments',
@@ -70,6 +79,7 @@ module.exports = {
   after: {
     all: [
       populate({ schema: userSchema }),
+      populate({ schema: categoriesSchema }),
       populate({ schema: commentsSchema })
     ],
     find: [],
