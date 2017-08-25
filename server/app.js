@@ -15,10 +15,8 @@ const seeder = require('./seeder');
 const middleware = require('./middleware');
 const services = require('./services');
 const appHooks = require('./app.hooks');
-
-const mongodb = require('./mongodb');
-
 const authentication = require('./authentication');
+const mongodb = require('./mongodb');
 
 const app = feathers();
 
