@@ -1,5 +1,5 @@
 const { authenticate } = require('feathers-authentication').hooks;
-const { isProvider, when, discard, populate } = require('feathers-hooks-common');
+const { isProvider, when, discard, populate, disableMultiItemChange, lowerCase } = require('feathers-hooks-common');
 const { restrictToOwner } = require('feathers-authentication-hooks');
 const { addVerification, removeVerification } = require('feathers-authentication-management').hooks;
 
@@ -36,6 +36,7 @@ module.exports = {
     create: [
       hashPassword(),
       addVerification(),
+      lowerCase('email', 'username'),
       // We don't need email verification
       // for server generated users
       when(isProvider('server'),
@@ -51,12 +52,14 @@ module.exports = {
     update: [
       ...restrict,
       hashPassword(),
+      disableMultiItemChange(),
       restrictUserRole(),
       saveAvatar()
     ],
     patch: [
       ...restrict,
       hashPassword(),
+      disableMultiItemChange(),
       // Only set slug once
       when(
         hook => {
@@ -67,7 +70,7 @@ module.exports = {
       restrictUserRole(),
       saveAvatar()
     ],
-    remove: [ ...restrict ]
+    remove: [ ...restrict, disableMultiItemChange() ]
   },
 
   after: {

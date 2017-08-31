@@ -21,6 +21,16 @@ module.exports = function (app) {
       enum: ['public', 'friends', 'private'],
       default: 'public'
     },
+    emotions: {
+      type: Object,
+      default: {
+        angry: 0,
+        sad: 0,
+        shocked: 0,
+        positive: 0,
+        funny: 0
+      }
+    },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }
   });
