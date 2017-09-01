@@ -18,9 +18,9 @@ module.exports = function(options = {}) { // eslint-disable-line no-unused-vars
       let putQuery = {
         $inc: {
           'emotions.funny': 0,
-          'emotions.positive': 0,
-          'emotions.shocked': 0,
-          'emotions.sad': 0,
+          'emotions.happy': 0,
+          'emotions.surprised': 0,
+          'emotions.cry': 0,
           'emotions.angry': 0
         }
       };

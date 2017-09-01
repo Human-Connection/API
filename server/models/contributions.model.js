@@ -25,9 +25,9 @@ module.exports = function (app) {
       type: Object,
       default: {
         angry: 0,
-        sad: 0,
-        shocked: 0,
-        positive: 0,
+        cry: 0,
+        surprised: 0,
+        happy: 0,
         funny: 0
       }
     },

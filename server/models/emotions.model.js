@@ -10,7 +10,7 @@ module.exports = function (app) {
     rated: {
       type: String,
       required: true,
-      enum: ['funny', 'positive', 'shocked', 'sad', 'angry']
+      enum: ['funny', 'happy', 'surprised', 'cry', 'angry']
     },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }
