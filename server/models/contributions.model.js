@@ -24,11 +24,26 @@ module.exports = function (app) {
     emotions: {
       type: Object,
       default: {
-        angry: 0,
-        cry: 0,
-        surprised: 0,
-        happy: 0,
-        funny: 0
+        angry: {
+          count: 0,
+          percent: 0
+        },
+        cry: {
+          count: 0,
+          percent: 0
+        },
+        surprised: {
+          count: 0,
+          percent: 0
+        },
+        happy: {
+          count: 0,
+          percent: 0
+        },
+        funny: {
+          count: 0,
+          percent: 0
+        }
       }
     },
     createdAt: { type: Date, default: Date.now },

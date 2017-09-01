@@ -1,6 +1,8 @@
 // Use this hook to manipulate incoming or outgoing data.
 // For more information on hooks see: http://docs.feathersjs.com/api/hooks.html
 
+const _ = require('lodash');
+
 module.exports = function(options = {}) { // eslint-disable-line no-unused-vars
   return function(hook) {
 
@@ -17,11 +19,11 @@ module.exports = function(options = {}) { // eslint-disable-line no-unused-vars
       // remove all other votes from current user on that contribution
       let putQuery = {
         $inc: {
-          'emotions.funny': 0,
-          'emotions.happy': 0,
-          'emotions.surprised': 0,
-          'emotions.cry': 0,
-          'emotions.angry': 0
+          'emotions.funny.count': 0,
+          'emotions.happy.count': 0,
+          'emotions.surprised.count': 0,
+          'emotions.cry.count': 0,
+          'emotions.angry.count': 0
         }
       };
 
@@ -43,11 +45,22 @@ module.exports = function(options = {}) { // eslint-disable-line no-unused-vars
         .then(items => {
           items.forEach(item => {
             // set the decrement values for removed types
-            putQuery.$inc[`emotions.${item.rated}`] -= 1;
+            putQuery.$inc[`emotions.${item.rated}.count`] -= 1;
           });
-          putQuery.$inc[`emotions.${hook.result.rated}`] += 1;
+          putQuery.$inc[`emotions.${hook.result.rated}.count`] += 1;
 
-          contributionService.patch( hook.result.contributionId, putQuery);
+          contributionService.patch( hook.result.contributionId, putQuery)
+            .then(contribution => {
+              // calculate percent of current vote constalations
+              const keys = _.keys(contribution.emotions);
+              let sum = 0;
+              keys.forEach(key => {
+                sum += contribution.emotions[key].count;
+              });
+              keys.forEach(key => {
+                contribution.emotions[key].percent = ( contribution.emotions[key].count / sum ) * 100;
+              });
+            });
         });
 
       resolve(hook);
