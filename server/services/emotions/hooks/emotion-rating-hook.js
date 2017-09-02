@@ -3,6 +3,18 @@
 
 const _ = require('lodash');
 
+// calculate percent of current vote constalations
+let calculatePercentValues = function(contribution) {
+  const keys = _.keys(contribution.emotions);
+  let sum = 0;
+  keys.forEach(key => {
+    sum += contribution.emotions[key].count;
+  });
+  keys.forEach(key => {
+    contribution.emotions[key].percent = ( contribution.emotions[key].count / sum ) * 100;
+  });
+};
+
 module.exports = function(options = {}) { // eslint-disable-line no-unused-vars
   return function(hook) {
 
@@ -38,9 +50,6 @@ module.exports = function(options = {}) { // eslint-disable-line no-unused-vars
         }
       };
 
-      console.log('removeQuery');
-      console.log(removeQuery);
-
       hook.service.remove(null, { query: removeQuery })
         .then(items => {
           items.forEach(item => {
@@ -51,18 +60,16 @@ module.exports = function(options = {}) { // eslint-disable-line no-unused-vars
 
           contributionService.patch( hook.result.contributionId, putQuery)
             .then(contribution => {
-              // calculate percent of current vote constalations
-              const keys = _.keys(contribution.emotions);
-              let sum = 0;
-              keys.forEach(key => {
-                sum += contribution.emotions[key].count;
-              });
-              keys.forEach(key => {
-                contribution.emotions[key].percent = ( contribution.emotions[key].count / sum ) * 100;
+
+              calculatePercentValues(contribution);
+
+              contributionService.patch( hook.result.contributionId, {
+                $set: {
+                  emotions: contribution.emotions
+                }
               });
             });
         });
-
       resolve(hook);
     });
   };
