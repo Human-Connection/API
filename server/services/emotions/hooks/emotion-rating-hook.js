@@ -67,10 +67,11 @@ module.exports = function(options = {}) { // eslint-disable-line no-unused-vars
                 $set: {
                   emotions: contribution.emotions
                 }
+              }).then(res => {
+                resolve(hook);
               });
             });
         });
-      resolve(hook);
     });
   };
 };
