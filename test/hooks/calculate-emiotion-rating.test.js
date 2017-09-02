@@ -1,5 +1,5 @@
 const assert = require('assert');
-const emotionRatingHook = require('../../server/services/emotions/hooks/emotion-rating-hook');
+const emotionRatingHook = require('../../server/services/emotions/hooks/emotion-rating');
 
 describe('\'emotion-rating\' hook', () => {
   it('runs the hook', () => {
