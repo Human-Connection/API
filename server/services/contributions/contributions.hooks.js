@@ -59,13 +59,17 @@ module.exports = {
     ],
     update: [
       authenticate('jwt'),
-      isVerified(),
+      unless(isProvider('server'),
+        isVerified()
+      ),
       restrictToOwner(),
       createExcerpt()
     ],
     patch: [
       authenticate('jwt'),
-      isVerified(),
+      unless(isProvider('server'),
+        isVerified()
+      ),
       restrictToOwner(),
       createExcerpt()
     ],
