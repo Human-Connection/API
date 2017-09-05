@@ -45,8 +45,8 @@ const commentsSchema = {
 
 module.exports = {
   before: {
-    all: [search()],
-    find: [],
+    all: [],
+    find: [search()],
     get: [],
     create: [
       authenticate('jwt'),
