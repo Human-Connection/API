@@ -108,6 +108,7 @@ $RECYCLE.BIN/
 *.lnk
 
 # Others
+package-lock.json
 lib/
 /data/
 /tmp/
