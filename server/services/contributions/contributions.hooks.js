@@ -43,6 +43,8 @@ const commentsSchema = {
   }
 }
 
+const saveRemoteImages = require('../../hooks/save-remote-images');
+
 module.exports = {
   before: {
     all: [],
@@ -56,6 +58,7 @@ module.exports = {
       ),
       associateCurrentUser(),
       createSlug({ field: 'title' }),
+      saveRemoteImages(['teaserImg']),
       createExcerpt()
     ],
     update: [
@@ -64,6 +67,7 @@ module.exports = {
         isVerified()
       ),
       restrictToOwner(),
+      saveRemoteImages(['teaserImg']),
       createExcerpt()
     ],
     patch: [
@@ -72,6 +76,7 @@ module.exports = {
         isVerified()
       ),
       restrictToOwner(),
+      saveRemoteImages(['teaserImg']),
       createExcerpt()
     ],
     remove: [
