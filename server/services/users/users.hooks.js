@@ -28,6 +28,9 @@ const badgesSchema = {
   }
 };
 
+const saveRemoteImages = require('../../hooks/save-remote-images');
+const createDefaultAvatar = require('../../hooks/create-default-avatar');
+
 module.exports = {
   before: {
     all: [],
@@ -47,6 +50,8 @@ module.exports = {
       ),
       restrictUserRole(),
       createAdmin(),
+      createDefaultAvatar(),
+      saveRemoteImages(['avatar', 'coverImg']),
       saveAvatar()
     ],
     update: [
@@ -54,6 +59,7 @@ module.exports = {
       hashPassword(),
       disableMultiItemChange(),
       restrictUserRole(),
+      saveRemoteImages(['avatar', 'coverImg']),
       saveAvatar()
     ],
     patch: [
@@ -68,6 +74,7 @@ module.exports = {
         createSlug({ field: 'name' })
       ),
       restrictUserRole(),
+      saveRemoteImages(['avatar', 'coverImg']),
       saveAvatar()
     ],
     remove: [ ...restrict, disableMultiItemChange() ]
@@ -87,7 +94,6 @@ module.exports = {
         sendVerificationEmail()
       ),
       removeVerification()
-
     ],
     update: [],
     patch: [],

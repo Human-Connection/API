@@ -50,5 +50,15 @@ module.exports = function (app) {
     updatedAt: { type: Date, default: Date.now }
   });
 
+  contributions.index({
+    title: 'text',
+    content: 'text'
+  }, {
+    name: 'contributions_full_text',
+    default_language: 'en',
+    language_override: 'en'
+  });
+  // contributions.index({ title: 1, content: 2 });
+
   return mongooseClient.model('contributions', contributions);
 };

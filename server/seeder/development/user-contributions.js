@@ -32,6 +32,7 @@ module.exports = {
               isnothere: true,
               timezone: 'Europe/Berlin',
               avatar: '{{internet.avatar}}',
+              coverImg: 'https://source.unsplash.com/random/1250x280',
               badgesIds: [() => badge._id],
               doiToken: null,
               confirmedAt: null,
@@ -69,6 +70,7 @@ module.exports = {
                       isnothere: true,
                       timezone: 'Europe/Berlin',
                       avatar: '{{internet.avatar}}',
+                      coverImg: 'https://source.unsplash.com/random/1250x280',
                       doiToken: null,
                       confirmedAt: null,
                       deletedAt: null

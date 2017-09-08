@@ -17,11 +17,33 @@ const services = require('./services');
 const appHooks = require('./app.hooks');
 const authentication = require('./authentication');
 const mongodb = require('./mongodb');
+const Raven = require('raven');
 
 const app = feathers();
 
 // Load app configuration
 app.configure(configuration(path.join(__dirname, '..')));
+
+if (app.get('sentry').dns !== undefined && app.get('sentry').dns !== 'SENTRY_DNS') {
+  // LOGGING IS ENABLED
+  console.log('SENTRY LOGGING IS ENABLED');
+
+  // Must configure Raven before doing anything else with it
+  Raven.config(app.get('sentry').dns, app.get('sentry').options).install();
+
+  // The request handler must be the first middleware on the app
+  app.use(Raven.requestHandler());
+  // The error handler must be before any other error middleware
+  app.use(Raven.errorHandler());
+  // Optional fallthrough error handler
+  app.use(function onError(err, req, res, next) {
+    // The error id is attached to `res.sentry` to be returned
+    // and optionally displayed to the user for support.
+    res.statusCode = 500;
+    res.end(res.sentry + '\n');
+  });
+}
+
 // Enable CORS, security, compression, favicon and body parsing
 app.use(cors());
 app.use(helmet());

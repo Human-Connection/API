@@ -14,6 +14,7 @@ module.exports = function (app) {
     isnothere: { type: Boolean },
     timezone: { type: String },
     avatar: { type: String },
+    coverImg: { type: String },
     doiToken: { type: String },
     confirmedAt: { type: Date },
     badgesIds: [],
