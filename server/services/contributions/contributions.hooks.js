@@ -8,6 +8,7 @@ const {
 const { isVerified } = require('feathers-authentication-management').hooks;
 const createSlug = require('../../hooks/create-slug');
 const createExcerpt = require('../../hooks/create-excerpt');
+const search = require('feathers-mongodb-fuzzy-search');
 
 const userSchema = {
   include: {
@@ -42,10 +43,12 @@ const commentsSchema = {
   }
 }
 
+const saveRemoteImages = require('../../hooks/save-remote-images');
+
 module.exports = {
   before: {
     all: [],
-    find: [],
+    find: [search()],
     get: [],
     create: [
       authenticate('jwt'),
@@ -55,18 +58,25 @@ module.exports = {
       ),
       associateCurrentUser(),
       createSlug({ field: 'title' }),
+      saveRemoteImages(['teaserImg']),
       createExcerpt()
     ],
     update: [
       authenticate('jwt'),
-      isVerified(),
+      unless(isProvider('server'),
+        isVerified()
+      ),
       restrictToOwner(),
+      saveRemoteImages(['teaserImg']),
       createExcerpt()
     ],
     patch: [
       authenticate('jwt'),
-      isVerified(),
+      unless(isProvider('server'),
+        isVerified()
+      ),
       restrictToOwner(),
+      saveRemoteImages(['teaserImg']),
       createExcerpt()
     ],
     remove: [

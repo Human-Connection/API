@@ -6,7 +6,7 @@ const userContributions = require('./user-contributions');
 // Add your seeder configs here
 let configs = [
   userContributions
-]
+];
 
 configs = configs.map(config => {
   config.delete = false;
