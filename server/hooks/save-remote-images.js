@@ -29,7 +29,7 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
       const imgName = `${field}_${uuid}.jpg`;
       const imgPath = path.resolve('public', 'uploads/' + imgName);
       let stream = fs.createWriteStream(imgPath);
-      stream.on('end', () => {
+      stream.on('close', () => {
         console.log('##### WRITING FINISHED');
         if (--loading <= 0) {
           console.log('##### ALL FINISHED');
