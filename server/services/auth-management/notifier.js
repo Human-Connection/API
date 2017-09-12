@@ -3,6 +3,7 @@ const path = require('path');
 const handlebars = require('handlebars');
 const fs = require('fs-extra');
 const EmailTemplate = require('email-templates').EmailTemplate;
+const logger = require('winston');
 
 module.exports = function(app) {
   const returnEmail = app.get('defaultEmail');
@@ -51,7 +52,7 @@ module.exports = function(app) {
     Object.assign(options, additionaloptions);
 
     template.render(options, (err, result) => {
-      app.get('debug') && console.log(err);
+      app.get('debug') && logger.log(err);
       const email = {
         from: returnEmail,
         to: user.email,
@@ -70,21 +71,21 @@ module.exports = function(app) {
       const filepath = path.join(__dirname, '../../../tmp/emails/', filename);
       fs.outputFile(filepath, email.html)
         .catch(err => {
-          app.get('debug') && console.log('Error saving email', err);
+          app.get('debug') && logger.log('Error saving email', err);
         });
     }
 
     return app.service('emails').create(email)
       .then(result => {
-        app.get('debug') && console.log('Sent email', result);
+        app.get('debug') && logger.log('Sent email', result);
       }).catch(err => {
-        app.get('debug') && console.log('Error sending email', err);
+        app.get('debug') && logger.log('Error sending email', err);
       });
   }
 
   return {
     notifier: function(type, user) {
-      app.get('debug') && console.log(`-- Preparing email for ${type}`);
+      app.get('debug') && logger.log(`-- Preparing email for ${type}`);
 
       switch (type) {
       case 'resendVerifySignup':

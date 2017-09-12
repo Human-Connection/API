@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const request = require('request');
 const faker = require('faker');
+const logger = require('winston');
 
 module.exports = function (options = []) { // eslint-disable-line no-unused-vars
   return function (hook) {
@@ -24,25 +25,25 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
         return;
       }
       loading++;
-      console.log('##### ADDING TO DOWNLOAD', hook.data[field]);
+      logger.log('##### ADDING TO DOWNLOAD', hook.data[field]);
       let uuid = faker.fake('{{random.uuid}}');
       const imgName = `${field}_${uuid}.jpg`;
       const imgPath = path.resolve('public', 'uploads/' + imgName);
       let stream = fs.createWriteStream(imgPath);
       stream.on('close', () => {
-        console.log('##### WRITING FINISHED');
+        logger.log('##### WRITING FINISHED');
         if (--loading <= 0) {
-          console.log('##### ALL FINISHED');
+          logger.log('##### ALL FINISHED');
           return Promise.resolve(hook);
         }
       });
-      console.log('######### DOWNLOADING: ', hook.data[field]);
+      logger.log('######### DOWNLOADING: ', hook.data[field]);
       request(hook.data[field]).pipe(stream);
       hook.data[field] = uploadsUrl + imgName;
     });
 
     if (loading <= 0) {
-      console.log('##### NOTHING TO DO...');
+      logger.log('##### NOTHING TO DO...');
       return Promise.resolve(hook);
     }
   };

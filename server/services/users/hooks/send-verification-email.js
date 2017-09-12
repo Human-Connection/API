@@ -12,4 +12,4 @@ module.exports = () => hook => {
   }
 
   return hook;
-}
+};

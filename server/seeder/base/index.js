@@ -7,7 +7,7 @@ const categories = require('./categories');
 // Add your seeder configs here
 let configs = [
   categories
-]
+];
 
 configs = configs.map(config => {
   config.delete = false;

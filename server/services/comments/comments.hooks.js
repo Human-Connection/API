@@ -16,7 +16,7 @@ const userSchema = {
     parentField: 'userId',
     childField: '_id'
   }
-}
+};
 
 //ToDo: Only let users create comments for contributions they are allowed to
 module.exports = {

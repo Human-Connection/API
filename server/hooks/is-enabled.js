@@ -21,6 +21,6 @@ module.exports = function isEnabled(options = {}) { // eslint-disable-line no-un
 
       throw new errors.Forbidden(`${name} is disabled.`);
     }
-  }
+  };
 };
 

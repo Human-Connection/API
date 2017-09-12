@@ -2,7 +2,7 @@ const assert = require('assert');
 const saveRemoteImages = require('../../server/hooks/save-remote-images');
 
 describe('\'saveRemoteImages\' hook', () => {
-  it('runs the hook', () => {
+  it.skip('runs the hook', () => {
     // A mock hook object
     const mock = {};
     // Initialize our hook with no options

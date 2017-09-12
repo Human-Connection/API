@@ -3,9 +3,9 @@ const { authenticate } = require('feathers-authentication').hooks;
 const commonHooks = require('feathers-hooks-common');
 
 const isAction = () => {
-  let args = Array.from(arguments)
+  let args = Array.from(arguments);
   return hook => args.includes(hook.data.action);
-}
+};
 
 module.exports = {
   before: {

@@ -1,4 +1,5 @@
 // ToDo: make this hook universal
+const logger = require('winston');
 module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
   return function (hook) {
     return new Promise(resolve => {
@@ -16,7 +17,7 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
           resolve(hook);
         })
         .catch(error => {
-          console.log(error);
+          logger.log(error);
           resolve(hook);
         });
     });

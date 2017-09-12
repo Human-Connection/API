@@ -2,7 +2,7 @@ const assert = require('assert');
 const emotionRatingHook = require('../../server/services/emotions/hooks/emotion-rating');
 
 describe('\'emotion-rating\' hook', () => {
-  it('runs the hook', () => {
+  it.skip('runs the hook', () => {
     // A mock hook object
     const mock = {};
     // Initialize our hook with no options

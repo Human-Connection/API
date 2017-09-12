@@ -3,22 +3,6 @@ const emotionRatingHook = require('./hooks/emotion-rating');
 const { isVerified } = require('feathers-authentication-management').hooks;
 const hooks = require('feathers-hooks-common');
 
-const userSchema = {
-  include: {
-    service: 'users',
-    nameAs: 'user',
-    parentField: 'userId',
-    childField: '_id'
-  }
-};
-const contributionSchema = {
-  include: {
-    service: 'contributions',
-    nameAs: 'contribution',
-    parentField: 'contributionId',
-    childField: '_id'
-  }
-};
 
 module.exports = {
   before: {
@@ -33,8 +17,7 @@ module.exports = {
 
   after: {
     all: [
-      // populate({ schema: userSchema }),
-      // populate({ schema: contributionSchema })
+     
     ],
     find: [],
     get: [],

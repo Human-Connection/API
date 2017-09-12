@@ -5,6 +5,7 @@ const seeder = require('feathers-seeder');
 const baseConfigs = require('./base');
 const developmentConfigs = require('./development');
 let configs = [...baseConfigs, ...developmentConfigs];
+const logger = require('winston');
 
 module.exports = () => {
   return function() {
@@ -17,7 +18,7 @@ module.exports = () => {
             resolve(app);
           })
           .catch(error => {
-            console.log(error);
+            logger.log(error);
             resolve(app);
           });
       });

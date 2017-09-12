@@ -1,6 +1,6 @@
 // Use this hook to manipulate incoming or outgoing data.
 // For more information on hooks see: http://docs.feathersjs.com/api/hooks.html
-
+const logger = require('winston');
 const _ = require('lodash');
 
 // calculate percent of current vote constalations
@@ -19,7 +19,7 @@ module.exports = function(options = {}) { // eslint-disable-line no-unused-vars
   return function(hook) {
 
     if (!hook.result || hook.method !== 'create') {
-      console.log('ERROR', hook.method);
+      logger.log('ERROR', hook.method);
 
       throw new Error('FAILED');
     }
@@ -68,6 +68,7 @@ module.exports = function(options = {}) { // eslint-disable-line no-unused-vars
                   emotions: contribution.emotions
                 }
               }).then(res => {
+                logger.log('res:'+res);
                 resolve(hook);
               });
             });

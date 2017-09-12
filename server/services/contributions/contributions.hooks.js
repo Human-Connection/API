@@ -17,7 +17,7 @@ const userSchema = {
     parentField: 'userId',
     childField: '_id'
   }
-}
+};
 
 const categoriesSchema = {
   include: {
@@ -26,7 +26,7 @@ const categoriesSchema = {
     parentField: 'categoryIds',
     childField: '_id'
   }
-}
+};
 
 const commentsSchema = {
   include: {
@@ -41,7 +41,7 @@ const commentsSchema = {
       childField: '_id'
     }
   }
-}
+};
 
 const saveRemoteImages = require('../../hooks/save-remote-images');
 

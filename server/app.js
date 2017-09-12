@@ -18,7 +18,7 @@ const appHooks = require('./app.hooks');
 const authentication = require('./authentication');
 const mongodb = require('./mongodb');
 const Raven = require('raven');
-
+const logger = require('winston');
 const app = feathers();
 
 // Load app configuration
@@ -26,7 +26,7 @@ app.configure(configuration(path.join(__dirname, '..')));
 
 if (app.get('sentry').dns !== undefined && app.get('sentry').dns !== 'SENTRY_DNS') {
   // LOGGING IS ENABLED
-  console.log('SENTRY LOGGING IS ENABLED');
+  logger.log('SENTRY LOGGING IS ENABLED');
 
   // Must configure Raven before doing anything else with it
   Raven.config(app.get('sentry').dns, app.get('sentry').options).install();
@@ -39,6 +39,7 @@ if (app.get('sentry').dns !== undefined && app.get('sentry').dns !== 'SENTRY_DNS
   app.use(function onError(err, req, res, next) {
     // The error id is attached to `res.sentry` to be returned
     // and optionally displayed to the user for support.
+    logger.log('next:' + next);
     res.statusCode = 500;
     res.end(res.sentry + '\n');
   });
