@@ -1,13 +1,15 @@
 const { authenticate } = require('feathers-authentication').hooks;
-const { unless, isProvider, populate } = require('feathers-hooks-common');
+const { unless, isProvider, populate, discard } = require('feathers-hooks-common');
 const {
   //queryWithCurrentUser,
   associateCurrentUser,
+  // restrictToAuthenticated,
   restrictToOwner
 } = require('feathers-authentication-hooks');
 const { isVerified } = require('feathers-authentication-management').hooks;
 const createExcerpt = require('../../hooks/create-excerpt');
 const createNotifications = require('./hooks/create-notifications');
+const _ = require('lodash');
 
 const userSchema = {
   include: {
@@ -42,7 +44,14 @@ module.exports = {
     patch: [
       authenticate('jwt'),
       isVerified(),
-      restrictToOwner(),
+      unless((hook) => {
+        // only allow upvoteCount increment for non owners
+        // the data has to be the exact copy of the valid object
+        const valid = {$inc: {upvoteCount: 1}};
+        return (!_.difference(_.keys(valid), _.keys(hook.data)).length) &&
+               (!_.difference(_.keys(valid.$inc), _.keys(hook.data.$inc)).length) &&
+               (!_.difference(_.values(valid.$inc), _.values(hook.data.$inc)).length);
+      }, restrictToOwner()),
       createExcerpt()
     ],
     remove: [
@@ -56,7 +65,9 @@ module.exports = {
     all: [
       populate({ schema: userSchema })
     ],
-    find: [],
+    find: [
+      discard('content', 'user.coverImg', 'badgesIds')
+    ],
     get: [],
     create: [
       createNotifications()

@@ -84,7 +84,7 @@ module.exports = {
     all: [
       populate({ schema: badgesSchema }),
       when(isProvider('external'),
-        discard('password', '_computed', 'verifyExpires', 'resetExpires', 'verifyChanges', 'email')
+        discard('password', '_computed', 'verifyExpires', 'resetExpires', 'verifyChanges', 'email', 'verifyToken', 'verifyShortToken', 'doiToken')
       )
     ],
     find: [],
