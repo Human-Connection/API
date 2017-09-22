@@ -34,12 +34,16 @@ const commentsSchema = {
     nameAs: 'comments',
     parentField: '_id',
     childField: 'contributionId',
-    include: {
-      service: 'users',
-      nameAs: 'user',
-      parentField: 'userId',
-      childField: '_id'
+    query: {
+      $select: ['_id']
     }
+    //,
+    //include: {
+    //  service: 'users',
+    //  nameAs: 'user',
+    //  parentField: 'userId',
+    //  childField: '_id'
+    //}
   }
 }
 
