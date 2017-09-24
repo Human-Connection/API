@@ -6,11 +6,28 @@ const assert = require('assert');
 
 const elasticsearch = require('elasticsearch');
 
-
+const SearchES = require('../../server/services/search/SearchES');
 
 describe('search service', () => {
 
-  it('should find contributions by title and content', function (done) {
+  it('should find contributions via service', function(done){
+    
+    cut = new SearchES();
+
+    //TODO RB:
+    //
+    // + expect 2 items
+    // + load test data before this test is executed
+    // currently, search.testdata.sh has to be run before
+
+    cut.findContribution('fox', function(response){
+      let numberOfHits = response.hits.total;
+      assert.equal(numberOfHits, 1);
+      done();
+    });
+  });
+
+  it.skip('should find contributions by title and content', function (done) {
 
     let client = new elasticsearch.Client({
       host: 'localhost:9200',
