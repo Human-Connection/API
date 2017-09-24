@@ -19,6 +19,7 @@ const authentication = require('./authentication');
 const mongodb = require('./mongodb');
 const Raven = require('raven');
 const logger = require('winston');
+
 const app = feathers();
 
 // Load app configuration
@@ -45,6 +46,8 @@ if (app.get('sentry').dns !== undefined && app.get('sentry').dns !== 'SENTRY_DNS
   });
 }
 
+
+
 // Enable CORS, security, compression, favicon and body parsing
 app.use(cors());
 app.use(helmet());
@@ -54,6 +57,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(favicon(path.join(app.get('public'), 'favicon.ico')));
 // Host the public folder
 app.use('/', feathers.static(app.get('public')));
+
 
 // Set up Plugins and providers
 app.configure(hooks());
@@ -77,5 +81,8 @@ app.hooks(appHooks);
 if(process.env.NODE_ENV === 'development') {
   app.set('debug', true);
 }
+
+
+
 
 module.exports = app;
