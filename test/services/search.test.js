@@ -1,6 +1,6 @@
 //https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-create
 
-
+const logger = require('winston');
 const assert = require('assert');
 //const app = require('../../server/app');
 
@@ -8,10 +8,53 @@ const elasticsearch = require('elasticsearch');
 
 const SearchES = require('../../server/services/search/SearchES');
 
+
+runAddContribution = (cut, done) => {
+  //WHEN
+  cut.addContribution(title, content, contributionId, userId, date,
+    function (error) {
+      console.log('addContribution responseJson:' + responseJson);
+      done();
+    },
+    function (response) {
+
+      //THEN
+      responseJson = JSON.stringify(response);
+      console.log('addContribution responseJson:' + responseJson);
+      done();
+    }
+
+  );
+};
+
 describe('search service', () => {
 
-  it('should find contributions via service', function(done){
-    
+  it('should add a contribution', function (done) {
+
+    //GIVEN
+    cut = new SearchES();
+
+    title = 'A contribution title 200';
+    content = 'A story text 200';
+    contributionId = 'contr_id_200';
+    userId = 'user_id_200';
+    date = Date.now;
+
+    cut.removeContribution(contributionId, function (error) {
+      //console.log('removeContribution error:' + JSON.stringify(error));
+    },
+    function (response) {
+      console.log('removeContribution response:' + JSON.stringify(response));
+      
+      runAddContribution(cut, done);
+
+    }
+    );
+
+  });
+
+  it('should find contributions via service', function (done) {
+
     cut = new SearchES();
 
     //TODO RB:
@@ -20,7 +63,7 @@ describe('search service', () => {
     // + load test data before this test is executed
     // currently, search.testdata.sh has to be run before
 
-    cut.findContribution('fox', function(response){
+    cut.findContribution('fox', function (response) {
       let numberOfHits = response.hits.total;
       assert.equal(numberOfHits, 1);
       done();
@@ -107,7 +150,7 @@ describe('search service', () => {
     });
   });
 
- 
+
 
 
 });
