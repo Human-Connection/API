@@ -6,7 +6,7 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
     if(!hook.data || !hook.data.content) {
       return hook;
     }
-    hook.data.contentExcerpt = excerpt.text(hook.data.content, 120, '...');
+    hook.data.contentExcerpt = excerpt.text(hook.data.content.replace(/(<([^>]+)>)/ig, ''), 120, '...');
     return Promise.resolve(hook);
   };
 };
