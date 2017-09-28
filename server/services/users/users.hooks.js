@@ -1,13 +1,16 @@
 const { authenticate } = require('feathers-authentication').hooks;
-const { isProvider, when, discard } = require('feathers-hooks-common');
+const { isProvider, when, discard, populate, disableMultiItemChange, lowerCase } = require('feathers-hooks-common');
 const { restrictToOwner } = require('feathers-authentication-hooks');
 const { addVerification, removeVerification } = require('feathers-authentication-management').hooks;
 
 const sendVerificationEmail = require('./hooks/send-verification-email');
+const restrictUserRole = require('./hooks/restrict-user-role');
+const createAdmin = require('./hooks/create-admin');
 const saveAvatar = require('./hooks/save-avatar');
 const createSlug = require('../../hooks/create-slug');
 
 const { hashPassword } = require('feathers-authentication-local').hooks;
+
 const restrict = [
   authenticate('jwt'),
   restrictToOwner({
@@ -16,6 +19,17 @@ const restrict = [
   })
 ];
 
+const badgesSchema = {
+  include: {
+    service: 'badges',
+    nameAs: 'badges',
+    parentField: 'badgesIds',
+    childField: '_id'
+  }
+};
+
+const saveRemoteImages = require('../../hooks/save-remote-images');
+const createDefaultAvatar = require('../../hooks/create-default-avatar');
 
 module.exports = {
   before: {
@@ -25,6 +39,7 @@ module.exports = {
     create: [
       hashPassword(),
       addVerification(),
+      lowerCase('email', 'username'),
       // We don't need email verification
       // for server generated users
       when(isProvider('server'),
@@ -33,16 +48,24 @@ module.exports = {
           return hook;
         }
       ),
+      restrictUserRole(),
+      createAdmin(),
+      createDefaultAvatar(),
+      saveRemoteImages(['avatar', 'coverImg']),
       saveAvatar()
     ],
     update: [
       ...restrict,
       hashPassword(),
+      disableMultiItemChange(),
+      restrictUserRole(),
+      saveRemoteImages(['avatar', 'coverImg']),
       saveAvatar()
     ],
     patch: [
       ...restrict,
       hashPassword(),
+      disableMultiItemChange(),
       // Only set slug once
       when(
         hook => {
@@ -50,15 +73,18 @@ module.exports = {
         },
         createSlug({ field: 'name' })
       ),
+      restrictUserRole(),
+      saveRemoteImages(['avatar', 'coverImg']),
       saveAvatar()
     ],
-    remove: [ ...restrict ]
+    remove: [ ...restrict, disableMultiItemChange() ]
   },
 
   after: {
     all: [
+      populate({ schema: badgesSchema }),
       when(isProvider('external'),
-        discard('password', '_computed', 'verifyExpires', 'resetExpires', 'verifyChanges')
+        discard('password', '_computed', 'verifyExpires', 'resetExpires', 'verifyChanges', 'email', 'verifyToken', 'verifyShortToken', 'doiToken')
       )
     ],
     find: [],
@@ -68,7 +94,6 @@ module.exports = {
         sendVerificationEmail()
       ),
       removeVerification()
-
     ],
     update: [],
     patch: [],

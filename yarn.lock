@@ -737,6 +737,10 @@ cryptiles@2.x.x:
   dependencies:
     boom "2.x.x"
 
+crypto@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/crypto/-/crypto-1.0.1.tgz#2af1b7cad8175d24c8a1b0778255794a21803037"
+
 css-select@~1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/css-select/-/css-select-1.2.0.tgz#2b3a110539c5355f1cd8d314623e870b121ec858"
@@ -813,6 +817,12 @@ debug@2.6.7, debug@^2.2.0, debug@^2.3.1, debug@^2.3.2, debug@^2.6.0, debug@^2.6.
 debug@2.6.8, debug@^2.6.8, debug@~2.6.4, debug@~2.6.6:
   version "2.6.8"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.8.tgz#e731531ca2ede27d188222427da17821d68ff4fc"
+  dependencies:
+    ms "2.0.0"
+
+debug@^3.0.0:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-3.0.1.tgz#0564c612b521dc92d9f2988f0549e34f9c98db64"
   dependencies:
     ms "2.0.0"
 
@@ -1336,6 +1346,12 @@ feathers-errors@^2.0.1, feathers-errors@^2.2.0, feathers-errors@^2.4.0, feathers
   dependencies:
     debug "^2.2.0"
 
+feathers-errors@^2.9.1:
+  version "2.9.2"
+  resolved "https://registry.yarnpkg.com/feathers-errors/-/feathers-errors-2.9.2.tgz#96ca0e5fe50cc56f0eccc90ce3fa5e1f8840828d"
+  dependencies:
+    debug "^3.0.0"
+
 feathers-hooks-common@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/feathers-hooks-common/-/feathers-hooks-common-2.0.3.tgz#e9f12abebdbc163f28d4cb4c85094e29aa24635d"
@@ -1385,6 +1401,13 @@ feathers-memory@^1.1.0:
     feathers-errors "^2.0.1"
     feathers-query-filters "^2.0.0"
     uberproto "^1.2.0"
+
+feathers-mongodb-fuzzy-search@^1.0.1:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/feathers-mongodb-fuzzy-search/-/feathers-mongodb-fuzzy-search-1.1.0.tgz#759dcc5e6caa955caf49639d418b01a53e94e4c2"
+  dependencies:
+    feathers-commons "^0.8.7"
+    feathers-errors "^2.9.1"
 
 feathers-mongoose@^5.1.1:
   version "5.1.1"
@@ -2237,7 +2260,7 @@ json-stable-stringify@^1.0.1:
   dependencies:
     jsonify "~0.0.0"
 
-json-stringify-safe@~5.0.1:
+json-stringify-safe@5.0.1, json-stringify-safe@~5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
 
@@ -2583,6 +2606,10 @@ lru-cache@^4.0.1:
   dependencies:
     pseudomap "^1.0.2"
     yallist "^2.1.2"
+
+lsmod@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/lsmod/-/lsmod-1.0.0.tgz#9a00f76dca36eb23fa05350afe1b585d4299e64b"
 
 mailcomposer@4.0.1:
   version "4.0.1"
@@ -3266,6 +3293,17 @@ range-parser@~1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.0.tgz#f49be6b487894ddc40dcc94a322f611092e00d5e"
 
+raven@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/raven/-/raven-2.1.2.tgz#4aa7a72c4b3061d7fde06bfc62d669a74a651e27"
+  dependencies:
+    cookie "0.3.1"
+    json-stringify-safe "5.0.1"
+    lsmod "1.0.0"
+    stack-trace "0.0.9"
+    timed-out "4.0.1"
+    uuid "3.0.0"
+
 raw-body@~2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/raw-body/-/raw-body-2.2.0.tgz#994976cf6a5096a41162840492f0bdc5d6e7fb96"
@@ -3753,6 +3791,10 @@ sshpk@^1.7.0:
     jsbn "~0.1.0"
     tweetnacl "~0.14.0"
 
+stack-trace@0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/stack-trace/-/stack-trace-0.0.9.tgz#a8f6eaeca90674c333e7c43953f275b451510695"
+
 stack-trace@0.0.x:
   version "0.0.10"
   resolved "https://registry.yarnpkg.com/stack-trace/-/stack-trace-0.0.10.tgz#547c70b347e8d32b4e108ea1a2a159e5fdde19c0"
@@ -3908,6 +3950,10 @@ through@2, through@^2.3.6, through@~2.3, through@~2.3.1:
   version "2.3.8"
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
 
+timed-out@4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/timed-out/-/timed-out-4.0.1.tgz#f32eacac5a175bea25d7fab565ab3ed8741ef56f"
+
 timed-out@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/timed-out/-/timed-out-2.0.0.tgz#f38b0ae81d3747d628001f41dafc652ace671c0a"
@@ -4053,6 +4099,10 @@ util-deprecate@~1.0.1:
 utils-merge@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.0.tgz#0294fb922bb9375153541c4f7096231f287c8af8"
+
+uuid@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.0.0.tgz#6728fc0459c450d796a99c31837569bdf672d728"
 
 uuid@^2.0.1:
   version "2.0.3"

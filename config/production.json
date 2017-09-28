@@ -1,8 +1,8 @@
 {
-  "host": "api",
+  "host": "HOST",
   "port": "PORT",
   "uploads": "http://165.227.153.233:3030/uploads/",
-  "mongodb": "mongodb://mongo-cluster:27017/hc_api",
+  "mongodb": "MONGO_DB",
   "smtpConfig": {
     "host": "SMTP_HOST",
     "port": 587,

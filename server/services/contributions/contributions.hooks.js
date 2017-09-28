@@ -8,6 +8,7 @@ const {
 const { isVerified } = require('feathers-authentication-management').hooks;
 const createSlug = require('../../hooks/create-slug');
 const createExcerpt = require('../../hooks/create-excerpt');
+const search = require('feathers-mongodb-fuzzy-search');
 
 const userSchema = {
   include: {
@@ -18,25 +19,40 @@ const userSchema = {
   }
 }
 
+const categoriesSchema = {
+  include: {
+    service: 'categories',
+    nameAs: 'categories',
+    parentField: 'categoryIds',
+    childField: '_id'
+  }
+}
+
 const commentsSchema = {
   include: {
     service: 'comments',
     nameAs: 'comments',
     parentField: '_id',
     childField: 'contributionId',
-    include: {
-      service: 'users',
-      nameAs: 'user',
-      parentField: 'userId',
-      childField: '_id'
+    query: {
+      $select: ['_id']
     }
+    //,
+    //include: {
+    //  service: 'users',
+    //  nameAs: 'user',
+    //  parentField: 'userId',
+    //  childField: '_id'
+    //}
   }
 }
+
+const saveRemoteImages = require('../../hooks/save-remote-images');
 
 module.exports = {
   before: {
     all: [],
-    find: [],
+    find: [search()],
     get: [],
     create: [
       authenticate('jwt'),
@@ -46,18 +62,25 @@ module.exports = {
       ),
       associateCurrentUser(),
       createSlug({ field: 'title' }),
+      saveRemoteImages(['teaserImg']),
       createExcerpt()
     ],
     update: [
       authenticate('jwt'),
-      isVerified(),
+      unless(isProvider('server'),
+        isVerified()
+      ),
       restrictToOwner(),
+      saveRemoteImages(['teaserImg']),
       createExcerpt()
     ],
     patch: [
       authenticate('jwt'),
-      isVerified(),
+      unless(isProvider('server'),
+        isVerified()
+      ),
       restrictToOwner(),
+      saveRemoteImages(['teaserImg']),
       createExcerpt()
     ],
     remove: [
@@ -70,6 +93,7 @@ module.exports = {
   after: {
     all: [
       populate({ schema: userSchema }),
+      populate({ schema: categoriesSchema }),
       populate({ schema: commentsSchema })
     ],
     find: [],

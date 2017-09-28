@@ -2,6 +2,7 @@
 //
 // See http://mongoosejs.com/docs/models.html
 // for more of what you can do here.
+
 module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
   const followsSchema = mongooseClient.Schema({
@@ -9,7 +10,6 @@ module.exports = function (app) {
     id: String
   });
   const users = new mongooseClient.Schema({
-
     email: {type: String, required: true, unique: true},
     password: { type: String },
     name: { type: String },
@@ -20,13 +20,20 @@ module.exports = function (app) {
     isnothere: { type: Boolean },
     timezone: { type: String },
     avatar: { type: String },
+    coverImg: { type: String },
     doiToken: { type: String },
     confirmedAt: { type: Date },
+    badgesIds: [],
     deletedAt: { type: Date },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
     // Needed for verification
     isVerified: { type: Boolean },
+    role: {
+      type: String,
+      enum: ['admin', 'manager', 'editor', 'user'],
+      default: 'user'
+    },
     verifyToken: { type: String },
     verifyShortToken: { type: String },
     verifyExpires: { type: Date },
