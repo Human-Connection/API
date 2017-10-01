@@ -14,7 +14,7 @@ class ElasticsearchWrapper {
 
   find(params) {
     logger.info('SearchService.find');
-    let app = this.app;
+    
     logger.info('find by params:' + JSON.stringify(params));
     let token = params.query.token;
     logger.info('token:' + token);

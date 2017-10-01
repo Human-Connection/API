@@ -10,7 +10,7 @@ describe('ElasticsearchWrapper.find', () => {
   it('find some predefined contribution items', function (done) {
 
     //CUT stands for class-under-test
-    cut = new ElasticsearchWrapper();
+    let cut = new ElasticsearchWrapper();
     //GIVEN: a search request
     let searchQuery = {
       query : {
@@ -21,14 +21,14 @@ describe('ElasticsearchWrapper.find', () => {
     //WHEN
     cut.find(searchQuery)
       .then( (response)=>{
-        console.log('response:' + JSON.stringify(response));
+        logger.info('response:' + JSON.stringify(response));
 
         //THEN
         assert.equal(response.hits.total, 2, 'but was: ' + response.hits.total);
         done();
       })
       .catch( (error)=>{
-        console.log('error:' + JSON.stringify(error));
+        logger.info('error:' + JSON.stringify(error));
         done(error);
       });
   });
