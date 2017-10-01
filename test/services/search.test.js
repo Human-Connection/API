@@ -9,47 +9,98 @@ const elasticsearch = require('elasticsearch');
 const SearchES = require('../../server/services/search/SearchES');
 
 
-runAddContribution = (cut, done) => {
-  //WHEN
-  cut.addContribution(title, content, contributionId, userId, date,
-    function (error) {
-      console.log('addContribution responseJson:' + responseJson);
-      done();
-    },
-    function (response) {
 
-      //THEN
-      responseJson = JSON.stringify(response);
-      console.log('addContribution responseJson:' + responseJson);
-      done();
-    }
+describe('search service version 2', () => {
+  it('insert and find test', function (done) {
+    cut = new SearchES();
 
-  );
-};
+    // test data
+    let date = new Date();
+    console.log('now:' + date);
+    title = 'A contribution title 300_' + date;
+    content = 'A story text 300_' + date;
+    contributionId = 'contr_id_300_' + date;
+    userId = 'user_id_300';
 
-describe('search service', () => {
+
+    cut.addContribution(title, content, contributionId, userId, date)
+      .then(value => {
+        //THEN
+        responseJson = JSON.stringify(value);
+        console.log('test insert response:' + responseJson);
+
+        cut.findAll(function (response) {
+          console.log('\ntest findAll.response:' + JSON.stringify(response));
+
+          cut.findContribution('fox', function (response) {
+            console.log('\nsearch.test: response:' + JSON.stringify(response));
+            let numberOfHits = response.hits.total;
+            //THEN
+            assert.equal(numberOfHits, 1);
+            done();
+          });
+
+        });
+
+
+
+
+      })
+      .catch(error => {
+        console.log('insert error:' + error);
+        done(error);
+      });
+
+  });
+});
+
+describe.skip('search service', () => {
+
 
   it('should add a contribution', function (done) {
 
     //GIVEN
     cut = new SearchES();
 
-    title = 'A contribution title 200';
-    content = 'A story text 200';
-    contributionId = 'contr_id_200';
-    userId = 'user_id_200';
+    title = 'A contribution title 300';
+    content = 'A story text 300';
+    contributionId = 'contr_id_300';
+    userId = 'user_id_300';
     date = Date.now;
 
-    cut.removeContribution(contributionId, function (error) {
-      //console.log('removeContribution error:' + JSON.stringify(error));
-    },
-    function (response) {
-      console.log('removeContribution response:' + JSON.stringify(response));
-      
-      runAddContribution(cut, done);
+    function runTest() {
 
     }
-    );
+    cut.removeContribution(contributionId)
+      .then(value => {
+        console.log('removeContribution response:' + JSON.stringify(value));
+        cut.addContribution(title, content, contributionId, userId, date)
+          .then(value => {
+            //THEN
+            responseJson = JSON.stringify(value);
+            console.log('addContribution responseJson:' + responseJson);
+            done();
+          })
+          .catch(error => {
+            console.log('addContribution responseJson:' + error);
+            done(error);
+          });
+      })
+      .catch(error => {
+        console.log('removeContribution error:' + JSON.stringify(error));
+        cut.addContribution(title, content, contributionId, userId, date)
+          .then(value => {
+            //THEN
+            responseJson = JSON.stringify(value);
+            console.log('addContribution responseJson:' + responseJson);
+            done();
+          })
+          .catch(error => {
+            console.log('addContribution responseJson:' + error);
+            done(error);
+          });
+      });
+
 
   });
 
@@ -57,17 +108,59 @@ describe('search service', () => {
 
     cut = new SearchES();
 
-    //TODO RB:
-    //
-    // + expect 2 items
-    // + load test data before this test is executed
-    // currently, search.testdata.sh has to be run before
+    title = 'A contribution title 400';
+    content = 'A story text 400';
+    contributionId = 'contr_id_400';
+    userId = 'user_id_400';
+    date = Date.now;
+    //GIVEN  a contribution
+    cut.addContribution(title, content, contributionId, userId, date)
+      .then(value => {
+        console.log('search.test: add contribution: ' + JSON.stringify(value));
 
-    cut.findContribution('fox', function (response) {
-      let numberOfHits = response.hits.total;
-      assert.equal(numberOfHits, 1);
-      done();
-    });
+        //WHEN
+        cut.findContribution('story', function (response) {
+          console.log('search.test: response:' + JSON.stringify(response));
+          let numberOfHits = response.hits.total;
+          //THEN
+          assert.equal(numberOfHits, 1);
+          done();
+        });
+      })
+      .catch(error => {
+        console.log('should find contributions via service error :' + error);
+        done(error);
+      });
+
+  });
+
+
+  it.skip('should find contributions by title and content', function (done) {
+
+    cut = new SearchES();
+
+    title = 'A contribution title 400';
+    content = 'A story text 400';
+    contributionId = 'contr_id_400';
+    userId = 'user_id_400';
+    date = Date.now;
+    //GIVEN  a contribution
+    cut.addContribution(title, content, contributionId, userId, date)
+      .then(value => {
+        //WHEN
+        cut.findContribution('story', function (response) {
+          let numberOfHits = response.hits.total;
+          //THEN
+          assert.equal(numberOfHits, 1);
+          done();
+        });
+
+      })
+      .catch(error => {
+        console.log('addContribution error :' + error);
+        done(error);
+      });
+
   });
 
   it.skip('should find contributions by title and content', function (done) {
@@ -196,4 +289,22 @@ loadTestData2 = (client, callback) => {
     console.log('response2:' + JSON.stringify(response));
     callback(client);
   });
+};
+
+runAddContribution = (cut, done) => {
+  //WHEN
+  cut.addContribution(title, content, contributionId, userId, date,
+    function (error) {
+      console.log('addContribution responseJson:' + responseJson);
+      done();
+    },
+    function (response) {
+
+      //THEN
+      responseJson = JSON.stringify(response);
+      console.log('addContribution responseJson:' + responseJson);
+      done();
+    }
+
+  );
 };

@@ -1,113 +1,79 @@
 'use strict';
 
 const logger = require('winston');
-// const _ = require('lodash');
+const elasticsearch = require('elasticsearch');
 
+/**
+ * test query: http://localhost:3030/search?token=bird
+ */
 class SearchService {
-  constructor() {
-
-  }
 
   setApp(app) {
     this.app = app;
   }
 
-  findUserByName(namePattern) {
-    //see: https://stackoverflow.com/questions/28583642/using-regex-mongodb-query-in-node-js-not-working
-    //{$regex: /.*abc./, $options:"i"}
-    var regexValue = '.*' + namePattern + '.'; //eslint-ignore
-    let findQuery = { name: new RegExp(regexValue, 'i') };
-    logger.info('findQuery:' + findQuery);
-
-    const userService = this.app.service('users');
-
-    return userService.find({ query: findQuery });
-
-  }
-
-  findUsers(token) {
-    logger.info('search token:' + token);
-    const namePattern = token.query.name;
-    //logger.info("TODO: search for users with name="+namePattern);
-    return this.findUserByName(namePattern);
-  }
-
-  findContributionsByTitle(params) {
-    const pattern = params.query.title;
-
-    var regexValue = '.*' + pattern + '.';
-
-    let findQuery = { title: new RegExp(regexValue, 'i') };
-
-    logger.info('findContributionsByTitle, findQuery:' + findQuery);
-
-    const service = this.app.service('contributions');
-
-    return service.find({ query: findQuery });
-
-  }
-
-  findContributionsByContent(params) {
-    const pattern = params.query.content;
-
-    var regexValue = '.*' + pattern + '.';
-
-    let findQuery = { content: new RegExp(regexValue, 'i') };
-
-    logger.info('findContributionsByContent, findQuery:' + findQuery);
-
-    const service = this.app.service('contributions');
-
-    return service.find({ query: findQuery });
-
-  }
-
-  findContributionsByContentOrTitle(params) {
-    const pattern = params.query.contentOrTitle;
-
-    var regexValue = '.*' + pattern + '.';
-
-    let findQuery = {  content: 
-                            new RegExp(regexValue, 'i'), 
-    title: 
-                            new RegExp(regexValue, 'i')  
-                        
-    };
-
-    logger.info('findContributionsByContent, findQuery:' + findQuery);
-
-    const service = this.app.service('contributions');
-
-    return service.find({ query: findQuery });
-
-  }
-
-
   find(params) {
     logger.info('SearchService.find');
-    if (params.query.title) {
-      return Promise.resolve(
-        //this.findUsers(params)
-        this.findContributionsByTitle(params)
-      );
-    }
-    else if (params.query.content) {
-      return Promise.resolve(
-        //this.findUsers(params)
-        this.findContributionsByContent(params)
-      );
-    } 
-    else if (params.query.contentOrTitle) {
-      return Promise.resolve(
-        //this.findUsers(params)
-        this.findContributionsByContentOrTitle(params)
-      );
-    } 
+    let app = this.app;
+    logger.info('find by params:' + JSON.stringify(params));
+    let token = params.query.token;
+    logger.info("token:" + token);
 
+    //START SEARCH
+    let client = this.getClient();
+    let query = {
+      index: 'hc',
+      type: 'contribution',
+      body: {
+        query: {
+          dis_max: {
+            tie_breaker: 0.6,
+            queries: [
+              {
+                fuzzy: {
+                  title: {
+                    value: token,
+                    fuzziness: "AUTO",
+                    prefix_length: 0,
+                    max_expansions: 20,
+                    transpositions: false,
+                    boost: 1.0
+                  }
+                }
+              },
+              {
+                fuzzy: {
+                  content: {
+                    value: token,
+                    fuzziness: "AUTO",
+                    prefix_length: 0,
+                    max_expansions: 80,
+                    transpositions: false,
+                    boost: 1.0
+                  }
+                }
+              }
+            ],
+            boost: 1.0
+          }
+        }
+      }
+    };
+
+    return client.search(query);
+
+  };
+
+  getClient() {
+    let client = new elasticsearch.Client({
+      host: 'localhost:9200',
+      apiVersion: '5.6'
+    });
+    return client;
   }
 
-  
-  
 }
+
+
 
 module.exports = SearchService;
