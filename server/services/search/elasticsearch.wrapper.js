@@ -6,7 +6,7 @@ const elasticsearch = require('elasticsearch');
 /**
  * test query: http://localhost:3030/search?token=bird
  */
-class SearchService {
+class ElasticsearchWrapper {
 
   setApp(app) {
     this.app = app;
@@ -17,7 +17,7 @@ class SearchService {
     let app = this.app;
     logger.info('find by params:' + JSON.stringify(params));
     let token = params.query.token;
-    logger.info("token:" + token);
+    logger.info('token:' + token);
 
     //START SEARCH
     let client = this.getClient();
@@ -33,7 +33,7 @@ class SearchService {
                 fuzzy: {
                   title: {
                     value: token,
-                    fuzziness: "AUTO",
+                    fuzziness: 'AUTO',
                     prefix_length: 0,
                     max_expansions: 20,
                     transpositions: false,
@@ -45,7 +45,7 @@ class SearchService {
                 fuzzy: {
                   content: {
                     value: token,
-                    fuzziness: "AUTO",
+                    fuzziness: 'AUTO',
                     prefix_length: 0,
                     max_expansions: 80,
                     transpositions: false,
@@ -62,7 +62,7 @@ class SearchService {
 
     return client.search(query);
 
-  };
+  }
 
   getClient() {
     let client = new elasticsearch.Client({
@@ -76,4 +76,4 @@ class SearchService {
 
 
 
-module.exports = SearchService;
+module.exports = ElasticsearchWrapper;

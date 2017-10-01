@@ -10,7 +10,7 @@ const images = require('./images/images.service.js');
 const badges = require('./badges/badges.service.js');
 const emotions = require('./emotions/emotions.service.js');
 const search = require('./search/search.service.js');
-const elasticsearch = require('./search/elasticsearch.service.js');
+
 
 module.exports = function () {
   const app = this; // eslint-disable-line no-unused-vars
@@ -26,5 +26,5 @@ module.exports = function () {
   app.configure(badges);
   app.configure(emotions);
   app.configure(search);
-  app.configure(elasticsearch);
+  
 };
