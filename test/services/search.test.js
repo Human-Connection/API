@@ -41,12 +41,13 @@ describe('ElasticsearchWrapper.find', () => {
           token: 'fox'
         }
       };
-      cut.find();
+      cut.find(searchQuery);
     }
 
     function close(client){
       logger.info('step 5');
       return new Promise(function(resolve){
+        logger.info('resolve:' + resolve);
         client.close(client);
       });
     }
@@ -113,7 +114,7 @@ describe('ElasticsearchWrapper.find', () => {
     };
 
     cut.insert(item, (response) => {
-      console.log('insert response:' + JSON.stringify(response));
+      logger.info('insert response:' + JSON.stringify(response));
       assert.equal('created', response.result, 'but was:' + response.result);
       done();
     }, (error) => {

@@ -30,7 +30,7 @@ class ElasticsearchWrapper {
   }
 
   createIndex() {
-
+    let client = this.getClient();
     return client.indices.create({
       index: 'hc',
       mapping: {
