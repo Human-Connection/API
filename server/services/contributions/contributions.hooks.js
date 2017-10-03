@@ -9,6 +9,7 @@ const { isVerified } = require('feathers-authentication-management').hooks;
 const createSlug = require('../../hooks/create-slug');
 const createExcerpt = require('../../hooks/create-excerpt');
 const search = require('feathers-mongodb-fuzzy-search');
+const onContributionAdded = require('../../hooks/on-contribution-added');
 
 const userSchema = {
   include: {
@@ -94,7 +95,9 @@ module.exports = {
     ],
     find: [],
     get: [],
-    create: [],
+    create: [
+      onContributionAdded()
+    ],
     update: [],
     patch: [],
     remove: []
