@@ -8,97 +8,113 @@ module.exports = {
     {
       path: 'categories',
       template: {
-        title: 'Just For Fun'
+        title: 'Just For Fun',
+        icon: 'justforfun'
       }
     },
     {
       path: 'categories',
       template: {
-        title: 'Glück & Werte'
+        title: 'Glück & Werte',
+        icon: 'luck'
       }
     },
     {
       path: 'categories',
       template: {
-        title: 'Gesundheit & Wohlbefinden'
+        title: 'Gesundheit & Wohlbefinden',
+        icon: 'health'
       }
     },
     {
       path: 'categories',
       template: {
-        title: 'Umwelt & Natur'
+        title: 'Umwelt & Natur',
+        icon: 'environment'
       }
     },
     {
       path: 'categories',
       template: {
-        title: 'Tierschutz'
+        title: 'Tierschutz',
+        icon: 'animal-justice'
       }
     },
     {
       path: 'categories',
       template: {
-        title: 'Menschenrechte & Gerechtigkeit'
+        title: 'Menschenrechte & Gerechtigkeit',
+        icon: 'human-rights'
       }
     },
     {
       path: 'categories',
       template: {
-        title: 'Bildung & Wissenschaft'
+        title: 'Bildung & Wissenschaft',
+        icon: 'education'
       }
     },
     {
       path: 'categories',
       template: {
-        title: 'Kooperation & Entwicklung'
+        title: 'Kooperation & Entwicklung',
+        icon: 'cooperation'
       }
     },
     {
       path: 'categories',
       template: {
-        title: 'Demokratie & Politik'
+        title: 'Demokratie & Politik',
+        icon: 'politics'
       }
     },
     {
       path: 'categories',
       template: {
-        title: 'Wirtschaft & Finanzen'
+        title: 'Wirtschaft & Finanzen',
+        icon: 'economy'
       }
     },
     {
       path: 'categories',
       template: {
-        title: 'Energie & Technologie'
+        title: 'Energie & Technologie',
+        icon: 'technology'
       }
     },
     {
       path: 'categories',
       template: {
-        title: 'IT, Internet & Datenschutz'
+        title: 'IT, Internet & Datenschutz',
+        icon: 'internet'
       }
     },
     {
       path: 'categories',
       template: {
-        title: 'Kunst, Kultur & Sport'
+        title: 'Kunst, Kultur & Sport',
+        icon: 'art'
       }
     },
     {
       path: 'categories',
       template: {
-        title: 'Presse- & Meinungsfreiheit'
+        title: 'Presse- & Meinungsfreiheit',
+        icon: 'freedom-of-speech'
       }
     },
     {
       path: 'categories',
       template: {
-        title: 'Konsum & Nachhaltigkeit'
+        title: 'Konsum & Nachhaltigkeit',
+        icon: 'sustainability'
       }
     },
     {
       path: 'categories',
       template: {
-        title: 'Globaler Frieden & Gewaltlosigkeit'
+        title: 'Globaler Frieden & Gewaltlosigkeit',
+        icon: 'peace'
       }
     }
   ]
