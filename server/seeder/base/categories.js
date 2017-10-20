@@ -9,112 +9,112 @@ module.exports = {
       path: 'categories',
       template: {
         title: 'Just For Fun',
-        icon: 'justforfun'
+        icon: 'categories-justforfun'
       }
     },
     {
       path: 'categories',
       template: {
         title: 'Glück & Werte',
-        icon: 'luck'
+        icon: 'categories-luck'
       }
     },
     {
       path: 'categories',
       template: {
         title: 'Gesundheit & Wohlbefinden',
-        icon: 'health'
+        icon: 'categories-health'
       }
     },
     {
       path: 'categories',
       template: {
         title: 'Umwelt & Natur',
-        icon: 'environment'
+        icon: 'categories-environment'
       }
     },
     {
       path: 'categories',
       template: {
         title: 'Tierschutz',
-        icon: 'animal-justice'
+        icon: 'categories-animal-justice'
       }
     },
     {
       path: 'categories',
       template: {
         title: 'Menschenrechte & Gerechtigkeit',
-        icon: 'human-rights'
+        icon: 'categories-human-rights'
       }
     },
     {
       path: 'categories',
       template: {
         title: 'Bildung & Wissenschaft',
-        icon: 'education'
+        icon: 'categories-education'
       }
     },
     {
       path: 'categories',
       template: {
         title: 'Kooperation & Entwicklung',
-        icon: 'cooperation'
+        icon: 'categories-cooperation'
       }
     },
     {
       path: 'categories',
       template: {
         title: 'Demokratie & Politik',
-        icon: 'politics'
+        icon: 'categories-politics'
       }
     },
     {
       path: 'categories',
       template: {
         title: 'Wirtschaft & Finanzen',
-        icon: 'economy'
+        icon: 'categories-economy'
       }
     },
     {
       path: 'categories',
       template: {
         title: 'Energie & Technologie',
-        icon: 'technology'
+        icon: 'categories-technology'
       }
     },
     {
       path: 'categories',
       template: {
         title: 'IT, Internet & Datenschutz',
-        icon: 'internet'
+        icon: 'categories-internet'
       }
     },
     {
       path: 'categories',
       template: {
         title: 'Kunst, Kultur & Sport',
-        icon: 'art'
+        icon: 'categories-art'
       }
     },
     {
       path: 'categories',
       template: {
         title: 'Presse- & Meinungsfreiheit',
-        icon: 'freedom-of-speech'
+        icon: 'categories-freedom-of-speech'
       }
     },
     {
       path: 'categories',
       template: {
         title: 'Konsum & Nachhaltigkeit',
-        icon: 'sustainability'
+        icon: 'categories-sustainability'
       }
     },
     {
       path: 'categories',
       template: {
         title: 'Globaler Frieden & Gewaltlosigkeit',
-        icon: 'peace'
+        icon: 'categories-peace'
       }
     }
   ]
