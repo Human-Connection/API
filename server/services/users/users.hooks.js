@@ -11,6 +11,13 @@ const createSlug = require('../../hooks/create-slug');
 
 const { hashPassword } = require('feathers-authentication-local').hooks;
 
+const cleanupBasicData = when(isProvider('external'),
+  discard('password', '_computed', 'verifyExpires', 'resetExpires', 'verifyChanges')
+);
+const cleanupPersonalData = when(isProvider('external'),
+  discard('email', 'verifyToken', 'verifyShortToken', 'doiToken')
+);
+
 const restrict = [
   authenticate('jwt'),
   restrictToOwner({
@@ -83,12 +90,14 @@ module.exports = {
   after: {
     all: [
       populate({ schema: badgesSchema }),
-      when(isProvider('external'),
-        discard('password', '_computed', 'verifyExpires', 'resetExpires', 'verifyChanges')
-      )
+      cleanupBasicData
     ],
-    find: [],
-    get: [],
+    find: [
+      cleanupPersonalData
+    ],
+    get: [
+      cleanupPersonalData
+    ],
     create: [
       when(isProvider('external'),
         sendVerificationEmail()

@@ -4,7 +4,6 @@ const {
   restrictToOwner
 } = require('feathers-authentication-hooks');
 const restrict = [
-  authenticate('jwt'),
   restrictToOwner()
 ];
 
@@ -34,7 +33,7 @@ const contributionSchema = {
 
 module.exports = {
   before: {
-    all: [ authenticate('jwt') ],
+    all: [ ],
     find: [ ...restrict ],
     get: [ ...restrict ],
     create: [ disallow('external') ],
