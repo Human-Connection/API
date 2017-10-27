@@ -8,7 +8,7 @@ const ElasticsearchWrapper = require('../../server/services/search/elasticsearch
 
 describe('ElasticsearchWrapper.find', () => {
 
-  it('should drop, add, find and delete', function (done) {
+  it.skip('should drop, add, find and delete', function (done) {
     let cut = new ElasticsearchWrapper();
 
     let item = {
