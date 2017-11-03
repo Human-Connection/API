@@ -5,6 +5,12 @@ module.exports = function () {
 
   mongoose.connect(app.get('mongodb'), {
     useMongoClient: true,
+    server: {
+      auto_reconnect: true,
+      socketOptions: {
+        keepAlive: 1
+      }
+    }
   });
   mongoose.Promise = global.Promise;
 
