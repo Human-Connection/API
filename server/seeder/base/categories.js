@@ -8,97 +8,113 @@ module.exports = {
     {
       path: 'categories',
       template: {
-        title: 'Just For Fun'
+        title: 'Just For Fun',
+        icon: 'categories-justforfun'
       }
     },
     {
       path: 'categories',
       template: {
-        title: 'Glück & Werte'
+        title: 'Glück & Werte',
+        icon: 'categories-luck'
       }
     },
     {
       path: 'categories',
       template: {
-        title: 'Gesundheit & Wohlbefinden'
+        title: 'Gesundheit & Wohlbefinden',
+        icon: 'categories-health'
       }
     },
     {
       path: 'categories',
       template: {
-        title: 'Umwelt & Natur'
+        title: 'Umwelt & Natur',
+        icon: 'categories-environment'
       }
     },
     {
       path: 'categories',
       template: {
-        title: 'Tierschutz'
+        title: 'Tierschutz',
+        icon: 'categories-animal-justice'
       }
     },
     {
       path: 'categories',
       template: {
-        title: 'Menschenrechte & Gerechtigkeit'
+        title: 'Menschenrechte & Gerechtigkeit',
+        icon: 'categories-human-rights'
       }
     },
     {
       path: 'categories',
       template: {
-        title: 'Bildung & Wissenschaft'
+        title: 'Bildung & Wissenschaft',
+        icon: 'categories-education'
       }
     },
     {
       path: 'categories',
       template: {
-        title: 'Kooperation & Entwicklung'
+        title: 'Kooperation & Entwicklung',
+        icon: 'categories-cooperation'
       }
     },
     {
       path: 'categories',
       template: {
-        title: 'Demokratie & Politik'
+        title: 'Demokratie & Politik',
+        icon: 'categories-politics'
       }
     },
     {
       path: 'categories',
       template: {
-        title: 'Wirtschaft & Finanzen'
+        title: 'Wirtschaft & Finanzen',
+        icon: 'categories-economy'
       }
     },
     {
       path: 'categories',
       template: {
-        title: 'Energie & Technologie'
+        title: 'Energie & Technologie',
+        icon: 'categories-technology'
       }
     },
     {
       path: 'categories',
       template: {
-        title: 'IT, Internet & Datenschutz'
+        title: 'IT, Internet & Datenschutz',
+        icon: 'categories-internet'
       }
     },
     {
       path: 'categories',
       template: {
-        title: 'Kunst, Kultur & Sport'
+        title: 'Kunst, Kultur & Sport',
+        icon: 'categories-art'
       }
     },
     {
       path: 'categories',
       template: {
-        title: 'Presse- & Meinungsfreiheit'
+        title: 'Presse- & Meinungsfreiheit',
+        icon: 'categories-freedom-of-speech'
       }
     },
     {
       path: 'categories',
       template: {
-        title: 'Konsum & Nachhaltigkeit'
+        title: 'Konsum & Nachhaltigkeit',
+        icon: 'categories-sustainability'
       }
     },
     {
       path: 'categories',
       template: {
-        title: 'Globaler Frieden & Gewaltlosigkeit'
+        title: 'Globaler Frieden & Gewaltlosigkeit',
+        icon: 'categories-peace'
       }
     }
   ]

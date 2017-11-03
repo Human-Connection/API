@@ -110,7 +110,8 @@ $RECYCLE.BIN/
 # Others
 package-lock.json
 lib/
-/data/
+!.gitignore
+/data/*
 /tmp/
 /public/uploads/
 rethinkdb_data
