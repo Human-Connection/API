@@ -52,6 +52,7 @@ describe('ElasticsearchWrapper.find', () => {
       });
     }
 
+    //TODO use resolve only
     Promise.resolve()
       .then(drop)
       .then(add)

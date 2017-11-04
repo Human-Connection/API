@@ -85,7 +85,7 @@ class ElasticsearchWrapper {
     });
   }
 
-  find(params) {
+  async find(params) {
     logger.info('SearchService.find');
 
     logger.info('find by params:' + JSON.stringify(params));
@@ -134,7 +134,10 @@ class ElasticsearchWrapper {
     };
 
     //TODO RB: filter results
-    return client.search(query);
+    let result =  await client.search(query);
+
+    return result;
+
 
   }
 
