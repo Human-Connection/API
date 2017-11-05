@@ -10,21 +10,21 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
     
     let es = new ElasticsearchWrapper();
 
-    logger.info('on contribution added:');
-    logger.info('hook:' + hook);
+    logger.info('ES001 on contribution added:');
+    logger.info('ES001 hook:' + JSON.stringify(hook._id));
     
     try {
-      logger.info('hook.data:' + JSON.stringify(hook.data));
+      logger.info('ES001 hook.data:' + JSON.stringify(hook.data));
 
       let data = hook.data;
-        
+      /*  
       let contribution = {
         title: data.title,
         content: data.content,
         user: data.userId
-      };
+      };*/
         
-      es.add(contribution);
+      es.add(data);
 
     } catch (error) {
       logger.error('Error:' + error);

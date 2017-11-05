@@ -15,6 +15,10 @@ class ElasticsearchWrapper {
 
   setApp(app) {
     this.app = app;
+
+    const contributionService = app.service('contributions');
+    logger.info("ES Wrapper setup");
+    logger.info("contibutionService:" + contributionService);
   }
 
   dropIndex() {
@@ -43,22 +47,26 @@ class ElasticsearchWrapper {
     });
   }
 
-  add(contribution) {
+  async add(contribution) {
     let client = this.getClient();
+    logger.info("ES001 add contribution: "+ JSON.stringify(contribution));
 
-    let creationDate = Date.now;
+    let creationDate = contribution.createdAt;
 
-    return client.create({
+    let addResult = await client.create({
       index: 'hc',
-      type: 'contribition',
+      type: 'contribution',
       id: contribution.title,
       body: {
         title: contribution.title,
         content: contribution.content,
-        user_id: contribution.user,
-        date: creationDate
+        user_id: contribution.userId,
+        date: creationDate,
+        value: contribution
       }
     });
+
+    logger.info("ES001 add result:" + JSON.stringify(addResult));
   }
 
   insert(contribution, onResponse, onError) {
@@ -88,9 +96,11 @@ class ElasticsearchWrapper {
   async find(params) {
     logger.info('SearchService.find');
 
-    logger.info('find by params:' + JSON.stringify(params));
-    let token = params.query.token;
-    logger.info('token:' + token);
+    //find by params:{"query":{"$skip":0,"$sort":{"createdAt":-1},"$search":"et"},"provider":"socketio"}
+    logger.info('ES001 find by params:' + JSON.stringify(params));
+    let token = params.query.$search;
+    //let token = params.query.token;
+    logger.info('ES001 token:' + token);
 
     //START SEARCH
     let client = this.getClient();
@@ -135,12 +145,38 @@ class ElasticsearchWrapper {
 
     //TODO RB: filter results
     let result =  await client.search(query);
+    logger.info("ES001 search result:" + JSON.stringify(result));
+    let totalHits = result.hits.total;
+    logger.info("ES001 total hits:" + totalHits);
+    if(totalHits === 0){
+      result = this.getNoResultsFoundResponse();
+    }else{
+      let value = this.getNoResultsFoundResponse();
+      value.total = result.hits.total;
+      
+      // test RB
+      value.total = 1;
 
+      
+      value.data[0] = result.hits.hits[0]._source.value;
+      // value.data[0]._id = "1234";
+
+      logger.info("ES001 result value:" + JSON.stringify(value));
+      result = value;
+      
+    }
     return result;
 
 
   }
 
+  getNoResultsFoundResponse(){
+    let result = {total:0,
+            limit:10,
+            skip:0,
+            data:[]}
+    return result;
+  }
   getClient() {
     let client = new elasticsearch.Client({
       host: 'localhost:9200',
