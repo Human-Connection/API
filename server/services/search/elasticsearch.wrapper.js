@@ -154,12 +154,13 @@ class ElasticsearchWrapper {
       let value = this.getNoResultsFoundResponse();
       value.total = result.hits.total;
       
-      // test RB
-      value.total = 1;
-
+      logger.info("ES001 hits.hits: " + JSON.stringify(result.hits.hits));
+      logger.info("ES001 hits.hits.length: " + result.hits.hits.length);
+      for(var i = 0; i < result.hits.hits.length; i++){
+        value.data[i] = result.hits.hits[i]._source.value;  
+      }
+     
       
-      value.data[0] = result.hits.hits[0]._source.value;
-      // value.data[0]._id = "1234";
 
       logger.info("ES001 result value:" + JSON.stringify(value));
       result = value;
