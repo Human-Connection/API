@@ -100,7 +100,7 @@ module.exports = {
     find: [],
     get: [],
     create: [
-      // onContributionAdded()
+      onContributionAdded()
     ],
     update: [],
     patch: [],

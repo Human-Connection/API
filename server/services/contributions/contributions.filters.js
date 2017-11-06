@@ -15,7 +15,7 @@ module.exports = function (data, connection, hook) { // eslint-disable-line no-u
   try {
       logger.info('ES001 filter.data:' + JSON.stringify(data));
         
-      es.add(data);
+      //es.add(data);
 
     } catch (error) {
       logger.error('Error:' + error);

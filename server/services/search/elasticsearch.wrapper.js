@@ -64,44 +64,7 @@ class ElasticsearchWrapper {
 
     //START SEARCH
     let client = this.getClient();
-    /*let query = {
-      index: 'hc',
-      type: 'contribution',
-      body: {
-        query: {
-          dis_max: {
-            tie_breaker: 0.6,
-            queries: [
-              {
-                fuzzy: {
-                  title: {
-                    value: token,
-                    fuzziness: 'AUTO',
-                    prefix_length: 0,
-                    max_expansions: 20,
-                    transpositions: false,
-                    boost: 1.0
-                  }
-                }
-              },
-              {
-                fuzzy: {
-                  content: {
-                    value: token,
-                    fuzziness: 'AUTO',
-                    prefix_length: 0,
-                    max_expansions: 80,
-                    transpositions: false,
-                    boost: 1.0
-                  }
-                }
-              }
-            ],
-            boost: 1.0
-          }
-        }
-      }
-    };*/
+    
     let query = this.buildQuery(token);
 
     // TODO RB: filter results
