@@ -56,10 +56,10 @@ class ElasticsearchWrapper {
     let addResult = await client.create({
       index: 'hc',
       type: 'contribution',
-      id: contribution.title,
+      id: contribution.title,//TODO RB: use contribution._id
       body: {
-        title: contribution.title,
-        content: contribution.content,
+        title: contribution.title,//use title in order to find a contribution
+        content: contribution.content,//
         user_id: contribution.userId,
         date: creationDate,
         value: contribution
@@ -95,6 +95,8 @@ class ElasticsearchWrapper {
 
   async find(params) {
     logger.info('SearchService.find');
+    
+    //TODO RB: use paging in es
 
     //find by params:{"query":{"$skip":0,"$sort":{"createdAt":-1},"$search":"et"},"provider":"socketio"}
     logger.info('ES001 find by params:' + JSON.stringify(params));
@@ -148,14 +150,16 @@ class ElasticsearchWrapper {
     logger.info("ES001 search result:" + JSON.stringify(result));
     let totalHits = result.hits.total;
     logger.info("ES001 total hits:" + totalHits);
-    if(totalHits === 0){
+    if (totalHits === 0) {
       result = this.getNoResultsFoundResponse();
-    }else{
+    } else {
+      
       let value = this.getNoResultsFoundResponse();
       value.total = result.hits.total;
       
       logger.info("ES001 hits.hits: " + JSON.stringify(result.hits.hits));
       logger.info("ES001 hits.hits.length: " + result.hits.hits.length);
+      
       for(var i = 0; i < result.hits.hits.length; i++){
         value.data[i] = result.hits.hits[i]._source.value;  
       }
