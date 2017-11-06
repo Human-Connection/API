@@ -21,32 +21,7 @@ class ElasticsearchWrapper {
     logger.info("contibutionService:" + contributionService);
   }
 
-  dropIndex() {
-    let client = this.getClient();
-    client.indices.exists('hc', function (response) {
-      logger.info('index exists: ' + response);
-      logger.info('index exists: ' + JSON.stringify(response));
-      return client.indices.delete({
-        index: 'hc',
-      });
-    });
-
-  }
-
-  createIndex() {
-    let client = this.getClient();
-    return client.indices.create({
-      index: 'hc',
-      mapping: {
-        contribution: {
-          title: {
-            type: 'string'
-          }
-        }
-      }
-    });
-  }
-
+ 
   async add(contribution) {
     let client = this.getClient();
     logger.info("ES001 add contribution: "+ JSON.stringify(contribution));
@@ -56,12 +31,11 @@ class ElasticsearchWrapper {
     let addResult = await client.create({
       index: 'hc',
       type: 'contribution',
-      id: contribution.title,//TODO RB: use contribution._id
+      // id: contribution.title,//TODO RB: use contribution._id
+      id: "ESID_"+contribution._id,
       body: {
         title: contribution.title,//use title in order to find a contribution
         content: contribution.content,//
-        user_id: contribution.userId,
-        date: creationDate,
         value: contribution
       }
     });
@@ -69,29 +43,7 @@ class ElasticsearchWrapper {
     logger.info("ES001 add result:" + JSON.stringify(addResult));
   }
 
-  insert(contribution, onResponse, onError) {
-    let client = this.getClient();
-
-    let creationDate = Date.now;
-
-    client.create({
-      index: 'hc',
-      type: 'contribition',
-      id: contribution.title,
-      body: {
-        title: contribution.title,
-        content: contribution.content,
-        user_id: contribution.user,
-        date: creationDate
-      }
-    }, function (error, response) {
-      logger.debug('response:', JSON.stringify(response));
-      onResponse(response);
-      onError(error);
-
-      client.close();
-    });
-  }
+  
 
   async find(params) {
     logger.info('SearchService.find');
@@ -104,6 +56,10 @@ class ElasticsearchWrapper {
     //let token = params.query.token;
     logger.info('ES001 token:' + token);
 
+    if( ! token){
+      return this.getNoResultsFoundResponse();
+    }
+    
     //START SEARCH
     let client = this.getClient();
     let query = {
@@ -182,6 +138,57 @@ class ElasticsearchWrapper {
             data:[]}
     return result;
   }
+
+  insert(contribution, onResponse, onError) {
+    let client = this.getClient();
+
+    let creationDate = Date.now;
+
+    client.create({
+      index: 'hc',
+      type: 'contribition',
+      id: contribution.title,
+      body: {
+        title: contribution.title,
+        content: contribution.content,
+        user_id: contribution.user,
+        date: creationDate
+      }
+    }, function (error, response) {
+      logger.debug('response:', JSON.stringify(response));
+      onResponse(response);
+      onError(error);
+
+      client.close();
+    });
+  }
+
+   dropIndex() {
+    let client = this.getClient();
+    client.indices.exists('hc', function (response) {
+      logger.info('index exists: ' + response);
+      logger.info('index exists: ' + JSON.stringify(response));
+      return client.indices.delete({
+        index: 'hc',
+      });
+    });
+
+  }
+
+  createIndex() {
+    let client = this.getClient();
+    return client.indices.create({
+      index: 'hc',
+      mapping: {
+        contribution: {
+          title: {
+            type: 'string'
+          }
+        }
+      }
+    });
+  }
+
   getClient() {
     let client = new elasticsearch.Client({
       host: 'localhost:9200',
