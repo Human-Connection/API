@@ -45,6 +45,8 @@ class ElasticsearchWrapper {
 
   
 
+  
+
   async find(params) {
     logger.info('SearchService.find');
     
@@ -59,10 +61,10 @@ class ElasticsearchWrapper {
     if( ! token){
       return this.getNoResultsFoundResponse();
     }
-    
+
     //START SEARCH
     let client = this.getClient();
-    let query = {
+    /*let query = {
       index: 'hc',
       type: 'contribution',
       body: {
@@ -99,9 +101,13 @@ class ElasticsearchWrapper {
           }
         }
       }
-    };
+    };*/
+    let query = this.buildQuery(token);
 
-    //TODO RB: filter results
+    // TODO RB: filter results
+    // TODO RB: using paging
+    // https://www.elastic.co/guide/en/elasticsearch/guide/current/pagination.html
+
     let result =  await client.search(query);
     logger.info("ES001 search result:" + JSON.stringify(result));
     let totalHits = result.hits.total;
@@ -189,6 +195,49 @@ class ElasticsearchWrapper {
     });
   }
 
+  buildQuery(token){
+    let query = {
+      index: 'hc',
+      type: 'contribution',
+      body: {
+        query: {
+          dis_max: {
+            tie_breaker: 0.6,
+            queries: [
+              {
+                fuzzy: {
+                  title: {
+                    value: token,
+                    fuzziness: 'AUTO',
+                    prefix_length: 0,
+                    max_expansions: 20,
+                    transpositions: false,
+                    boost: 1.0
+                  }
+                }
+              },
+              {
+                fuzzy: {
+                  content: {
+                    value: token,
+                    fuzziness: 'AUTO',
+                    prefix_length: 0,
+                    max_expansions: 80,
+                    transpositions: false,
+                    boost: 1.0
+                  }
+                }
+              }
+            ],
+            boost: 1.0
+          }
+        }
+      }
+    };
+
+    return query;
+  }
+
   getClient() {
     let client = new elasticsearch.Client({
       host: 'localhost:9200',
@@ -202,7 +251,8 @@ class ElasticsearchWrapper {
     client.close();
   }
 
-}
+
+} // end class
 
 
 
