@@ -11,13 +11,23 @@ process.on('unhandledRejection', (reason, p) =>
 const server = app.listen(port);
 server.on('listening', () => {
   // Start seeder, after database is setup
-  app.on('mongooseInit', () => {
-    app.seed()
-      .then(() => {
-        logger.info(`Feathers application started on ${app.get('host')}:${port}`);
-      })
-      .catch((e) => {
-        logger.error(e);
+  if (app.get('seeder').runOnInit === true) {
+    app.on('mongooseInit', () => {
+      app.service('users').find({ query: { $limit: 0 }})
+        .then(res => {
+          console.log(res);
+          if (res.total > 0) {
+            return null;
+          }
+          console.log('>>>>>> RUN SEEDER <<<<<<');
+          app.seed()
+            .then(() => {
+              logger.info(`Feathers application started on ${app.get('host')}:${port}`);
+            })
+            .catch((e) => {
+              logger.error(e);
+            });
       });
-  });
+    });
+  }
 });

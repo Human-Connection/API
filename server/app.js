@@ -16,7 +16,7 @@ const middleware = require('./middleware');
 const services = require('./services');
 const appHooks = require('./app.hooks');
 const authentication = require('./authentication');
-const mongodb = require('./mongodb');
+const mongoose = require('./mongoose');
 const Raven = require('raven');
 
 const app = feathers();
@@ -56,7 +56,7 @@ app.use('/', feathers.static(app.get('public')));
 
 // Set up Plugins and providers
 app.configure(hooks());
-app.configure(mongodb);
+app.configure(mongoose);
 app.configure(rest());
 
 app.configure(socketio());

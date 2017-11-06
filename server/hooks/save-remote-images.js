@@ -28,30 +28,32 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
           return;
         }
         loading++;
-        console.log('##### ADDING TO DOWNLOAD', hook.data[field]);
         let uuid = faker.fake('{{random.uuid}}');
         const imgName = `${field}_${uuid}.jpg`;
         const imgPath = path.resolve('public', 'uploads/' + imgName);
         let stream = fs.createWriteStream(imgPath);
         urls.push(imgPath);
         stream.on('close', () => {
-          console.log('##### WRITING FINISHED');
           if (--loading <= 0) {
-            console.log('##### ALL FINISHED');
+            console.log('>>> ALL DOWNLOADS FINISHED');
             return Promise.resolve(hook);
           }
         });
-        console.log('######### DOWNLOADING: ', hook.data[field]);
+        stream.on('error', (err) => {
+          console.error('>>> Download error');
+          console.error(err);
+        });
+        console.log('>>> DOWNLOADING: ', hook.data[field]);
         request(hook.data[field]).pipe(stream);
         hook.data[field] = uploadsUrl + imgName;
       });
 
       if (loading <= 0) {
-        console.log('##### NOTHING TO DO...');
         return Promise.resolve(hook);
       }
     } catch(e) {
-      console.error('FAILED TO SAVE THAT THING', urls);
+      console.error('FAILED TO SAVE THAT THING');
+      console.error(urls);
     }
   }
 };
