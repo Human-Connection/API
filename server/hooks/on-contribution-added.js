@@ -9,20 +9,13 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
   return function (hook) {
     
     let es = new ElasticsearchWrapper();
-
+    //https://docs.feathersjs.com/api/hooks.html
     logger.info('ES001 on contribution added:');
-    logger.info('ES001 hook:' + JSON.stringify(hook.result));
     
     try {
       logger.info('ES001 hook.data:' + JSON.stringify(hook.result));
 
       let data = hook.result;
-      /*  
-      let contribution = {
-        title: data.title,
-        content: data.content,
-        user: data.userId
-      };*/
         
       es.add(data);
 
