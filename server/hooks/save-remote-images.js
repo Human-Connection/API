@@ -7,8 +7,7 @@ const request = require('request');
 const faker = require('faker');
 
 module.exports = function (options = []) { // eslint-disable-line no-unused-vars
-  return async function (hook) {
-
+  return function async (hook) {
     let urls = [];
 
     try {
@@ -28,32 +27,34 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
           return;
         }
         loading++;
+        // TODO: fix that to use the data _id or somethink similar
         let uuid = faker.fake('{{random.uuid}}');
         const imgName = `${field}_${uuid}.jpg`;
         const imgPath = path.resolve('public', 'uploads/' + imgName);
         let stream = fs.createWriteStream(imgPath);
         urls.push(imgPath);
+        console.log(hook.callback);
         stream.on('close', () => {
           if (--loading <= 0) {
-            console.log('>>> ALL DOWNLOADS FINISHED');
-            return Promise.resolve(hook);
+            // return Promise.resolve(hook);
+            console.log('Download finished', imgName);
+            hook.callback(hook);
           }
         });
         stream.on('error', (err) => {
-          console.error('>>> Download error');
-          console.error(err);
+          throw new errors.Unprocessable('Thumbnail download failed', { errors: err, urls: urls });
         });
-        console.log('>>> DOWNLOADING: ', hook.data[field]);
+        console.log('Downloading', hook.data[field]);
         request(hook.data[field]).pipe(stream);
         hook.data[field] = uploadsUrl + imgName;
       });
 
       if (loading <= 0) {
-        return Promise.resolve(hook);
+        hook.callback(hook);
       }
-    } catch(e) {
-      console.error('FAILED TO SAVE THAT THING');
-      console.error(urls);
+    } catch(err) {
+      hook.callback(hook);
+      throw new errors.Unprocessable('Thumbnail download failed', { errors: err, urls: urls });
     }
   }
 };
