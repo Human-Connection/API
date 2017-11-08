@@ -19,7 +19,6 @@ process.on('unhandledRejection', (reason, p) => {
 // Start server
 const server = app.listen(port);
 server.on('listening', () => {
-  console.log('###  listening');
   // Start seeder, after database is setup
   if (app.get('seeder').runOnInit === true) {
     app.on('mongooseInit', () => {
