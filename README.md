@@ -7,7 +7,7 @@
 This project uses [Feathers](http://feathersjs.com). An open source web framework for building modern real-time applications.
 
 ## License
-Creative Commons Attribution NonCommercial (CC-BY-NC) [License](License)
+Creative Commons Attribution NonCommercial (CC-BY-NC) [License](LICENSE.md)
 
 ## Getting Started
 
