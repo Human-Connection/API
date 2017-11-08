@@ -12,13 +12,14 @@ if (process.env.NODE_ENV !== 'production' && !fs.existsSync(configDir + '/local.
 const app = require('./app');
 const port = app.get('port');
 
-process.on('unhandledRejection', (reason, p) =>
+process.on('unhandledRejection', (reason, p) => {
   logger.error('Unhandled Rejection at: Promise ', p, reason)
-);
+});
 
 // Start server
 const server = app.listen(port);
 server.on('listening', () => {
+  console.log('###  listening');
   // Start seeder, after database is setup
   if (app.get('seeder').runOnInit === true) {
     app.on('mongooseInit', () => {
@@ -36,7 +37,7 @@ server.on('listening', () => {
             .catch((e) => {
               logger.error(e);
             });
-      });
+        });
     });
   }
 });
