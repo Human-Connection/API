@@ -7,8 +7,9 @@ module.exports = function () {
     require('./users-admin'),
     require('./users'),
     require('./contributions'),
-    require('./ngos'),
+    require('./organizations'),
     require('./projects'),
+    require('./follows'),
     require('./comments')
   ];
 };

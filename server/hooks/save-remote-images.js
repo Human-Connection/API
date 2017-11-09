@@ -37,13 +37,12 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
           urls.push(imgPath);
           stream.on('close', () => {
             if (--loading <= 0) {
-              // return Promise.resolve(hook);
               console.log('Download finished', imgName);
-              resolve();
+              resolve(hook);
             }
           });
           stream.on('error', (err) => {
-            resolve();
+            // reject(err);
             throw new errors.Unprocessable('Thumbnail download failed', { errors: err, urls: urls });
           });
           console.log('Downloading', hook.data[field]);
@@ -52,10 +51,11 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
         });
 
         if (loading <= 0) {
-          resolve();
+          console.log('Download(s) finished', urls);
+          resolve(hook);
         }
       } catch(err) {
-        resolve();
+        // reject(err);
         throw new errors.Unprocessable('Thumbnail download failed', { errors: err, urls: urls });
       }
     });

@@ -1,24 +1,21 @@
 /* eslint-disable no-unused-vars */
-const { GeneralError, NotFound } = require('feathers-errors');
+const { GeneralError, NotFound, NotAcceptable } = require('feathers-errors');
 const mongoose = require('mongoose');
+const _ = require('lodash');
 
-const populateUserWithFollows = (data, service) => {
-  return data.follows.map((item) => {
-    let model = service[item.type] || {}
-    if (model.findById) {
-      return new Promise((resolve) => {
-        model.findById(item.id).then((follower) => {
-          if (Array.isArray(data[item.type])) {
-            data[item.type].push(follower);
-          } else {
-            data[item.type] = [follower];
-          }
-          resolve();
-        });
+const populateUserWithFollows = (data, model) => {
+  let output = {};
+  let follows = _.groupBy(data.follows, 'type');
+  return _.keys(follows).map((service) => {
+    return new Promise(async (resolve) => {
+      const ids = _.values(_.mapValues(follows[service], 'id'));
+      output[service] = await model[service].find({
+        _id: {
+          $in: ids
+        }
       });
-    } else {
-      return Promise.reject(`item has no or invalid type ${item.type}`);
-    }
+      resolve(output);
+    })
   });
 };
 
@@ -29,53 +26,120 @@ class Service {
       throw new Error('follows services missing option.app');
     }
     this.users = mongoose.model('users');
-    this.ngos = mongoose.model('ngos');
+    this.organizations = mongoose.model('organizations');
     this.projects = mongoose.model('projects');
+    this.allowedServices = ['users', 'organizations', 'projects'];
   }
 
-  find (params) {
+  /* find (params) {
     return Promise.resolve([]);
-  }
+  } */
 
-  get (id, params) {
+  /**
+   * @param id
+   * @param params
+   * @returns {Promise}
+   *
+   * @todo use the services for retreiving data to not reveal sensitive data
+   */
+  async get (id, params) {
     let query = params.query || {};
 
+    let user = await this.users.findById(id);
+    if (_.isEmpty(user)) {
+      throw new NotFound();
+    }
+    user = user.toObject();
     return new Promise((resolve) => {
-      this.users.findById(id).then((data) => {
-        if (!data || data.follows.length === 0) {
-          throw new NotFound();
-        }
-        //return resolve(data);
-        data = data.toObject();
-        let follows = populateUserWithFollows(data, this);
-        return Promise.all(follows).then(() => {
-          resolve(data);
+      const follows = populateUserWithFollows(user, this);
+      return Promise.all(follows).then((data) => {
+        data = data.pop();
+
+        // cleanup data
+        // TODO this should not be needed when using the propper services
+        _.keys(data).forEach((service) => {
+          data[service].forEach((entry) => {
+            const remove = ['password', '_computed', 'verifyToken', 'verifyExpires', 'resetExpires', 'verifyChanges', 'verifyShortToken'];
+            remove.forEach((key) => {
+              entry[key] = null;
+            });
+          });
         });
-      }).catch((e) => {
-        throw new GeneralError(e);
+
+        resolve(data);
       });
     });
   }
 
-  create (data, params) {
+  /**
+   * @param data
+   * @param params
+   * @returns Promise
+   * @example
+   *  {
+   *    "userId": "5a042f57a40ed49f79a328fb",
+   *    "followingId": "5a042f5ca40ed49f79a32900",
+   *    "type": "users"
+   *  }
+   *
+   * @todo use the services for retreiving data to not reveal sensitive data
+   * @todo do not allow another users then the logged in one to create a follow entry
+   */
+  async create (data, params) {
     if (Array.isArray(data)) {
       return Promise.all(data.map(current => this.create(current)));
     }
+    const user = await this.users.findById(data.userId);
+    if (this.allowedServices.indexOf(data.type) < 0) {
+      throw new NotAcceptable('following of the given service is not allowed, ' +
+        'please use on of the following services: ' + this.allowedServices.join(', '));
+    }
+    const followingModel = this[data.type];
+    const following = await followingModel.findById(data.followingId);
 
-    return Promise.resolve(data);
+    if (_.isEmpty(user) || _.isEmpty(following)) {
+      throw new NotFound('user with the given id could not be found');
+    }
+    if (_.isEmpty(user) || _.isEmpty(following)) {
+      throw new NotFound(`${data.type} with the given id could not be found`);
+    }
+
+    const userFolowEntry = {
+      type: data.type,
+      id: data.followingId
+    };
+
+    if (_.findIndex(user.follows, userFolowEntry) < 0) {
+      // push follow entry to user if not already present
+      await this.users.findOneAndUpdate({ _id: data.userId }, {
+        $push: {
+          follows: userFolowEntry
+        }
+      });
+    }
+    if (following.followerIds.indexOf(data.userId) < 0) {
+      // push follow entry to followingModel if not already present
+      await followingModel.findOneAndUpdate({ _id: data.followingId }, {
+        $push: {
+          followerIds: data.userId
+        }
+      });
+    }
+
+    return userFolowEntry;
   }
 
-  update (id, data, params) {
+  /* update (id, data, params) {
     return Promise.resolve(data);
-  }
+  } */
 
-  patch (id, data, params) {
+  /* patch (id, data, params) {
     return Promise.resolve(data);
-  }
+  } */
 
-  remove (id, params) {
+  /* remove (id, params) {
     return Promise.resolve({ id });
-  }
+  } */
 }
 
 module.exports = function (options) {

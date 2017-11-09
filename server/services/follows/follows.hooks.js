@@ -1,6 +1,7 @@
-/* eslint-disable no-unused-vars */
+const { associateCurrentUser } = require('feathers-authentication-hooks');
+const { isProvider, when, discard, remove, deleteByDot } = require('feathers-hooks-common');
 const { authenticate } = require('feathers-authentication').hooks;
-// authenticate('jwt')
+
 module.exports = {
   before: {
     all: [],

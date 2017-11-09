@@ -14,13 +14,15 @@ const randomFollowerIds = (items) => {
 module.exports = (seederstore) => {
   return {
     services: [{
-      path: 'ngos',
+      path: 'organizations',
       count: 10,
       template: {
         name: '{{lorem.slug}}',
-        followerIds: () => randomFollowerIds(seederstore.users),
+        // followerIds: () => randomFollowerIds(seederstore.users),
+        followerIds: [],
         userId: () => randomItem(seederstore.users)._id,
-        text: '{{lorem.text}}'
+        description: '{{lorem.text}}',
+        content: '{{lorem.text}} {{lorem.text}} {{lorem.text}} {{lorem.text}}',
       }
     }]
   };
