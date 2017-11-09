@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const randomItem = require('../../helper/seed-helpers')().randomItem;
+const randomCategories = require('../../helper/seed-helpers')().randomCategories;
 
 module.exports = (seederstore) => {
   return {
@@ -9,8 +10,10 @@ module.exports = (seederstore) => {
       template: {
         name: '{{lorem.slug}}',
         followerIds: [],
+        categoryIds: () => randomCategories(seederstore),
         userId: () => randomItem(seederstore.users)._id,
-        text: '{{lorem.sentence}}'
+        description: '{{lorem.text}}',
+        content: '{{lorem.text}} {{lorem.text}} {{lorem.text}} {{lorem.text}}',
       }
     }]
   };

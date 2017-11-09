@@ -8,6 +8,7 @@ module.exports = function (app) {
   const organizations = new Schema({
     name: {type: String, required: true},
     followerIds: [],
+    categoryIds: { type: Array },
     userId: { type: String, required: true },
     description: { type: String, required: true },
     content: { type: String, required: true },
