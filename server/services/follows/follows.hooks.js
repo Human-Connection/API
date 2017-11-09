@@ -1,13 +1,17 @@
-const { associateCurrentUser } = require('feathers-authentication-hooks');
+const hooks = require('feathers-authentication-hooks');
 const { isProvider, when, discard, remove, deleteByDot } = require('feathers-hooks-common');
 const { authenticate } = require('feathers-authentication').hooks;
 
 module.exports = {
   before: {
-    all: [],
+    all: [authenticate('jwt')],
     find: [],
     get: [],
-    create: [],
+    create: [
+      when(isProvider('external'), [
+        hooks.queryWithCurrentUser()
+      ])
+    ],
     update: [],
     patch: [],
     remove: []
