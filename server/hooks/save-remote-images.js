@@ -35,7 +35,6 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
           const imgPath = path.resolve('public', 'uploads/' + imgName);
           let stream = fs.createWriteStream(imgPath);
           urls.push(imgPath);
-          console.log(hook.callback);
           stream.on('close', () => {
             if (--loading <= 0) {
               // return Promise.resolve(hook);

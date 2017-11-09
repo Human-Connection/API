@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
-const GeneralError = require('feathers-errors').GeneralError;
-const NotFound = require('feathers-errors').NotFound;
+const { GeneralError, NotFound } = require('feathers-errors');
 const mongoose = require('mongoose');
+
 const populateUserWithFollows = (data, service) => {
   return data.follows.map((item) => {
     let model = service[item.type] || {}
@@ -21,6 +21,7 @@ const populateUserWithFollows = (data, service) => {
     }
   });
 };
+
 class Service {
   constructor (options) {
     this.options = options || {};
