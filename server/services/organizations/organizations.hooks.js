@@ -30,8 +30,8 @@ module.exports = {
 
   after: {
     all: [
-      populate({ schema: userSchema }),
-      populate({ schema: followerSchema })
+      // populate({ schema: userSchema }),
+      // populate({ schema: followerSchema })
     ],
     find: [],
     get: [],

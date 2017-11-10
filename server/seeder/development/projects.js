@@ -6,7 +6,7 @@ module.exports = (seederstore) => {
   return {
     services: [{
       path: 'projects',
-      count: 10,
+      count: 30,
       template: {
         name: '{{lorem.slug}}',
         followerIds: [],

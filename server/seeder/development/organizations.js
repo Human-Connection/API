@@ -16,10 +16,9 @@ module.exports = (seederstore) => {
   return {
     services: [{
       path: 'organizations',
-      count: 10,
+      count: 30,
       template: {
         name: '{{lorem.slug}}',
-        // followerIds: () => randomFollowerIds(seederstore.users),
         followerIds: [],
         categoryIds: () => randomCategories(seederstore),
         userId: () => randomItem(seederstore.users)._id,
