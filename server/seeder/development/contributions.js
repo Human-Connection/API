@@ -1,7 +1,5 @@
 const _ = require('lodash');
-const randomItem = require('../../helper/seed-helpers')().randomItem;
-const randomUnsplashUrl = require('../../helper/seed-helpers')().randomUnspashUrl;
-const randomCategories = require('../../helper/seed-helpers')().randomCategories;
+const seedHelpers = require('../../helper/seed-helpers');
 
 module.exports = (seederstore) => {
   return {
@@ -10,21 +8,21 @@ module.exports = (seederstore) => {
       path: 'contributions',
       templates: [
         {
-          userId: () => randomItem(seederstore.users)._id,
+          userId: () => seedHelpers.randomItem(seederstore.users)._id,
           title: '{{lorem.words}}',
           type: 'post',
-          categoryIds: () => randomCategories(seederstore),
+          categoryIds: () => seedHelpers.randomCategories(seederstore),
           content: '{{lorem.text}} {{lorem.text}}',
-          teaserImg: randomUnsplashUrl,
+          teaserImg: seedHelpers.randomUnsplashUrl,
           language: 'de_DE',
           createdAt: '{{date.recent}}',
           updatedAt: '{{date.recent}}'
         },
         {
-          userId: () => randomItem(seederstore.users)._id,
+          userId: () => seedHelpers.randomItem(seederstore.users)._id,
           title: '{{lorem.sentence}}',
           type: 'post',
-          categoryIds: () => randomCategories(seederstore),
+          categoryIds: () => seedHelpers.randomCategories(seederstore),
           content: '{{lorem.text}} {{lorem.text}}',
           language: 'de_DE',
           createdAt: '{{date.recent}}',

@@ -12,6 +12,7 @@ module.exports = function (app) {
     userId: { type: String, required: true },
     description: { type: String, required: true },
     content: { type: String, required: true },
+    addresses: { type: Array, default: [] },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }
   });

@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const randomItem = require('../../helper/seed-helpers')().randomItem;
+const seedHelpers = require('../../helper/seed-helpers');
 
 module.exports = (seederstore) => {
   return {
@@ -8,8 +8,8 @@ module.exports = (seederstore) => {
       path: 'comments',
       templates: [
         {
-          userId: () => randomItem(seederstore.users)._id,
-          contributionId: () => randomItem(seederstore.contributions)._id,
+          userId: () => seedHelpers.randomItem(seederstore.users)._id,
+          contributionId: () => seedHelpers.randomItem(seederstore.contributions)._id,
           content: '{{lorem.text}} {{lorem.text}}',
           language: 'de_DE',
           createdAt: '{{date.recent}}',

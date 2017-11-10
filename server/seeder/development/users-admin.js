@@ -1,4 +1,4 @@
-const randomItem = require('../../helper/seed-helpers')().randomItem;
+const seedHelpers = require('../../helper/seed-helpers');
 
 module.exports = (seederstore) => {
   return {
@@ -15,7 +15,7 @@ module.exports = (seederstore) => {
         timezone: 'Europe/Berlin',
         avatar: '{{internet.avatar}}',
         coverImg: 'https://source.unsplash.com/random/1250x280',
-        badgesIds: () => [randomItem(seederstore.badges)._id],
+        badgesIds: () => [seedHelpers.randomItem(seederstore.badges)._id],
         doiToken: null,
         confirmedAt: null,
         deletedAt: null

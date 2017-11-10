@@ -1,5 +1,4 @@
 const _ = require('lodash');
-const randomItem = require('../../helper/seed-helpers')().randomItem;
 
 module.exports = (seederstore) => {
   return {
@@ -12,7 +11,7 @@ module.exports = (seederstore) => {
           alt: '{{lorem.word}}',
         },
         text: '{{lorem.word}}',
-          status: 'permanent',
+        status: 'permanent',
         type: '{{lorem.word}}'
       }
     }]

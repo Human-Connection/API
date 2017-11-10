@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const randomItem = require('../../helper/seed-helpers')().randomItem;
+const seedHelpers = require('../../helper/seed-helpers');
 
 module.exports = (seederstore) => {
   return {
@@ -8,18 +8,18 @@ module.exports = (seederstore) => {
       path: 'follows',
       templates: [
         {
-          userId: () => randomItem(seederstore.users)._id,
-          followingId: () => randomItem(seederstore.users)._id,
+          userId: () => seedHelpers.randomItem(seederstore.users)._id,
+          followingId: () => seedHelpers.randomItem(seederstore.users)._id,
           type: 'users'
         },
         {
-          userId: () => randomItem(seederstore.users)._id,
-          followingId: () => randomItem(seederstore.projects)._id,
+          userId: () => seedHelpers.randomItem(seederstore.users)._id,
+          followingId: () => seedHelpers.randomItem(seederstore.projects)._id,
           type: 'projects'
         },
         {
-          userId: () => randomItem(seederstore.users)._id,
-          followingId: () => randomItem(seederstore.organizations)._id,
+          userId: () => seedHelpers.randomItem(seederstore.users)._id,
+          followingId: () => seedHelpers.randomItem(seederstore.organizations)._id,
           type: 'organizations'
         }
       ]
