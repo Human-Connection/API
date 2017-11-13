@@ -9,5 +9,9 @@
       "pass": ""
     }
   },
+  "seeder": {
+    "runOnInit": true,
+    "dropDatabase": true
+  },
   "defaultEmail": "no-replay@human-connection.org"
 }

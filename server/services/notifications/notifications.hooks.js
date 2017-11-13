@@ -20,7 +20,7 @@ const commentSchema = {
       childField: '_id'
     }
   }
-}
+};
 
 const contributionSchema = {
   include: {
@@ -29,7 +29,7 @@ const contributionSchema = {
     parentField: 'relatedContributionId',
     childField: '_id'
   }
-}
+};
 
 module.exports = {
   before: {

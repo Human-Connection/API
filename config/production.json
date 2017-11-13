@@ -12,5 +12,9 @@
       "pass": "SMTP_PASS"
     }
   },
+  "seeder": {
+    "runOnInit": false,
+    "dropDatabase": false
+  },
   "defaultEmail": "EMAIL_ADDRESS"
 }
