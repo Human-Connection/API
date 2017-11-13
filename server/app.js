@@ -42,7 +42,7 @@ if (app.get('sentry').dns !== undefined && app.get('sentry').dns !== 'SENTRY_DNS
   app.use(function onError(err, req, res) {
     // The error id is attached to `res.sentry` to be returned
     // and optionally displayed to the user for support.
-    logger.log('next:' + next);
+    // logger.log('next:' + next);
     res.statusCode = 500;
     res.end(res.sentry + '\n');
   });

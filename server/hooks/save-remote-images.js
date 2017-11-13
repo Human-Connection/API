@@ -6,7 +6,6 @@ const fs = require('fs');
 const path = require('path');
 const request = require('request');
 const faker = require('faker');
-const logger = require('winston');
 
 module.exports = function (options = []) { // eslint-disable-line no-unused-vars
   return function async (hook) {
