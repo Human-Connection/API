@@ -18,11 +18,11 @@ const appHooks = require('./app.hooks');
 const authentication = require('./authentication');
 const mongoose = require('./mongoose');
 const Raven = require('raven');
-const logger = require('feathers-logger');
-const winston = require('winston');
+const logger = require('./logger');
 
 const app = feathers();
-app.configure(logger(winston));
+
+app.configure(require('feathers-logger')(logger));
 
 // Load app configuration
 app.configure(configuration(path.join(__dirname, '..')));

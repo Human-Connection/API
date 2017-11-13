@@ -74,7 +74,7 @@
     "shortid": "^2.2.8",
     "slug": "^0.9.1",
     "wait-on": "^2.0.2",
-    "winston": "^2.4.0"
+    "winston": "^3.0.0-rc1"
   },
   "devDependencies": {
     "eslint": "^4.10.0",
