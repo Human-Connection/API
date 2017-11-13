@@ -8,6 +8,7 @@ module.exports = (seederstore) => {
       template: {
         name: '{{lorem.slug}}',
         followerIds: [],
+        logo: () => seedHelpers.randomLogo(),
         categoryIds: () => seedHelpers.randomCategories(seederstore),
         userId: () => seedHelpers.randomItem(seederstore.users)._id,
         addresses: () => seedHelpers.randomAddresses(),

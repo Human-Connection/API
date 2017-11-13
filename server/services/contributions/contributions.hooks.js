@@ -7,6 +7,7 @@ const {
 } = require('feathers-authentication-hooks');
 const { isVerified } = require('feathers-authentication-management').hooks;
 const createSlug = require('../../hooks/create-slug');
+const saveRemoteImages = require('../../hooks/save-remote-images');
 const createExcerpt = require('../../hooks/create-excerpt');
 const search = require('feathers-mongodb-fuzzy-search');
 
@@ -47,7 +48,6 @@ const commentsSchema = {
   }
 };
 
-const saveRemoteImages = require('../../hooks/save-remote-images');
 
 module.exports = {
   before: {
