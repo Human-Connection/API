@@ -12,29 +12,34 @@ describe('ElasticsearchWrapper.update', () => {
     let date = new Date();
 
     let salt = date.toUTCString();
-    
+
+    let NEW_ID = 'id12345_' + salt;
     let contribution = {
-      _id:'id12345_'+salt,
-      title:'Title3',
-      content:'a content text 123'
+      _id: NEW_ID,
+      title: 'Title3',
+      content: 'a content text 123'
     }
-    
+
     logger.info("adding contribution:" + JSON.stringify(contribution));
 
     let addResult = cut.add(contribution);
- 
-    addResult.then(passed = function(value){
-        logger.info("step 1 - add new contribution 1 result: " + value);
+
+    addResult.then(passed = function (value) {
+      logger.info("step 1 - add new contribution 1 result: " + JSON.stringify(value));
+
+      let addResult2 = cut.add(contribution);
+
+      addResult2.then(passed = function (value) {
+        logger.info("step 2 - add new contribution 2 result: " + JSON.stringify(value));
+
+        assert.equal(value._id, NEW_ID);
         
-        let addResult2 = cut.add(contribution);
-        addResult2.then(passed=function(value){
-          logger.info("step 2 - add new contribution 2 result: " + value);
+        done();
 
-          done();
+      });
 
-        });
     });
-    
+
   })
 });
 
@@ -76,9 +81,9 @@ describe('ElasticsearchWrapper.find', () => {
       cut.find(searchQuery);
     }
 
-    function close(client){
+    function close(client) {
       logger.info('step 5');
-      return new Promise(function(resolve){
+      return new Promise(function (resolve) {
         logger.info('resolve:' + resolve);
         client.close(client);
       });

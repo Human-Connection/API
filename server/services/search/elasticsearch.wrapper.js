@@ -30,12 +30,13 @@ class ElasticsearchWrapper {
     let client = this.getClient();
     logger.info("ES001 add contribution: " + JSON.stringify(contribution));
 
+    let NEW_ID = "" + contribution._id;
     let addResult = "";
     try {
-       addResult = await client.create({
+      addResult = await client.create({
         index: 'hc',
         type: 'contribution',
-        id: ""+contribution._id,
+        id: NEW_ID,
         body: {
           title: contribution.title,//use title in order to find a contribution
           content: contribution.content,//
@@ -44,44 +45,67 @@ class ElasticsearchWrapper {
       });
       logger.info("ES001 add result:" + JSON.stringify(addResult));
     } catch (error) {
-      logger.error("Add Contribution error: " + error);
-      update(contribution);
+      logger.error("Add Contribution error: " + JSON.stringify(error));
+      addResult = this.deleteAndAdd(contribution, NEW_ID, client);
+    }
+    return addResult;
+  }
+
+  async deleteAndAdd(contribution, NEW_ID, client) {
+    let addResult = "";
+    
+    let deleteResult = await client.delete({
+      index: 'hc',
+      type: 'contribution',
+      id: NEW_ID,
+    });
+    try {
+      addResult = await client.create({
+        index: 'hc',
+        type: 'contribution',
+        id: NEW_ID,
+        body: {
+          title: contribution.title,//use title in order to find a contribution
+          content: contribution.content,//
+          value: contribution
+        }
+      });
+      logger.info("ES001 add result:" + JSON.stringify(addResult));
+    } catch (error) {
+      logger.error("deleteAndAdd error:" + JSON.stringify(error));
     }
     return addResult;
   }
 
   async update(contribution) {
-     if (!contribution._id) {
+    if (!contribution._id) {
       logger.info("ES001 update contribution -  no id - skip");
       return;
     }
 
     logger.info("ES001 update contribution: " + JSON.stringify(contribution));
-    
+
+    let result = "";
+
     try {
 
-      
       let client = this.getClient();
 
       let deleteResult = await client.delete({
-         index: 'hc',
-         type: 'contribution',
-         id: ""+contribution._id,
+        index: 'hc',
+        type: 'contribution',
+        id: "" + contribution._id,
       });
 
-      let updateResult = await client.update({
-         index: 'hc',
-         type: 'contribution',
-         id: ""+contribution._id,
-         
-         _source : JSON.stringify(contribution)
-         
-      });
-      logger.info("ES001 update result:" + JSON.stringify(updateResult));
+      result = this.add(contribution);
+
+      logger.info("ES001 update result:" + JSON.stringify(addResult));
+
     } catch (error) {
       logger.error("update ES error:" + error)
     }
-    
+
+    return result;
   }
 
 
@@ -167,7 +191,7 @@ class ElasticsearchWrapper {
         date: creationDate
       }
     }, function (error, response) {
-      logger.debug('response:', JSON.stringify(response));
+      logger.infodebug('response:', JSON.stringify(response));
       onResponse(response);
       onError(error);
 
