@@ -28,6 +28,7 @@ server.on('listening', () => {
             return null;
           }
           app.info('>>>>>> RUN SEEDER <<<<<<');
+
           app.seed()
             .then(() => {
               app.info(`Feathers application started on ${app.get('host')}:${port}`);
