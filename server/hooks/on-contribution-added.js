@@ -10,12 +10,12 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
     
     let es = new ElasticsearchWrapper();
     //https://docs.feathersjs.com/api/hooks.html
-    logger.info('ES001 on contribution added:');
+    logger.debug('on contribution added:');
     
     try {
       let data = hook.result;
 
-      logger.info('ES001 hook.data:' + JSON.stringify(data));
+      logger.debug('hook.data:' + JSON.stringify(data));
       
       es.add(data);
 
@@ -23,7 +23,6 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
       logger.error('Error:' + error);
     }
     
-
     return Promise.resolve(hook);
   };
 };
