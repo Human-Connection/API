@@ -1,5 +1,4 @@
 // Create admin user
-const logger = require('winston');
 module.exports = () => hook => {
   return new Promise(resolve => {
     const userService = hook.app.service('users');
@@ -13,7 +12,7 @@ module.exports = () => hook => {
         return;
       })
       .catch(error => {
-        logger.log(error);
+        hook.app.error(error);
         resolve(hook);
         return;
       });

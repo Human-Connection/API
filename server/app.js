@@ -16,18 +16,20 @@ const middleware = require('./middleware');
 const services = require('./services');
 const appHooks = require('./app.hooks');
 const authentication = require('./authentication');
-const mongodb = require('./mongodb');
+const mongoose = require('./mongoose');
 const Raven = require('raven');
-const logger = require('winston');
+const logger = require('./logger');
 
 const app = feathers();
+
+app.configure(require('feathers-logger')(logger));
 
 // Load app configuration
 app.configure(configuration(path.join(__dirname, '..')));
 
 if (app.get('sentry').dns !== undefined && app.get('sentry').dns !== 'SENTRY_DNS') {
   // LOGGING IS ENABLED
-  logger.log('SENTRY LOGGING IS ENABLED');
+  app.info('SENTRY LOGGING IS ENABLED');
 
   // Must configure Raven before doing anything else with it
   Raven.config(app.get('sentry').dns, app.get('sentry').options).install();
@@ -37,7 +39,7 @@ if (app.get('sentry').dns !== undefined && app.get('sentry').dns !== 'SENTRY_DNS
   // The error handler must be before any other error middleware
   app.use(Raven.errorHandler());
   // Optional fallthrough error handler
-  app.use(function onError(err, req, res, next) {
+  app.use(function onError(err, req, res) {
     // The error id is attached to `res.sentry` to be returned
     // and optionally displayed to the user for support.
     logger.log('next:' + next);
@@ -61,7 +63,7 @@ app.use('/', feathers.static(app.get('public')));
 
 // Set up Plugins and providers
 app.configure(hooks());
-app.configure(mongodb);
+app.configure(mongoose);
 app.configure(rest());
 
 app.configure(socketio());

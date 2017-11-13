@@ -19,7 +19,7 @@ module.exports = function(options = {}) { // eslint-disable-line no-unused-vars
   return function(hook) {
 
     if (!hook.result || hook.method !== 'create') {
-      logger.log('ERROR', hook.method);
+      hook.app.error('ERROR', hook.method);
 
       throw new Error('FAILED');
     }
@@ -68,7 +68,6 @@ module.exports = function(options = {}) { // eslint-disable-line no-unused-vars
                   emotions: contribution.emotions
                 }
               }).then(res => {
-                logger.log('res:'+res);
                 resolve(hook);
               });
             });
