@@ -9,6 +9,9 @@ const uploads = require('./uploads/uploads.service.js');
 const images = require('./images/images.service.js');
 const badges = require('./badges/badges.service.js');
 const emotions = require('./emotions/emotions.service.js');
+const organizations = require('./organizations/organizations.service.js');
+const projects = require('./projects/projects.service.js');
+const follows = require('./follows/follows.service.js');
 module.exports = function () {
   const app = this; // eslint-disable-line no-unused-vars
   app.configure(authManagement);
@@ -22,4 +25,7 @@ module.exports = function () {
   app.configure(images);
   app.configure(badges);
   app.configure(emotions);
+  app.configure(organizations);
+  app.configure(projects);
+  app.configure(follows);
 };

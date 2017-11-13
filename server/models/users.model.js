@@ -5,12 +5,18 @@
 
 module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
+  const followsSchema = mongooseClient.Schema({
+    type: String,
+    id: String
+  });
   const users = new mongooseClient.Schema({
     email: {type: String, required: true, unique: true},
     password: { type: String },
     name: { type: String },
     slug: { type: String },
     gender: { type: String },
+    followerIds: [],
+    follows: [followsSchema],
     isnothere: { type: Boolean },
     timezone: { type: String },
     avatar: { type: String },

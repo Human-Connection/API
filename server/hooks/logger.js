@@ -1,5 +1,4 @@
 // A hook that logs service method before, after and error
-const logger = require('winston');
 
 module.exports = function () {
   return function (hook) {
@@ -9,16 +8,16 @@ module.exports = function () {
       message += `: ${hook.error.message}`;
     }
 
-    logger.info(message);
-    logger.debug('hook.data', hook.data);
-    logger.debug('hook.params', hook.params);
+    hook.app.info(message);
+    hook.app.debug('hook.data', hook.data);
+    hook.app.debug('hook.params', hook.params);
 
     if (hook.result) {
-      logger.debug('hook.result', hook.result);
+      hook.app.debug('hook.result', hook.result);
     }
 
     if (hook.error) {
-      logger.error(hook.error);
+      hook.app.error(hook.error);
     }
   };
 };

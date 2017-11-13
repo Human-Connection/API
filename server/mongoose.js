@@ -11,8 +11,16 @@ module.exports = function () {
         keepAlive: 1
       }
     }
+  }, function () {
+    if (app.get('seeder').dropDatabase === true) {
+      mongoose.connection.dropDatabase().then(() => {
+        app.debug('>>>>>> DROPED DATABASE <<<<<<');
+        app.emit('mongooseInit');
+      });
+    } else {
+      app.emit('mongooseInit');
+    }
   });
   mongoose.Promise = global.Promise;
-
   app.set('mongooseClient', mongoose);
 };

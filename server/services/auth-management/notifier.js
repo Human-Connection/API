@@ -51,7 +51,7 @@ module.exports = function(app) {
     Object.assign(options, additionaloptions);
 
     template.render(options, (err, result) => {
-      app.get('debug') && console.log(err);
+      app.get('debug') && app.error(err);
       const email = {
         from: returnEmail,
         to: user.email,
@@ -70,21 +70,21 @@ module.exports = function(app) {
       const filepath = path.join(__dirname, '../../../tmp/emails/', filename);
       fs.outputFile(filepath, email.html)
         .catch(err => {
-          app.get('debug') && console.log('Error saving email', err);
+          app.error('Error saving email', err);
         });
     }
 
     return app.service('emails').create(email)
       .then(result => {
-        app.get('debug') && console.log('Sent email', result);
+        app.get('debug') && app.debug('Sent email', result);
       }).catch(err => {
-        app.get('debug') && console.log('Error sending email', err);
+        app.error('Error sending email', err);
       });
   }
 
   return {
     notifier: function(type, user) {
-      app.get('debug') && console.log(`-- Preparing email for ${type}`);
+      app.get('debug') && app.debug(`-- Preparing email for ${type}`);
 
       switch (type) {
       case 'resendVerifySignup':
