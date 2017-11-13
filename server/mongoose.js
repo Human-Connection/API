@@ -14,7 +14,7 @@ module.exports = function () {
   }, function () {
     if (app.get('seeder').dropDatabase === true) {
       mongoose.connection.dropDatabase().then(() => {
-        console.log('>>>>>> DROPED DATABASE <<<<<<');
+        app.debug('>>>>>> DROPED DATABASE <<<<<<');
         app.emit('mongooseInit');
       });
     } else {

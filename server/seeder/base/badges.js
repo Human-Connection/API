@@ -1,5 +1,4 @@
-const _ = require('lodash');
-
+// eslint-disable-next-line no-unused-vars
 module.exports = (seederstore) => {
   return {
     services: [{

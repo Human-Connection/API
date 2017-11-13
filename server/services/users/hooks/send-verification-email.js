@@ -3,7 +3,7 @@ const accountService = require('../../../services/auth-management/notifier');
 module.exports = () => hook => {
 
   if (!hook.params.provider) {
-    console.error('no email provider configured');
+    hook.app.error('no email provider configured');
     return hook;
   }
 
@@ -13,8 +13,8 @@ module.exports = () => hook => {
     accountService(hook.app).notifier('resendVerifySignup', user);
     return hook;
   } else {
-    console.error('issue sending virification email');
+    hook.app.error('issue sending virification email');
   }
 
   return hook;
-}
+};

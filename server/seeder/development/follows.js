@@ -1,4 +1,3 @@
-const _ = require('lodash');
 const seedHelpers = require('../../helper/seed-helpers');
 
 module.exports = (seederstore) => {

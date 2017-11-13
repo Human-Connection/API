@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-const logger = require('winston');
 const fs = require('fs-extra');
 const path = require('path');
 
@@ -13,7 +12,7 @@ const app = require('./app');
 const port = app.get('port');
 
 process.on('unhandledRejection', (reason, p) => {
-  logger.error('Unhandled Rejection at: Promise ', p, reason)
+  app.error('Unhandled Rejection at: Promise ', p, reason);
 });
 
 // Start server
@@ -24,17 +23,17 @@ server.on('listening', () => {
     app.on('mongooseInit', () => {
       app.service('users').find({ query: { $limit: 0 }})
         .then(res => {
-          console.log(res);
+          app.debug(res);
           if (res.total > 0) {
             return null;
           }
-          console.log('>>>>>> RUN SEEDER <<<<<<');
+          app.info('>>>>>> RUN SEEDER <<<<<<');
           app.seed()
             .then(() => {
-              logger.info(`Feathers application started on ${app.get('host')}:${port}`);
+              app.info(`Feathers application started on ${app.get('host')}:${port}`);
             })
             .catch((e) => {
-              logger.error(e);
+              app.error(e);
             });
         });
     });

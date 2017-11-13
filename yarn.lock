@@ -1716,6 +1716,12 @@ feathers-hooks@^2.1.2:
     feathers-commons "^0.8.6"
     uberproto "^1.2.0"
 
+feathers-logger@^0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/feathers-logger/-/feathers-logger-0.2.3.tgz#cf47f076220e8ce6890dcab7eb51d264e6887491"
+  dependencies:
+    uberproto "^1.2.0"
+
 feathers-mailer@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/feathers-mailer/-/feathers-mailer-2.0.0.tgz#a913363082a3c66ea50213c03fda902b5d011390"

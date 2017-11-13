@@ -1,6 +1,7 @@
 // Use this hook to manipulate incoming or outgoing data.
 // For more information on hooks see: http://docs.feathersjs.com/api/hooks.html
 
+const errors = require('feathers-errors');
 const fs = require('fs');
 const path = require('path');
 const request = require('request');
@@ -37,7 +38,7 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
           urls.push(imgPath);
           stream.on('close', () => {
             if (--loading <= 0) {
-              console.log('Download finished', imgName);
+              hook.app.debug('Download finished', imgName);
               resolve(hook);
             }
           });
@@ -45,13 +46,13 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
             // reject(err);
             throw new errors.Unprocessable('Thumbnail download failed', { errors: err, urls: urls });
           });
-          console.log('Downloading', hook.data[field]);
+          hook.app.debug('Downloading', hook.data[field]);
           request(hook.data[field]).pipe(stream);
           hook.data[field] = uploadsUrl + imgName;
         });
 
         if (loading <= 0) {
-          console.log('Download(s) finished', urls);
+          hook.app.debug('Download(s) finished', urls);
           resolve(hook);
         }
       } catch(err) {
@@ -59,5 +60,5 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
         throw new errors.Unprocessable('Thumbnail download failed', { errors: err, urls: urls });
       }
     });
-  }
+  };
 };

@@ -16,7 +16,7 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
           resolve(hook);
         })
         .catch(error => {
-          console.log(error);
+          hook.app.error(error);
           resolve(hook);
         });
     });

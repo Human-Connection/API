@@ -6,4 +6,4 @@ module.exports = () => hook => {
     throw new errors.Forbidden('You don\'t have admin rights.');
   }
   return hook;
-}
+};

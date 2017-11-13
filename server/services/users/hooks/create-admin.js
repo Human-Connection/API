@@ -12,9 +12,9 @@ module.exports = () => hook => {
         return;
       })
       .catch(error => {
-        console.log(error);
+        hook.app.error(error);
         resolve(hook);
         return;
       });
   });
-}
+};
