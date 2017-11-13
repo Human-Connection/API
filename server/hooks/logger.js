@@ -9,15 +9,20 @@ module.exports = function () {
     }
 
     hook.app.info(message);
-    hook.app.debug('hook.data', hook.data);
-    hook.app.debug('hook.params', hook.params);
+    // hook.app.debug({
+    //   hook:
+    //   {
+    //     data: hook.data,
+    //     params: hook.params
+    //   }
+    // });
 
-    if (hook.result) {
-      hook.app.debug('hook.result', hook.result);
-    }
+    // if (hook.result) {
+    //   hook.app.debug('hook.result', hook.result);
+    // }
 
-    if (hook.error) {
-      hook.app.error(hook.error);
-    }
+    // if (hook.error) {
+    //   hook.app.error(hook.error);
+    // }
   };
 };

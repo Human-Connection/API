@@ -1,16 +1,28 @@
-const winston = require('winston');
+const { createLogger, format, transports } = require('winston');
+const { combine, timestamp, label, printf } = format;
 
-const logger = winston.createLogger({
+const logger = createLogger({
   level: 'info',
-  format: winston.format.json(),
+  format: format.json(),
   transports: [
-    new winston.transports.File({ filename: 'error.log', level: 'error' }),
-    new winston.transports.File({ filename: 'combined.log' })
+    new transports.File({ filename: './data/error.log', level: 'error' }),
+    new transports.File({ filename: './data/combined.log' })
   ]
 });
 if (process.env.NODE_ENV !== 'production') {
-  logger.add(new winston.transports.Console({
-    format: winston.format.json(),
+  logger.add(new transports.Console({
+    format: format.combine(
+      format.printf((info) => {
+        const date = new Date();
+        const levelColors = {
+          info: '\u001b[32m',
+          debug: '\u001b[34m',
+          warning: '\u001b[33m',
+          error: '\u001b[31m'
+        };
+        return `${levelColors[info.level]}${date.toLocaleTimeString()} | ${info.level}: ${JSON.stringify(info.message)}\u001b[39m`;
+      })
+    ),
     level: 'debug'
   }));
 }
