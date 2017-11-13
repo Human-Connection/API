@@ -4,7 +4,39 @@ const logger = require('winston');
 const assert = require('assert');
 const ElasticsearchWrapper = require('../../server/services/search/elasticsearch.wrapper');
 
+describe('ElasticsearchWrapper.update', () => {
 
+  it('should add and update a contribution', function (done) {
+    let cut = new ElasticsearchWrapper();
+
+    let date = new Date();
+
+    let salt = date.toUTCString();
+    
+    let contribution = {
+      _id:'id12345_'+salt,
+      title:'Title3',
+      content:'a content text 123'
+    }
+    
+    logger.info("adding contribution:" + JSON.stringify(contribution));
+
+    let addResult = cut.add(contribution);
+ 
+    addResult.then(passed = function(value){
+        logger.info("step 1 - add new contribution 1 result: " + value);
+        
+        let addResult2 = cut.add(contribution);
+        addResult2.then(passed=function(value){
+          logger.info("step 2 - add new contribution 2 result: " + value);
+
+          done();
+
+        });
+    });
+    
+  })
+});
 
 describe('ElasticsearchWrapper.find', () => {
 

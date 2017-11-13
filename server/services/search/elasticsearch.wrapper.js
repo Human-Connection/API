@@ -21,35 +21,76 @@ class ElasticsearchWrapper {
     logger.info("contibutionService:" + contributionService);
   }
 
- 
+
   async add(contribution) {
+    if (!contribution._id) {
+      logger.info("add contribution - no id - skip");
+      return;
+    }
     let client = this.getClient();
-    logger.info("ES001 add contribution: "+ JSON.stringify(contribution));
+    logger.info("ES001 add contribution: " + JSON.stringify(contribution));
 
-    let creationDate = contribution.createdAt;
-
-    let addResult = await client.create({
-      index: 'hc',
-      type: 'contribution',
-      // id: contribution.title,//TODO RB: use contribution._id
-      id: "ESID_"+contribution._id,
-      body: {
-        title: contribution.title,//use title in order to find a contribution
-        content: contribution.content,//
-        value: contribution
-      }
-    });
-
-    logger.info("ES001 add result:" + JSON.stringify(addResult));
+    let addResult = "";
+    try {
+       addResult = await client.create({
+        index: 'hc',
+        type: 'contribution',
+        id: ""+contribution._id,
+        body: {
+          title: contribution.title,//use title in order to find a contribution
+          content: contribution.content,//
+          value: contribution
+        }
+      });
+      logger.info("ES001 add result:" + JSON.stringify(addResult));
+    } catch (error) {
+      logger.error("Add Contribution error: " + error);
+      update(contribution);
+    }
+    return addResult;
   }
 
-  
+  async update(contribution) {
+     if (!contribution._id) {
+      logger.info("ES001 update contribution -  no id - skip");
+      return;
+    }
 
-  
+    logger.info("ES001 update contribution: " + JSON.stringify(contribution));
+    
+    try {
+
+      
+      let client = this.getClient();
+
+      let deleteResult = await client.delete({
+         index: 'hc',
+         type: 'contribution',
+         id: ""+contribution._id,
+      });
+
+      let updateResult = await client.update({
+         index: 'hc',
+         type: 'contribution',
+         id: ""+contribution._id,
+         
+         _source : JSON.stringify(contribution)
+         
+      });
+      logger.info("ES001 update result:" + JSON.stringify(updateResult));
+    } catch (error) {
+      logger.error("update ES error:" + error)
+    }
+    
+  }
+
+
+
+
 
   async find(params) {
     logger.info('SearchService.find');
-    
+
     //TODO RB: use paging in es
 
     //find by params:{"query":{"$skip":0,"$sort":{"createdAt":-1},"$search":"et"},"provider":"socketio"}
@@ -58,53 +99,55 @@ class ElasticsearchWrapper {
     //let token = params.query.token;
     logger.info('ES001 token:' + token);
 
-    if( ! token){
+    if (!token) {
       return this.getNoResultsFoundResponse();
     }
 
     //START SEARCH
     let client = this.getClient();
-    
+
     let query = this.buildQuery(token);
 
     // TODO RB: filter results
     // TODO RB: using paging
     // https://www.elastic.co/guide/en/elasticsearch/guide/current/pagination.html
 
-    let result =  await client.search(query);
+    let result = await client.search(query);
     logger.info("ES001 search result:" + JSON.stringify(result));
     let totalHits = result.hits.total;
     logger.info("ES001 total hits:" + totalHits);
     if (totalHits === 0) {
       result = this.getNoResultsFoundResponse();
     } else {
-      
+
       let value = this.getNoResultsFoundResponse();
       value.total = result.hits.total;
-      
+
       logger.info("ES001 hits.hits: " + JSON.stringify(result.hits.hits));
       logger.info("ES001 hits.hits.length: " + result.hits.hits.length);
-      
-      for(var i = 0; i < result.hits.hits.length; i++){
-        value.data[i] = result.hits.hits[i]._source.value;  
+
+      for (var i = 0; i < result.hits.hits.length; i++) {
+        value.data[i] = result.hits.hits[i]._source.value;
       }
-     
-      
+
+
 
       logger.info("ES001 result value:" + JSON.stringify(value));
       result = value;
-      
+
     }
     return result;
 
 
   }
 
-  getNoResultsFoundResponse(){
-    let result = {total:0,
-            limit:10,
-            skip:0,
-            data:[]}
+  getNoResultsFoundResponse() {
+    let result = {
+      total: 0,
+      limit: 10,
+      skip: 0,
+      data: []
+    }
     return result;
   }
 
@@ -132,7 +175,7 @@ class ElasticsearchWrapper {
     });
   }
 
-   dropIndex() {
+  dropIndex() {
     let client = this.getClient();
     client.indices.exists('hc', function (response) {
       logger.info('index exists: ' + response);
@@ -158,7 +201,7 @@ class ElasticsearchWrapper {
     });
   }
 
-  buildQuery(token){
+  buildQuery(token) {
     let query = {
       index: 'hc',
       type: 'contribution',

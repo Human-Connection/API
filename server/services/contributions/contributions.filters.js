@@ -7,5 +7,9 @@ const ElasticsearchWrapper = require('../search/elasticsearch.wrapper');
 //ToDo: Implement some kind of channel for subscriptions
 module.exports = function (data, connection, hook) { // eslint-disable-line no-unused-vars
   
+  /*logger.info("contribution filter - data:" + JSON.stringify(data));
+  logger.info("contribution filter - hook:" + JSON.stringify(hook));
+  logger.info("contribution filter - hook:" + JSON.stringify(hook.result));
+  */
   return data;
 };

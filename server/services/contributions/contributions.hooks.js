@@ -10,6 +10,7 @@ const createSlug = require('../../hooks/create-slug');
 const createExcerpt = require('../../hooks/create-excerpt');
 const search = require('feathers-mongodb-fuzzy-search');
 const onContributionAdded = require('../../hooks/on-contribution-added');
+const onContributionUpdated = require('../../hooks/on-contribution-updated');
 
 const userSchema = {
   include: {
@@ -102,8 +103,12 @@ module.exports = {
     create: [
       onContributionAdded()
     ],
-    update: [],
-    patch: [],
+    update: [
+      onContributionAdded()
+    ],
+    patch: [
+      onContributionAdded()
+    ],
     remove: []
   },
 

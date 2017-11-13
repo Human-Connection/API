@@ -16,8 +16,8 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
       let data = hook.result;
 
       logger.info('ES001 hook.data:' + JSON.stringify(data));
-      
-      es.add(data);
+
+      es.update(data);
 
     } catch (error) {
       logger.error('Error:' + error);
