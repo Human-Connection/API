@@ -15,7 +15,7 @@ if (process.env.NODE_ENV !== 'production') {
       format.printf((info) => {
         const date = new Date();
         const levelColors = {
-          info: '\u001b[32m',
+          info: '',
           debug: '\u001b[34m',
           warning: '\u001b[33m',
           error: '\u001b[31m'

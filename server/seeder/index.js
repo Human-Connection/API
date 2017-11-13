@@ -47,6 +47,7 @@ module.exports = function () {
           await seedAndAssign(service, seeder);
         });
       });
+      app.info('>>>>>> SEEDING COMPLETED <<<<<<');
     };
   };
 };
