@@ -68,6 +68,7 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
    Now you should be able to list some post at [http://localhost:3030/contributions]
 
 6. Setup and Start Thumbnail Service (optional)
+
    We are using [Thumbor](https://github.com/thumbor/thumbor) as a Thumbnail Microservice.
    You can install it locally if you like but this is totally optional.
    
