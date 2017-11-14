@@ -9,6 +9,10 @@
       "pass": ""
     }
   },
+  "thumbor": {
+    "url": "",
+    "key": ""
+  },
   "seeder": {
     "runOnInit": true,
     "dropDatabase": true

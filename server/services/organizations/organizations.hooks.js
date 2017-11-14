@@ -1,5 +1,7 @@
 const { authenticate } = require('feathers-authentication').hooks;
 const {populate} = require('feathers-hooks-common');
+const createSlug = require('../../hooks/create-slug');
+const saveRemoteImages = require('../../hooks/save-remote-images');
 const userSchema = {
   include: {
     service: 'users',
@@ -22,9 +24,21 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [ authenticate('jwt') ],
-    update: [ authenticate('jwt') ],
-    patch: [ authenticate('jwt') ],
+    create: [
+      authenticate('jwt'),
+      createSlug({ field: 'name' }),
+      saveRemoteImages(['logo'])
+    ],
+    update: [
+      authenticate('jwt'),
+      createSlug({ field: 'name' }),
+      saveRemoteImages(['logo'])
+    ],
+    patch: [
+      authenticate('jwt'),
+      createSlug({ field: 'name' }),
+      saveRemoteImages(['logo'])
+    ],
     remove: [ authenticate('jwt') ]
   },
 
