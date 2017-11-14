@@ -65,7 +65,7 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
    > the proper path. Otherwise you will get missing data path errors from mongodb.
    
    If you did it right it will seed some fake data for you and downloads some images and avatar for faster development.
-   Now you should be able to list some post at [http://localhost:3030/contributions]
+   Now you should be able to list some post at [http://localhost:3030/contributions](http://localhost:3030/contributions)
 
 6. Setup and Start Thumbnail Service (optional)
 
