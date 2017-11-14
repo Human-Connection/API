@@ -1,6 +1,6 @@
 # Human Connection API
 
-The API for a better word. More information under [humanconnection.org](https://humanconnection.org)
+The API for a better world. More information under [humanconnection.org](https://humanconnection.org)
 
 > **Note:** This is only the API part of Human Connection, you can also checkout the Frontend which uses this API.
 
