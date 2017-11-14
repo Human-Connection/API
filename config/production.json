@@ -12,6 +12,10 @@
       "pass": "SMTP_PASS"
     }
   },
+  "thumbor": {
+    "url": "THUMBOR_URL",
+    "key": "THUMBOR_KEY"
+  },
   "seeder": {
     "runOnInit": false,
     "dropDatabase": false
