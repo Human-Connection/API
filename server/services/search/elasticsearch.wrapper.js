@@ -84,7 +84,30 @@ class ElasticsearchWrapper {
   }
 
   
-
+  async delete(contribution){
+    if(! contribution){
+      return;
+    }
+    if(! contribution._id){
+        return;
+    }
+    let client = this.getClient();
+    if(!client){
+      logger.error("no ES Client available");
+      return;
+    }
+    let deleteResult = "";
+    try {
+       deleteResult = await client.delete({
+        index: 'hc',
+        type: 'contribution',
+        id: ""+contribution._id
+      });  
+    } catch (error) {
+      logger.error("delete contribution error: " + JSON.stringify(error));
+    }
+    return deleteResult;
+  }
 
 
 

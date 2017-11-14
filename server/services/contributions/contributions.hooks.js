@@ -12,6 +12,7 @@ const createExcerpt = require('../../hooks/create-excerpt');
 const search = require('feathers-mongodb-fuzzy-search');
 const thumbnails = require('../../hooks/thumbnails');
 const onContributionAdded = require('../../hooks/on-contribution-added');
+const onContributionDeleted = require('../../hooks/on-contribution-deleted');
 
 const userSchema = {
   include: {
@@ -119,7 +120,18 @@ module.exports = {
         }
       })
     ],
-    remove: []
+    create: [
+      onContributionAdded()
+    ],
+    update: [
+      onContributionAdded()
+    ],
+    patch: [
+      onContributionAdded()
+    ],
+    remove: [
+      onContributionDeleted()
+    ]
   },
 
   error: {
