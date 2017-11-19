@@ -104,7 +104,7 @@ module.exports = {
           cardM: '400x0',
           cardL: '740x0',
           medium: '400x0',
-          placeholder: '50x0/filters:blur(15)',
+          placeholder: '80x0/filters:blur(15)',
           zoom: '0x1024',
           cover: '800x300/smart'
         }
@@ -114,7 +114,7 @@ module.exports = {
         teaserImg: {
           zoom: '0x1024',
           cover: '800x300/smart',
-          placeholder: '800x300/filters:blur(15)'
+          placeholder: '800x300/filters:blur(10)'
         }
       })
     ],
