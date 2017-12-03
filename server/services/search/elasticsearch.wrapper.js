@@ -15,15 +15,45 @@ class ElasticsearchWrapper {
 
   setApp(app) {
     this.app = app;
-    logger.debug("ElasticsearchWrapper setup");
+    
+    this.init(app);
+
   }
 
+  init(app) {
+    this.enabled = false;
+    let esEnabledConfigValue = app.get('elasticsearch').enable;
+    if (esEnabledConfigValue === true) {
+      logger.debug("ElasticSearchWrapper.init :: ElasticSearch enabled ... ");
+      this.enabled = true;
+    }else{
+      logger.debug("ElasticSearchWrapper.init :: ElasticSearch disabled ... ");
+    }
+  }
+
+  isEnabled(){
+    return ! (this.isDisabled());
+  }
+  
+  isDisabled() {
+    let isDisabled = this.enabled === false;
+
+    if (isDisabled === false) {
+      logger.debug("ElasticSearchWrapper.isDisabled :: ElasticSearch disbaled ");
+    }
+
+    return isDisabled;
+  }
 
   /**
    * 
    * @param {*} contribution 
    */
   async add(contribution) {
+    if (this.isDisabled()) {
+      return;
+    };
+
     if (!contribution._id) {
       logger.debug("contribution._id is required!");
       return;
@@ -44,7 +74,7 @@ class ElasticsearchWrapper {
           value: contribution
         }
       });
-      
+
     } catch (error) {
       logger.error("Add Contribution error: " + JSON.stringify(error));
       addResult = this.deleteAndAdd(contribution, NEW_ID, client);
@@ -58,8 +88,9 @@ class ElasticsearchWrapper {
    * @param {*} client 
    */
   async deleteAndAdd(contribution, NEW_ID, client) {
+
     let addResult = "";
-    
+
     let deleteResult = await client.delete({
       index: 'hc',
       type: 'contribution',
@@ -76,34 +107,41 @@ class ElasticsearchWrapper {
           value: contribution
         }
       });
-      
+
     } catch (error) {
       logger.error("deleteAndAdd error:" + JSON.stringify(error));
     }
     return addResult;
   }
 
-  
-  async delete(contribution){
-    if(! contribution){
+
+  async delete(contribution) {
+    if (!contribution) {
+      logger.debug('no contribution given');
       return;
     }
-    if(! contribution._id){
-        return;
+    if (!contribution._id) {
+      logger.debug('no contribution._id given');
+      return;
     }
+    logger.debug('perform delete');
+
     let client = this.getClient();
-    if(!client){
+    if (!client) {
       logger.error("no ES Client available");
       return;
     }
     let deleteResult = "";
     try {
-       deleteResult = await client.delete({
+      logger.debug("120");
+      deleteResult = await client.delete({
         index: 'hc',
         type: 'contribution',
-        id: ""+contribution._id
-      });  
+        id: "" + contribution._id
+      });
+      logger.debug("130");
     } catch (error) {
+      logger.error("error:" + error);
       logger.error("delete contribution error: " + JSON.stringify(error));
     }
     return deleteResult;
@@ -117,12 +155,13 @@ class ElasticsearchWrapper {
    * @param {*} params 
    */
   async find(params) {
-    logger.debug('SearchService.find');
-    //TODO RB: use paging in es
+    logger.debug('ElasticSearchWrapper.find');
+    
     //find by params:{"query":{"$skip":0,"$sort":{"createdAt":-1},"$search":"et"},"provider":"socketio"}
     logger.debug('find by params:' + JSON.stringify(params));
     let token = params.query.$search;
-    //let token = params.query.token;
+    //let token = params.query.$contributions;
+    
     logger.debug('token:' + token);
 
     if (!token) {
@@ -133,9 +172,6 @@ class ElasticsearchWrapper {
     let client = this.getClient();
 
     let query = this.buildQuery(token);
-
-    // TODO RB: using paging
-    // https://www.elastic.co/guide/en/elasticsearch/guide/current/pagination.html
 
     let result = await client.search(query);
     logger.debug("search result:" + JSON.stringify(result));
@@ -168,7 +204,7 @@ class ElasticsearchWrapper {
     return result;
   }
 
- 
+
 
   buildQuery(token) {
     let query = {
@@ -213,12 +249,21 @@ class ElasticsearchWrapper {
     return query;
   }
 
+  setESClient(client){
+    this.esClient = client;
+  }
+
   getClient() {
+    if(this.esClient){
+      logger.debug("return pre setup  ESClient");
+      return this.esClient;
+    }
     let client = new elasticsearch.Client({
       host: 'localhost:9200',
       apiVersion: '5.6',
-      log: 'trace'
+      log: 'debug'
     });
+    logger.debug("ElasticSearchWrapper.getClient :: using real ES Client");
     return client;
   }
 

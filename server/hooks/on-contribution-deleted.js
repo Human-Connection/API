@@ -7,22 +7,20 @@ const ElasticsearchWrapper = require('../services/search/elasticsearch.wrapper')
 
 module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
   return function (hook) {
-    
+
     let es = new ElasticsearchWrapper();
-    //https://docs.feathersjs.com/api/hooks.html
-    logger.debug('on contribution deleted:');
-    
-    try {
-      let data = hook.result;
-
-      logger.debug('hook.data:' + JSON.stringify(data));
-      
-      es.delete(data);
-
-    } catch (error) {
-      logger.error('Error:' + error);
+    es.setApp(hook.app);
+    if (es.isEnabled()) {
+      //https://docs.feathersjs.com/api/hooks.html
+      logger.debug('on contribution deleted:');
+      try {
+        let data = hook.result;
+        logger.debug('hook.data:' + JSON.stringify(data));
+        es.delete(data);
+      } catch (error) {
+        logger.error('Error:' + error);
+      }
     }
-    
     return Promise.resolve(hook);
   };
 };
