@@ -17,13 +17,17 @@ class ElasticsearchWrapper {
    * @param app
    */
   constructor(app) {
-    console.log('CONSTRUCTIOR', app);
     this.app = app;
 
     this.enabled = false;
-    const esEnabledConfigValue = app.get('elasticsearch').enable;
+    this.config = Object.assign({
+      enabled: false,
+      host: 'localhost:9200'
+    }, app.get('elasticsearch'));
+    const esEnabledConfigValue = this.config.enabled;
     if (esEnabledConfigValue === true) {
       this.app.debug('ElasticSearchWrapper.init :: ElasticSearch enabled ... ');
+      this.app.debug(this.config.host);
       this.enabled = true;
     } else {
       this.app.debug('ElasticSearchWrapper.init :: ElasticSearch disabled ... ');
@@ -286,8 +290,8 @@ class ElasticsearchWrapper {
       this.app.debug('return pre setup  ESClient');
       return this.esClient;
     }
-    let client = new elasticsearch.Client({
-      host: 'localhost:9200',
+    const client = new elasticsearch.Client({
+      host: this.config.host,
       apiVersion: '5.6',
       log: 'debug'
     });
