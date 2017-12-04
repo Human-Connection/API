@@ -24,7 +24,7 @@
   "scripts": {
     "clear": "rm -Rf tmp",
     "test": "npm run eslint && npm run mocha",
-    "eslint": "eslint server/. test/. --config .eslintrc.json --fix",
+    "eslint": "eslint server/. test/. --config .eslintrc.json",
     "start": "concurrently 'mongod' 'wait-on tcp:27017 && NODE_ENV=production node server/'",
     "start-win": "concurrently \"mongod\" \"wait-on tcp:27017 &&SET NODE_ENV=production&& node server/\"",
     "dev": "npm run clear && concurrently 'mongod --dbpath data' 'wait-on tcp:27017 && NODE_ENV=development nodemon --inspect server/'",
@@ -69,7 +69,6 @@
     "handlebars-layouts": "^3.1.4",
     "helmet": "^3.9.0",
     "html-excerpt": "^0.1.0",
-    "mongoose": "^4.13.2",
     "mongoose": "^4.12.4",
     "multer": "^1.3.0",
     "node-sass": "^4.6.1",
