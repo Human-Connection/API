@@ -13,7 +13,6 @@ const search = require('feathers-mongodb-fuzzy-search');
 const thumbnails = require('../../hooks/thumbnails');
 const onContributionAdded = require('../../hooks/on-contribution-added');
 const onContributionDeleted = require('../../hooks/on-contribution-deleted');
-const onContributionSearched = require('../../hooks/on-contribution-searched');
 
 const userSchema = {
   include: {
@@ -114,7 +113,6 @@ module.exports = {
           cover: '800x300/smart'
         }
       })
-      //,onContributionSearched()
     ],
     get: [
       thumbnails({

@@ -187,6 +187,10 @@ class ElasticsearchWrapper {
       this.app.debug('no contribution._id given');
       return;
     }
+    if(this.isDisabled()){
+      return;
+    }
+    
     this.app.debug('perform delete');
 
     const client = this.getClient();
