@@ -3,7 +3,7 @@
 const logger = require('winston');
 const assert = require('assert');
 const ElasticsearchWrapper = require('../../../server/services/search/elasticsearch.wrapper');
-const { appMock } = require('./esTestHelper');
+const { appMock, ESMock, esClientMock } = require('./esTestHelper');
 
 describe('ElasticsearchWrapper', () => {
 
@@ -16,9 +16,7 @@ describe('ElasticsearchWrapper', () => {
     let cut = new ElasticsearchWrapper(appMock(true));
 
     //GIVEN: app configuration with disabled elasticsearch
-    let app = appMock(false);
     //WHEN
-    cut.setApp(app);
     //THEN
     assert.ok(cut.isDisabled(), 'ElasticSearch should be disabled');
     done();
@@ -28,9 +26,7 @@ describe('ElasticsearchWrapper', () => {
   it('should disable elastic search by config with undefined config value', function(done) {
 
     //GIVEN: app configuration with disabled elasticsearch
-    let undefinedParam;
-    let app = appMock(undefinedParam);
-    let cut = new ElasticsearchWrapper(app);
+    let cut = new ElasticsearchWrapper(appMock(true));
     //WHEN
     //THEN
 
@@ -90,31 +86,6 @@ describe('ElasticsearchWrapper', () => {
     assert.equal(deleteParam.id, '123', 'id attribute should be 123');
     done();
   });
-
-
-  class ESMock {
-    constructor() {
-      this.deleteParam = '';
-    }
-
-    delete(param) {
-      logger.debug('ESMock.delete:' + JSON.stringify(param));
-      this.deleteParam = param;
-      return 0;
-    }
-
-    getDeleteParam() {
-      return this.deleteParam;
-    }
-  }
-
-  let esClientMock = function() {
-    return {
-      function(param) {
-        logger.debug('DELETE call at mock detected:' + param);
-      }
-    };
-  };
 
 });
 
