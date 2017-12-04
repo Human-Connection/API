@@ -34,6 +34,10 @@ module.exports = function (options) {
     const Thumbor = new ThumborUrlHelper(config.key || null, config.url || null);
     return new Promise(resolve => {
       _.castArray(hook.result.data).forEach(result => {
+        // skip on no result
+        if (!_.isObject(result)) {
+          return;
+        }
         // add thumbnails object
         result.thumbnails = {};
         // try to generate thumnail urls for every field specefied in options
