@@ -26,14 +26,63 @@ class ElasticsearchWrapper {
       enabled: false,
       host: 'localhost:9200'
     }, app.get('elasticsearch'));
-    const esEnabledConfigValue = this.config.enabled;
-    if (esEnabledConfigValue === true) {
-      this.app.debug('ElasticSearchWrapper.init :: ElasticSearch enabled ... ');
-      this.app.debug(this.config.host);
-      this.enabled = true;
-    } else {
-      this.app.debug('ElasticSearchWrapper.init :: ElasticSearch disabled ... ');
+    
+  }
+
+  /**
+  * find an entry inside ElasticSearch
+  *
+  * @param {*} params
+  */
+  async find(params) {
+    this.app.debug('ElasticSearchWrapper.find');
+    //find by params:{"query":{"$skip":0,"$sort":{"createdAt":-1},"$search":"et"},"provider":"socketio"}
+    this.app.debug('find by params:' + JSON.stringify(params));
+
+    let token = params.query.$search;
+    this.app.debug("token:" + token);
+
+    if (this.isDisabled()) {
+      this.app.debug("ES disabled...");
+      this.app.debug("forwarding request to forwarding service");
+      let contributionResult = await this.forwardingService.find(params);
+      // this.app.debug("contributionResult:" + JSON.stringify(contributionResult));
+      return contributionResult;
     }
+
+    if (!token) {
+      return this.getDefaultResponse();
+    }
+
+
+    // START SEARCH
+    let client = this.getClient();
+
+    let query = this.buildQuery(token);
+
+    let result = await client.search(query);
+    this.app.debug('search result:' + JSON.stringify(result));
+    let totalHits = result.hits.total;
+    if (totalHits === 0) {
+      result = this.getDefaultResponse();
+    } else {
+
+      let value = this.getDefaultResponse();
+      value.total = result.hits.total;
+
+      for (var i = 0; i < result.hits.hits.length; i++) {
+        value.data[i] = result.hits.hits[i]._source.value;
+      }
+
+      this.app.debug('result value:' + JSON.stringify(value));
+      result = value;
+
+    }
+    return result;
+  }
+
+  setForwardingService(service) {
+    this.forwardingService = service;
   }
 
   /**
@@ -49,7 +98,7 @@ class ElasticsearchWrapper {
    * @returns {boolean}
    */
   isDisabled() {
-    return ! (this.isEnabled());
+    return !(this.isEnabled());
   }
 
   /**
@@ -162,50 +211,6 @@ class ElasticsearchWrapper {
   }
 
 
-  /**
-   * find an entry inside ElasticSearch
-   *
-   * @param {*} params
-   */
-  async find(params) {
-    this.app.debug('ElasticSearchWrapper.find');
-
-    //find by params:{"query":{"$skip":0,"$sort":{"createdAt":-1},"$search":"et"},"provider":"socketio"}
-    this.app.debug('find by params:' + JSON.stringify(params));
-    let token = params.query.$search;
-    //let token = params.query.$contributions;
-
-    this.app.debug('token:' + token);
-
-    if (!token) {
-      return this.getDefaultResponse();
-    }
-
-    // START SEARCH
-    let client = this.getClient();
-
-    let query = this.buildQuery(token);
-
-    let result = await client.search(query);
-    this.app.debug('search result:' + JSON.stringify(result));
-    let totalHits = result.hits.total;
-    if (totalHits === 0) {
-      result = this.getDefaultResponse();
-    } else {
-
-      let value = this.getDefaultResponse();
-      value.total = result.hits.total;
-
-      for (var i = 0; i < result.hits.hits.length; i++) {
-        value.data[i] = result.hits.hits[i]._source.value;
-      }
-
-      this.app.debug('result value:' + JSON.stringify(value));
-      result = value;
-
-    }
-    return result;
-  }
 
   /**
    * get the default pagination metadata

@@ -4,10 +4,16 @@ const ElasticsearchWrapper = require('./elasticsearch.wrapper');
 module.exports = function () {
   const app = this;
   
-  const searchApp = new ElasticsearchWrapper(app);
-  // Initialize our service with any options it requires
-  app.use('/search', searchApp);
+  // contribution mode
+  const searchAppContribution = new ElasticsearchWrapper(app);
+  const contributionService = app.service('contributions');
+  searchAppContribution.setForwardingService(contributionService);
+  app.use('/search_contribution', searchAppContribution);
 
-  // Get our initialized service so that we can register hooks and filters
-  app.service('search');
+
+  // another entity mode
+  const searchAppContribution2 = new ElasticsearchWrapper(app);
+  searchAppContribution2.setForwardingService(contributionService);
+  app.use('/search_contribution2', searchAppContribution2);
+
 };
