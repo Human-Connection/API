@@ -20,7 +20,7 @@ describe('ElasticsearchWrapper', () => {
     //WHEN
     cut.setApp(app);
     //THEN
-    assert.ok(cut.isDisabled(), "ElasticSearch should be disabled");
+    assert.ok(cut.isDisabled(), 'ElasticSearch should be disabled');
     done();
 
   });
@@ -35,7 +35,7 @@ describe('ElasticsearchWrapper', () => {
     cut.setApp(app);
     //THEN
 
-    assert.ok(cut.isDisabled(), "ElasticSearch should be disabled");
+    assert.ok(cut.isDisabled(), 'ElasticSearch should be disabled');
     done();
 
   });
@@ -48,7 +48,7 @@ describe('ElasticsearchWrapper', () => {
     //WHEN
     cut.setApp(app);
     //THEN
-    assert.ok(!cut.isDisabled(), "ElasticSearch should be enabled");
+    assert.ok(!cut.isDisabled(), 'ElasticSearch should be enabled');
     done();
   });
 
@@ -89,21 +89,21 @@ describe('ElasticsearchWrapper', () => {
 
     //THEN: no error is expected
     let deleteParam = esMock.getDeleteParam();
-    logger.debug("deleteParam:" + JSON.stringify(deleteParam));
-    assert.equal(deleteParam.index, "hc","index attribute should be hc");
-    assert.equal(deleteParam.type, "contribution","type attribute should be contribution");
-    assert.equal(deleteParam.id, "123","id attribute should be 123");
+    logger.debug('deleteParam:' + JSON.stringify(deleteParam));
+    assert.equal(deleteParam.index, 'hc','index attribute should be hc');
+    assert.equal(deleteParam.type, 'contribution','type attribute should be contribution');
+    assert.equal(deleteParam.id, '123','id attribute should be 123');
     done();
   });
 
 
   class ESMock {
     constructor(){
-      this.deleteParam = "";
+      this.deleteParam = '';
     }
     
     delete(param) {
-      logger.debug("ESMock.delete:" + JSON.stringify(param));
+      logger.debug('ESMock.delete:' + JSON.stringify(param));
       this.deleteParam = param;
       return 0;
     }
@@ -116,10 +116,10 @@ describe('ElasticsearchWrapper', () => {
   let esClientMock = function () {
     return {
       function(param) {
-        logger.debug("DELETE call at mock detected:" + param);
+        logger.debug('DELETE call at mock detected:' + param);
       }
     };
-  }
+  };
 
   let appMock = function (enableES) {
 
@@ -129,12 +129,12 @@ describe('ElasticsearchWrapper', () => {
         if ('elasticsearch' === param) {
           return {
             enable: enableES
-          }
+          };
         }
       }
     };
     return app;
-  }
+  };
 
 });
 

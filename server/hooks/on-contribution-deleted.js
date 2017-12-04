@@ -5,8 +5,8 @@ const logger = require('winston');
 const ElasticsearchWrapper = require('../services/search/elasticsearch.wrapper');
 
 
-module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
-  return function (hook) {
+module.exports = function(options = {}) { // eslint-disable-line no-unused-vars
+  return function(hook) {
 
     let es = new ElasticsearchWrapper();
     es.setApp(hook.app);
@@ -17,7 +17,7 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
         let data = hook.result;
         logger.debug('hook.data:' + JSON.stringify(data));
         es.delete(data);
-      } catch (error) {
+      } catch(error) {
         logger.error('Error:' + error);
       }
     }
