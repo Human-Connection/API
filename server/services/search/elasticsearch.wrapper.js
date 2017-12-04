@@ -17,6 +17,7 @@ class ElasticsearchWrapper {
    * @param app
    */
   constructor(app) {
+    console.log('CONSTRUCTIOR', app);
     this.app = app;
 
     this.enabled = false;

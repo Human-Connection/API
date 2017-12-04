@@ -3,6 +3,7 @@
 const logger = require('winston');
 const assert = require('assert');
 const ElasticsearchWrapper = require('../../../server/services/search/elasticsearch.wrapper');
+const { appMock } = require('./esTestHelper');
 
 describe('ElasticsearchWrapper', () => {
 
@@ -12,7 +13,7 @@ describe('ElasticsearchWrapper', () => {
 
 
   it('should disable elastic search by config param', function(done) {
-    let cut = new ElasticsearchWrapper();
+    let cut = new ElasticsearchWrapper(appMock(true));
 
     //GIVEN: app configuration with disabled elasticsearch
     let app = appMock(false);
@@ -41,8 +42,7 @@ describe('ElasticsearchWrapper', () => {
   it('should enable elastic search by config', function(done) {
 
     //GIVEN: app configuration with enabled elasticsearch
-    let app = appMock(true);
-    let cut = new ElasticsearchWrapper(app);
+    let cut = new ElasticsearchWrapper(appMock(true));
     //WHEN
     //THEN
     assert.ok(!cut.isDisabled(), 'ElasticSearch should be enabled');
@@ -60,7 +60,7 @@ describe('ElasticsearchWrapper', () => {
   });
 
   it('should not throw an error when deleting a contribution with no _id field', function(done) {
-    let cut = new ElasticsearchWrapper();
+    let cut = new ElasticsearchWrapper(appMock(true));
 
     let contribution = {};
 
@@ -72,8 +72,7 @@ describe('ElasticsearchWrapper', () => {
   it('should delete a contribution', function(done) {
 
     //GIVEN
-    let app = appMock(true);
-    let cut = new ElasticsearchWrapper(app);
+    let cut = new ElasticsearchWrapper(appMock(true));
     let esMock = new ESMock();
     cut.setESClient(esMock);
     let contribution = {
@@ -115,21 +114,6 @@ describe('ElasticsearchWrapper', () => {
         logger.debug('DELETE call at mock detected:' + param);
       }
     };
-  };
-
-  let appMock = function(enableES) {
-
-    let app = {
-      get: function(param) {
-        //logger.info("param:" + param);
-        if ('elasticsearch' === param) {
-          return {
-            enable: enableES
-          };
-        }
-      }
-    };
-    return app;
   };
 
 });

@@ -3,11 +3,12 @@
 const logger = require('winston');
 const assert = require('assert');
 const ElasticsearchWrapper = require('../../server/services/search/elasticsearch.wrapper');
+const { appMock } = require('./esTestHelper');
 
 describe('ElasticsearchWrapper.update', () => {
 
   it('should add and update a contribution', function (done) {
-    let cut = new ElasticsearchWrapper();
+    let cut = new ElasticsearchWrapper(appMock(true));
 
     let date = new Date();
 
