@@ -1,68 +1,74 @@
 'use strict';
 
-const logger = require('winston');
 const elasticsearch = require('elasticsearch');
 
 /**
  * test query: http://localhost:3030/search?token=bird
- * 
- * 
+ *
+ *
  * https://gist.github.com/StephanHoyer/b9cd6cbc4cc93cee8ea6
- * 
- * 
+ *
+ *
  */
 class ElasticsearchWrapper {
 
-  setApp(app) {
+  /**
+   * initialize the ElasticsearchWrapper
+   * @param app
+   */
+  constructor(app) {
     this.app = app;
-    
-    this.init(app);
 
-  }
-
-  init(app) {
     this.enabled = false;
-    let esEnabledConfigValue = app.get('elasticsearch').enable;
+    const esEnabledConfigValue = app.get('elasticsearch').enable;
     if (esEnabledConfigValue === true) {
-      logger.debug("ElasticSearchWrapper.init :: ElasticSearch enabled ... ");
+      this.app.debug('ElasticSearchWrapper.init :: ElasticSearch enabled ... ');
       this.enabled = true;
-    }else{
-      logger.debug("ElasticSearchWrapper.init :: ElasticSearch disabled ... ");
+    } else {
+      this.app.debug('ElasticSearchWrapper.init :: ElasticSearch disabled ... ');
     }
   }
 
-  isEnabled(){
-    return ! (this.isDisabled());
+  /**
+   * check if elastic search is enabled and configured properly
+   * @returns {boolean}
+   */
+  isEnabled() {
+    return !(this.isDisabled());
   }
-  
+
+  /**
+   * check if elastic search is disabled
+   * @returns {boolean}
+   */
   isDisabled() {
-    let isDisabled = this.enabled === false;
+    const isDisabled = this.enabled === false;
 
     if (isDisabled === false) {
-      logger.debug("ElasticSearchWrapper.isDisabled :: ElasticSearch disbaled ");
+      this.app.debug('ElasticSearchWrapper.isDisabled :: ElasticSearch disbaled ');
     }
 
     return isDisabled;
   }
 
   /**
-   * 
-   * @param {*} contribution 
+   * add an entry to ElasticSearch
+   * @param {*} contribution
    */
   async add(contribution) {
     if (this.isDisabled()) {
       return;
-    };
+    }
 
     if (!contribution._id) {
-      logger.debug("contribution._id is required!");
+      this.app.debug('contribution._id is required!');
       return;
     }
     let client = this.getClient();
-    logger.info("ES001 add contribution: " + JSON.stringify(contribution));
+    this.app.info('ES001 add contribution: ' + JSON.stringify(contribution));
 
-    let NEW_ID = "" + contribution._id;
-    let addResult = "";
+    let NEW_ID = '' + contribution._id;
+    let addResult = '';
     try {
       addResult = await client.create({
         index: 'hc',
@@ -75,21 +81,23 @@ class ElasticsearchWrapper {
         }
       });
 
-    } catch (error) {
-      logger.error("Add Contribution error: " + JSON.stringify(error));
+    } catch(error) {
+      this.app.error('Add Contribution error: ' + JSON.stringify(error));
       addResult = this.deleteAndAdd(contribution, NEW_ID, client);
     }
     return addResult;
   }
+
   /**
-   * 
-   * @param {*} contribution 
-   * @param {*} NEW_ID 
-   * @param {*} client 
+   * add an entry after deleting the old entry in ElasticSearch
+   *
+   * @param {*} contribution
+   * @param {*} NEW_ID
+   * @param {*} client
    */
   async deleteAndAdd(contribution, NEW_ID, client) {
 
-    let addResult = "";
+    let addResult = '';
 
     let deleteResult = await client.delete({
       index: 'hc',
@@ -108,61 +116,65 @@ class ElasticsearchWrapper {
         }
       });
 
-    } catch (error) {
-      logger.error("deleteAndAdd error:" + JSON.stringify(error));
+    } catch(error) {
+      this.app.error('deleteAndAdd error:' + JSON.stringify(error));
     }
     return addResult;
   }
 
-
+  /**
+   * remove an entry from ElasticSearch
+   *
+   * @param contribution
+   * @returns {Promise<string>}
+   */
   async delete(contribution) {
     if (!contribution) {
-      logger.debug('no contribution given');
+      this.app.debug('no contribution given');
       return;
     }
     if (!contribution._id) {
-      logger.debug('no contribution._id given');
+      this.app.debug('no contribution._id given');
       return;
     }
-    logger.debug('perform delete');
+    this.app.debug('perform delete');
 
-    let client = this.getClient();
+    const client = this.getClient();
     if (!client) {
-      logger.error("no ES Client available");
+      this.app.error('no ES Client available');
       return;
     }
-    let deleteResult = "";
+    let deleteResult = '';
     try {
-      logger.debug("120");
+      this.app.debug('120');
       deleteResult = await client.delete({
         index: 'hc',
         type: 'contribution',
-        id: "" + contribution._id
+        id: '' + contribution._id
       });
-      logger.debug("130");
-    } catch (error) {
-      logger.error("error:" + error);
-      logger.error("delete contribution error: " + JSON.stringify(error));
+      this.app.debug('130');
+    } catch(error) {
+      this.app.error('error:' + error);
+      this.app.error('delete contribution error: ' + JSON.stringify(error));
     }
     return deleteResult;
   }
 
 
-
-
   /**
-   * 
-   * @param {*} params 
+   * find an entry inside ElasticSearch
+   *
+   * @param {*} params
    */
   async find(params) {
-    logger.debug('ElasticSearchWrapper.find');
-    
+    this.app.debug('ElasticSearchWrapper.find');
+
     //find by params:{"query":{"$skip":0,"$sort":{"createdAt":-1},"$search":"et"},"provider":"socketio"}
-    logger.debug('find by params:' + JSON.stringify(params));
+    this.app.debug('find by params:' + JSON.stringify(params));
     let token = params.query.$search;
     //let token = params.query.$contributions;
-    
-    logger.debug('token:' + token);
+
+    this.app.debug('token:' + token);
 
     if (!token) {
       return this.getDefaultResponse();
@@ -174,7 +186,7 @@ class ElasticsearchWrapper {
     let query = this.buildQuery(token);
 
     let result = await client.search(query);
-    logger.debug("search result:" + JSON.stringify(result));
+    this.app.debug('search result:' + JSON.stringify(result));
     let totalHits = result.hits.total;
     if (totalHits === 0) {
       result = this.getDefaultResponse();
@@ -183,29 +195,36 @@ class ElasticsearchWrapper {
       let value = this.getDefaultResponse();
       value.total = result.hits.total;
 
-      for (var i = 0; i < result.hits.hits.length; i++) {
+      for(var i = 0; i < result.hits.hits.length; i++) {
         value.data[i] = result.hits.hits[i]._source.value;
       }
 
-      logger.debug("result value:" + JSON.stringify(value));
+      this.app.debug('result value:' + JSON.stringify(value));
       result = value;
 
     }
     return result;
   }
 
+  /**
+   * get the default pagination metadata
+   * @returns {{total: number, limit: number, skip: number, data: Array}}
+   */
   getDefaultResponse() {
     let result = {
       total: 0,
       limit: 10,
       skip: 0,
       data: []
-    }
+    };
     return result;
   }
 
-
-
+  /**
+   * build the ElasticSearch Query
+   * @param token
+   * @returns {{index: string, type: string, body: {query: {dis_max: {tie_breaker: number, queries: *[], boost: number}}}}}
+   */
   buildQuery(token) {
     let query = {
       index: 'hc',
@@ -249,13 +268,21 @@ class ElasticsearchWrapper {
     return query;
   }
 
-  setESClient(client){
+  /**
+   * set the ElasticSeach Client
+   * @param client
+   */
+  setESClient(client) {
     this.esClient = client;
   }
 
+  /**
+   * get the ElasticSearch Client
+   * @returns {*}
+   */
   getClient() {
-    if(this.esClient){
-      logger.debug("return pre setup  ESClient");
+    if (this.esClient) {
+      this.app.debug('return pre setup  ESClient');
       return this.esClient;
     }
     let client = new elasticsearch.Client({
@@ -263,17 +290,20 @@ class ElasticsearchWrapper {
       apiVersion: '5.6',
       log: 'debug'
     });
-    logger.debug("ElasticSearchWrapper.getClient :: using real ES Client");
+    this.app.debug('ElasticSearchWrapper.getClient :: using real ES Client');
     return client;
   }
 
+  /**
+   * close the connection to ElasticSearch
+   * @param client
+   */
   close(client) {
     client.close();
   }
 
 
 } // end class
-
 
 
 module.exports = ElasticsearchWrapper;

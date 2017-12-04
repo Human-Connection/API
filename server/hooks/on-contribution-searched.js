@@ -3,13 +3,11 @@
 
 const logger = require('winston');
 const ElasticsearchWrapper = require('../services/search/elasticsearch.wrapper');
-const search = require('feathers-mongodb-fuzzy-search');
 
 module.exports = function(options = {}) { // eslint-disable-line no-unused-vars
   return function(hook) {
 
-    let es = new ElasticsearchWrapper();
-    es.setApp(hook.app);
+    const es = new ElasticsearchWrapper(hook.app);
     if (es.isEnabled()) {
       logger.debug('on-contributions-searched.hook :: on contribution searched:');
       try {
