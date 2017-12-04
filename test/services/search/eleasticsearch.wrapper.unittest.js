@@ -7,16 +7,9 @@ const { appMock, ESMock, esClientMock } = require('./esTestHelper');
 
 describe('ElasticsearchWrapper', () => {
 
-
-  //if (app.get('seeder').dropDatabase === true) {
-  // if (app.get('elasticsearch).enable === false ){
-
-
   it('should disable elastic search by config param', function(done) {
-    let cut = new ElasticsearchWrapper(appMock(true));
-
     //GIVEN: app configuration with disabled elasticsearch
-    //WHEN
+    let cut = new ElasticsearchWrapper(appMock(false));
     //THEN
     assert.ok(cut.isDisabled(), 'ElasticSearch should be disabled');
     done();
@@ -26,10 +19,9 @@ describe('ElasticsearchWrapper', () => {
   it('should disable elastic search by config with undefined config value', function(done) {
 
     //GIVEN: app configuration with disabled elasticsearch
-    let cut = new ElasticsearchWrapper(appMock(true));
+    let undefinedValue;
+    let cut = new ElasticsearchWrapper(appMock(undefinedValue));
     //WHEN
-    //THEN
-
     assert.ok(cut.isDisabled(), 'ElasticSearch should be disabled');
     done();
 
@@ -40,13 +32,14 @@ describe('ElasticsearchWrapper', () => {
     //GIVEN: app configuration with enabled elasticsearch
     let cut = new ElasticsearchWrapper(appMock(true));
     //WHEN
+
     //THEN
-    assert.ok(!cut.isDisabled(), 'ElasticSearch should be enabled');
+    assert.ok(cut.isEnabled(), 'ElasticSearch should be enabled');
     done();
   });
 
   it('should not throw an error when deleting an undefined contribution', function(done) {
-    let cut = new ElasticsearchWrapper();
+    let cut = new ElasticsearchWrapper(appMock(true));
 
     let contribution;
 

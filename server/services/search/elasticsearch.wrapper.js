@@ -19,7 +19,9 @@ class ElasticsearchWrapper {
   constructor(app) {
     this.app = app;
 
-    this.enabled = false;
+    this.enabled = !!(app.get('elasticsearch')).enable;
+    this.app.debug("ElasticsearchWrapper.ctor: this.enabled:" + this.enabled);
+
     this.config = Object.assign({
       enabled: false,
       host: 'localhost:9200'
@@ -39,7 +41,7 @@ class ElasticsearchWrapper {
    * @returns {boolean}
    */
   isEnabled() {
-    return !(this.isDisabled());
+    return this.enabled;
   }
 
   /**
@@ -47,13 +49,7 @@ class ElasticsearchWrapper {
    * @returns {boolean}
    */
   isDisabled() {
-    const isDisabled = this.enabled === false;
-
-    if (isDisabled === false) {
-      this.app.debug('ElasticSearchWrapper.isDisabled :: ElasticSearch disbaled ');
-    }
-
-    return isDisabled;
+    return ! (this.isEnabled());
   }
 
   /**
@@ -86,7 +82,7 @@ class ElasticsearchWrapper {
         }
       });
 
-    } catch(error) {
+    } catch (error) {
       this.app.error('Add Contribution error: ' + JSON.stringify(error));
       addResult = this.deleteAndAdd(contribution, NEW_ID, client);
     }
@@ -121,7 +117,7 @@ class ElasticsearchWrapper {
         }
       });
 
-    } catch(error) {
+    } catch (error) {
       this.app.error('deleteAndAdd error:' + JSON.stringify(error));
     }
     return addResult;
@@ -158,7 +154,7 @@ class ElasticsearchWrapper {
         id: '' + contribution._id
       });
       this.app.debug('130');
-    } catch(error) {
+    } catch (error) {
       this.app.error('error:' + error);
       this.app.error('delete contribution error: ' + JSON.stringify(error));
     }
@@ -200,7 +196,7 @@ class ElasticsearchWrapper {
       let value = this.getDefaultResponse();
       value.total = result.hits.total;
 
-      for(var i = 0; i < result.hits.hits.length; i++) {
+      for (var i = 0; i < result.hits.hits.length; i++) {
         value.data[i] = result.hits.hits[i]._source.value;
       }
 

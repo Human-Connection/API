@@ -1,25 +1,37 @@
+const winston = require('winston');
+const logger = winston.createLogger({
+  level: 'debug',
+  format: winston.format.json(),
+  transports: [
+    new winston.transports.Console()
+  ]
+});
+
+
+
+
 const ESHelpers = {
-  appMock (enableES) {
+  appMock(enableES) {
 
     return {
-      get: function(param) {
+      get: function (param) {
         if ('elasticsearch' === param) {
           return {
             enable: !!enableES
           };
         }
       },
-      log: function(...msg) {
-        console.log(msg);
+      log: function (...msg) {
+        logger.log(msg);
       },
-      info: function(...msg) {
-        console.info(msg);
+      info: function (...msg) {
+        logger.info(msg);
       },
-      debug: function(...msg) {
-        console.debug(msg);
+      debug: function (...msg) {
+        logger.debug(msg);
       },
-      error: function(...msg) {
-        console.error(msg);
+      error: function (...msg) {
+        logger.error(msg);
       }
     };
   },
