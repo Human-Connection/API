@@ -1,12 +1,15 @@
 // https://www.npmjs.com/package/slug
 const slug = require('slug');
 const getUniqueSlug = require('../helper/get-unique-slug');
+const _ = require('lodash');
 
 module.exports = function (options = { field: null }) {
   return function (hook) {
     if(!options.field || !hook.data[options.field]) return hook;
+    if (!_.isEmpty(hook.data.slug)) return hook;
 
     return new Promise(resolve => {
+
       const titleslug = slug(hook.data[options.field], {
         lower: true
       });
