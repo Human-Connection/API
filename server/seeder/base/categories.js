@@ -10,6 +10,7 @@ module.exports = (seederstore) => {
       {
         path: 'categories',
         template: {
+          slug: 'justforfun',
           title: 'Just For Fun',
           icon: 'categories-justforfun'
         }
@@ -17,105 +18,120 @@ module.exports = (seederstore) => {
       {
         path: 'categories',
         template: {
-          title: 'Glück & Werte',
+          slug: 'happyness-values',
+          title: 'Happyness & Values',
           icon: 'categories-luck'
         }
       },
       {
         path: 'categories',
         template: {
-          title: 'Gesundheit & Wohlbefinden',
+          slug: 'health-wellbeing',
+          title: 'Health & Wellbeing',
           icon: 'categories-health'
         }
       },
       {
         path: 'categories',
         template: {
-          title: 'Umwelt & Natur',
+          slug: 'environment-nature',
+          title: 'Environment & Nature',
           icon: 'categories-environment'
         }
       },
       {
         path: 'categories',
         template: {
-          title: 'Tierschutz',
+          slug: 'animalprotection',
+          title: 'Animal Protection',
           icon: 'categories-animal-justice'
         }
       },
       {
         path: 'categories',
         template: {
-          title: 'Menschenrechte & Gerechtigkeit',
+          slug: 'humanrights-justice',
+          title: 'Humanrights Justice',
           icon: 'categories-human-rights'
         }
       },
       {
         path: 'categories',
         template: {
-          title: 'Bildung & Wissenschaft',
+          slug: 'education-sciences',
+          title: 'Education & Sciences',
           icon: 'categories-education'
         }
       },
       {
         path: 'categories',
         template: {
-          title: 'Kooperation & Entwicklung',
+          slug: 'cooperation-development',
+          title: 'Cooperation & Development',
           icon: 'categories-cooperation'
         }
       },
       {
         path: 'categories',
         template: {
-          title: 'Demokratie & Politik',
+          slug: 'democracy-politics',
+          title: 'Democracy & Politics',
           icon: 'categories-politics'
         }
       },
       {
         path: 'categories',
         template: {
-          title: 'Wirtschaft & Finanzen',
+          slug: 'economy-finances',
+          title: 'Economy & Finances',
           icon: 'categories-economy'
         }
       },
       {
         path: 'categories',
         template: {
-          title: 'Energie & Technologie',
+          slug: 'energy-technology',
+          title: 'Energy & Technology',
           icon: 'categories-technology'
         }
       },
       {
         path: 'categories',
         template: {
-          title: 'IT, Internet & Datenschutz',
+          slug: 'it-internet-dataprivacy',
+          title: 'IT, Internet & Data Privacy',
           icon: 'categories-internet'
         }
       },
       {
         path: 'categories',
         template: {
-          title: 'Kunst, Kultur & Sport',
+          slug: 'art-culture-sport',
+          title: 'Art, Curlure & Sport',
           icon: 'categories-art'
         }
       },
       {
         path: 'categories',
         template: {
-          title: 'Presse- & Meinungsfreiheit',
+          slug: 'freedomofspeech',
+          title: 'Freedom of Speech',
           icon: 'categories-freedom-of-speech'
         }
       },
       {
         path: 'categories',
         template: {
-          title: 'Konsum & Nachhaltigkeit',
+          slug: 'consumption-sustainability',
+          title: 'Consumption & Sustainability',
           icon: 'categories-sustainability'
         }
       },
       {
         path: 'categories',
         template: {
-          title: 'Globaler Frieden & Gewaltlosigkeit',
+          slug: 'globalpeace-nonviolence',
+          title: 'Global Peace & Nonviolence',
           icon: 'categories-peace'
         }
       }
