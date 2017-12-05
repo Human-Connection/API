@@ -12,7 +12,7 @@ This project uses [Feathers](http://feathersjs.com). An open source web framewor
 
 Getting up and running is as easy as 1, 2, 3, 4 ... 5.
 
-1. Make sure you have [NodeJS](https://nodejs.org/), [npm](https://www.npmjs.com/) and [mongoDB](https://www.mongodb.com/download-center#community)  installed.
+1. Make sure you have [NodeJS](https://nodejs.org/), [npm](https://www.npmjs.com/), [mongoDB](https://www.mongodb.com/download-center#community) and [Yarn](https://yarnpkg.com/en/docs/install) installed.
 
 2. Clone this repo
    ``` bash
@@ -48,6 +48,8 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
    to the given addresses which should not happen in development.
    
 5. Start server
+
+   Make sure that the `data` folder exists according to the `mongod --dbpath` in `package.json` to write the data into, then start the server:
    ``` bash
    # start mongodb, feathers and seed database
    $ npm run dev
@@ -80,7 +82,7 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
 
 ## Local configuration
 
-If you need to configure anything you can do so inside the `config/local.json` file. 
+If you need to configure anything you can do so inside the `config/local.json` file. For that the `local.example.json` will contain always a minimal setup to get it working.
 
 **Note on the seeder configuration**
 The seeder configuration has two properties:
