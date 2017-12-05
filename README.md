@@ -82,7 +82,7 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
 
 ## Local configuration
 
-If you need to configure anything you can do so inside the `config/local.json` file. For that the `local.example.json` will contain always a minimal setup to get it working.
+If you need to configure anything you can do so inside the `config/local.json` file, for that the `local.example.json` will contain always a minimal setup to get it working.
 
 **Note on the seeder configuration**
 The seeder configuration has two properties:
