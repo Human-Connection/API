@@ -36,6 +36,9 @@ node_modules
 .settings/
 *.sublime-workspace
 
+# IDE - NetBeans
+nbproject
+
 # IDE - VSCode
 .vscode/*
 !.vscode/settings.json
