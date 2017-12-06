@@ -12,7 +12,7 @@ This project uses [Feathers](http://feathersjs.com). An open source web framewor
 
 Getting up and running is as easy as 1, 2, 3, 4 ... 5.
 
-1. Make sure you have [NodeJS](https://nodejs.org/), [npm](https://www.npmjs.com/), [mongoDB](https://www.mongodb.com/download-center#community) and [Yarn](https://yarnpkg.com/en/docs/install) installed.
+1. Make sure you have [NodeJS](https://nodejs.org/), [yarn](https://yarnpkg.com), [mongoDB](https://www.mongodb.com/download-center#community) installed.
 
 2. Clone this repo
    ``` bash
@@ -22,7 +22,7 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
 3. Install your dependencies
    ``` bash
    $ cd ./hc-api-feathers
-   $ npm install
+   $ yarn
    ```
 
 4. Setup local configure mailserver (optional)
@@ -52,12 +52,12 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
    Make sure that the `data` folder exists according to the `mongod --dbpath` in `package.json` to write the data into, then start the server:
    ``` bash
    # start mongodb, feathers and seed database
-   $ npm run dev
-   $ npm run dev-win if you're on windows
+   $ yarn dev
+   $ yarn dev-win if you're on windows
    # start mongodb, feathers without seeding the database
-   $ npm run dev-noseed
+   $ yarn dev-noseed
    # start mongodb, feathers for production
-   $ npm start
+   $ yarn start
    ```
 
    > ##### IMPORTANT for WIN users: 
@@ -93,7 +93,7 @@ The seeder configuration has two properties:
 
 ## Testing
 
-Simply run `npm test` and all your tests in the `test/` directory will be run.
+Simply run `yarn test` and all your tests in the `test/` directory will be run.
 
 > **NOTE:** 
 > *At the moment there are some issues with linting while testing, but you can run the tests also with mocha run*

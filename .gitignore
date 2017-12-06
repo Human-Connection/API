@@ -114,6 +114,7 @@ $RECYCLE.BIN/
 package-lock.json
 lib/
 !.gitignore
+!.gitkeep
 /data/*
 /tmp/
 /public/uploads/
