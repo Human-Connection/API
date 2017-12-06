@@ -22,7 +22,7 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
 3. Install your dependencies
    ``` bash
    $ cd ./hc-api-feathers
-   $ yarn install
+   $ yarn
    ```
 
 4. Setup local configure mailserver (optional)
@@ -37,7 +37,7 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
     
    ``` bash
    # install mail dev (only has to be done once)
-   $ yarn install -g maildev
+   $ npm install -g maildev
    
    # start the server, it will output the web url 
    # which normaly is http://localhost:1080
@@ -101,7 +101,7 @@ Simply run `yarn test` and all your tests in the `test/` directory will be run.
 Feathers has a powerful command line interface. Here are a few things it can do:
 
 ``` bash
-$ yarn install -g feathers-cli             # Install Feathers CLI
+$ npm install -g feathers-cli             # Install Feathers CLI
 
 $ feathers generate service               # Generate a new Service
 $ feathers generate hook                  # Generate a new Hook
