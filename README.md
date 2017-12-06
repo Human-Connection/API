@@ -12,7 +12,7 @@ This project uses [Feathers](http://feathersjs.com). An open source web framewor
 
 Getting up and running is as easy as 1, 2, 3, 4 ... 5.
 
-1. Make sure you have [NodeJS](https://nodejs.org/), [yarn](https://www.yarnjs.com/) and [mongoDB](https://www.mongodb.com/download-center#community)  installed.
+1. Make sure you have [NodeJS](https://nodejs.org/), [yarn](https://yarnpkg.com) and [mongoDB](https://www.mongodb.com/download-center#community)  installed.
 
 2. Clone this repo
    ``` bash
