@@ -22,6 +22,7 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
         const uploadsUrl = hook.app.get('uploads');
 
         let loading = 0;
+        let imgCount = 0;
 
         // save all given fields and update the hook data
         options.forEach((field) => {
@@ -30,6 +31,7 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
             return;
           }
           loading++;
+          imgCount++;
           // TODO: fix that to use the data _id or somethink similar
           let uuid = faker.fake('{{random.uuid}}');
           const imgName = `${field}_${uuid}.jpg`;
@@ -38,8 +40,10 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
           urls.push(imgPath);
           stream.on('close', () => {
             if (--loading <= 0) {
-              hook.app.debug('Download finished', imgName);
+              hook.app.debug('Download(s) finished', imgName);
               resolve(hook);
+            } else {
+              hook.app.debug('Download finished', imgName);
             }
           });
           stream.on('error', (err) => {
@@ -51,8 +55,10 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
           hook.data[field] = uploadsUrl + imgName;
         });
 
-        if (loading <= 0) {
+        if (imgCount > 0 && loading <= 0) {
           hook.app.debug('Download(s) finished', urls);
+          resolve(hook);
+        } else if (!imgCount) {
           resolve(hook);
         }
       } catch(err) {
