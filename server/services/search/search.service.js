@@ -10,10 +10,4 @@ module.exports = function () {
   searchAppContribution.setForwardingService(contributionService);
   app.use('/search_contribution', searchAppContribution);
 
-
-  // another entity mode
-  const searchAppContribution2 = new ElasticsearchWrapper(app);
-  searchAppContribution2.setForwardingService(contributionService);
-  app.use('/search_contribution2', searchAppContribution2);
-
 };

@@ -26,29 +26,32 @@ class ElasticsearchWrapper {
       enabled: false,
       host: 'localhost:9200'
     }, app.get('elasticsearch'));
-    
+
   }
 
+  
   /**
   * find an entry inside ElasticSearch
   *
   * @param {*} params
   */
   async find(params) {
+    if (this.isDisabled()) {
+      this.app.debug("ES disabled...");
+      this.app.debug("forwarding request to forwarding service");
+      let contributionResult = await this.forwardingService.find(params);
+      return contributionResult;
+    }
+    return this.runElasticSearch(params);
+  }
+
+  async runElasticSearch(params) {
     this.app.debug('ElasticSearchWrapper.find');
     //find by params:{"query":{"$skip":0,"$sort":{"createdAt":-1},"$search":"et"},"provider":"socketio"}
     this.app.debug('find by params:' + JSON.stringify(params));
 
     let token = params.query.$search;
     this.app.debug("token:" + token);
-
-    if (this.isDisabled()) {
-      this.app.debug("ES disabled...");
-      this.app.debug("forwarding request to forwarding service");
-      let contributionResult = await this.forwardingService.find(params);
-      // this.app.debug("contributionResult:" + JSON.stringify(contributionResult));
-      return contributionResult;
-    }
 
     if (!token) {
       return this.getDefaultResponse();
@@ -61,7 +64,7 @@ class ElasticsearchWrapper {
     let query = this.buildQuery(token);
 
     let result = await client.search(query);
-    this.app.debug('search result:' + JSON.stringify(result));
+    //this.app.debug('search result:' + JSON.stringify(result));
     let totalHits = result.hits.total;
     if (totalHits === 0) {
       result = this.getDefaultResponse();
@@ -74,7 +77,7 @@ class ElasticsearchWrapper {
         value.data[i] = result.hits.hits[i]._source.value;
       }
 
-      this.app.debug('result value:' + JSON.stringify(value));
+      //this.app.debug('result value:' + JSON.stringify(value));
       result = value;
 
     }
@@ -121,7 +124,7 @@ class ElasticsearchWrapper {
     let addResult = '';
     try {
       addResult = await client.create({
-        index: 'hc',
+        index: this.getESIndex(),
         type: 'contribution',
         id: NEW_ID,
         body: {
@@ -150,13 +153,13 @@ class ElasticsearchWrapper {
     let addResult = '';
 
     let deleteResult = await client.delete({
-      index: 'hc',
+      index: this.getESIndex(),
       type: 'contribution',
       id: NEW_ID,
     });
     try {
       addResult = await client.create({
-        index: 'hc',
+        index: this.getESIndex(),
         type: 'contribution',
         id: NEW_ID,
         body: {
@@ -187,10 +190,10 @@ class ElasticsearchWrapper {
       this.app.debug('no contribution._id given');
       return;
     }
-    if(this.isDisabled()){
+    if (this.isDisabled()) {
       return;
     }
-    
+
     this.app.debug('perform delete');
 
     const client = this.getClient();
@@ -202,7 +205,7 @@ class ElasticsearchWrapper {
     try {
       this.app.debug('120');
       deleteResult = await client.delete({
-        index: 'hc',
+        index: this.getESIndex(),
         type: 'contribution',
         id: '' + contribution._id
       });
@@ -237,7 +240,7 @@ class ElasticsearchWrapper {
    */
   buildQuery(token) {
     let query = {
-      index: 'hc',
+      index: this.getESIndex(),
       type: 'contribution',
       body: {
         query: {
@@ -298,7 +301,7 @@ class ElasticsearchWrapper {
     const client = new elasticsearch.Client({
       host: this.config.host,
       apiVersion: '5.6',
-      log: 'debug'
+      log: 'error'
     });
     this.app.debug('ElasticSearchWrapper.getClient :: using real ES Client');
     return client;
@@ -310,6 +313,24 @@ class ElasticsearchWrapper {
    */
   close(client) {
     client.close();
+  }
+
+  /**
+   * 
+   * @param {*} index 
+   */
+  setESIndex(index){
+    this.esIndex = index;
+  }
+
+  /**
+   * 
+   */
+  getESIndex(){
+    if(this.esIndex){
+      return this.esIndex;
+    }
+    return 'hc';
   }
 
 

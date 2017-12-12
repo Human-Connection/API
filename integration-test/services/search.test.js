@@ -3,13 +3,50 @@
 const logger = require('winston');
 const assert = require('assert');
 const ElasticsearchWrapper = require('../../server/services/search/elasticsearch.wrapper');
-const { appMock } = require('./esTestHelper');
+const { appMock } = require('../../test/services/search/esTestHelper');
 
-describe('ElasticsearchWrapper.update', () => {
+describe('ElasticSearchWrapper.findByPattern', () => {
+  it('should find contributions by title, content, category', function (done) {
+
+    const cut = new ElasticsearchWrapper(appMock(true));
+
+    const params = {
+      query: {
+        $skip: 0,
+        $sort: {
+          createdAt: -1
+        },
+        $search: "dolo"
+      }
+    };
+
+    //WHEN
+    const searchResult = cut.find(params);
+    //THEN
+    searchResult.then(function (response) {
+      
+      const responseJson = JSON.stringify(response);
+      logger.info("response message: " + responseJson);
+
+      logger.info("first value: " + response.total);
+
+      const numberOfHist = 0;
+      
+      done();
+      
+    });
+
+
+
+  }
+  );
+});
+
+describe.skip('ElasticsearchWrapper.update', () => {
 
   it('should add and update a contribution', function (done) {
     let cut = new ElasticsearchWrapper(appMock(true));
-
+    cut.setESIndex('hc2');
     let date = new Date();
 
     let salt = date.toUTCString();
@@ -30,11 +67,11 @@ describe('ElasticsearchWrapper.update', () => {
 
       let addResult2 = cut.add(contribution);
 
-      addResult2.then( function (value) {
+      addResult2.then(function (value) {
         logger.info('step 2 - add new contribution 2 result: ' + JSON.stringify(value));
 
         assert.equal(value._id, NEW_ID);
-        
+
         done();
 
       });
