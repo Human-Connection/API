@@ -7,6 +7,31 @@ const { appMock, ESMock, esClientMock } = require('./esTestHelper');
 
 describe('ElasticsearchWrapper', () => {
 
+  it('should build up a search query from search-token and categories', function(done){
+    //GIVEN
+    let cut = new ElasticsearchWrapper(appMock(true));
+    const token = 'Human';
+    const categoryIds = ['c1','c2', 'c3'];
+
+    //WHEN
+    const query = cut.buildSearchQuery(token, categoryIds);
+
+    //THEN
+    const searchQueryJson = JSON.stringify(query);
+    console.log(searchQueryJson);
+    
+
+    assert.ok(query,"Query should exists");
+    assert.equal(query.type,'contribution');
+    
+
+    const match0 = query.body.query.bool.must[0].bool.must[0].match;
+    assert.ok(match0,  "category c1 should be first argument");
+    logger.debug("match0: " + JSON.stringify(match0));
+
+    done();
+  });
+
   it('should disable elastic search by config param', function(done) {
     //GIVEN: app configuration with disabled elasticsearch
     let cut = new ElasticsearchWrapper(appMock(false));

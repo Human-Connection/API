@@ -29,20 +29,36 @@ class ElasticsearchWrapper {
 
   }
 
-  
+
   /**
   * find an entry inside ElasticSearch
   *
   * @param {*} params
   */
   async find(params) {
+    this.app.debug("find by params:" + JSON.stringify(params));
     if (this.isDisabled()) {
-      this.app.debug("ES disabled...");
-      this.app.debug("forwarding request to forwarding service");
-      let contributionResult = await this.forwardingService.find(params);
-      return contributionResult;
+      return this.findByContributionService(params);
     }
     return this.runElasticSearch(params);
+  }
+
+  async findByContributionService(params) {
+    this.app.debug("ES disabled...");
+    this.app.debug("forwarding request to forwarding service");
+    this.app.debug("find params:" + JSON.stringify(params));
+    //{\"query\":{\"$skip\":0,\"$sort\":{\"createdAt\":-1},\"$search\":\"dolo\"},\"provider\":\"socketio\"}"
+    const defaultParams = {
+      query: {
+        $skip: params.query.$skip,
+        $sort: params.query.$sort,
+        $search: params.query.$search
+      },
+      provider: params.provider
+    }
+    this.app.debug("defaultParams:" + JSON.stringify(defaultParams));
+    let contributionResult = await this.forwardingService.find(defaultParams);
+    return contributionResult;
   }
 
   async runElasticSearch(params) {
@@ -50,18 +66,23 @@ class ElasticsearchWrapper {
     //find by params:{"query":{"$skip":0,"$sort":{"createdAt":-1},"$search":"et"},"provider":"socketio"}
     this.app.debug('find by params:' + JSON.stringify(params));
 
-    let token = params.query.$search;
+    const token = params.query.$search;
     this.app.debug("token:" + token);
+
 
     if (!token) {
       return this.getDefaultResponse();
     }
 
+    let categoryIds = params.query.$categoryIds;
+    categoryIds = ["5a338727bca260053d934507"];
+    this.app.debug("categoryIds:" + categoryIds);
 
     // START SEARCH
     let client = this.getClient();
 
-    let query = this.buildQuery(token);
+    let query = this.buildSearchQuery(token, categoryIds);
+    this.app.debug("search query:\n" + JSON.stringify(query));
 
     let result = await client.search(query);
     //this.app.debug('search result:' + JSON.stringify(result));
@@ -130,6 +151,7 @@ class ElasticsearchWrapper {
         body: {
           title: contribution.title,
           content: contribution.content,
+          selectedCategoryIds: JSON.stringify(contribution.categoryIds),
           value: contribution
         }
       });
@@ -165,6 +187,7 @@ class ElasticsearchWrapper {
         body: {
           title: contribution.title,
           content: contribution.content,
+          selectedCategoryIds: JSON.stringify(contribution.categoryIds),
           value: contribution
         }
       });
@@ -301,7 +324,7 @@ class ElasticsearchWrapper {
     const client = new elasticsearch.Client({
       host: this.config.host,
       apiVersion: '5.6',
-      log: 'error'
+      log: 'trace'
     });
     this.app.debug('ElasticSearchWrapper.getClient :: using real ES Client');
     return client;
@@ -319,20 +342,134 @@ class ElasticsearchWrapper {
    * 
    * @param {*} index 
    */
-  setESIndex(index){
+  setESIndex(index) {
     this.esIndex = index;
   }
 
   /**
    * 
    */
-  getESIndex(){
-    if(this.esIndex){
+  getESIndex() {
+    if (this.esIndex) {
       return this.esIndex;
     }
     return 'hc';
   }
 
+  buildSearchQuery2(token, categoryIds) {
+    let query = {
+      index: this.getESIndex(),
+      type: 'contribution',
+      body: {
+        query: {
+          bool: {
+            should: [
+              {
+                filter: {
+                  terms: {
+                    categories: categoryIds
+                  }
+                }
+              },
+              {
+                dis_max: {
+                  tie_breaker: 0.6,
+                  queries: [
+
+                    {
+                      fuzzy: {
+                        title: {
+                          value: token,
+                          fuzziness: 'AUTO',
+                          prefix_length: 0,
+                          max_expansions: 20,
+                          transpositions: false,
+                          boost: 2.0
+                        }
+                      }
+                    },
+                    {
+                      fuzzy: {
+                        content: {
+                          value: token,
+                          fuzziness: 'AUTO',
+                          prefix_length: 0,
+                          max_expansions: 20,
+                          transpositions: false,
+                          boost: 1.0
+                        }
+                      }
+                    }
+                  ],
+                  boost: 1.0
+                }
+              }
+            ]
+          }
+
+        }
+      }
+    };
+
+
+
+    return query;
+  }
+
+  buildSearchQuery(token, categoryIds) {
+
+
+
+    let query = {
+      index: this.getESIndex(),
+      type: 'contribution',
+      body: {
+        query: {
+          bool: {
+            must: [
+              {
+                bool: {
+                  must: [ ]
+                }
+              },
+              {
+                bool: {
+                  should: [
+                    {
+                      wildcard: {
+                        title: "*" + token + "*"
+                      }
+                    },
+                    {
+                      wildcard: {
+                        content: "*" + token + "*"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+
+        } //end query
+      }
+    };
+
+    for (let i = 0; i < categoryIds.length; i++) {
+      this.app.debug("using category:" + i + " = " + categoryIds[i]);
+      query.body.query.bool.must[0].bool.must[i] = {
+        match: {
+          selectedCategoryIds: {
+            query: categoryIds[i],
+            type: 'phrase'
+          }
+        }
+      };
+    }
+
+
+    return query;
+  }
 
 } // end class
 
