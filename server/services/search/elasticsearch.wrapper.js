@@ -75,6 +75,7 @@ class ElasticsearchWrapper {
     }
 
     let categoryIds = params.query.$categoryIds;
+    //categoryIds = [];
     categoryIds = ["5a338727bca260053d934507"];
     this.app.debug("categoryIds:" + categoryIds);
 
@@ -139,7 +140,7 @@ class ElasticsearchWrapper {
       return;
     }
     let client = this.getClient();
-    this.app.info('ES001 add contribution: ' + JSON.stringify(contribution));
+    this.app.info('add contribution: ' + JSON.stringify(contribution));
 
     let NEW_ID = '' + contribution._id;
     let addResult = '';
@@ -356,66 +357,6 @@ class ElasticsearchWrapper {
     return 'hc';
   }
 
-  buildSearchQuery2(token, categoryIds) {
-    let query = {
-      index: this.getESIndex(),
-      type: 'contribution',
-      body: {
-        query: {
-          bool: {
-            should: [
-              {
-                filter: {
-                  terms: {
-                    categories: categoryIds
-                  }
-                }
-              },
-              {
-                dis_max: {
-                  tie_breaker: 0.6,
-                  queries: [
-
-                    {
-                      fuzzy: {
-                        title: {
-                          value: token,
-                          fuzziness: 'AUTO',
-                          prefix_length: 0,
-                          max_expansions: 20,
-                          transpositions: false,
-                          boost: 2.0
-                        }
-                      }
-                    },
-                    {
-                      fuzzy: {
-                        content: {
-                          value: token,
-                          fuzziness: 'AUTO',
-                          prefix_length: 0,
-                          max_expansions: 20,
-                          transpositions: false,
-                          boost: 1.0
-                        }
-                      }
-                    }
-                  ],
-                  boost: 1.0
-                }
-              }
-            ]
-          }
-
-        }
-      }
-    };
-
-
-
-    return query;
-  }
-
   buildSearchQuery(token, categoryIds) {
 
 
@@ -429,20 +370,42 @@ class ElasticsearchWrapper {
             must: [
               {
                 bool: {
-                  must: [ ]
+                  must: []
                 }
               },
               {
                 bool: {
-                  should: [
+                  must: [
                     {
-                      wildcard: {
-                        title: "*" + token + "*"
-                      }
-                    },
-                    {
-                      wildcard: {
-                        content: "*" + token + "*"
+                      dis_max: {
+                        tie_breaker: 0.6,
+                        queries: [
+                          {
+                            fuzzy: {
+                              title: {
+                                value: token,
+                                fuzziness: 'AUTO',
+                                prefix_length: 0,
+                                max_expansions: 20,
+                                transpositions: false,
+                                boost: 2.0
+                              }
+                            }
+                          },
+                          {
+                            fuzzy: {
+                              content: {
+                                value: token,
+                                fuzziness: 'AUTO',
+                                prefix_length: 0,
+                                max_expansions: 20,
+                                transpositions: false,
+                                boost: 1.0
+                              }
+                            }
+                          }
+                        ],
+                        boost: 1.0
                       }
                     }
                   ]
@@ -455,16 +418,18 @@ class ElasticsearchWrapper {
       }
     };
 
-    for (let i = 0; i < categoryIds.length; i++) {
-      this.app.debug("using category:" + i + " = " + categoryIds[i]);
-      query.body.query.bool.must[0].bool.must[i] = {
-        match: {
-          selectedCategoryIds: {
-            query: categoryIds[i],
-            type: 'phrase'
+    if (categoryIds) {
+      for (let i = 0; i < categoryIds.length; i++) {
+        query.body.query.bool.must[0].bool.must[i] = {
+          match: {
+            selectedCategoryIds: {
+              query: categoryIds[i],
+              type: 'phrase'
+            }
           }
-        }
-      };
+        };
+      }
+
     }
 
 
