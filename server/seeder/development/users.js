@@ -4,7 +4,7 @@ module.exports = (seederstore) => {
   return {
     services: [{
       path: 'users',
-      count: 10,
+      count: 50,
       template: {
         email: '{{internet.email}}',
         password: '{{internet.password}}',
@@ -13,6 +13,8 @@ module.exports = (seederstore) => {
         isnothere: true,
         timezone: 'Europe/Berlin',
         avatar: '{{internet.avatar}}',
+        isVerified : true,
+        role : 'user',
         doiToken: null,
         confirmedAt: null,
         deletedAt: null

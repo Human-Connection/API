@@ -4,8 +4,7 @@
 module.exports = function () {
   // Add your seeder configs here
   return [
-    require('./categories'),
-    require('./badges'),
-    require('./users-admin')
+    require('./contributions'),
+    require('../development/emotions')
   ];
 };

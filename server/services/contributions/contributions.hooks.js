@@ -103,8 +103,7 @@ module.exports = {
           cardS: '300x0',
           cardM: '400x0',
           cardL: '740x0',
-          medium: '400x0',
-          placeholder: '80x0/filters:blur(15)',
+          placeholder: '120x0/filters:blur(14)',
           zoom: '0x1024',
           cover: '800x300/smart'
         }

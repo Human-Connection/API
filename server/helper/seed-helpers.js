@@ -37,7 +37,24 @@ const ngoLogos = [
 
 module.exports = {
   randomItem: (items) => {
-    return items[_.shuffle(_.keys(items)).pop()];
+    let randomIds = _.shuffle(_.keys(items));
+    return items[randomIds.pop()];
+  },
+  randomItems: (items, key = '_id', min = 1, max = 1) => {
+    let randomIds = _.shuffle(_.keys(items));
+    let res = [];
+
+    const count = _.random(min, max);
+
+    for (let i = 0; i < count; i++) {
+      let r = items[randomIds.pop()][key];
+      console.log('###', r);
+      if (key === '_id') {
+        r = r.toString();
+      }
+      res.push(r);
+    }
+    return res;
   },
   randomLogo: () => {
     return _.shuffle(ngoLogos).pop();
@@ -48,8 +65,11 @@ module.exports = {
     }
     return 'https://source.unsplash.com/daily?' + unsplashTopicsTmp.pop() + ',' + unsplashTopicsTmp.pop();
   },
-  randomCategories: (seederstore) => {
-    const count = Math.round(Math.random() * 3);
+  randomCategories: (seederstore, allowEmpty = true) => {
+    let count = Math.round(Math.random() * 3);
+    if (allowEmpty === false && count === 0) {
+      count = 1;
+    }
     let categorieIds = _.shuffle(_.keys(seederstore.categories));
     let ids = [];
     for (let i = 0; i < count; i++) {
@@ -71,5 +91,31 @@ module.exports = {
       });
     }
     return addresses;
+  },
+  /**
+   * Get array of ids from the given seederstore items after mapping them by the key in the values
+   *
+   * @param items  items from the seederstore
+   * @param values values for which you need the ids
+   * @param key    the field key that is represented in the values (slug, name, etc.)
+   */
+  mapIdsByKey: (items, values, key) => {
+    let res = [];
+    values.forEach(value => {
+      res.push(_.find(items, [key, value])._id.toString());
+    });
+    return res;
+  },
+  /**
+   * Provide a way to iterate for each element in an array while waiting for async functions to finish
+   *
+   * @param array
+   * @param callback
+   * @returns {Promise<void>}
+   */
+  asyncForEach: async (array, callback) => {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array);
+    }
   }
 };

@@ -1,9 +1,10 @@
 const seedHelpers = require('../../helper/seed-helpers');
+const { size } = require('lodash');
 
 module.exports = (seederstore) => {
   return {
     services: [{
-      count: 60,
+      count: 50,
       path: 'contributions',
       templates: [
         {
@@ -13,7 +14,9 @@ module.exports = (seederstore) => {
           categoryIds: () => seedHelpers.randomCategories(seederstore),
           content: '{{lorem.text}} {{lorem.text}}',
           teaserImg: seedHelpers.randomUnsplashUrl,
-          language: 'de_DE',
+          language: () => seedHelpers.randomItem(['de', 'en']),
+          shouts: () => seedHelpers.randomItems(seederstore.users, '_id', 0, Math.floor(size(seederstore.users) / 2)),
+          visibility: 'public',
           createdAt: '{{date.recent}}',
           updatedAt: '{{date.recent}}'
         },
@@ -23,7 +26,9 @@ module.exports = (seederstore) => {
           type: 'post',
           categoryIds: () => seedHelpers.randomCategories(seederstore),
           content: '{{lorem.text}} {{lorem.text}}',
-          language: 'de_DE',
+          language: () => seedHelpers.randomItem(['de', 'en']),
+          shouts: () => seedHelpers.randomItems(seederstore.users, '_id', 0, Math.floor(size(seederstore.users) / 2)),
+          visibility: 'public',
           createdAt: '{{date.recent}}',
           updatedAt: '{{date.recent}}'
         }

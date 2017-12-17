@@ -4,7 +4,7 @@ module.exports = (seederstore) => {
   return {
     services: [
       {
-        count: 150,
+        count: 50,
         path: 'follows',
         template: {
           userId: () => seedHelpers.randomItem(seederstore.users)._id,
@@ -13,7 +13,7 @@ module.exports = (seederstore) => {
         }
       },
       {
-        count: 150,
+        count: 50,
         path: 'follows',
         template: {
           userId: () => seedHelpers.randomItem(seederstore.users)._id,
@@ -22,7 +22,7 @@ module.exports = (seederstore) => {
         }
       },
       {
-        count: 150,
+        count: 50,
         path: 'follows',
         template: {
           userId: () => seedHelpers.randomItem(seederstore.users)._id,

@@ -11,7 +11,11 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
   return function async (hook) {
 
     return new Promise((resolve) => {
+
       let urls = [];
+
+      let loading = 0;
+      let imgCount = 0;
 
       try {
         let uploadDir = path.resolve('public/uploads');
@@ -20,9 +24,6 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
         }
 
         const uploadsUrl = hook.app.get('uploads');
-
-        let loading = 0;
-        let imgCount = 0;
 
         // save all given fields and update the hook data
         options.forEach((field) => {
@@ -63,7 +64,12 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
         }
       } catch(err) {
         // reject(err);
-        throw new errors.Unprocessable('Thumbnail download failed', { errors: err, urls: urls });
+        if (imgCount) {
+          hook.app.error('Thumbnail download failed');
+          throw new errors.Unprocessable('Thumbnail download failed', { errors: err, urls: urls });
+        } else {
+          resolve(hook);
+        }
       }
     });
   };

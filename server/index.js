@@ -22,20 +22,14 @@ server.on('listening', () => {
   if (app.get('seeder').runOnInit === true) {
     app.on('mongooseInit', () => {
       app.service('users').find({ query: { $limit: 0 }})
-        .then(res => {
+        .then(async (res) => {
           app.debug(res);
           if (res.total > 0) {
             return null;
           }
+          app.info(`Feathers application started on ${app.get('host')}:${port}`);
           app.info('>>>>>> RUN SEEDER <<<<<<');
-
-          app.seed()
-            .then(() => {
-              app.info(`Feathers application started on ${app.get('host')}:${port}`);
-            })
-            .catch((e) => {
-              app.error(e);
-            });
+          await app.seed();
         });
     });
   }

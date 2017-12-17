@@ -16,6 +16,7 @@ module.exports = function (app) {
     contentExcerpt: { type: String, required: true },
     teaserImg: { type: String },
     language: { type: String, required: true },
+    shouts: { type: Array },
     visibility: {
       type: String,
       enum: ['public', 'friends', 'private'],

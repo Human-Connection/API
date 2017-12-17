@@ -45,10 +45,10 @@ module.exports = {
     get: [ ...restrict ],
     create: [
       hashPassword(),
-      addVerification(),
       lowerCase('email', 'username'),
       // We don't need email verification
       // for server generated users
+      addVerification(),
       when(isProvider('server'),
         hook => {
           hook.data.isVerified = true;
@@ -102,7 +102,9 @@ module.exports = {
       when(isProvider('external'),
         sendVerificationEmail()
       ),
-      removeVerification()
+      when(isProvider('external'),
+        removeVerification()
+      ),
     ],
     update: [],
     patch: [],

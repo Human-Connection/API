@@ -4,12 +4,12 @@
 module.exports = function () {
   // Add your seeder configs here
   return [
-    require('./users-admin'),
     require('./users'),
     require('./contributions'),
     require('./organizations'),
     require('./projects'),
     require('./follows'),
-    require('./comments')
+    require('./comments'),
+    require('./emotions')
   ];
 };

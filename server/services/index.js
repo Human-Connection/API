@@ -12,6 +12,8 @@ const emotions = require('./emotions/emotions.service.js');
 const organizations = require('./organizations/organizations.service.js');
 const projects = require('./projects/projects.service.js');
 const follows = require('./follows/follows.service.js');
+const admin = require('./admin/admin.service.js');
+
 module.exports = function () {
   const app = this; // eslint-disable-line no-unused-vars
   app.configure(authManagement);
@@ -28,4 +30,5 @@ module.exports = function () {
   app.configure(organizations);
   app.configure(projects);
   app.configure(follows);
+  app.configure(admin);
 };

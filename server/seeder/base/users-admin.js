@@ -5,12 +5,11 @@ module.exports = (seederstore) => {
     services: [{
       // Create test user
       path: 'users',
-      count: 1,
-      template: {
+      randomize: false,
+      templates: [{
         email: 'test@test.de',
         password: '1234',
-        name: 'Peter Pan',
-        slug: 'peter-pan',
+        name: 'Peter',
         isnothere: true,
         timezone: 'Europe/Berlin',
         avatar: '{{internet.avatar}}',
@@ -19,7 +18,20 @@ module.exports = (seederstore) => {
         doiToken: null,
         confirmedAt: null,
         deletedAt: null
-      }
+      },
+      {
+        email: 'test2@test2.de',
+        password: '1234',
+        name: 'Greg',
+        isnothere: true,
+        timezone: 'Europe/Berlin',
+        avatar: 'https://www.dropbox.com/s/svd9y6hkkgwkgoc/avatar.jpg?dl=1',
+        coverImg: 'https://www.dropbox.com/s/vzv05ffc0nelra9/header.png?dl=1',
+        badgesIds: [],
+        doiToken: null,
+        confirmedAt: null,
+        deletedAt: null
+      }]
     }]
   };
 };
