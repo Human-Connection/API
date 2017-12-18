@@ -17,7 +17,8 @@ module.exports = (seederstore) => {
         role : 'user',
         doiToken: null,
         confirmedAt: null,
-        deletedAt: null
+        deletedAt: null,
+        wasSeeded: true
       }
     }]
   };

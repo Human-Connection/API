@@ -9,7 +9,8 @@ module.exports = (seederstore) => {
         template: {
           userId: () => seedHelpers.randomItem(seederstore.users)._id,
           followingId: () => seedHelpers.randomItem(seederstore.users)._id,
-          type: 'users'
+          type: 'users',
+          wasSeeded: true
         }
       },
       {
@@ -18,7 +19,8 @@ module.exports = (seederstore) => {
         template: {
           userId: () => seedHelpers.randomItem(seederstore.users)._id,
           followingId: () => seedHelpers.randomItem(seederstore.projects)._id,
-          type: 'projects'
+          type: 'projects',
+          wasSeeded: true
         }
       },
       {
@@ -27,7 +29,8 @@ module.exports = (seederstore) => {
         template: {
           userId: () => seedHelpers.randomItem(seederstore.users)._id,
           followingId: () => seedHelpers.randomItem(seederstore.organizations)._id,
-          type: 'organizations'
+          type: 'organizations',
+          wasSeeded: true
         }
       }
     ]

@@ -16,7 +16,8 @@ module.exports = function (app) {
     addresses: { type: Array, default: [] },
     content: { type: String, required: true },
     createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now }
+    updatedAt: { type: Date, default: Date.now },
+    wasSeeded: { type: Boolean }
   });
 
   return mongooseClient.model('organizations', organizations);

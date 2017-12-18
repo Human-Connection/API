@@ -16,7 +16,8 @@ module.exports = function (app) {
     content: { type: String, required: true },
     addresses: { type: Array, default: [] },
     createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now }
+    updatedAt: { type: Date, default: Date.now },
+    wasSeeded: { type: Boolean }
   });
 
   return mongooseClient.model('projects', projects);

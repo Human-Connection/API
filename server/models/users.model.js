@@ -40,7 +40,8 @@ module.exports = function (app) {
     verifyChanges: { type: Object },
     resetToken: { type: String },
     resetShortToken: { type: String },
-    resetExpires: { type: Date }
+    resetExpires: { type: Date },
+    wasSeeded: { type: Boolean }
   });
 
   return mongooseClient.model('users', users);

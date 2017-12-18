@@ -48,7 +48,8 @@ module.exports = function (app) {
       }
     },
     createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now }
+    updatedAt: { type: Date, default: Date.now },
+    wasSeeded: { type: Boolean }
   });
 
   contributions.index({

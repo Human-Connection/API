@@ -28,11 +28,10 @@ module.exports = (seederstore) => {
       shouts: () => seedHelpers.randomItems(seederstore.users, '_id', 0, Math.floor(size(seederstore.users) / 2)),
       visibility: 'public',
       createdAt: '{{date.recent}}',
-      updatedAt: '{{date.recent}}'
+      updatedAt: '{{date.recent}}',
+      wasSeeded: true
     });
   });
-
-  console.log(templates);
 
   return {
     services: [{

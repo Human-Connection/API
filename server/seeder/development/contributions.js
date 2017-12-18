@@ -18,7 +18,8 @@ module.exports = (seederstore) => {
           shouts: () => seedHelpers.randomItems(seederstore.users, '_id', 0, Math.floor(size(seederstore.users) / 2)),
           visibility: 'public',
           createdAt: '{{date.recent}}',
-          updatedAt: '{{date.recent}}'
+          updatedAt: '{{date.recent}}',
+          wasSeeded: true
         },
         {
           userId: () => seedHelpers.randomItem(seederstore.users)._id,
@@ -30,7 +31,8 @@ module.exports = (seederstore) => {
           shouts: () => seedHelpers.randomItems(seederstore.users, '_id', 0, Math.floor(size(seederstore.users) / 2)),
           visibility: 'public',
           createdAt: '{{date.recent}}',
-          updatedAt: '{{date.recent}}'
+          updatedAt: '{{date.recent}}',
+          wasSeeded: true
         }
       ]
     }]

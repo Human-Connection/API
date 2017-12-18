@@ -14,6 +14,7 @@ module.exports = (seederstore) => {
         addresses: () => seedHelpers.randomAddresses(),
         description: '{{lorem.text}}',
         content: '{{lorem.text}} {{lorem.text}} {{lorem.text}} {{lorem.text}}',
+        wasSeeded: true
       }
     }]
   };

@@ -13,7 +13,8 @@ module.exports = (seederstore) => {
           content: '{{lorem.text}} {{lorem.text}}',
           language: 'de',
           createdAt: '{{date.recent}}',
-          updatedAt: '{{date.recent}}'
+          updatedAt: '{{date.recent}}',
+          wasSeeded: true
         }
       ]
     }]

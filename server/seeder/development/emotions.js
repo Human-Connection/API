@@ -10,7 +10,8 @@ module.exports = (seederstore) => {
         template: {
           contributionId: () => seedHelpers.randomItem(seederstore.contributions)._id.toString(),
           userId: () => seedHelpers.randomItem(seederstore.users)._id.toString(),
-          rated: () => seedHelpers.randomItem(['funny', 'happy', 'surprised', 'cry', 'angry'])
+          rated: () => seedHelpers.randomItem(['funny', 'happy', 'surprised', 'cry', 'angry']),
+          wasSeeded: true
         }
       }
     ]
