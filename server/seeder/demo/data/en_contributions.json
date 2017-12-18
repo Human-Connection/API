@@ -108,5 +108,18 @@
       "Electric Vehicles",
       "News"
     ]
+  },
+  {
+    "teaserImg" : "https://i.vimeocdn.com/video/634489141_780x439.jpg",
+    "title" : "Bee or not to bee",
+    "content" : "<p>Human Connection is an emerging social network of a new generation, which focuses on local and global positive change. The Community Platform is designed to allow the public exchange of news, ideas, projects, know-how and experience shall be promoted that can help to make the world a better place.</p><p><br></p><iframe class=\"ql-video\" allowfullscreen=\"true\" src=\"https://www.youtube.com/embed/hFPSXznj_zs\" frameborder=\"0\"></iframe><p><br></p>",
+    "type": "post",
+    "language": "en",
+    "categorySlugs": [
+      "environment-nature"
+    ],
+    "tags": [
+      "Bees"
+    ]
   }
 ]
