@@ -22,6 +22,7 @@ module.exports = function (app) {
       enum: ['public', 'friends', 'private'],
       default: 'public'
     },
+    tags: { type: Array },
     emotions: {
       type: Object,
       default: {
@@ -54,11 +55,17 @@ module.exports = function (app) {
 
   contributions.index({
     title: 'text',
-    content: 'text'
+    content: 'text',
+    tags: 'text',
   }, {
     name: 'contributions_full_text',
     default_language: 'en',
-    language_override: 'en'
+    language_override: 'en',
+    weights: {
+      title: 3,
+      tags: 2,
+      content: 1
+    }
   });
   // contributions.index({ title: 1, content: 2 });
 

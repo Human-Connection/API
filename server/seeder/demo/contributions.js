@@ -23,6 +23,7 @@ module.exports = (seederstore) => {
         }
       },
       content: entry.content,
+      tags: entry.tags || [],
       teaserImg: () => entry.teaserImg || seedHelpers.randomUnsplashUrl,
       language: entry.language,
       shouts: () => seedHelpers.randomItems(seederstore.users, '_id', 0, Math.floor(size(seederstore.users) / 2)),
