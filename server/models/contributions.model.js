@@ -60,7 +60,6 @@ module.exports = function (app) {
   }, {
     name: 'contributions_full_text',
     default_language: 'en',
-    language_override: 'en',
     weights: {
       title: 3,
       tags: 2,
