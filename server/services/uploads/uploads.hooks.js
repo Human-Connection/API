@@ -6,7 +6,9 @@ module.exports = {
     all: [ authenticate('jwt') ],
     find: [],
     get: [],
-    create: [],
+    create: [
+      encode()
+    ],
     update: [],
     patch: [],
     remove: []
@@ -16,7 +18,7 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [ encode() ],
+    create: [],
     update: [],
     patch: [],
     remove: []
