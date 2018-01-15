@@ -108,10 +108,10 @@ module.exports = {
           cardS: '300x0',
           cardM: '400x0',
           cardL: '740x0',
-          placeholder: '120x0/filters:blur(30)',
+          placeholder: '100x0/filters:blur(30)',
           zoom: '0x1024',
-          cover: '730x300/smart',
-          coverPlaceholder: '240x100/smart/filters:blur(30)'
+          cover: '729x300/smart',
+          coverPlaceholder: '243x100/smart/filters:blur(30)'
         }
       })],
     get: [
