@@ -28,7 +28,7 @@ module.exports = function () {
     // multer parses the file named 'file'.
     // Without extra params the data is
     // temporary kept in memory
-    multipartMiddleware.single('uri'),
+    multipartMiddleware.single('file'),
 
     // another middleware, this time to
     // transfer the received file to feathers
