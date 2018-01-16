@@ -25,14 +25,13 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
    $ yarn
    ```
 
-4. Setup local configure mailserver (optional)
+4. Setup local mailserver (optional)
    
    >  **NOTE:** 
    >  *You only have to start that mailserver when you want to register, reset your password or test emails in any form, it
    >  does not affect the rest of the application.*
         
    Copy `config/local.example.json` to `config/local.json` and install the [MailDev](https://github.com/djfarrelly/MailDev)
-   this is used for E-Mail verification and should be done whether you use it or not.
    server to catch all sent emails in a nice web interface.
     
    ``` bash
@@ -40,11 +39,11 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
    $ npm install -g maildev
    
    # start the server, it will output the web url 
-   # which normaly is http://localhost:1080
+   # which normally is http://localhost:1080
    $ maildev
    ```
    
-   You could also insert your smtp credentials into the local.json but that is not recommended as all emails would be send
+   You could also insert your smtp credentials into the local.json but that is not recommended as all emails would be sent
    to the given addresses which should not happen in development.
    
 5. Start server
@@ -76,7 +75,7 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
    
    - At first you have to [install](http://thumbor.readthedocs.io/en/latest/installing.html) it locally.
    - After installation start it via the console with `thumbor`
-   - Set the `thumbor.key` url in `config/local.json` to `http://localhost:8888` if not defined diferently.
+   - Set the `thumbor.url` in `config/local.json` to `http://localhost:8888` if not defined differently. The `thumbor.key` does not necessarily have to be defined, it just makes the URL more secure.
    
    > Do not forget to always start it if you choose that setup or otherwise you will not see any pictures at all.
 
@@ -113,11 +112,9 @@ $ feathers help                           # Show all commands
 
 ## Help
 
-> **TODO:** 
-> *Add link to Gitbook for more information*
-
 For more information on all the framework related things visit [docs.feathersjs.com](http://docs.feathersjs.com).
 
+The HC platform is documented in our [gitbook](https://humanconnection.gitbooks.io) (work in progress).
 
 ## License 
 
