@@ -8,6 +8,7 @@ const restrictUserRole = require('./hooks/restrict-user-role');
 const createAdmin = require('./hooks/create-admin');
 const saveAvatar = require('./hooks/save-avatar');
 const createSlug = require('../../hooks/create-slug');
+const thumbnails = require('../../hooks/thumbnails');
 
 const { hashPassword } = require('feathers-authentication-local').hooks;
 
@@ -42,7 +43,7 @@ module.exports = {
   before: {
     all: [],
     find: [],
-    get: [ ...restrict ],
+    get: [ /* ...restrict */ ],
     create: [
       hashPassword(),
       lowerCase('email', 'username'),
@@ -93,9 +94,27 @@ module.exports = {
       cleanupBasicData
     ],
     find: [
+      thumbnails({
+        avatar: {
+          small: '72x72/smart',
+          medium: '120x120/smart',
+          large: '240x240/smart'
+        }
+      }),
       cleanupPersonalData
     ],
     get: [
+      thumbnails({
+        avatar: {
+          small: '72x72/smart',
+          medium: '120x120/smart',
+          large: '240x240/smart'
+        },
+        coverImg: {
+          cover: '1102x312/smart',
+          coverPlaceholder: '243x100/smart/filters:blur(30)'
+        }
+      }),
       cleanupPersonalData
     ],
     create: [

@@ -33,7 +33,9 @@ module.exports = function (options) {
     const config = hook.app.get('thumbor');
     const Thumbor = new ThumborUrlHelper(config.key || null, config.url || null);
     return new Promise(resolve => {
-      _.castArray(hook.result.data).forEach(result => {
+      const data = !_.isEmpty(hook.result.data) ? hook.result.data : hook.result;
+
+      _.castArray(data).forEach(result => {
         // skip on no result
         if (!_.isObject(result)) {
           return;
