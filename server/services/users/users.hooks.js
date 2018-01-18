@@ -56,7 +56,9 @@ module.exports = {
           return hook;
         }
       ),
-      restrictUserRole(),
+      when(isProvider('external'),
+        restrictUserRole()
+      ),
       createAdmin(),
       createDefaultAvatar(),
       saveRemoteImages(['avatar', 'coverImg']),
@@ -66,7 +68,9 @@ module.exports = {
       ...restrict,
       hashPassword(),
       disableMultiItemChange(),
-      restrictUserRole(),
+      when(isProvider('external'),
+        restrictUserRole()
+      ),
       saveRemoteImages(['avatar', 'coverImg']),
       saveAvatar()
     ],
@@ -81,7 +85,9 @@ module.exports = {
         },
         createSlug({ field: 'name' })
       ),
-      restrictUserRole(),
+      when(isProvider('external'),
+        restrictUserRole()
+      ),
       saveRemoteImages(['avatar', 'coverImg']),
       saveAvatar()
     ],
