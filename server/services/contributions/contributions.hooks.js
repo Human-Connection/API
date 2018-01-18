@@ -11,6 +11,8 @@ const saveRemoteImages = require('../../hooks/save-remote-images');
 const createExcerpt = require('../../hooks/create-excerpt');
 const search = require('feathers-mongodb-fuzzy-search');
 const thumbnails = require('../../hooks/thumbnails');
+const isModerator = require('../../hooks/is-moderator-boolean');
+const excludeDisabled = require('../../hooks/exclude-disabled');
 
 const userSchema = {
   include: {
@@ -54,12 +56,19 @@ module.exports = {
   before: {
     all: [],
     find: [
+      unless(isModerator(),
+        excludeDisabled()
+      ),
       search(),
       search({
         fields: ['title', 'content']
       })
     ],
-    get: [],
+    get: [
+      unless(isModerator(),
+        excludeDisabled()
+      )
+    ],
     create: [
       authenticate('jwt'),
       // Allow seeder to seed contributions
@@ -76,7 +85,10 @@ module.exports = {
       unless(isProvider('server'),
         isVerified()
       ),
-      restrictToOwner(),
+      unless(isModerator(),
+        excludeDisabled(),
+        restrictToOwner()
+      ),
       saveRemoteImages(['teaserImg']),
       createExcerpt()
     ],
@@ -85,14 +97,20 @@ module.exports = {
       unless(isProvider('server'),
         isVerified()
       ),
-      restrictToOwner(),
+      unless(isModerator(),
+        excludeDisabled(),
+        restrictToOwner()
+      ),
       saveRemoteImages(['teaserImg']),
       createExcerpt()
     ],
     remove: [
       authenticate('jwt'),
       isVerified(),
-      restrictToOwner()
+      unless(isModerator(),
+        excludeDisabled(),
+        restrictToOwner()
+      )
     ]
   },
 
