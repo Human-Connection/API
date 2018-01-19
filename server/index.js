@@ -32,5 +32,7 @@ server.on('listening', () => {
           await app.seed();
         });
     });
+  } else {
+    app.info(`Feathers application started on ${app.get('host')}:${port}`);
   }
 });
