@@ -36,6 +36,9 @@ node_modules
 .settings/
 *.sublime-workspace
 
+# IDE - NetBeans
+nbproject
+
 # IDE - VSCode
 .vscode/*
 !.vscode/settings.json
@@ -110,7 +113,9 @@ $RECYCLE.BIN/
 # Others
 package-lock.json
 lib/
-/data/
+!.gitignore
+!.gitkeep
+/data/*
 /tmp/
 /public/uploads/
 rethinkdb_data

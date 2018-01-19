@@ -1,0 +1,40 @@
+const seedHelpers = require('../../helper/seed-helpers');
+const { size } = require('lodash');
+
+module.exports = (seederstore) => {
+  return {
+    services: [{
+      count: 50,
+      path: 'contributions',
+      templates: [
+        {
+          userId: () => seedHelpers.randomItem(seederstore.users)._id,
+          title: '{{lorem.words}}',
+          type: 'post',
+          categoryIds: () => seedHelpers.randomCategories(seederstore),
+          content: '{{lorem.text}} {{lorem.text}}',
+          teaserImg: seedHelpers.randomUnsplashUrl,
+          language: () => seedHelpers.randomItem(['de', 'en']),
+          shouts: () => seedHelpers.randomItems(seederstore.users, '_id', 0, Math.floor(size(seederstore.users) / 2)),
+          visibility: 'public',
+          createdAt: '{{date.recent}}',
+          updatedAt: '{{date.recent}}',
+          wasSeeded: true
+        },
+        {
+          userId: () => seedHelpers.randomItem(seederstore.users)._id,
+          title: '{{lorem.sentence}}',
+          type: 'post',
+          categoryIds: () => seedHelpers.randomCategories(seederstore),
+          content: '{{lorem.text}} {{lorem.text}}',
+          language: () => seedHelpers.randomItem(['de', 'en']),
+          shouts: () => seedHelpers.randomItems(seederstore.users, '_id', 0, Math.floor(size(seederstore.users) / 2)),
+          visibility: 'public',
+          createdAt: '{{date.recent}}',
+          updatedAt: '{{date.recent}}',
+          wasSeeded: true
+        }
+      ]
+    }]
+  };
+};

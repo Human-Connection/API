@@ -25,7 +25,10 @@ module.exports = {
     all: [authenticate('jwt')],
     find: [],
     get: [],
-    create: [isVerified()],
+    create: [
+      hooks.when(hooks.isProvider('external'),
+        isVerified()
+      )],
     update: [hooks.disallow()],
     patch: [hooks.disallow()],
     remove: [hooks.disallow('external')]

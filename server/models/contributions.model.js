@@ -16,11 +16,13 @@ module.exports = function (app) {
     contentExcerpt: { type: String, required: true },
     teaserImg: { type: String },
     language: { type: String, required: true },
+    shouts: { type: Array },
     visibility: {
       type: String,
       enum: ['public', 'friends', 'private'],
       default: 'public'
     },
+    tags: { type: Array },
     emotions: {
       type: Object,
       default: {
@@ -47,16 +49,22 @@ module.exports = function (app) {
       }
     },
     createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now }
+    updatedAt: { type: Date, default: Date.now },
+    wasSeeded: { type: Boolean }
   });
 
   contributions.index({
     title: 'text',
-    content: 'text'
+    content: 'text',
+    tags: 'text',
   }, {
     name: 'contributions_full_text',
     default_language: 'en',
-    language_override: 'en'
+    weights: {
+      title: 3,
+      tags: 2,
+      content: 1
+    }
   });
   // contributions.index({ title: 1, content: 2 });
 

@@ -7,8 +7,10 @@ const {
 } = require('feathers-authentication-hooks');
 const { isVerified } = require('feathers-authentication-management').hooks;
 const createSlug = require('../../hooks/create-slug');
+const saveRemoteImages = require('../../hooks/save-remote-images');
 const createExcerpt = require('../../hooks/create-excerpt');
 const search = require('feathers-mongodb-fuzzy-search');
+const thumbnails = require('../../hooks/thumbnails');
 
 const userSchema = {
   include: {
@@ -17,7 +19,7 @@ const userSchema = {
     parentField: 'userId',
     childField: '_id'
   }
-}
+};
 
 const categoriesSchema = {
   include: {
@@ -26,7 +28,7 @@ const categoriesSchema = {
     parentField: 'categoryIds',
     childField: '_id'
   }
-}
+};
 
 const commentsSchema = {
   include: {
@@ -45,14 +47,18 @@ const commentsSchema = {
     //  childField: '_id'
     //}
   }
-}
+};
 
-const saveRemoteImages = require('../../hooks/save-remote-images');
 
 module.exports = {
   before: {
     all: [],
-    find: [search()],
+    find: [
+      search(),
+      search({
+        fields: ['title', 'content']
+      })
+    ],
     get: [],
     create: [
       authenticate('jwt'),
@@ -96,8 +102,27 @@ module.exports = {
       populate({ schema: categoriesSchema }),
       populate({ schema: commentsSchema })
     ],
-    find: [],
-    get: [],
+    find: [
+      thumbnails({
+        teaserImg: {
+          cardS: '300x0',
+          cardM: '400x0',
+          cardL: '740x0',
+          placeholder: '100x0/filters:blur(30)',
+          zoom: '0x1024',
+          cover: '729x300/smart',
+          coverPlaceholder: '243x100/smart/filters:blur(30)'
+        }
+      })],
+    get: [
+      thumbnails({
+        teaserImg: {
+          zoom: '0x1024',
+          cover: '800x300/smart',
+          placeholder: '800x300/filters:blur(10)'
+        }
+      })
+    ],
     create: [],
     update: [],
     patch: [],

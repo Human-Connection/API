@@ -4,4 +4,4 @@ module.exports = () => hook => {
     delete hook.data.role;
   }
   return hook;
-}
+};

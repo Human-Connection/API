@@ -13,7 +13,8 @@ module.exports = function (app) {
       enum: ['funny', 'happy', 'surprised', 'cry', 'angry']
     },
     createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now }
+    updatedAt: { type: Date, default: Date.now },
+    wasSeeded: { type: Boolean }
   });
 
   return mongooseClient.model('emotions', emotions);

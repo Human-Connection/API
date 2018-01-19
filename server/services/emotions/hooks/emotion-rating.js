@@ -19,7 +19,7 @@ module.exports = function(options = {}) { // eslint-disable-line no-unused-vars
   return function(hook) {
 
     if (!hook.result || hook.method !== 'create') {
-      console.log('ERROR', hook.method);
+      hook.app.error('ERROR', hook.method);
 
       throw new Error('FAILED');
     }

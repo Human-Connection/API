@@ -6,7 +6,10 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
     if(!hook.data || !hook.data.content) {
       return hook;
     }
-    hook.data.contentExcerpt = excerpt.text(hook.data.content.replace(/(<([^>]+)>)/ig, ''), 120, '...');
+    const content = hook.data.content
+      .replace(/\<br\>|\<\/br\>|\<\/ br\>|\<\/(strong|b|h[1-6])>/ig, "\n")
+      .replace(/(<([^>]+)>)/ig, '');
+    hook.data.contentExcerpt = excerpt.text(content, 120, '...');
     return Promise.resolve(hook);
   };
 };

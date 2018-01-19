@@ -12,7 +12,8 @@ module.exports = function (app) {
     relatedCommentId: { type: String },
     unseen: { type: Boolean, default: true },
     createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now }
+    updatedAt: { type: Date, default: Date.now },
+    wasSeeded: { type: Boolean }
   });
 
   return mongooseClient.model('notifications', notifications);
