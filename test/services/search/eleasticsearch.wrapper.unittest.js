@@ -7,6 +7,21 @@ const { appMock, ESMock, esClientMock } = require('./esTestHelper');
 
 describe('ElasticsearchWrapper', () => {
 
+  it('should create a search query by token and category ids', ()=>{
+    let cut = new ElasticsearchWrapper(appMock(true));
+    const categoryIds = [
+      'c1','c2','c3'
+    ];
+
+    //WHEN
+    const result = cut.buildSearchQuery("abc",categoryIds);
+    const resultJson = JSON.stringify(result);
+    //THEN
+    const expectedJson = '{"index":"hc","type":"contribution","body":{"query":{"bool":{"must":[{"bool":{"must":[{"match":{"selectedCategoryIds":{"query":"c1","type":"phrase"}}},{"match":{"selectedCategoryIds":{"query":"c2","type":"phrase"}}},{"match":{"selectedCategoryIds":{"query":"c3","type":"phrase"}}}]}},{"bool":{"must":[{"dis_max":{"tie_breaker":0.6,"queries":[{"fuzzy":{"title":{"value":"abc","fuzziness":"AUTO","prefix_length":0,"max_expansions":20,"transpositions":false,"boost":2}}},{"fuzzy":{"content":{"value":"abc","fuzziness":"AUTO","prefix_length":0,"max_expansions":20,"transpositions":false,"boost":1}}}],"boost":1}}]}}]}}}}';
+
+    assert.equal(expectedJson,resultJson);
+  });
+
   it('should build up a search query from search-token and categories', function(done){
     //GIVEN
     let cut = new ElasticsearchWrapper(appMock(true));

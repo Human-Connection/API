@@ -1,0 +1,80 @@
+{
+    "index": "hc",
+    "type": "contribution",
+    "body": {
+        "query": {
+            "bool": {
+                "must": [
+                    {
+                        "bool": {
+                            "must": [
+                                {
+                                    "match": {
+                                        "selectedCategoryIds": {
+                                            "query": "c1",
+                                            "type": "phrase"
+                                        }
+                                    }
+                                },
+                                {
+                                    "match": {
+                                        "selectedCategoryIds": {
+                                            "query": "c2",
+                                            "type": "phrase"
+                                        }
+                                    }
+                                },
+                                {
+                                    "match": {
+                                        "selectedCategoryIds": {
+                                            "query": "c3",
+                                            "type": "phrase"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "bool": {
+                            "must": [
+                                {
+                                    "dis_max": {
+                                        "tie_breaker": 0.6,
+                                        "queries": [
+                                            {
+                                                "fuzzy": {
+                                                    "title": {
+                                                        "value": "abc",
+                                                        "fuzziness": "AUTO",
+                                                        "prefix_length": 0,
+                                                        "max_expansions": 20,
+                                                        "transpositions": false,
+                                                        "boost": 2
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "fuzzy": {
+                                                    "content": {
+                                                        "value": "abc",
+                                                        "fuzziness": "AUTO",
+                                                        "prefix_length": 0,
+                                                        "max_expansions": 20,
+                                                        "transpositions": false,
+                                                        "boost": 1
+                                                    }
+                                                }
+                                            }
+                                        ],
+                                        "boost": 1
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}
