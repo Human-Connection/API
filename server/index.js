@@ -11,8 +11,15 @@ if (process.env.NODE_ENV !== 'production' && !fs.existsSync(configDir + '/local.
 const app = require('./app');
 const port = app.get('port');
 
-process.on('unhandledRejection', (reason, p) => {
-  app.error('Unhandled Rejection at: Promise ', p, reason);
+// process.on('unhandledRejection', (reason, p) => {
+//   app.error('Unhandled Rejection at: Promise ', p, reason);
+// });
+process.on('unhandledRejection', function (err) {
+  throw err;
+});
+
+process.on('uncaughtException', function (err) {
+  app.log(err);
 });
 
 // Start server
