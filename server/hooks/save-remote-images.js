@@ -23,7 +23,7 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
           fs.mkdirSync(uploadDir);
         }
 
-        const uploadsUrl = hook.app.get('uploads');
+        const uploadsUrl = hook.app.get('baseURL') + '/uploads/';
 
         // save all given fields and update the hook data
         options.forEach((field) => {
