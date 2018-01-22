@@ -133,7 +133,8 @@ module.exports = {
           cover: '729x300/smart',
           coverPlaceholder: '243x100/smart/filters:blur(30)'
         }
-      })],
+      })
+    ],
     get: [
       thumbnails({
         teaserImg: {
@@ -143,9 +144,45 @@ module.exports = {
         }
       })
     ],
-    create: [],
-    update: [],
-    patch: [],
+    create: [
+      thumbnails({
+        teaserImg: {
+          cardS: '300x0',
+          cardM: '400x0',
+          cardL: '740x0',
+          placeholder: '100x0/filters:blur(30)',
+          zoom: '0x1024',
+          cover: '729x300/smart',
+          coverPlaceholder: '243x100/smart/filters:blur(30)'
+        }
+      })
+    ],
+    update: [
+      thumbnails({
+        teaserImg: {
+          cardS: '300x0',
+          cardM: '400x0',
+          cardL: '740x0',
+          placeholder: '100x0/filters:blur(30)',
+          zoom: '0x1024',
+          cover: '729x300/smart',
+          coverPlaceholder: '243x100/smart/filters:blur(30)'
+        }
+      })
+    ],
+    patch: [
+      thumbnails({
+        teaserImg: {
+          cardS: '300x0',
+          cardM: '400x0',
+          cardL: '740x0',
+          placeholder: '100x0/filters:blur(30)',
+          zoom: '0x1024',
+          cover: '729x300/smart',
+          coverPlaceholder: '243x100/smart/filters:blur(30)'
+        }
+      })
+    ],
     remove: []
   },
 
