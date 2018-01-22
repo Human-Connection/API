@@ -1,8 +1,7 @@
 {
   "host": "localhost",
   "port": 3030,
-  "frontport": 3000,
-  "uploads": "http://localhost:3030/uploads/",
+  "baseURL": "http://localhost:3030",
   "public": "../public/",
   "paginate": {
     "default": 10,

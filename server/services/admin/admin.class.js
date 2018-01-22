@@ -44,6 +44,19 @@ class Service {
         reject(err);
       }
 
+      if (data.seedBaseCategories) {
+        // run the seeder
+        console.log('seedBaseCategories...');
+        require('../../seeder')(this.app, this.seederstore);
+        try {
+          await this.app.seed([
+            require('../../seeder/base/categories')
+          ]);
+          resolve();
+        } catch (err) {
+          reject(err);
+        }
+      }
       if (data.seedFakeData) {
         // run the seeder
         console.log('seedFakeData...');

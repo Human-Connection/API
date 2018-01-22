@@ -7,16 +7,8 @@ const EmailTemplate = require('email-templates').EmailTemplate;
 module.exports = function(app) {
   const returnEmail = app.get('defaultEmail');
 
-  function getBaseUrl() {
-    const port = (!app.get('frontport') || isProd) ? '' : ':' + app.get('frontport');
-    const host = app.get('host')|| 'localhost';
-    let protocol = app.get('protocol') || 'http';
-    protocol += '://';
-    return `${protocol}${host}${port}`;
-  }
-
   function getLink(type, hash) {
-    const baseUrl = getBaseUrl();
+    const baseUrl = app.get('baseURL');
     return `${baseUrl}/auth/${type}/${hash}`;
   }
 
@@ -31,7 +23,7 @@ module.exports = function(app) {
     const templatePath = path.join(__dirname, '../../../email-templates/account', templatename);
 
     const hashLink = getLink(linktype, user.verifyToken);
-    const baseUrl = getBaseUrl();
+    const baseUrl = app.get('baseURL');
 
     const template = new EmailTemplate(templatePath, {juiceOptions: {
       preserveMediaQueries: true,

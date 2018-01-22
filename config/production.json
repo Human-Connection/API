@@ -1,7 +1,7 @@
 {
   "host": "HOST",
   "port": "PORT",
-  "uploads": "http://165.227.153.233:3030/uploads/",
+  "baseURL": "BASE_URL",
   "mongodb": "MONGO_DB",
   "smtpConfig": {
     "host": "SMTP_HOST",
