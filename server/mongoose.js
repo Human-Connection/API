@@ -8,7 +8,9 @@ module.exports = function () {
   mongoose.connect(app.get('mongodb'), {
     useMongoClient: true,
     autoReconnect: true,
-    keepAlive: 1
+    keepAlive: 1,
+    connectTimeoutMS: 10000,
+    socketTimeoutMS: 10000
   }, function () {
     if (app.get('seeder').dropDatabase === true) {
       mongoose.connection.dropDatabase().then(() => {
