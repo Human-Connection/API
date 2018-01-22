@@ -28,7 +28,8 @@ const categoriesSchema = {
     service: 'categories',
     nameAs: 'categories',
     parentField: 'categoryIds',
-    childField: '_id'
+    childField: '_id',
+    asArray: true
   }
 };
 
@@ -40,7 +41,8 @@ const commentsSchema = {
     childField: 'contributionId',
     query: {
       $select: ['_id']
-    }
+    },
+    asArray: true
     //,
     //include: {
     //  service: 'users',
