@@ -5,6 +5,7 @@ module.exports = function () {
   // Add your seeder configs here
   return [
     require('./users'),
+    require('./moderators'),
     require('./contributions'),
     require('./organizations'),
     require('./projects'),

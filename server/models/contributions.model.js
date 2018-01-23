@@ -22,6 +22,10 @@ module.exports = function (app) {
       enum: ['public', 'friends', 'private'],
       default: 'public'
     },
+    isEnabled: {
+      type: Boolean,
+      default: true
+    },
     tags: { type: Array },
     emotions: {
       type: Object,
