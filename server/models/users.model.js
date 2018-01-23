@@ -31,7 +31,7 @@ module.exports = function (app) {
     isVerified: { type: Boolean },
     role: {
       type: String,
-      enum: ['admin', 'manager', 'editor', 'user'],
+      enum: ['admin', 'moderator', 'manager', 'editor', 'user'],
       default: 'user'
     },
     verifyToken: { type: String },

@@ -11,6 +11,8 @@ const saveRemoteImages = require('../../hooks/save-remote-images');
 const createExcerpt = require('../../hooks/create-excerpt');
 const search = require('feathers-mongodb-fuzzy-search');
 const thumbnails = require('../../hooks/thumbnails');
+const isModerator = require('../../hooks/is-moderator-boolean');
+const excludeDisabled = require('../../hooks/exclude-disabled');
 
 const userSchema = {
   include: {
@@ -26,7 +28,8 @@ const categoriesSchema = {
     service: 'categories',
     nameAs: 'categories',
     parentField: 'categoryIds',
-    childField: '_id'
+    childField: '_id',
+    asArray: true
   }
 };
 
@@ -38,7 +41,8 @@ const commentsSchema = {
     childField: 'contributionId',
     query: {
       $select: ['_id']
-    }
+    },
+    asArray: true
     //,
     //include: {
     //  service: 'users',
@@ -54,12 +58,19 @@ module.exports = {
   before: {
     all: [],
     find: [
+      unless(isModerator(),
+        excludeDisabled()
+      ),
       search(),
       search({
         fields: ['title', 'content']
       })
     ],
-    get: [],
+    get: [
+      unless(isModerator(),
+        excludeDisabled()
+      )
+    ],
     create: [
       authenticate('jwt'),
       // Allow seeder to seed contributions
@@ -76,7 +87,10 @@ module.exports = {
       unless(isProvider('server'),
         isVerified()
       ),
-      restrictToOwner(),
+      unless(isModerator(),
+        excludeDisabled(),
+        restrictToOwner()
+      ),
       saveRemoteImages(['teaserImg']),
       createExcerpt()
     ],
@@ -85,14 +99,20 @@ module.exports = {
       unless(isProvider('server'),
         isVerified()
       ),
-      restrictToOwner(),
+      unless(isModerator(),
+        excludeDisabled(),
+        restrictToOwner()
+      ),
       saveRemoteImages(['teaserImg']),
       createExcerpt()
     ],
     remove: [
       authenticate('jwt'),
       isVerified(),
-      restrictToOwner()
+      unless(isModerator(),
+        excludeDisabled(),
+        restrictToOwner()
+      )
     ]
   },
 
@@ -113,7 +133,8 @@ module.exports = {
           cover: '729x300/smart',
           coverPlaceholder: '243x100/smart/filters:blur(30)'
         }
-      })],
+      })
+    ],
     get: [
       thumbnails({
         teaserImg: {
@@ -123,9 +144,45 @@ module.exports = {
         }
       })
     ],
-    create: [],
-    update: [],
-    patch: [],
+    create: [
+      thumbnails({
+        teaserImg: {
+          cardS: '300x0',
+          cardM: '400x0',
+          cardL: '740x0',
+          placeholder: '100x0/filters:blur(30)',
+          zoom: '0x1024',
+          cover: '729x300/smart',
+          coverPlaceholder: '243x100/smart/filters:blur(30)'
+        }
+      })
+    ],
+    update: [
+      thumbnails({
+        teaserImg: {
+          cardS: '300x0',
+          cardM: '400x0',
+          cardL: '740x0',
+          placeholder: '100x0/filters:blur(30)',
+          zoom: '0x1024',
+          cover: '729x300/smart',
+          coverPlaceholder: '243x100/smart/filters:blur(30)'
+        }
+      })
+    ],
+    patch: [
+      thumbnails({
+        teaserImg: {
+          cardS: '300x0',
+          cardM: '400x0',
+          cardL: '740x0',
+          placeholder: '100x0/filters:blur(30)',
+          zoom: '0x1024',
+          cover: '729x300/smart',
+          coverPlaceholder: '243x100/smart/filters:blur(30)'
+        }
+      })
+    ],
     remove: []
   },
 
