@@ -1,4 +1,3 @@
-const isProd = process.env.NODE_ENV === 'production';
 const path = require('path');
 const handlebars = require('handlebars');
 const fs = require('fs-extra');
@@ -8,8 +7,8 @@ module.exports = function(app) {
   const returnEmail = app.get('defaultEmail');
 
   function getLink(type, hash) {
-    const baseUrl = app.get('baseURL');
-    return `${baseUrl}/auth/${type}/${hash}`;
+    const frontURL = app.get('frontURL');
+    return `${frontURL}/auth/${type}/${hash}`;
   }
 
   function buildEmail(templatename, title, linktype, user, additionaloptions) {
@@ -23,7 +22,7 @@ module.exports = function(app) {
     const templatePath = path.join(__dirname, '../../../email-templates/account', templatename);
 
     const hashLink = getLink(linktype, user.verifyToken);
-    const baseUrl = app.get('baseURL');
+    const frontURL = app.get('frontURL');
 
     const template = new EmailTemplate(templatePath, {juiceOptions: {
       preserveMediaQueries: true,
@@ -37,13 +36,15 @@ module.exports = function(app) {
       name: user.name || user.email,
       link: hashLink,
       returnEmail: returnEmail,
-      baseUrl: baseUrl
+      frontURL
     };
 
     Object.assign(options, additionaloptions);
 
     template.render(options, (err, result) => {
-      app.get('debug') && app.error(err);
+      if (err && app.get('debug')) {
+        app.debug(err);
+      }
       const email = {
         from: returnEmail,
         to: user.email,

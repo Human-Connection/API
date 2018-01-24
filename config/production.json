@@ -2,6 +2,7 @@
   "host": "HOST",
   "port": "PORT",
   "baseURL": "BASE_URL",
+  "frontURL": "FRONT_URL",
   "mongodb": "MONGO_DB",
   "smtpConfig": {
     "host": "SMTP_HOST",
