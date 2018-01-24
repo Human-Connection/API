@@ -33,6 +33,16 @@ const categoriesSchema = {
   }
 };
 
+const candosSchema = {
+  include: {
+    service: 'users-candos',
+    nameAs: 'candoUsers',
+    parentField: '_id',
+    childField: 'candoId',
+    asArray: true
+  }
+};
+
 const commentsSchema = {
   include: {
     service: 'comments',
@@ -52,7 +62,6 @@ const commentsSchema = {
     //}
   }
 };
-
 
 module.exports = {
   before: {
@@ -120,6 +129,7 @@ module.exports = {
     all: [
       populate({ schema: userSchema }),
       populate({ schema: categoriesSchema }),
+      populate({ schema: candosSchema }),
       populate({ schema: commentsSchema })
     ],
     find: [

@@ -32,7 +32,18 @@ const badgesSchema = {
     service: 'badges',
     nameAs: 'badges',
     parentField: 'badgesIds',
-    childField: '_id'
+    childField: '_id',
+    asArray: true
+  }
+};
+
+const candosSchema = {
+  include: {
+    service: 'users-candos',
+    nameAs: 'candos',
+    parentField: '_id',
+    childField: 'userId',
+    asArray: true
   }
 };
 
@@ -97,6 +108,7 @@ module.exports = {
   after: {
     all: [
       populate({ schema: badgesSchema }),
+      populate({ schema: candosSchema }),
       cleanupBasicData
     ],
     find: [
