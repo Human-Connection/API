@@ -9,7 +9,7 @@ module.exports = (seederstore) => {
       templates: [
         {
           userId: () => seedHelpers.randomItem(seederstore.users)._id,
-          candoId: () => seedHelpers.randomItem(seederstore.contributions, filter)._id,
+          contributionId: () => seedHelpers.randomItem(seederstore.contributions, filter)._id,
           done: () => true,
           doneAt: '{{date.recent}}',
           createdAt: '{{date.recent}}',
@@ -18,7 +18,7 @@ module.exports = (seederstore) => {
         },
         {
           userId: () => seedHelpers.randomItem(seederstore.users)._id,
-          candoId: () => seedHelpers.randomItem(seederstore.contributions, filter)._id,
+          contributionId: () => seedHelpers.randomItem(seederstore.contributions, filter)._id,
           done: () => false,
           createdAt: '{{date.recent}}',
           updatedAt: '{{date.recent}}',

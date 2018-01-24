@@ -38,7 +38,7 @@ const candosSchema = {
     service: 'users-candos',
     nameAs: 'candoUsers',
     parentField: '_id',
-    childField: 'candoId',
+    childField: 'contributionId',
     asArray: true
   }
 };
@@ -148,9 +148,13 @@ module.exports = {
     get: [
       thumbnails({
         teaserImg: {
+          cardS: '300x0',
+          cardM: '400x0',
+          cardL: '740x0',
           zoom: '0x1024',
           cover: '800x300/smart',
-          placeholder: '800x300/filters:blur(10)'
+          placeholder: '800x300/filters:blur(10)',
+          coverPlaceholder: '243x100/smart/filters:blur(30)'
         }
       })
     ],

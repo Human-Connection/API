@@ -6,7 +6,7 @@ module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
   const usersCandos = new mongooseClient.Schema({
     userId: { type: String, required: true },
-    candoId: { type: String, required: true },
+    contributionId: { type: String, required: true },
     done: { type: Boolean, default: false },
     doneAt: { type: Date },
     createdAt: { type: Date, default: Date.now },
@@ -15,7 +15,7 @@ module.exports = function (app) {
   });
 
   usersCandos.index(
-    { userId: 1, candoId: 1 },
+    { userId: 1, contributionId: 1 },
     { unique: true }
   );
 
@@ -24,7 +24,7 @@ module.exports = function (app) {
   );
 
   usersCandos.index(
-    { candoId: 1 }
+    { contributionId: 1 }
   );
 
   return mongooseClient.model('usersCandos', usersCandos);
