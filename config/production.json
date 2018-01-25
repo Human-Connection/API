@@ -4,6 +4,7 @@
   "baseURL": "BASE_URL",
   "frontURL": "FRONT_URL",
   "mongodb": "MONGO_DB",
+  "debug": true,
   "smtpConfig": {
     "host": "SMTP_HOST",
     "port": 587,
