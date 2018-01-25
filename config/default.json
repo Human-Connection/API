@@ -33,11 +33,12 @@
     ],
     "path": "/authentication",
     "service": "users",
+    "session": false,
     "jwt": {
       "header": {
         "type": "access"
       },
-      "audience": "https://yourdomain.com",
+      "audience": "http://localhost",
       "subject": "anonymous",
       "issuer": "feathers",
       "algorithm": "HS256",
