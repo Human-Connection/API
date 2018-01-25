@@ -7,7 +7,7 @@
   "smtpConfig": {
     "host": "SMTP_HOST",
     "port": 587,
-    "secure": false,
+    "secure": "SMTP_USE_SSL",
     "auth": {
       "user": "SMTP_USER",
       "pass": "SMTP_PASS"
