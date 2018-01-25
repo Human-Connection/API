@@ -18,7 +18,7 @@
     "key": "THUMBOR_KEY"
   },
   "authentication": {
-    "secret": "asdsfsadasfsadvasdafa4tag4fa3ravh78)G67G78fF6%F56f%C/%$d34s$§%s&%dRTfTfgZb"
+    "secret": "AUTH_SECRET"
   },
   "seeder": {
     "runOnInit": false,
