@@ -19,7 +19,10 @@
     "key": "THUMBOR_KEY"
   },
   "authentication": {
-    "secret": "AUTH_SECRET"
+    "secret": "AUTH_SECRET",
+    "jwt": {
+      "audience": "https://alpha.human-connection.org"
+    }
   },
   "seeder": {
     "runOnInit": false,
