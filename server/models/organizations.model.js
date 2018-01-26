@@ -11,6 +11,7 @@ module.exports = function (app) {
     followerIds: [],
     categoryIds: { type: Array },
     logo: { type: String },
+    coverImg: { type: String },
     userId: { type: String, required: true },
     description: { type: String, required: true },
     addresses: { type: Array, default: [] },
