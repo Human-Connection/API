@@ -69,7 +69,7 @@ module.exports = function(app) {
 
     return app.service('emails').create(email)
       .then(result => {
-        app.get('debug') && app.debug('Sent email', result);
+        app.debug('Sent email', result);
       }).catch(err => {
         app.error('Error sending email', err);
       });

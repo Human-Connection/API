@@ -4,6 +4,7 @@
   "baseURL": "http://localhost:3030",
   "frontURL": "http://localhost:3000",
   "public": "../public/",
+  "debug": true,
   "paginate": {
     "default": 10,
     "max": 50
@@ -32,11 +33,12 @@
     ],
     "path": "/authentication",
     "service": "users",
+    "session": false,
     "jwt": {
       "header": {
         "type": "access"
       },
-      "audience": "https://yourdomain.com",
+      "audience": "http://localhost",
       "subject": "anonymous",
       "issuer": "feathers",
       "algorithm": "HS256",

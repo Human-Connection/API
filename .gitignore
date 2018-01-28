@@ -111,7 +111,6 @@ $RECYCLE.BIN/
 *.lnk
 
 # Others
-package-lock.json
 lib/
 !.gitignore
 !.gitkeep
