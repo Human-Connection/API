@@ -4,17 +4,17 @@ module.exports = (seederstore, app) => {
     { 
       type: 'role',
       status: 'temporary',
-      key: 'admin' 
+      key: 'user_role_admin'
     },
     { 
       type: 'role',
       status: 'temporary',
-      key: 'moderator' 
+      key: 'user_role_moderator'
     },
     { 
       type: 'role',
       status: 'temporary',
-      key: 'developer' 
+      key: 'user_role_developer'
     },
     { 
       type: 'crowdfunding',
