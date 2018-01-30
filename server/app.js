@@ -2,7 +2,7 @@ const path = require('path');
 const favicon = require('serve-favicon');
 const compress = require('compression');
 const cors = require('cors');
-const helmet = require('helmet');
+// const helmet = require('helmet');
 const bodyParser = require('body-parser');
 
 const feathers = require('feathers');
@@ -49,7 +49,7 @@ if (app.get('sentry').dns !== undefined && app.get('sentry').dns !== 'SENTRY_DNS
 
 // Enable CORS, security, compression, favicon and body parsing
 app.use(cors());
-app.use(helmet());
+// app.use(helmet());
 app.use(compress());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
