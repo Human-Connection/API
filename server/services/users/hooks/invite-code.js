@@ -34,9 +34,9 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
       hook.app.service('invites').patch(hook.data.inviteId, {
         wasUsed: true
       }).then(res => {
-        console.log(res);
+        hook.app.debug(res);
       }).catch(err => {
-        console.error(err);
+        hook.app.error(err);
       });
 
       return hook;

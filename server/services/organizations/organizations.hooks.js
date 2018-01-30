@@ -1,23 +1,6 @@
 const { authenticate } = require('feathers-authentication').hooks;
-const {populate} = require('feathers-hooks-common');
 const createSlug = require('../../hooks/create-slug');
 const saveRemoteImages = require('../../hooks/save-remote-images');
-const userSchema = {
-  include: {
-    service: 'users',
-    nameAs: 'user',
-    parentField: 'userId',
-    childField: '_id'
-  }
-};
-const followerSchema = {
-  include: {
-    service: 'users',
-    nameAs: 'user',
-    parentField: 'followerIds',
-    childField: '_id'
-  }
-};
 
 module.exports = {
   before: {
