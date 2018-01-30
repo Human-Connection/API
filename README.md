@@ -1,6 +1,8 @@
 <p align="center">
   <img align="center" src="https://human-connection.org/wp-content/uploads/2017/11/human-connection-logo.svg" alt="Human Connection" />
 </p>
+
+
 <p align="center">
   <a href="https://travis-ci.org/HumanConnection/HC-API"><img src="https://img.shields.io/travis/HumanConnection/HC-API/master.svg" alt="Build Status"></a>
 </p>
