@@ -48,7 +48,6 @@ module.exports = {
 
     for (let i = 0; i < count; i++) {
       let r = items[randomIds.pop()][key];
-      console.log('###', r);
       if (key === '_id') {
         r = r.toString();
       }

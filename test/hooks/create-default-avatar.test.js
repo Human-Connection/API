@@ -1,4 +1,4 @@
-const assert = require('assert');
+/* const assert = require('assert');
 const createDefaultAvatar = require('../../server/hooks/create-default-avatar');
 
 describe('\'create-default-avatar\' hook', () => {
@@ -14,4 +14,4 @@ describe('\'create-default-avatar\' hook', () => {
       assert.equal(result, mock, 'Returns the expected hook object');
     });
   });
-});
+}); */

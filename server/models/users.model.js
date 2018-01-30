@@ -23,7 +23,7 @@ module.exports = function (app) {
     coverImg: { type: String },
     doiToken: { type: String },
     confirmedAt: { type: Date },
-    badgesIds: [],
+    badgeIds: [],
     deletedAt: { type: Date },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
@@ -41,7 +41,8 @@ module.exports = function (app) {
     resetToken: { type: String },
     resetShortToken: { type: String },
     resetExpires: { type: Date },
-    wasSeeded: { type: Boolean }
+    wasSeeded: { type: Boolean },
+    wasInvited: { type: Boolean }
   });
 
   return mongooseClient.model('users', users);

@@ -1,4 +1,4 @@
-const { authenticate } = require('feathers-authentication').hooks;
+// const { authenticate } = require('feathers-authentication').hooks;
 const { disallow, populate } = require('feathers-hooks-common');
 const {
   restrictToOwner
