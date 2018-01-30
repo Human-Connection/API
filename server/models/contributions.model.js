@@ -10,6 +10,7 @@ module.exports = function (app) {
       type: String,
       enum: ['easy', 'medium', 'hard']
     },
+    reasonTitle: { type: String },
     reason: { type: String }
   });
 

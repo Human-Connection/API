@@ -14,6 +14,7 @@ module.exports = (seederstore) => {
           categoryIds: () => seedHelpers.randomCategories(seederstore),
           cando: {
             difficulty: () => seedHelpers.randomDifficulty(),
+            reasonTitle: '{{lorem.words}}?',
             reason: '{{lorem.text}} {{lorem.text}}'
           },
           content: '{{lorem.text}} {{lorem.text}}',
@@ -32,6 +33,7 @@ module.exports = (seederstore) => {
           categoryIds: () => seedHelpers.randomCategories(seederstore),
           cando: {
             difficulty: () => seedHelpers.randomDifficulty(),
+            reasonTitle: '{{lorem.words}}?',
             reason: '{{lorem.text}} {{lorem.text}}'
           },
           content: '{{lorem.text}} {{lorem.text}}',
@@ -49,6 +51,7 @@ module.exports = (seederstore) => {
           categoryIds: () => seedHelpers.randomCategories(seederstore),
           cando: {
             difficulty: () => seedHelpers.randomDifficulty(),
+            reasonTitle: '{{lorem.words}}?',
             reason: '{{lorem.text}} {{lorem.text}}'
           },
           content: '{{lorem.text}} {{lorem.text}}',
