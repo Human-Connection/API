@@ -7,6 +7,8 @@
 
 # Human Connection API
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/HumanConnection/HC-API.svg)](https://greenkeeper.io/)
+
 The API for a better world. More information under [humanconnection.org](https://humanconnection.org)
 
 > **Note:** This is only the API part of Human Connection, you can also checkout the Frontend which uses this API.
