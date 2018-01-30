@@ -8,7 +8,9 @@ cache:
 install:
 #  - yarn
 script:
-#  - yarn run test
+  - cp ./config/local.example.json ./config/local.json
+  - NODE_ENV=development npm test
+  - rm ./config/local.json
 services:
   - docker
 before_install:
