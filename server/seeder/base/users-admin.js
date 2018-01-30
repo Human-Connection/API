@@ -1,4 +1,5 @@
 const seedHelpers = require('../../helper/seed-helpers');
+const { keys } = require('lodash');
 
 module.exports = (seederstore) => {
   return {
@@ -14,7 +15,8 @@ module.exports = (seederstore) => {
         timezone: 'Europe/Berlin',
         avatar: '{{internet.avatar}}',
         coverImg: 'https://source.unsplash.com/random/1250x280',
-        badgeIds: () => [seedHelpers.randomItem(seederstore.badges)._id],
+        badgeIds: () => [keys(seederstore.badges)[0]],
+        role: 'admin',
         doiToken: null,
         confirmedAt: null,
         deletedAt: null
@@ -22,12 +24,13 @@ module.exports = (seederstore) => {
       {
         email: 'test2@test2.de',
         password: '1234',
-        name: 'Greg',
+        name: 'Hans',
         isnothere: true,
         timezone: 'Europe/Berlin',
-        avatar: 'https://www.dropbox.com/s/svd9y6hkkgwkgoc/avatar.jpg?dl=1',
-        coverImg: 'https://www.dropbox.com/s/vzv05ffc0nelra9/header.png?dl=1',
-        badgeIds: [],
+        avatar: '{{internet.avatar}}',
+        coverImg: 'https://source.unsplash.com/random/1250x280',
+        role: 'moderator',
+        badgeIds: () => [keys(seederstore.badges)[1]],
         doiToken: null,
         confirmedAt: null,
         deletedAt: null
