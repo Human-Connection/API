@@ -19,6 +19,7 @@ const _ = require('lodash');
 
 let configs = [...baseConfigs, ...developmentConfigs];
 
+// seed service and add results to the seeder store
 const seedAndAssign = async (config, seeder) => {
   const key = config.path;
   const res = await seeder.seed(config);
@@ -39,7 +40,7 @@ module.exports = function (app = null, store = null) {
 
     app.seed = async (conf = null) => {
       if (_.isArray(conf) && conf.length) {
-        configs = conf
+        configs = conf;
       }
 
       const seeder = new Seeder(app, {
@@ -48,7 +49,7 @@ module.exports = function (app = null, store = null) {
       });
       await asyncForEach(configs, async (config) => {
         if (_.isEmpty(config.services)) {
-          config = config(seederstore);
+          config = config(seederstore, app);
         } else {
           app.error('config was empty!');
         }

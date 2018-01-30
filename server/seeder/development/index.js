@@ -11,6 +11,7 @@ module.exports = function () {
     require('./projects'),
     require('./follows'),
     require('./comments'),
-    require('./emotions')
+    require('./emotions'),
+    require('./invites')
   ];
 };

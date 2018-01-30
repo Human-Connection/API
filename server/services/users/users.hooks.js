@@ -9,6 +9,7 @@ const createAdmin = require('./hooks/create-admin');
 const saveAvatar = require('./hooks/save-avatar');
 const createSlug = require('../../hooks/create-slug');
 const thumbnails = require('../../hooks/thumbnails');
+const inviteCode = require('./hooks/invite-code')();
 
 const { hashPassword } = require('feathers-authentication-local').hooks;
 
@@ -31,7 +32,7 @@ const badgesSchema = {
   include: {
     service: 'badges',
     nameAs: 'badges',
-    parentField: 'badgesIds',
+    parentField: 'badgeIds',
     childField: '_id'
   }
 };
@@ -47,6 +48,9 @@ module.exports = {
     create: [
       hashPassword(),
       lowerCase('email', 'username'),
+      when(isProvider('external'), 
+        inviteCode.before
+      ),
       // We don't need email verification
       // for server generated users
       addVerification(),
@@ -130,6 +134,7 @@ module.exports = {
       when(isProvider('external'),
         removeVerification()
       ),
+      inviteCode.after
     ],
     update: [],
     patch: [],
