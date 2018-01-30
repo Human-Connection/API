@@ -1,5 +1,5 @@
 FROM node:8.9-alpine
-LABEL Description="This image is used to start the hc-frontend-nuxt" Vendor="Grzegorz Leoniec" Version="1.0" Maintainer="Grzegorz Leoniec (greg@app-interactive.de)"
+LABEL Description="This image is used to start the hc-api-feathers" Vendor="Human-Connection gGmbH" Version="1.0" Maintainer="Human-Connection gGmbH (developer@human-connection.org)"
 
 # update unix packages
 RUN apk update && apk upgrade

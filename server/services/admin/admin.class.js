@@ -14,7 +14,7 @@ class Service {
   }
   
   async _fillSeederStore(services = []) {
-    console.debug('###Filling seeder store...');
+    this.app.debug('###Filling seeder store...');
     await asyncForEach(services, async (service) => {
       const res = await this.app.service(service).find({ query: { $limit: 100 }});
       this.seederstore[service] = keyBy(res.data, '_id');
@@ -46,7 +46,7 @@ class Service {
 
       if (data.seedBaseCategories) {
         // run the seeder
-        console.log('seedBaseCategories...');
+        this.app.debug('seedBaseCategories...');
         require('../../seeder')(this.app, this.seederstore);
         try {
           await this.app.seed([
@@ -59,7 +59,7 @@ class Service {
       }
       if (data.seedFakeData) {
         // run the seeder
-        console.log('seedFakeData...');
+        this.app.debug('seedFakeData...');
         require('../../seeder')(this.app, this.seederstore);
         try {
           await this.app.seed(require('../../seeder/development')());
@@ -70,7 +70,7 @@ class Service {
       }
       if (data.seedDemoData) {
         // run the seeder
-        console.log('seedDemoData...');
+        this.app.debug('seedDemoData...');
         require('../../seeder')(this.app, this.seederstore);
         try {
           await this.app.seed(require('../../seeder/demo')());

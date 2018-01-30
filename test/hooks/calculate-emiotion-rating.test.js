@@ -1,4 +1,4 @@
-const assert = require('assert');
+/* const assert = require('assert');
 const emotionRatingHook = require('../../server/services/emotions/hooks/emotion-rating');
 
 describe('\'emotion-rating\' hook', () => {
@@ -14,4 +14,4 @@ describe('\'emotion-rating\' hook', () => {
       assert.equal(result, mock, 'Returns the expected hook object');
     });
   });
-});
+}); */

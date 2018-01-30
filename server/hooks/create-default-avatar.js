@@ -8,11 +8,11 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
     // Hooks can either return nothing or a promise
     // that resolves with the `hook` object for asynchronous operations
 
-    if (!hook.data.avatar) {
+    if (hook.data && !hook.data.avatar) {
       const emailhash = crypto.createHmac('sha256', hook.data.email).digest('hex');
       hook.data.avatar = `https://api.adorable.io/avatars/250/${emailhash}.png`;
     }
 
-    return Promise.resolve(hook);
+    return hook;
   };
 };

@@ -25,7 +25,7 @@ const populateUserWithFollows = (data, app) => {
         __v: 0
       });
       resolve(output);
-    })
+    });
   });
 };
 
