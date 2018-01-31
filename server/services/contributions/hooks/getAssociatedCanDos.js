@@ -9,6 +9,11 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
         return resolve(hook);
       }
 
+      // Stop, if it was a find method and $limit was not set
+      if (hook.method === 'find' && (!hook.params.query || hook.params.query.$limit !== 1)) {
+        return resolve(hook);
+      }
+
       // Stop, if we have an empty array or more then one item
       let isArray = hook.result.data && Array.isArray(hook.result.data)
       if (isArray && (!hook.result.data.length || hook.result.data.length > 1)) {
