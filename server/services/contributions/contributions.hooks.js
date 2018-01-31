@@ -1,5 +1,5 @@
 const { authenticate } = require('feathers-authentication').hooks;
-const { unless, isProvider, populate } = require('feathers-hooks-common');
+const { when, unless, isProvider, populate } = require('feathers-hooks-common');
 const {
   //queryWithCurrentUser,
   associateCurrentUser,
@@ -13,6 +13,8 @@ const search = require('feathers-mongodb-fuzzy-search');
 const thumbnails = require('../../hooks/thumbnails');
 const isModerator = require('../../hooks/is-moderator-boolean');
 const excludeDisabled = require('../../hooks/exclude-disabled');
+const getAssociatedCanDos = require('./hooks/getAssociatedCanDos');
+const isSingleItem = require('../../hooks/is-single-item');
 
 const userSchema = {
   include: {
@@ -133,6 +135,9 @@ module.exports = {
       populate({ schema: commentsSchema })
     ],
     find: [
+      when(isSingleItem(),
+        getAssociatedCanDos()
+      ),
       thumbnails({
         teaserImg: {
           cardS: '300x0',
