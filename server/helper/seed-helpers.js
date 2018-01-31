@@ -35,9 +35,17 @@ const ngoLogos = [
   null
 ];
 
+const difficulties = ['easy', 'medium', 'hard']
+
 module.exports = {
-  randomItem: (items) => {
-    let randomIds = _.shuffle(_.keys(items));
+  randomItem: (items, filter) => {
+    let ids = filter
+      ? Object.keys(items)
+        .filter(id => {
+          return filter(items[id]);
+        })
+      : _.keys(items)
+    let randomIds = _.shuffle(ids);
     return items[randomIds.pop()];
   },
   randomItems: (items, key = '_id', min = 1, max = 1) => {
@@ -54,6 +62,9 @@ module.exports = {
       res.push(r);
     }
     return res;
+  },
+  randomDifficulty: () => {
+    return _.shuffle(difficulties).pop();
   },
   randomLogo: () => {
     return _.shuffle(ngoLogos).pop();
