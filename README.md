@@ -1,3 +1,12 @@
+<p align="center">
+  <img align="center" src="https://human-connection.org/wp-content/uploads/2017/11/human-connection-logo.svg" alt="Human Connection" />
+</p>
+
+
+<p align="center">
+  <a href="https://travis-ci.org/HumanConnection/HC-API"><img src="https://img.shields.io/travis/HumanConnection/HC-API/master.svg" alt="Build Status"></a>
+</p>
+
 # Human Connection API
 
 The API for a better world. More information under [humanconnection.org](https://humanconnection.org)
@@ -81,7 +90,9 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
 
 ## Local configuration
 
-If you need to configure anything you can do so inside the `config/local.json` file. For that the `local.example.json` will contain always a minimal setup to get it working.
+If you need to configure anything you can do so inside the `config/local.json` file. For that the `config/local.example.json` will contain always a minimal setup to get it working.
+
+If, f.ex., you want to change listen address, port or URL, you can do so. Entries in the `config/local.json` will override entries in the `config/default.json`.
 
 **Note on the seeder configuration**
 The seeder configuration has two properties:

@@ -19,9 +19,7 @@ module.exports = function(options = {}) { // eslint-disable-line no-unused-vars
   return function(hook) {
 
     if (!hook.result || hook.method !== 'create') {
-      hook.app.error('ERROR', hook.method);
-
-      throw new Error('FAILED');
+      return hook;
     }
 
     return new Promise(resolve => {
@@ -67,7 +65,7 @@ module.exports = function(options = {}) { // eslint-disable-line no-unused-vars
                 $set: {
                   emotions: contribution.emotions
                 }
-              }).then(res => {
+              }).then(() => {
                 resolve(hook);
               });
             });

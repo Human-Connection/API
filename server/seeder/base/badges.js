@@ -1,18 +1,164 @@
 // eslint-disable-next-line no-unused-vars
-module.exports = (seederstore) => {
-  return {
-    services: [{
+module.exports = (seederstore, app) => {
+  const badges = [
+    { 
+      type: 'role',
+      status: 'temporary',
+      key: 'admin' 
+    },
+    { 
+      type: 'role',
+      status: 'temporary',
+      key: 'moderator' 
+    },
+    { 
+      type: 'role',
+      status: 'temporary',
+      key: 'developer' 
+    },
+    { 
+      type: 'crowdfunding',
+      status: 'permanent',
+      key: 'indiegogo_en_racoon' 
+    },
+    { 
+      type: 'crowdfunding',
+      status: 'permanent',
+      key: 'indiegogo_en_rabbit' 
+    },
+    { 
+      type: 'crowdfunding',
+      status: 'permanent',
+      key: 'indiegogo_en_wolf' 
+    },
+    { 
+      type: 'crowdfunding',
+      status: 'permanent',
+      key: 'indiegogo_en_bear' 
+    },
+    { 
+      type: 'crowdfunding',
+      status: 'permanent',
+      key: 'indiegogo_en_turtle' 
+    },
+    { 
+      type: 'crowdfunding',
+      status: 'permanent',
+      key: 'indiegogo_en_rhino' 
+    },
+    { 
+      type: 'crowdfunding',
+      status: 'permanent',
+      key: 'indiegogo_en_tiger' 
+    },
+    { 
+      type: 'crowdfunding',
+      status: 'permanent',
+      key: 'indiegogo_en_panda' 
+    },
+    { 
+      type: 'crowdfunding',
+      status: 'permanent',
+      key: 'indiegogo_en_whale' 
+    },
+    { 
+      type: 'crowdfunding',
+      status: 'permanent',
+      key: 'fundraisingbox_de_starter' 
+    },
+    { 
+      type: 'crowdfunding',
+      status: 'permanent',
+      key: 'fundraisingbox_de_crane' 
+    },
+    { 
+      type: 'crowdfunding',
+      status: 'permanent',
+      key: 'fundraisingbox_de_balloon' 
+    },
+    { 
+      type: 'crowdfunding',
+      status: 'permanent',
+      key: 'fundraisingbox_de_glider' 
+    },
+    { 
+      type: 'crowdfunding',
+      status: 'permanent',
+      key: 'fundraisingbox_de_helicopter' 
+    },
+    { 
+      type: 'crowdfunding',
+      status: 'permanent',
+      key: 'fundraisingbox_de_bigballoon' 
+    },
+    { 
+      type: 'crowdfunding',
+      status: 'permanent',
+      key: 'fundraisingbox_de_airship' 
+    },
+    { 
+      type: 'crowdfunding',
+      status: 'permanent',
+      key: 'fundraisingbox_de_alienship' 
+    },
+    { 
+      type: 'crowdfunding',
+      status: 'permanent',
+      key: 'wooold_de_bee' 
+    },
+    { 
+      type: 'crowdfunding',
+      status: 'permanent',
+      key: 'wooold_de_butterfly' 
+    },
+    { 
+      type: 'crowdfunding',
+      status: 'permanent',
+      key: 'wooold_de_flower' 
+    },
+    { 
+      type: 'crowdfunding',
+      status: 'permanent',
+      key: 'wooold_de_lifetree' 
+    },
+    { 
+      type: 'crowdfunding',
+      status: 'permanent',
+      key: 'wooold_de_double_rainbow' 
+    },
+    { 
+      type: 'crowdfunding',
+      status: 'permanent',
+      key: 'wooold_de_magic_rainbow' 
+    },
+    { 
+      type: 'crowdfunding',
+      status: 'permanent',
+      key: 'wooold_de_end_of_rainbow' 
+    },
+    { 
+      type: 'crowdfunding',
+      status: 'permanent',
+      key: 'wooold_de_super_founder' 
+    }
+  ];
+
+  let services = [];
+  badges.forEach((badge) => {
+    services.push({
       path: 'badges',
-      count: 1,
       template: {
         image: {
-          path: 'https://cdn.frontify.com/api/screen/thumbnail/XX9MuecGg2sy_CuMKs6FulhegxuoRIqi-7nhTI65O6DOzyS6YQc2s5XIQJgeScEJjTq8puwTMSRzlVkpWRnP3A/1524',
-          alt: '{{lorem.word}}',
+          path: `${app.get('baseURL')}/img/badges/${badge.key}.svg`,
+          alt: badge.key
         },
-        text: '{{lorem.word}}',
-        status: 'permanent',
-        type: '{{lorem.word}}'
+        status: badge.status,
+        type: badge.type
       }
-    }]
+    });
+  });
+
+  return {
+    services: services
   };
 };

@@ -14,7 +14,7 @@ module.exports = (seederstore) => {
         timezone: 'Europe/Berlin',
         avatar: '{{internet.avatar}}',
         coverImg: 'https://source.unsplash.com/random/1250x280',
-        badgesIds: () => [seedHelpers.randomItem(seederstore.badges)._id],
+        badgeIds: () => [seedHelpers.randomItem(seederstore.badges)._id],
         doiToken: null,
         confirmedAt: null,
         deletedAt: null
@@ -27,7 +27,7 @@ module.exports = (seederstore) => {
         timezone: 'Europe/Berlin',
         avatar: 'https://www.dropbox.com/s/svd9y6hkkgwkgoc/avatar.jpg?dl=1',
         coverImg: 'https://www.dropbox.com/s/vzv05ffc0nelra9/header.png?dl=1',
-        badgesIds: [],
+        badgeIds: [],
         doiToken: null,
         confirmedAt: null,
         deletedAt: null

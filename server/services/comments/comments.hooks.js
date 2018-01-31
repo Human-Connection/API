@@ -66,7 +66,7 @@ module.exports = {
       populate({ schema: userSchema })
     ],
     find: [
-      discard('content', 'user.coverImg', 'badgesIds')
+      discard('content', 'user.coverImg', 'badgeIds')
     ],
     get: [],
     create: [

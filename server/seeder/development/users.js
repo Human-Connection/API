@@ -1,3 +1,4 @@
+const seedHelpers = require('../../helper/seed-helpers');
 
 // eslint-disable-next-line no-unused-vars
 module.exports = (seederstore) => {
@@ -15,6 +16,7 @@ module.exports = (seederstore) => {
         avatar: '{{internet.avatar}}',
         isVerified : true,
         role : 'user',
+        badgeIds: () => seedHelpers.randomItems(seederstore.badges, '_id', 0, seederstore.badges.length),
         doiToken: null,
         confirmedAt: null,
         deletedAt: null,
