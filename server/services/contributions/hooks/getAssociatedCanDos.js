@@ -5,17 +5,17 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
       const limit = 5;
 
       // Stop, if we have no result at all
-      if (!hook.result || !hook.result.data) {
+      if (!hook.result) {
         return resolve(hook);
       }
 
       // Stop, if we have an empty array or more then one item
-      let isArray = Array.isArray(hook.result.data)
+      let isArray = hook.result.data && Array.isArray(hook.result.data)
       if (isArray && (!hook.result.data.length || hook.result.data.length > 1)) {
         return resolve(hook);
       }
 
-      let currentData = isArray ? hook.result.data[0] : hook.result.data;
+      let currentData = isArray ? hook.result.data[0] : hook.result;
       if (!currentData.categoryIds || !currentData.categoryIds.length) {
         return resolve(hook);
       }
@@ -42,7 +42,7 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
           if (isArray) {
             hook.result.data[0].associatedCanDos = associatedCanDos;
           } else {
-            hook.result.data.associatedCanDos = associatedCanDos;
+            hook.result.associatedCanDos = associatedCanDos;
           }
           return resolve(hook);
         })

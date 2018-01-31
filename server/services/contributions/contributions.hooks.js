@@ -151,6 +151,7 @@ module.exports = {
       })
     ],
     get: [
+      getAssociatedCanDos(),
       thumbnails({
         teaserImg: {
           cardS: '300x0',
