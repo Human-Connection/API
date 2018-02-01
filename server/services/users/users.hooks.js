@@ -51,6 +51,19 @@ const candosSchema = {
 const saveRemoteImages = require('../../hooks/save-remote-images');
 const createDefaultAvatar = require('../../hooks/create-default-avatar');
 
+const thumbnailOptions = {
+  avatar: {
+    small: '72x72/smart',
+    medium: '120x120/smart',
+    large: '240x240/smart',
+    placeholder: '36x36/smart/filters:blur(30)'
+  },
+  coverImg: {
+    cover: '1102x312/smart',
+    coverPlaceholder: '243x100/smart/filters:blur(30)'
+  }
+};
+
 module.exports = {
   before: {
     all: [],
@@ -116,27 +129,11 @@ module.exports = {
       cleanupBasicData
     ],
     find: [
-      thumbnails({
-        avatar: {
-          small: '72x72/smart',
-          medium: '120x120/smart',
-          large: '240x240/smart'
-        }
-      }),
+      thumbnails(thumbnailOptions),
       cleanupPersonalData
     ],
     get: [
-      thumbnails({
-        avatar: {
-          small: '72x72/smart',
-          medium: '120x120/smart',
-          large: '240x240/smart'
-        },
-        coverImg: {
-          cover: '1102x312/smart',
-          coverPlaceholder: '243x100/smart/filters:blur(30)'
-        }
-      }),
+      thumbnails(thumbnailOptions),
       cleanupPersonalData
     ],
     create: [
@@ -146,9 +143,12 @@ module.exports = {
       when(isProvider('external'),
         removeVerification()
       ),
+      thumbnails(thumbnailOptions),
       inviteCode.after
     ],
-    update: [],
+    update: [
+      thumbnails(thumbnailOptions)
+    ],
     patch: [],
     remove: []
   },
