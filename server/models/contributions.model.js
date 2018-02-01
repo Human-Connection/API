@@ -4,6 +4,16 @@
 // for more of what you can do here.
 module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
+
+  const candoSchema = mongooseClient.Schema({
+    difficulty: {
+      type: String,
+      enum: ['easy', 'medium', 'hard']
+    },
+    reasonTitle: { type: String },
+    reason: { type: String }
+  });
+
   const contributions = new mongooseClient.Schema({
     userId: { type: String, required: true },
     categoryIds: { type: Array },
@@ -11,6 +21,7 @@ module.exports = function (app) {
     // Generated from title
     slug: { type: String, required: true, unique: true },
     type: { type: String, required: true },
+    cando: candoSchema,
     content: { type: String, required: true },
     // Generated from content
     contentExcerpt: { type: String, required: true },
