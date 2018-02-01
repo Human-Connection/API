@@ -127,5 +127,14 @@ module.exports = {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array);
     }
+  },
+  genInviteCode: () => {
+    const chars = '23456789abcdefghkmnpqrstuvwxyzABCDEFGHJKLMNPRSTUVWXYZ';
+    let code = '';
+    for (let i = 0; i < 8; i++) {
+      const n = _.random(0, chars.length-1);
+      code += chars.substr(n, 1);
+    }
+    return code;
   }
 };
