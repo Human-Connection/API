@@ -32,8 +32,19 @@ const badgesSchema = {
   include: {
     service: 'badges',
     nameAs: 'badges',
-    parentField: 'badgeIds',
-    childField: '_id'
+    parentField: 'badgesIds',
+    childField: '_id',
+    asArray: true
+  }
+};
+
+const candosSchema = {
+  include: {
+    service: 'users-candos',
+    nameAs: 'candos',
+    parentField: '_id',
+    childField: 'userId',
+    asArray: true
   }
 };
 
@@ -48,7 +59,7 @@ module.exports = {
     create: [
       hashPassword(),
       lowerCase('email', 'username'),
-      when(isProvider('external'), 
+      when(isProvider('external'),
         inviteCode.before
       ),
       // We don't need email verification
@@ -101,6 +112,7 @@ module.exports = {
   after: {
     all: [
       populate({ schema: badgesSchema }),
+      populate({ schema: candosSchema }),
       cleanupBasicData
     ],
     find: [

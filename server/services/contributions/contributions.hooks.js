@@ -1,5 +1,5 @@
 const { authenticate } = require('feathers-authentication').hooks;
-const { unless, isProvider, populate } = require('feathers-hooks-common');
+const { when, unless, isProvider, populate } = require('feathers-hooks-common');
 const {
   //queryWithCurrentUser,
   associateCurrentUser,
@@ -13,6 +13,8 @@ const search = require('feathers-mongodb-fuzzy-search');
 const thumbnails = require('../../hooks/thumbnails');
 const isModerator = require('../../hooks/is-moderator-boolean');
 const excludeDisabled = require('../../hooks/exclude-disabled');
+const getAssociatedCanDos = require('./hooks/getAssociatedCanDos');
+const isSingleItem = require('../../hooks/is-single-item');
 
 const userSchema = {
   include: {
@@ -29,6 +31,16 @@ const categoriesSchema = {
     nameAs: 'categories',
     parentField: 'categoryIds',
     childField: '_id',
+    asArray: true
+  }
+};
+
+const candosSchema = {
+  include: {
+    service: 'users-candos',
+    nameAs: 'candoUsers',
+    parentField: '_id',
+    childField: 'contributionId',
     asArray: true
   }
 };
@@ -52,7 +64,6 @@ const commentsSchema = {
     //}
   }
 };
-
 
 module.exports = {
   before: {
@@ -120,9 +131,13 @@ module.exports = {
     all: [
       populate({ schema: userSchema }),
       populate({ schema: categoriesSchema }),
+      populate({ schema: candosSchema }),
       populate({ schema: commentsSchema })
     ],
     find: [
+      when(isSingleItem(),
+        getAssociatedCanDos()
+      ),
       thumbnails({
         teaserImg: {
           cardS: '300x0',
@@ -136,11 +151,16 @@ module.exports = {
       })
     ],
     get: [
+      getAssociatedCanDos(),
       thumbnails({
         teaserImg: {
+          cardS: '300x0',
+          cardM: '400x0',
+          cardL: '740x0',
           zoom: '0x1024',
           cover: '800x300/smart',
-          placeholder: '800x300/filters:blur(10)'
+          placeholder: '800x300/filters:blur(10)',
+          coverPlaceholder: '243x100/smart/filters:blur(30)'
         }
       })
     ],

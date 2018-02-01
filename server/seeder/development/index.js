@@ -7,6 +7,8 @@ module.exports = function () {
     require('./users'),
     require('./moderators'),
     require('./contributions'),
+    require('./candos'),
+    require('./users-candos'),
     require('./organizations'),
     require('./projects'),
     require('./follows'),
