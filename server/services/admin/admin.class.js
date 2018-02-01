@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 
-const { asyncForEach } = require('../../helper/seed-helpers');
-const { keyBy } = require('lodash');
+const { asyncForEach, genInviteCode } = require('../../helper/seed-helpers');
+const { keyBy, isEmpty } = require('lodash');
 
 class Service {
   constructor (options) {
@@ -38,15 +38,30 @@ class Service {
     
     return new Promise(async (resolve, reject) => {
 
-      try {
-        await this._fillSeederStore(['users', 'categories']);
-      } catch (err) {
-        reject(err);
+      if (data.seedBaseCategories || data.seedBaseBadges || data.seedFakeData || data.seedDemoData) {
+        try {
+          await this._fillSeederStore(['users', 'categories']);
+        } catch (err) {
+          reject(err);
+        }
       }
 
       if (data.seedBaseCategories) {
         // run the seeder
         this.app.debug('seedBaseCategories...');
+        require('../../seeder')(this.app, this.seederstore);
+        try {
+          await this.app.seed([
+            require('../../seeder/base/categories')
+          ]);
+          resolve();
+        } catch (err) {
+          reject(err);
+        }
+      }
+      if (data.seedBaseBadges) {
+        // run the seeder
+        this.app.debug('seedBaseBadges...');
         require('../../seeder')(this.app, this.seederstore);
         try {
           await this.app.seed([
@@ -78,6 +93,26 @@ class Service {
         } catch (err) {
           reject(err);
         }
+      }
+
+      if (!isEmpty(data.createInvites)) {
+        // run the seeder
+        this.app.debug('creatingInviceCodes...');
+
+        let output = [];
+        await asyncForEach(data.createInvites, async (email) => {
+          try {
+            const res = await this.app.service('invites').create({
+              email: email,
+              code: genInviteCode()
+            });
+            output.push(res);
+          } catch (err) {
+            this.app.error(err);
+          }
+        });
+
+        resolve(output);
       }
     });
   }
