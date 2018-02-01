@@ -45,5 +45,9 @@ module.exports = function (app) {
     wasInvited: { type: Boolean }
   });
 
+  users.index({
+    name: 'text'
+  });
+
   return mongooseClient.model('users', users);
 };
