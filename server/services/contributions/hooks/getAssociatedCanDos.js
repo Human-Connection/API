@@ -15,7 +15,7 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
       }
 
       // Stop, if we have an empty array or more then one item
-      let isArray = hook.result.data && Array.isArray(hook.result.data)
+      let isArray = hook.result.data && Array.isArray(hook.result.data);
       if (isArray && (!hook.result.data.length || hook.result.data.length > 1)) {
         return resolve(hook);
       }
@@ -32,7 +32,7 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
       })
         .then(({data}) => {
           let associatedCanDos = [];
-          let categoryIds = currentData.categoryIds
+          let categoryIds = currentData.categoryIds;
           if (categoryIds && categoryIds.length) {
             while (associatedCanDos.length < limit && data.length) {
               let item = data.shift();

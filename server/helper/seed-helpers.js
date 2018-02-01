@@ -35,7 +35,7 @@ const ngoLogos = [
   null
 ];
 
-const difficulties = ['easy', 'medium', 'hard']
+const difficulties = ['easy', 'medium', 'hard'];
 
 module.exports = {
   randomItem: (items, filter) => {
@@ -44,7 +44,7 @@ module.exports = {
         .filter(id => {
           return filter(items[id]);
         })
-      : _.keys(items)
+      : _.keys(items);
     let randomIds = _.shuffle(ids);
     return items[randomIds.pop()];
   },
