@@ -43,6 +43,12 @@ server.on('listening', () => {
           app.service('admin').create({ seedBaseCategories: true });
         }
       });
+    app.service('badges').find({ query: { $limit: 0 }})
+      .then(async (res) => {
+        if (res.total < 1) {
+          app.service('admin').create({ seedBaseBadges: true });
+        }
+      });
     app.info(`Feathers application started on ${app.get('host')}:${port}`);
   }
 });
