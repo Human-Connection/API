@@ -5,19 +5,22 @@
 
 <p align="center">
   <a href="https://travis-ci.org/HumanConnection/HC-API"><img src="https://img.shields.io/travis/HumanConnection/HC-API/master.svg" alt="Build Status"></a>
+  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-green.svg" "Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)" /></a>
 </p>
 
-# Human Connection API
+# Human-Connection API
 
-The API for a better world. More information under [humanconnection.org](https://humanconnection.org)
+The API for a better world. More information under [human-connection.org](https://human-connection.org)
 
-> **Note:** This is only the API part of Human Connection, you can also checkout the Frontend which uses this API.
+> **Note:** This is only the API part of Human-Connection, you have to also checkout the [Frontend](https://github.com/HumanConnection/HC-Frontend) which uses this API.
 
 ## Framework
 
 This project uses [Feathers](http://feathersjs.com). An open source web framework for building modern real-time applications.
 
 ## Getting Started
+
+> we recommand to install the project locally for the best development ease and performance
 
 Getting up and running is as easy as 1, 2, 3, 4 ... 5.
 
@@ -36,7 +39,7 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
 
 4. Setup local mailserver (optional)
    
-   >  **NOTE:** 
+   >  **Note:** 
    >  *You only have to start that mailserver when you want to register, reset your password or test emails in any form, it
    >  does not affect the rest of the application.*
         
@@ -105,7 +108,7 @@ The seeder configuration has two properties:
 
 Simply run `yarn test` and all your tests in the `test/` directory will be run.
 
-> **NOTE:** 
+> **Note:** 
 > *At the moment there are some issues with linting while testing, but you can run the tests also with mocha run*
 
 ## Scaffolding
