@@ -4,7 +4,7 @@
 
 
 <p align="center">
-  <a href="https://travis-ci.org/HumanConnection/HC-API"><img src="https://img.shields.io/travis/HumanConnection/HC-API/master.svg" alt="Build Status"></a>
+  <a href="https://travis-ci.org/Human-Connection/API"><img src="https://img.shields.io/travis/Human-Connection/API/master.svg" alt="Build Status"></a>
   <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-green.svg" "Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)" /></a>
 </p>
 
@@ -12,7 +12,7 @@
 
 The API for a better world. More information under [human-connection.org](https://human-connection.org)
 
-> **Note:** This is only the API part of Human-Connection, you have to also checkout the [Frontend](https://github.com/HumanConnection/HC-Frontend) which uses this API.
+> **Note:** This is only the API part of Human-Connection, you have to also checkout the [WebApp](https://github.com/Human-Connection/WebApp) which uses this API.
 
 ## Framework
 
@@ -28,12 +28,12 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
 
 2. Clone this repo
    ``` bash
-   $ git clone https://git@team.human-connection.org/bitbucket/scm/hc/hc-api-feathers.git
+   $ git clone https://github.com/Human-Connection/API.git
    ```
 
 3. Install your dependencies
    ``` bash
-   $ cd ./hc-api-feathers
+   $ cd ./API
    $ yarn
    ```
 
@@ -128,10 +128,10 @@ $ feathers help                           # Show all commands
 
 For more information on all the framework related things visit [docs.feathersjs.com](http://docs.feathersjs.com).
 
-The HC platform is documented in our [gitbook](https://humanconnection.gitbooks.io) (work in progress).
+The HC platform is documented in our [gitbook](https://www.gitbook.com/book/human-connection/documentation/) (work in progress).
 
 ## License 
 
-<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png"/></a>
+<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by-nc-sa.svg"/></a>
 
 [Creative Commons (CC BY-NC-SA 4.0) License](https://creativecommons.org/licenses/by-nc-sa/4.0/) not for commercial use. 

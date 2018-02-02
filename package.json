@@ -1,12 +1,12 @@
 {
-  "name": "hc-api",
+  "name": "human-connection-api",
   "description": "Human-Connection API",
   "version": "0.1.0",
   "homepage": "https://human-connection.org",
   "license": "CC-BY-NC-SA-4.0",
   "repository": {
     "type" : "git",
-    "url" : "https://github.com/HumanConnection/HC-API.git"
+    "url" : "https://github.com/Human-Connection/API.git"
   },
   "main": "server",
   "keywords": [
@@ -21,7 +21,7 @@
   },
   "contributors": [],
   "bugs": {
-    "url" : "https://github.com/HumanConnection/HC-API/issues",
+    "url" : "https://github.com/Human-Connection/API/issues",
     "email" : "bugfix@human-connection.org"
   },
   "directories": {
