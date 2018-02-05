@@ -1,4 +1,4 @@
-const _ = require('lodash')
+const _ = require('lodash');
 
 /* eslint-disable no-unused-vars */
 class Service {
