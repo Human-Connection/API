@@ -9,9 +9,6 @@ module.exports = function() {
         return reject('Make sure to run this as an after hook.');
       }
 
-      // eslint-disable-next-line
-      console.log('result', hook.result);
-
       // Check required fields
       if(!hook.result.content || !hook.result._id || !hook.result.userId) {
         resolve(hook);
@@ -22,9 +19,6 @@ module.exports = function() {
       const creatorId = hook.result.userId;
 
       let mentions = await getMentions(hook.app, contribution.content);
-
-      // eslint-disable-next-line
-      console.log('mentions', mentions);
 
       // Exit if no user mentions were found
       if (!mentions) {
@@ -49,17 +43,12 @@ module.exports = function() {
         }
       });
 
-      // eslint-disable-next-line
-      console.log('notifications', notifications);
-
       if (!notifications.length) {
         return resolve(hook);
       }
 
       return hook.app.service('notifications').create(notifications)
         .then(() => {
-          // eslint-disable-next-line
-          console.log('notifications created');
           resolve(hook);
         })
         .catch(error => {
