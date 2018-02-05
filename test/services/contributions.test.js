@@ -62,12 +62,12 @@ describe('\'contributions\' service', () => {
       content: `<a href="" class="hc-editor-mention-blot" data-hc-mention="{&quot;_id&quot;:&quot;${mentionedUser._id.toString()}&quot;,&quot;slug&quot;:&quot;$\{mentionedUser.slug}&quot;}">{mentionedUser.name}</a>`,
       language: 'en'
     }, params);
-    const {data} = await notificationService.find({
+    const result = await notificationService.find({
       query: {
         userId: mentionedUser._id
       }
     });
-    const notification = data[0];
+    const notification = result.data[0];
     assert.ok(notification, 'Created notification');
     assert.ok(notification.userId, 'Has userId');
     assert.ok(notification.relatedContributionId, 'Has relatedContributionId');
