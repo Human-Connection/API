@@ -9,14 +9,22 @@ module.exports = function() {
         return reject('Make sure to run this as an after hook.');
       }
 
-      if (!hook.result.content || !hook.params || !hook.params.user) {
-        return resolve(hook);
+      // eslint-disable-next-line
+      console.log('result', hook.result);
+
+      // Check required fields
+      if(!hook.result.content || !hook.result._id || !hook.result.userId) {
+        resolve(hook);
+        return false;
       }
 
       const contribution = hook.result;
-      const creator = hook.params.user;
+      const creatorId = hook.result.userId;
 
       let mentions = await getMentions(hook.app, contribution.content);
+
+      // eslint-disable-next-line
+      console.log('mentions', mentions);
 
       // Exit if no user mentions were found
       if (!mentions) {
@@ -28,24 +36,32 @@ module.exports = function() {
       hook.data.userMentions = {};
       Object.keys(mentions).forEach(id => {
         // Don't notify creator
-        if (id !== creator._id.toString()) {
+        if (id !== creatorId) {
           // Save user mention ids for later comparison
           hook.data.userMentions[id] = true;
 
           notifications.push({
             userId: id,
-            message: `<strong>${creator.name}</strong> has mentioned you in a contribution: ${contribution.name}`,
+            type: 'contribution-mention',
+            relatedUserId: creatorId,
             relatedContributionId: contribution._id
           });
         }
       });
 
+      // eslint-disable-next-line
+      console.log('notifications', notifications);
+
       if (!notifications.length) {
         return resolve(hook);
       }
 
-      hook.app.service('notifications').create(notifications)
-        .then(resolve(hook))
+      return hook.app.service('notifications').create(notifications)
+        .then(() => {
+          // eslint-disable-next-line
+          console.log('notifications created');
+          resolve(hook);
+        })
         .catch(error => {
           logger.error(error);
           resolve(hook);

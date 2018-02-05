@@ -31,7 +31,7 @@
     "dev-win": "npm run clear && concurrently \"mongod --dbpath data\" \"wait-on tcp:27017&&SET NODE_ENV=development&& nodemon --inspect server/\"",
     "dev-noseed": "concurrently 'mongod --dbpath data' 'wait-on tcp:27017 && NODE_ENV=development nodemon --inspect server/'",
     "dev-win-noseed": "concurrently \"mongod --dbpath data\" \"wait-on tcp:27017 && nodemon --inspect server/\"",
-    "mocha": "mocha test/ --recursive --timeout 10000"
+    "mocha": "npm run clear && concurrently --kill-others 'mongod --dbpath data &>/dev/null' 'wait-on tcp:27017 && NODE_ENV=test mocha test/ --recursive --timeout 10000'"
   },
   "dependencies": {
     "body-parser": "~1.18.2",

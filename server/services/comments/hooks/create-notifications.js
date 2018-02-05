@@ -4,24 +4,30 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
       const notificationService = hook.app.service('notifications');
       const contributionService = hook.app.service('contributions');
 
+      // Check required fields
+      if(!hook.result || !hook.result._id || !hook.result.userId || !hook.result.contributionId) {
+        resolve(hook);
+        return false;
+      }
+
       const commentId = hook.result._id;
       const contributionId = hook.result.contributionId;
+      const creatorId = hook.result.userId;
 
       contributionService.get(contributionId)
         .then(result => {
           const userId = result.userId;
-          let name = hook.result.user.name;
-          name = name !== undefined ? name : 'Someone';
 
           // Only create notification for other users
-          if(userId == hook.result.userId) {
+          if(userId == creatorId) {
             resolve(hook);
             return false;
           }
 
           const notification = {
             userId: userId,
-            message: `${name} has commented your contribution.`,
+            type: 'comment',
+            relatedUserId: creatorId,
             relatedContributionId: contributionId,
             relatedCommentId: commentId,
           };

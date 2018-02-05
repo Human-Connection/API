@@ -14,7 +14,7 @@ const thumbnails = require('../../hooks/thumbnails');
 const isModerator = require('../../hooks/is-moderator-boolean');
 const excludeDisabled = require('../../hooks/exclude-disabled');
 const getAssociatedCanDos = require('./hooks/get-associated-can-dos');
-const mentionNotifications = require('./hooks/mention-notifications');
+const createMentionNotifications = require('./hooks/create-mention-notifications');
 const isSingleItem = require('../../hooks/is-single-item');
 
 const userSchema = {
@@ -166,7 +166,7 @@ module.exports = {
       })
     ],
     create: [
-      mentionNotifications(),
+      createMentionNotifications(),
       thumbnails({
         teaserImg: {
           cardS: '300x0',
@@ -180,7 +180,7 @@ module.exports = {
       })
     ],
     update: [
-      mentionNotifications(),
+      createMentionNotifications(),
       thumbnails({
         teaserImg: {
           cardS: '300x0',
@@ -194,7 +194,7 @@ module.exports = {
       })
     ],
     patch: [
-      mentionNotifications(),
+      createMentionNotifications(),
       thumbnails({
         teaserImg: {
           cardS: '300x0',

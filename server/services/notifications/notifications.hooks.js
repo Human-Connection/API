@@ -31,6 +31,15 @@ const contributionSchema = {
   }
 };
 
+const userSchema = {
+  include: {
+    service: 'users',
+    nameAs: 'user',
+    parentField: 'relatedUserId',
+    childField: '_id'
+  }
+};
+
 module.exports = {
   before: {
     all: [ ],
@@ -45,7 +54,8 @@ module.exports = {
   after: {
     all: [
       populate({ schema: contributionSchema }),
-      populate({ schema: commentSchema })
+      populate({ schema: commentSchema }),
+      populate({ schema: userSchema })
     ],
     find: [],
     get: [],
