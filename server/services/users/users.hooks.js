@@ -33,7 +33,7 @@ const badgesSchema = {
   include: {
     service: 'badges',
     nameAs: 'badges',
-    parentField: 'badgesIds',
+    parentField: 'badgeIds',
     childField: '_id',
     asArray: true
   }

@@ -1,18 +1,29 @@
 {
-  "name": "HC-API",
-  "description": "Human Connection API",
+  "name": "human-connection-api",
+  "description": "Human-Connection API",
   "version": "0.1.0",
   "homepage": "https://human-connection.org",
+  "license": "CC-BY-NC-SA-4.0",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/Human-Connection/API.git"
+  },
   "main": "server",
   "keywords": [
-    "feathers"
+    "human-connection",
+    "social network",
+    "api",
+    "feathersjs"
   ],
   "author": {
     "name": "Human Connection gGmbH",
     "email": "developer@human-connection.org"
   },
   "contributors": [],
-  "bugs": {},
+  "bugs": {
+    "url" : "https://github.com/Human-Connection/API/issues",
+    "email" : "bugfix@human-connection.org"
+  },
   "directories": {
     "lib": "server",
     "test": "test/"
