@@ -4,14 +4,15 @@
 
 
 <p align="center">
-  <a href="https://travis-ci.org/HumanConnection/HC-API"><img src="https://img.shields.io/travis/HumanConnection/HC-API/master.svg" alt="Build Status"></a>
+  <a href="https://travis-ci.org/Human-Connection/API"><img src="https://img.shields.io/travis/Human-Connection/API/master.svg" alt="Build Status"></a>
+  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-green.svg" "Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)" /></a>
 </p>
 
-# Human Connection API
+# Human-Connection API
 
-The API for a better world. More information under [humanconnection.org](https://humanconnection.org)
+The API for a better world. More information under [human-connection.org](https://human-connection.org)
 
-> **Note:** This is only the API part of Human Connection, you can also checkout the Frontend which uses this API.
+> **Note:** This is only the API part of Human-Connection, you have to also checkout the [WebApp](https://github.com/Human-Connection/WebApp) which uses this API.
 
 ## Framework
 
@@ -19,24 +20,26 @@ This project uses [Feathers](http://feathersjs.com). An open source web framewor
 
 ## Getting Started
 
+> we recommand to install the project locally for the best development ease and performance
+
 Getting up and running is as easy as 1, 2, 3, 4 ... 5.
 
 1. Make sure you have [NodeJS](https://nodejs.org/), [yarn](https://yarnpkg.com), [mongoDB](https://www.mongodb.com/download-center#community) installed.
 
 2. Clone this repo
    ``` bash
-   $ git clone https://git@team.human-connection.org/bitbucket/scm/hc/hc-api-feathers.git
+   $ git clone https://github.com/Human-Connection/API.git
    ```
 
 3. Install your dependencies
    ``` bash
-   $ cd ./hc-api-feathers
+   $ cd ./API
    $ yarn
    ```
 
 4. Setup local mailserver (optional)
    
-   >  **NOTE:** 
+   >  **Note:** 
    >  *You only have to start that mailserver when you want to register, reset your password or test emails in any form, it
    >  does not affect the rest of the application.*
         
@@ -105,7 +108,7 @@ The seeder configuration has two properties:
 
 Simply run `yarn test` and all your tests in the `test/` directory will be run.
 
-> **NOTE:** 
+> **Note:** 
 > *At the moment there are some issues with linting while testing, but you can run the tests also with mocha run*
 
 ## Scaffolding
@@ -125,10 +128,10 @@ $ feathers help                           # Show all commands
 
 For more information on all the framework related things visit [docs.feathersjs.com](http://docs.feathersjs.com).
 
-The HC platform is documented in our [gitbook](https://humanconnection.gitbooks.io) (work in progress).
+The HC platform is documented in our [gitbook](https://www.gitbook.com/book/human-connection/documentation/) (work in progress).
 
 ## License 
 
-<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png"/></a>
+<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by-nc-sa.svg"/></a>
 
 [Creative Commons (CC BY-NC-SA 4.0) License](https://creativecommons.org/licenses/by-nc-sa/4.0/) not for commercial use. 
