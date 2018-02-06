@@ -9,7 +9,7 @@ install:
 #  - yarn
 script:
   - cp ./config/local.example.json ./config/local.json
-  - NODE_ENV=test npm run clear && NODE_ENV=test mocha test/ --recursive --timeout 10000 --exit'
+  - npm run clear && NODE_ENV=test mocha test/ --recursive --timeout 10000 --exit
   - rm ./config/local.json
 services:
   - docker
