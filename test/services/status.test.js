@@ -4,8 +4,8 @@ const app = require('../../server/app');
 describe('\'status\' service', () => {
   const service = app.service('status');
 
-  beforeEach(async () => {
-    await service.update({}, {
+  beforeEach(() => {
+    return service.update({}, {
       maintenance: false
     }, { secret: app.get('apiSecret') });
   });
