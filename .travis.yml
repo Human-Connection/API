@@ -9,10 +9,11 @@ install:
 #  - yarn
 script:
   - cp ./config/local.example.json ./config/local.json
-  - NODE_ENV=development npm test
+  - NODE_ENV=test npm run clear && NODE_ENV=test mocha test/ --recursive --timeout 10000 --exit'
   - rm ./config/local.json
 services:
   - docker
+  - mongodb
 before_install:
   - docker build -t humanconnection/api-feathers:alpha .
 after_success:
