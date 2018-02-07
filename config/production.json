@@ -18,7 +18,7 @@
     "url": "THUMBOR_URL",
     "key": "THUMBOR_KEY"
   },
-  "apiSecret": "APP_SECRET",
+  "apiSecret": "API_SECRET",
   "authentication": {
     "secret": "AUTH_SECRET",
     "jwt": {
