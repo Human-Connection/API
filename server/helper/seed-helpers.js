@@ -48,6 +48,16 @@ module.exports = {
     let randomIds = _.shuffle(ids);
     return items[randomIds.pop()];
   },
+  randomAdmin: (items, filter) => {
+    let ids = filter
+      ? Object.keys(items)
+        .filter(id => {
+          return filter(items[id]);
+        })
+      : _.keys(items);
+    let randomIds = _.shuffle(ids);
+    return items[randomIds.pop()];
+  },
   randomItems: (items, key = '_id', min = 1, max = 1) => {
     let randomIds = _.shuffle(_.keys(items));
     let res = [];
