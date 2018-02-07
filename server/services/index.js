@@ -6,6 +6,7 @@ const notifications = require('./notifications/notifications.service.js');
 const emails = require('./emails/emails.service.js');
 const categories = require('./categories/categories.service.js');
 const uploads = require('./uploads/uploads.service.js');
+const status = require('./status/status.service.js');
 const images = require('./images/images.service.js');
 const badges = require('./badges/badges.service.js');
 const emotions = require('./emotions/emotions.service.js');
@@ -20,6 +21,7 @@ module.exports = function () {
   const app = this; // eslint-disable-line no-unused-vars
   app.configure(authManagement);
   app.configure(users);
+  app.configure(status);
   app.configure(contributions);
   app.configure(comments);
   app.configure(notifications);
