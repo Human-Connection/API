@@ -42,7 +42,8 @@ module.exports = function (app) {
     resetShortToken: { type: String },
     resetExpires: { type: Date },
     wasSeeded: { type: Boolean },
-    wasInvited: { type: Boolean }
+    wasInvited: { type: Boolean },
+    language: { type: String, default: 'en' }
   });
 
   return mongooseClient.model('users', users);
