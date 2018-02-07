@@ -2,6 +2,7 @@ const seedHelpers = require('../../helper/seed-helpers');
 
 module.exports = (seederstore) => {
   let filter = ({type}) => type === 'cando';
+
   return {
     services: [{
       count: 80,
