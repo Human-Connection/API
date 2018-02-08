@@ -68,7 +68,7 @@ module.exports = {
   before: {
     all: [],
     find: [],
-    get: [ /* ...restrict */ ],
+    get: [],
     create: [
       hashPassword(),
       lowerCase('email', 'username'),
