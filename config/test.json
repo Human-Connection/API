@@ -1,0 +1,9 @@
+{
+  "port": 3031,
+  "baseURL": "http://localhost:3031",
+  "seeder": {
+    "runOnInit": false,
+    "dropDatabase": false
+  },
+  "mongodb": "mongodb://localhost:27017/hc_api_test"
+}
