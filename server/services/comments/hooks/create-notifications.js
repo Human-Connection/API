@@ -18,8 +18,10 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
         .then(result => {
           const userId = result.userId;
 
-          // Only create notification for other users
-          if(userId == creatorId) {
+          // Only create notification for users other than creator
+          // and only if user has not already been sent a mention
+          // notification by previous hook
+          if(userId == creatorId || (hook.data.userMentions && hook.data.userMentions[userId])) {
             resolve(hook);
             return false;
           }
