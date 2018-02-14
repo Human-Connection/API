@@ -5,8 +5,8 @@
   "homepage": "https://human-connection.org",
   "license": "CC-BY-NC-SA-4.0",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/Human-Connection/API.git"
+    "type": "git",
+    "url": "https://github.com/Human-Connection/API.git"
   },
   "main": "server",
   "keywords": [
@@ -21,8 +21,8 @@
   },
   "contributors": [],
   "bugs": {
-    "url" : "https://github.com/Human-Connection/API/issues",
-    "email" : "bugfix@human-connection.org"
+    "url": "https://github.com/Human-Connection/API/issues",
+    "email": "bugfix@human-connection.org"
   },
   "directories": {
     "lib": "server",
@@ -78,6 +78,7 @@
     "handlebars-layouts": "~3.1.4",
     "helmet": "~3.10.0",
     "html-excerpt": "~0.1.0",
+    "mime": "^2.2.0",
     "mongoose": "~4.13.2",
     "multer": "~1.3.0",
     "node-sass": "~4.7.2",

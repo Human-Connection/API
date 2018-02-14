@@ -6,11 +6,12 @@ const fs = require('fs');
 const path = require('path');
 const request = require('request');
 const faker = require('faker');
+const mime = require('mime/lite');
 
 module.exports = function (options = []) { // eslint-disable-line no-unused-vars
   return function async (hook) {
 
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
 
       let urls = [];
 
@@ -35,25 +36,46 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
           imgCount++;
           // TODO: fix that to use the data _id or somethink similar
           let uuid = faker.fake('{{random.uuid}}');
-          const imgName = `${field}_${uuid}.jpg`;
-          const imgPath = path.resolve('public', 'uploads/' + imgName);
-          let stream = fs.createWriteStream(imgPath);
-          urls.push(imgPath);
-          stream.on('close', () => {
-            if (--loading <= 0) {
-              hook.app.debug('Download(s) finished', imgName);
-              resolve(hook);
-            } else {
-              hook.app.debug('Download finished', imgName);
+          const imgName = `${field}_${uuid}`;
+          let imgPath = path.resolve('public', 'uploads/' + imgName);
+
+          request({
+            url: hook.data[field],
+            encoding: null
+          }, (err, res, body) => {
+            if (err) {
+              hook.app.error(err);
+              reject(err);
+            }
+            try {
+              const mimeType = res.headers['content-type'];
+              if (mimeType.indexOf('image') !== 0) {
+                hook.app.error('its not an image');
+                reject('its not an image');
+              }
+
+              const ext = mime.getExtension(mimeType);
+
+              imgPath += `.${ext}`;
+
+              fs.writeFileSync(imgPath, body, {
+                encoding: 'binary'
+              });
+
+              loading--;
+
+              hook.data[field] = uploadsUrl + imgName + `.${ext}`;
+
+              if (imgCount > 0 && loading <= 0) {
+                hook.app.debug('Download(s) finished', urls);
+                resolve(hook);
+              }
+            } catch (err) {
+              hook.app.error(err);
             }
           });
-          stream.on('error', (err) => {
-            // reject(err);
-            throw new errors.Unprocessable('Thumbnail download failed', { errors: err, urls: urls });
-          });
+
           hook.app.debug('Downloading', hook.data[field]);
-          request(hook.data[field]).pipe(stream);
-          hook.data[field] = uploadsUrl + imgName;
         });
 
         if (imgCount > 0 && loading <= 0) {
