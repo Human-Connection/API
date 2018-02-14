@@ -1,7 +1,12 @@
+const { unless, isProvider } = require('feathers-hooks-common');
+const { isVerified } = require('feathers-authentication-management').hooks;
 const { authenticate } = require('feathers-authentication').hooks;
+const { associateCurrentUser, restrictToOwner } = require('feathers-authentication-hooks');
 const createSlug = require('../../hooks/create-slug');
 const saveRemoteImages = require('../../hooks/save-remote-images');
-const saveAvatar = require('./hooks/save-avatar');
+const createExcerpt = require('../../hooks/create-excerpt');
+const isModerator = require('../../hooks/is-moderator-boolean');
+const excludeDisabled = require('../../hooks/exclude-disabled');
 const thumbnails = require('../../hooks/thumbnails');
 
 const thumbnailOptions = {
@@ -20,27 +25,61 @@ const thumbnailOptions = {
 module.exports = {
   before: {
     all: [],
-    find: [],
-    get: [],
+    find: [
+      unless(isModerator(),
+        excludeDisabled()
+      )
+    ],
+    get: [
+      unless(isModerator(),
+        excludeDisabled()
+      )
+    ],
     create: [
       authenticate('jwt'),
+      // Allow seeder to seed contributions
+      unless(isProvider('server'),
+        isVerified()
+      ),
+      associateCurrentUser(),
       createSlug({ field: 'name' }),
-      saveRemoteImages(['logo', 'coverImg']),
-      saveAvatar()
+      createExcerpt({ field: 'description '}),
+      saveRemoteImages(['logo', 'coverImg'])
     ],
     update: [
       authenticate('jwt'),
+      unless(isProvider('server'),
+        isVerified()
+      ),
+      unless(isModerator(),
+        excludeDisabled(),
+        restrictToOwner()
+      ),
       createSlug({ field: 'name' }),
-      saveRemoteImages(['logo', 'coverImg']),
-      saveAvatar()
+      createExcerpt({ field: 'description '}),
+      saveRemoteImages(['logo', 'coverImg'])
     ],
     patch: [
       authenticate('jwt'),
+      unless(isProvider('server'),
+        isVerified()
+      ),
+      unless(isModerator(),
+        excludeDisabled(),
+        restrictToOwner()
+      ),
       createSlug({ field: 'name' }),
-      saveRemoteImages(['logo', 'coverImg']),
-      saveAvatar()
+      createExcerpt({ field: 'description' }),
+      saveRemoteImages(['logo', 'coverImg'])
     ],
-    remove: [ authenticate('jwt') ]
+    remove: [
+      authenticate('jwt'),
+      isVerified(),
+      unless(isModerator(),
+        excludeDisabled(),
+        restrictToOwner()
+      )
+    ]
   },
 
   after: {

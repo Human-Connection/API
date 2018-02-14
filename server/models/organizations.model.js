@@ -7,17 +7,23 @@ module.exports = function (app) {
   const { Schema } = mongooseClient;
   const organizations = new Schema({
     name: { type: String, required: true },
-    slug: { type: String },
+    slug: { type: String, required: true, unique: true },
     followerIds: [],
     categoryIds: { type: Array },
     logo: { type: String },
     coverImg: { type: String },
     userId: { type: String, required: true },
     description: { type: String, required: true },
+    // will be generated automatically
+    descriptionExcerpt: { type: String },
     addresses: { type: Array, default: [] },
     content: { type: String, required: true },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
+    isEnabled: {
+      type: Boolean,
+      default: true
+    },
     wasSeeded: { type: Boolean }
   });
 

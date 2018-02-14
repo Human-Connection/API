@@ -7,21 +7,19 @@ module.exports = (seederstore) => {
       path: 'organizations',
       count: 30,
       template: {
-        slug: '{{lorem.slug}}',
-        name: '{{lorem.text}}',
+        name: '{{company.companyName}}',
         followerIds: [],
         logo: () => seedHelpers.randomLogo(),
         coverImg: () => seedHelpers.randomUnsplashUrl(),
         categoryIds: () => seedHelpers.randomCategories(seederstore),
-        userId: () => seedHelpers.randomAdmin(seederstore.users, filter)._id,
+        userId: () => seedHelpers.randomItem(seederstore.users, filter)._id,
         addresses: () => seedHelpers.randomAddresses(),
         description: '{{lorem.text}}',
         content: '{{lorem.text}} {{lorem.text}} {{lorem.text}} {{lorem.text}}',
-        isVerified : true,
-        role : 'user',
-        doiToken: null,
-        confirmedAt: null,
+        isVerified: () => seedHelpers.randomItem([true, false]),
         deletedAt: null,
+        createdAt: '{{date.recent}}',
+        updatedAt: '{{date.recent}}',
         wasSeeded: true
       }
     }]
