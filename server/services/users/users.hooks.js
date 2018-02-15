@@ -49,7 +49,6 @@ const candosSchema = {
 };
 
 const saveRemoteImages = require('../../hooks/save-remote-images');
-const createDefaultAvatar = require('../../hooks/create-default-avatar');
 
 const thumbnailOptions = {
   avatar: {
@@ -88,7 +87,6 @@ module.exports = {
         restrictUserRole()
       ),
       createAdmin(),
-      createDefaultAvatar(),
       saveRemoteImages(['avatar', 'coverImg'])
     ],
     update: [
