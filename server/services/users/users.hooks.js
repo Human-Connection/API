@@ -89,8 +89,7 @@ module.exports = {
       ),
       createAdmin(),
       createDefaultAvatar(),
-      saveRemoteImages(['avatar', 'coverImg']),
-      saveAvatar()
+      saveRemoteImages(['avatar', 'coverImg'])
     ],
     update: [
       ...restrict,
@@ -99,8 +98,7 @@ module.exports = {
       when(isProvider('external'),
         restrictUserRole()
       ),
-      saveRemoteImages(['avatar', 'coverImg']),
-      saveAvatar()
+      saveRemoteImages(['avatar', 'coverImg'])
     ],
     patch: [
       ...restrict,
@@ -116,8 +114,7 @@ module.exports = {
       when(isProvider('external'),
         restrictUserRole()
       ),
-      saveRemoteImages(['avatar', 'coverImg']),
-      saveAvatar()
+      saveRemoteImages(['avatar', 'coverImg'])
     ],
     remove: [ ...restrict, disableMultiItemChange() ]
   },
