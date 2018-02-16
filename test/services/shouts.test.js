@@ -9,7 +9,6 @@ let user2;
 
 let contribution1;
 
-let shoutUser1Contribution1;
 let shoutUser2Contribution1;
 
 describe('\'shouts\' shoutService', () => {
@@ -59,7 +58,7 @@ describe('\'shouts\' shoutService', () => {
     assert.equal(contribution1.shoutCount, 1);
 
     // create shout
-    shoutUser1Contribution1 = await shoutService.create({
+    await shoutService.create({
       userId: user1._id,
       foreignId: contribution1._id,
       foreignService: 'contributions'
