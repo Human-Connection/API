@@ -13,6 +13,7 @@ const emotions = require('./emotions/emotions.service.js');
 const organizations = require('./organizations/organizations.service.js');
 const projects = require('./projects/projects.service.js');
 const follows = require('./follows/follows.service.js');
+const shouts = require('./shouts/shouts.service.js');
 const admin = require('./admin/admin.service.js');
 const invites = require('./invites/invites.service.js');
 const usersCandos = require('./users-candos/users-candos.service.js');
@@ -34,6 +35,7 @@ module.exports = function () {
   app.configure(organizations);
   app.configure(projects);
   app.configure(follows);
+  app.configure(shouts);
   app.configure(admin);
   app.configure(usersCandos);
   app.configure(invites);
