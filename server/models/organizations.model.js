@@ -14,10 +14,11 @@ module.exports = function (app) {
     coverImg: { type: String },
     userId: { type: String, required: true },
     description: { type: String, required: true },
+    publicEmail: { type: String },
+    website: { type: String },
     // will be generated automatically
     descriptionExcerpt: { type: String },
     addresses: { type: Array, default: [] },
-    content: { type: String, required: true },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
     isEnabled: {

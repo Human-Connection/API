@@ -15,7 +15,6 @@ module.exports = (seederstore) => {
         userId: () => seedHelpers.randomItem(seederstore.users, filter)._id,
         addresses: () => seedHelpers.randomAddresses(),
         description: '{{lorem.text}}',
-        content: '{{lorem.text}} {{lorem.text}} {{lorem.text}} {{lorem.text}}',
         isVerified: () => seedHelpers.randomItem([true, false]),
         deletedAt: null,
         createdAt: '{{date.recent}}',
