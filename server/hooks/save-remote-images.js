@@ -28,7 +28,7 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
 
         // save all given fields and update the hook data
         options.forEach((field) => {
-          if (!hook.data[field] || hook.data[field].search(uploadsUrl) >= 0) {
+          if (!hook.data[field] || (typeof hook.data[field] === 'string' && hook.data[field].search(uploadsUrl) >= 0)) {
             // skip invalid and local data
             return;
           }
@@ -39,32 +39,16 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
           const imgName = `${field}_${uuid}`;
           let imgPath = path.resolve('public', 'uploads/' + imgName);
 
-          request({
-            url: hook.data[field],
-            encoding: null
-          }, (err, res, body) => {
-            if (err) {
-              hook.app.error(err);
-              reject(err);
-            }
+          if (typeof hook.data[field] === 'object') {
             try {
-              const mimeType = res.headers['content-type'];
-              if (mimeType.indexOf('image') !== 0) {
-                hook.app.error('its not an image');
-                reject('its not an image');
-              }
+              hook.app.debug('SAVE REMOTE IMAGES HOOK');
+              hook.app.debug(typeof hook.data[field]);
 
-              const ext = mime.getExtension(mimeType);
-
-              imgPath += `.${ext}`;
-
-              fs.writeFileSync(imgPath, body, {
+              fs.writeFileSync(`${imgPath}.png`, hook.data[field], {
                 encoding: 'binary'
               });
-
               loading--;
-
-              hook.data[field] = uploadsUrl + imgName + `.${ext}`;
+              hook.data[field] = uploadsUrl + imgName + '.png';
 
               if (imgCount > 0 && loading <= 0) {
                 hook.app.debug('Download(s) finished', urls);
@@ -73,7 +57,43 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
             } catch (err) {
               hook.app.error(err);
             }
-          });
+          } else {
+            request({
+              url: hook.data[field],
+              encoding: null
+            }, (err, res, body) => {
+              if (err) {
+                hook.app.error(err);
+                reject(err);
+              }
+              try {
+                const mimeType = res.headers['content-type'];
+                if (mimeType.indexOf('image') !== 0) {
+                  hook.app.error('its not an image');
+                  reject('its not an image');
+                }
+
+                const ext = mime.getExtension(mimeType);
+
+                imgPath += `.${ext}`;
+
+                fs.writeFileSync(imgPath, body, {
+                  encoding: 'binary'
+                });
+
+                loading--;
+
+                hook.data[field] = uploadsUrl + imgName + `.${ext}`;
+
+                if (imgCount > 0 && loading <= 0) {
+                  hook.app.debug('Download(s) finished', urls);
+                  resolve(hook);
+                }
+              } catch (err) {
+                hook.app.error(err);
+              }
+            });
+          }
 
           hook.app.debug('Downloading', hook.data[field]);
         });

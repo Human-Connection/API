@@ -14,6 +14,7 @@ module.exports = function () {
     require('./follows'),
     require('./comments'),
     require('./emotions'),
-    require('./invites')
+    require('./invites'),
+    require('./shouts')
   ];
 };

@@ -6,7 +6,6 @@ const { addVerification, removeVerification } = require('feathers-authentication
 const sendVerificationEmail = require('./hooks/send-verification-email');
 const restrictUserRole = require('./hooks/restrict-user-role');
 const createAdmin = require('./hooks/create-admin');
-const saveAvatar = require('./hooks/save-avatar');
 const createSlug = require('../../hooks/create-slug');
 const thumbnails = require('../../hooks/thumbnails');
 const inviteCode = require('./hooks/invite-code')();
@@ -49,7 +48,6 @@ const candosSchema = {
 };
 
 const saveRemoteImages = require('../../hooks/save-remote-images');
-const createDefaultAvatar = require('../../hooks/create-default-avatar');
 
 const thumbnailOptions = {
   avatar: {
@@ -88,9 +86,7 @@ module.exports = {
         restrictUserRole()
       ),
       createAdmin(),
-      createDefaultAvatar(),
-      saveRemoteImages(['avatar', 'coverImg']),
-      saveAvatar()
+      saveRemoteImages(['avatar', 'coverImg'])
     ],
     update: [
       ...restrict,
@@ -99,8 +95,7 @@ module.exports = {
       when(isProvider('external'),
         restrictUserRole()
       ),
-      saveRemoteImages(['avatar', 'coverImg']),
-      saveAvatar()
+      saveRemoteImages(['avatar', 'coverImg'])
     ],
     patch: [
       ...restrict,
@@ -116,8 +111,7 @@ module.exports = {
       when(isProvider('external'),
         restrictUserRole()
       ),
-      saveRemoteImages(['avatar', 'coverImg']),
-      saveAvatar()
+      saveRemoteImages(['avatar', 'coverImg'])
     ],
     remove: [ ...restrict, disableMultiItemChange() ]
   },
