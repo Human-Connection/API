@@ -13,6 +13,7 @@
     "url": "",
     "key": ""
   },
+  "apiSecret": "TE9TqAk2xK[9EFJL",
   "sentry": {
     "dns": "SENTRY_DNS",
     "options": {

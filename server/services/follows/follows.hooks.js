@@ -4,17 +4,24 @@ const { authenticate } = require('feathers-authentication').hooks;
 
 module.exports = {
   before: {
-    all: [authenticate('jwt')],
+    all: [],
     find: [],
     get: [],
     create: [
+      authenticate('jwt'),
       when(isProvider('external'), [
         hooks.queryWithCurrentUser()
       ])
     ],
-    update: [],
-    patch: [],
-    remove: []
+    update: [
+      authenticate('jwt')
+    ],
+    patch: [
+      authenticate('jwt')
+    ],
+    remove: [
+      authenticate('jwt')
+    ]
   },
 
   after: {
