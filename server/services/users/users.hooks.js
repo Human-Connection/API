@@ -6,7 +6,6 @@ const { addVerification, removeVerification } = require('feathers-authentication
 const sendVerificationEmail = require('./hooks/send-verification-email');
 const restrictUserRole = require('./hooks/restrict-user-role');
 const createAdmin = require('./hooks/create-admin');
-const saveAvatar = require('./hooks/save-avatar');
 const createSlug = require('../../hooks/create-slug');
 const thumbnails = require('../../hooks/thumbnails');
 const inviteCode = require('./hooks/invite-code')();
