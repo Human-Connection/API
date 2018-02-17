@@ -1,14 +1,14 @@
 const { createLogger, format, transports } = require('winston');
+const env = process.env.NODE_ENV;
 
 const logger = createLogger({
-  level: 'info',
+  level: 'warn',
   format: format.json(),
   transports: [
     new transports.File({ filename: './data/error.log', level: 'error' }),
     new transports.File({ filename: './data/combined.log' })
   ]
 });
-// if (process.env.NODE_ENV !== 'production') {
 logger.add(new transports.Console({
   format: format.combine(
     format.printf((info) => {
@@ -22,8 +22,6 @@ logger.add(new transports.Console({
       return `${levelColors[info.level]}${date.toLocaleTimeString()} | ${info.level}: ${JSON.stringify(info.message)}\u001b[39m`;
     })
   ),
-  level: 'debug'
+  level: env === 'development' ? 'debug' : 'warn'
 }));
-// }
-
 module.exports = logger;
