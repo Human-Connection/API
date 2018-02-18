@@ -10,6 +10,8 @@
 
 # Human-Connection API
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/Human-Connection/API.svg)](https://greenkeeper.io/)
+
 The API for a better world. More information under [human-connection.org](https://human-connection.org)
 
 > **Note:** This is only the API part of Human-Connection, you have to also checkout the [WebApp](https://github.com/Human-Connection/WebApp) which uses this API.
