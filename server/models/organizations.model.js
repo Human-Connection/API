@@ -13,7 +13,7 @@ module.exports = function (app) {
     logo: { type: String },
     coverImg: { type: String },
     userId: { type: String, required: true },
-    description: { type: String, required: true },
+    description: { type: String },
     publicEmail: { type: String },
     website: { type: String },
     // will be generated automatically
@@ -23,7 +23,7 @@ module.exports = function (app) {
     updatedAt: { type: Date, default: Date.now },
     isEnabled: {
       type: Boolean,
-      default: true
+      default: false
     },
     wasSeeded: { type: Boolean }
   });
