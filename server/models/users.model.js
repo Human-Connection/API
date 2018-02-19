@@ -46,5 +46,9 @@ module.exports = function (app) {
     language: { type: String, default: 'en' }
   });
 
+  users.index({
+    name: 'text'
+  });
+
   return mongooseClient.model('users', users);
 };

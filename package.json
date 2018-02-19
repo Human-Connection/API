@@ -38,11 +38,18 @@
     "eslint": "eslint server/. test/. --config .eslintrc.json",
     "start": "concurrently 'mongod' 'wait-on tcp:27017 && NODE_ENV=production node server/'",
     "start-win": "concurrently \"mongod\" \"wait-on tcp:27017 &&SET NODE_ENV=production&& node server/\"",
-    "dev": "npm run clear && concurrently 'mongod --dbpath data --quiet' 'wait-on tcp:27017 && NODE_ENV=development nodemon --inspect server/'",
+    "dev": "npm run clear && concurrently '$npm_package_config_mongoDev' 'wait-on tcp:27017 && NODE_ENV=development nodemon --inspect server/'",
     "dev-win": "npm run clear && concurrently \"mongod --dbpath data\" \"wait-on tcp:27017&&SET NODE_ENV=development&& nodemon --inspect server/\"",
     "dev-noseed": "concurrently 'mongod --dbpath data' 'wait-on tcp:27017 && NODE_ENV=development nodemon --inspect server/'",
     "dev-win-noseed": "concurrently \"mongod --dbpath data\" \"wait-on tcp:27017 && nodemon --inspect server/\"",
-    "mocha": "npm run clear && concurrently --success first --kill-others 'mongod --dbpath data &>/dev/null' 'wait-on tcp:27017 && NODE_ENV=test mocha test/ --recursive --timeout 10000 --exit'"
+    "mocha": "npm run clear && $npm_package_config_concurrently '$npm_package_config_mongoDev &>/dev/null' 'wait-on tcp:27017 && NODE_ENV=test $npm_package_config_mocha'",
+    "coverage": "npm run clear && $npm_package_config_concurrently '$npm_package_config_mongoDev &>/dev/null' 'wait-on tcp:27017 && NODE_ENV=test istanbul cover $npm_package_config_mochaCoverage'"
+  },
+  "config": {
+    "mongoDev": "mongod --dbpath data --quiet",
+    "mocha": "node_modules/mocha/bin/_mocha test/ --recursive --timeout 10000 --exit",
+    "mochaCoverage": "node_modules/mocha/bin/_mocha -- test/ --recursive --timeout 10000 --exit",
+    "concurrently": "concurrently --kill-others --success first"
   },
   "dependencies": {
     "body-parser": "~1.18.2",
@@ -94,7 +101,8 @@
     "babel-eslint": "~8.2.1",
     "concurrently": "~3.5.1",
     "eslint": "~4.16.0",
-    "mocha": "~4.0.1",
+    "istanbul": "^0.4.5",
+    "mocha": "^5.0.0",
     "nodemon": "~1.14.11",
     "shx": "^0.2.2",
     "wait-on": "~2.1.0"

@@ -9,6 +9,7 @@ const createAdmin = require('./hooks/create-admin');
 const createSlug = require('../../hooks/create-slug');
 const thumbnails = require('../../hooks/thumbnails');
 const inviteCode = require('./hooks/invite-code')();
+const search = require('feathers-mongodb-fuzzy-search');
 
 const { hashPassword } = require('feathers-authentication-local').hooks;
 
@@ -64,7 +65,12 @@ const thumbnailOptions = {
 
 module.exports = {
   before: {
-    all: [],
+    all: [
+      search(),
+      search({  // regex search on given fields
+        fields: ['name', 'email']
+      })
+    ],
     find: [],
     get: [],
     create: [

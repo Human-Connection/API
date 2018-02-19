@@ -13,7 +13,8 @@ const search = require('feathers-mongodb-fuzzy-search');
 const thumbnails = require('../../hooks/thumbnails');
 const isModerator = require('../../hooks/is-moderator-boolean');
 const excludeDisabled = require('../../hooks/exclude-disabled');
-const getAssociatedCanDos = require('./hooks/getAssociatedCanDos');
+const getAssociatedCanDos = require('./hooks/get-associated-can-dos');
+const createMentionNotifications = require('./hooks/create-mention-notifications');
 const isSingleItem = require('../../hooks/is-single-item');
 
 const userSchema = {
@@ -165,6 +166,7 @@ module.exports = {
       })
     ],
     create: [
+      createMentionNotifications(),
       thumbnails({
         teaserImg: {
           cardS: '300x0',
@@ -178,6 +180,7 @@ module.exports = {
       })
     ],
     update: [
+      createMentionNotifications(),
       thumbnails({
         teaserImg: {
           cardS: '300x0',
@@ -191,6 +194,7 @@ module.exports = {
       })
     ],
     patch: [
+      createMentionNotifications(),
       thumbnails({
         teaserImg: {
           cardS: '300x0',
