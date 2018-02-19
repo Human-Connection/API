@@ -32,6 +32,7 @@ node_modules
 .project
 .classpath
 .c9/
+.vscode
 *.launch
 .settings/
 *.sublime-workspace
