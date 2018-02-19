@@ -46,7 +46,7 @@
     "coverage": "npm run clear && $npm_package_config_concurrently '$npm_package_config_mongoDev &>/dev/null' 'wait-on tcp:27017 && NODE_ENV=test istanbul cover $npm_package_config_mochaCoverage'"
   },
   "config": {
-    "mongoDev": "mongod --dbpath data",
+    "mongoDev": "mongod --dbpath data --quiet",
     "mocha": "node_modules/mocha/bin/_mocha test/ --recursive --timeout 10000 --exit",
     "mochaCoverage": "node_modules/mocha/bin/_mocha -- test/ --recursive --timeout 10000 --exit",
     "concurrently": "concurrently --kill-others --success first"
