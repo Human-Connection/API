@@ -42,13 +42,14 @@
     "dev-win": "npm run clear && concurrently \"mongod --dbpath data\" \"wait-on tcp:27017&&SET NODE_ENV=development&& nodemon --inspect server/\"",
     "dev-noseed": "concurrently 'mongod --dbpath data' 'wait-on tcp:27017 && NODE_ENV=development nodemon --inspect server/'",
     "dev-win-noseed": "concurrently \"mongod --dbpath data\" \"wait-on tcp:27017 && nodemon --inspect server/\"",
-    "mocha": "npm run clear && concurrently --kill-others --success first '$npm_package_config_mongoDev &>/dev/null' 'wait-on tcp:27017 && NODE_ENV=test $npm_package_config_mocha'",
-    "coverage": "npm run clear && concurrently --kill-others --success first '$npm_package_config_mongoDev &>/dev/null' 'wait-on tcp:27017 && NODE_ENV=test istanbul cover $npm_package_config_mochaCoverage'"
+    "mocha": "npm run clear && $npm_package_config_concurrently '$npm_package_config_mongoDev &>/dev/null' 'wait-on tcp:27017 && NODE_ENV=test $npm_package_config_mocha'",
+    "coverage": "npm run clear && $npm_package_config_concurrently '$npm_package_config_mongoDev &>/dev/null' 'wait-on tcp:27017 && NODE_ENV=test istanbul cover $npm_package_config_mochaCoverage'"
   },
   "config": {
     "mongoDev": "mongod --dbpath data",
     "mocha": "node_modules/mocha/bin/_mocha test/ --recursive --timeout 10000 --exit",
-    "mochaCoverage": "node_modules/mocha/bin/_mocha -- test/ --recursive --timeout 10000 --exit"
+    "mochaCoverage": "node_modules/mocha/bin/_mocha -- test/ --recursive --timeout 10000 --exit",
+    "concurrently": "concurrently --kill-others --success first"
   },
   "dependencies": {
     "body-parser": "~1.18.2",
