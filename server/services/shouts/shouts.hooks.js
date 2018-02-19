@@ -14,8 +14,8 @@ module.exports = {
     find: [],
     get: [],
     create: [
+      authenticate('jwt'),
       unless(isProvider('server'),
-        authenticate('jwt'),
         isVerified(),
         associateCurrentUser()
       )
