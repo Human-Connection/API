@@ -9,6 +9,7 @@ const {
 const { isVerified } = require('feathers-authentication-management').hooks;
 const createExcerpt = require('../../hooks/create-excerpt');
 const createNotifications = require('./hooks/create-notifications');
+const createMentionNotifications = require('./hooks/create-mention-notifications');
 const _ = require('lodash');
 
 const userSchema = {
@@ -70,6 +71,7 @@ module.exports = {
     ],
     get: [],
     create: [
+      createMentionNotifications(),
       createNotifications()
     ],
     update: [],

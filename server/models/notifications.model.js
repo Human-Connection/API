@@ -7,7 +7,12 @@ module.exports = function (app) {
   const notifications = new mongooseClient.Schema({
     // User this notification is sent to
     userId: { type: String, required: true },
-    message: { type: String, required: true },
+    type: {
+      type: String,
+      required: true,
+      enum: ['comment','comment-mention','contribution-mention']
+    },
+    relatedUserId: { type: String },
     relatedContributionId: { type: String },
     relatedCommentId: { type: String },
     unseen: { type: Boolean, default: true },
