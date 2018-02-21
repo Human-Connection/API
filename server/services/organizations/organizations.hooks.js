@@ -55,7 +55,7 @@ module.exports = {
         excludeDisabled(),
         restrictToOwner()
       ),
-      createSlug({ field: 'name' }),
+      createSlug({ field: 'name', overwrite: true }),
       createExcerpt({ field: 'description '}),
       saveRemoteImages(['logo', 'coverImg'])
     ],
@@ -68,7 +68,7 @@ module.exports = {
         excludeDisabled(),
         restrictToOwner()
       ),
-      createSlug({ field: 'name' }),
+      createSlug({ field: 'name', overwrite: true }),
       createExcerpt({ field: 'description' }),
       saveRemoteImages(['logo', 'coverImg'])
     ],

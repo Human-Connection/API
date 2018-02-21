@@ -10,7 +10,7 @@ module.exports = function (options = { field: null }) {
     // do not overwrite existing slug
     // TODO: we should make that possible and relying on ids for routing insead only on slugs
     // the slug should be there for seo reasons but the id should be what counts
-    if (!_.isEmpty(hook.data.slug)) return hook;
+    if (!_.isEmpty(hook.data.slug) && (!options.overwrite && options.overwrite === false)) return hook;
 
     return new Promise(resolve => {
 
