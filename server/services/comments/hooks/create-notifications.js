@@ -12,11 +12,11 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
 
       const commentId = hook.result._id;
       const contributionId = hook.result.contributionId;
-      const creatorId = hook.result.userId;
+      const creatorId = hook.result.userId.toString();
 
       contributionService.get(contributionId)
         .then(result => {
-          const userId = result.userId;
+          const userId = result.userId.toString();
 
           // Only create notification for users other than creator
           // and only if user has not already been sent a mention

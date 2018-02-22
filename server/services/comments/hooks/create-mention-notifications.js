@@ -16,7 +16,7 @@ module.exports = function() {
       }
 
       const comment = hook.result;
-      const creatorId = hook.result.userId;
+      const creatorId = hook.result.userId.toString();
 
       let mentions = await getMentions(hook.app, comment.content);
 
