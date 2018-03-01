@@ -19,127 +19,127 @@ module.exports = (seederstore, app) => {
     { 
       type: 'crowdfunding',
       status: 'permanent',
-      key: 'indiegogo_en_racoon' 
+      key: 'indiegogo_en_racoon'
     },
     { 
       type: 'crowdfunding',
       status: 'permanent',
-      key: 'indiegogo_en_rabbit' 
+      key: 'indiegogo_en_rabbit'
     },
     { 
       type: 'crowdfunding',
       status: 'permanent',
-      key: 'indiegogo_en_wolf' 
+      key: 'indiegogo_en_wolf'
     },
     { 
       type: 'crowdfunding',
       status: 'permanent',
-      key: 'indiegogo_en_bear' 
+      key: 'indiegogo_en_bear'
     },
     { 
       type: 'crowdfunding',
       status: 'permanent',
-      key: 'indiegogo_en_turtle' 
+      key: 'indiegogo_en_turtle'
     },
     { 
       type: 'crowdfunding',
       status: 'permanent',
-      key: 'indiegogo_en_rhino' 
+      key: 'indiegogo_en_rhino'
     },
     { 
       type: 'crowdfunding',
       status: 'permanent',
-      key: 'indiegogo_en_tiger' 
+      key: 'indiegogo_en_tiger'
     },
     { 
       type: 'crowdfunding',
       status: 'permanent',
-      key: 'indiegogo_en_panda' 
+      key: 'indiegogo_en_panda'
     },
     { 
       type: 'crowdfunding',
       status: 'permanent',
-      key: 'indiegogo_en_whale' 
+      key: 'indiegogo_en_whale'
     },
     { 
       type: 'crowdfunding',
       status: 'permanent',
-      key: 'fundraisingbox_de_starter' 
+      key: 'fundraisingbox_de_starter'
     },
     { 
       type: 'crowdfunding',
       status: 'permanent',
-      key: 'fundraisingbox_de_crane' 
+      key: 'fundraisingbox_de_crane'
     },
     { 
       type: 'crowdfunding',
       status: 'permanent',
-      key: 'fundraisingbox_de_balloon' 
+      key: 'fundraisingbox_de_balloon'
     },
     { 
       type: 'crowdfunding',
       status: 'permanent',
-      key: 'fundraisingbox_de_glider' 
+      key: 'fundraisingbox_de_glider'
     },
     { 
       type: 'crowdfunding',
       status: 'permanent',
-      key: 'fundraisingbox_de_helicopter' 
+      key: 'fundraisingbox_de_helicopter'
     },
     { 
       type: 'crowdfunding',
       status: 'permanent',
-      key: 'fundraisingbox_de_bigballoon' 
+      key: 'fundraisingbox_de_bigballoon'
     },
     { 
       type: 'crowdfunding',
       status: 'permanent',
-      key: 'fundraisingbox_de_airship' 
+      key: 'fundraisingbox_de_airship'
     },
     { 
       type: 'crowdfunding',
       status: 'permanent',
-      key: 'fundraisingbox_de_alienship' 
+      key: 'fundraisingbox_de_alienship'
     },
     { 
       type: 'crowdfunding',
       status: 'permanent',
-      key: 'wooold_de_bee' 
+      key: 'wooold_de_bee'
     },
     { 
       type: 'crowdfunding',
       status: 'permanent',
-      key: 'wooold_de_butterfly' 
+      key: 'wooold_de_butterfly'
     },
     { 
       type: 'crowdfunding',
       status: 'permanent',
-      key: 'wooold_de_flower' 
+      key: 'wooold_de_flower'
     },
     { 
       type: 'crowdfunding',
       status: 'permanent',
-      key: 'wooold_de_lifetree' 
+      key: 'wooold_de_lifetree'
     },
     { 
       type: 'crowdfunding',
       status: 'permanent',
-      key: 'wooold_de_double_rainbow' 
+      key: 'wooold_de_double_rainbow'
     },
     { 
       type: 'crowdfunding',
       status: 'permanent',
-      key: 'wooold_de_magic_rainbow' 
+      key: 'wooold_de_magic_rainbow'
     },
     { 
       type: 'crowdfunding',
       status: 'permanent',
-      key: 'wooold_de_end_of_rainbow' 
+      key: 'wooold_de_end_of_rainbow'
     },
     { 
       type: 'crowdfunding',
       status: 'permanent',
-      key: 'wooold_de_super_founder' 
+      key: 'wooold_de_super_founder'
     }
   ];
 
@@ -153,6 +153,7 @@ module.exports = (seederstore, app) => {
           alt: badge.key
         },
         status: badge.status,
+        key: badge.key,
         type: badge.type
       }
     });

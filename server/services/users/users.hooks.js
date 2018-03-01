@@ -1,5 +1,5 @@
 const { authenticate } = require('feathers-authentication').hooks;
-const { isProvider, when, discard, populate, disableMultiItemChange, lowerCase } = require('feathers-hooks-common');
+const { isProvider, unless, when, discard, populate, disableMultiItemChange, lowerCase } = require('feathers-hooks-common');
 const { restrictToOwner } = require('feathers-authentication-hooks');
 const { addVerification, removeVerification } = require('feathers-authentication-management').hooks;
 
@@ -13,19 +13,15 @@ const search = require('feathers-mongodb-fuzzy-search');
 
 const { hashPassword } = require('feathers-authentication-local').hooks;
 
-const cleanupBasicData = when(isProvider('external'),
+const cleanupBasicData = unless(isProvider('server'),
   discard('password', '_computed', 'verifyExpires', 'resetExpires', 'verifyChanges')
 );
-const cleanupPersonalData = when(isProvider('external'),
+const cleanupPersonalData = unless(isProvider('server'),
   discard('email', 'verifyToken', 'verifyShortToken', 'doiToken')
 );
 
 const restrict = [
-  authenticate('jwt'),
-  restrictToOwner({
-    idField: '_id',
-    ownerField: '_id'
-  })
+  authenticate('jwt')
 ];
 
 const badgesSchema = {
@@ -76,7 +72,7 @@ module.exports = {
     create: [
       hashPassword(),
       lowerCase('email', 'username'),
-      when(isProvider('external'),
+      unless(isProvider('server'),
         inviteCode.before
       ),
       // We don't need email verification
@@ -88,7 +84,7 @@ module.exports = {
           return hook;
         }
       ),
-      when(isProvider('external'),
+      unless(isProvider('server'),
         restrictUserRole()
       ),
       createAdmin(),
@@ -98,7 +94,7 @@ module.exports = {
       ...restrict,
       hashPassword(),
       disableMultiItemChange(),
-      when(isProvider('external'),
+      unless(isProvider('server'),
         restrictUserRole()
       ),
       saveRemoteImages(['avatar', 'coverImg'])
@@ -114,7 +110,7 @@ module.exports = {
         },
         createSlug({ field: 'name' })
       ),
-      when(isProvider('external'),
+      unless(isProvider('server'),
         restrictUserRole()
       ),
       saveRemoteImages(['avatar', 'coverImg'])
@@ -134,13 +130,22 @@ module.exports = {
     ],
     get: [
       thumbnails(thumbnailOptions),
-      cleanupPersonalData
+      // remove personal data if its not the current autenticated user
+      when(hook => {
+        const itemBelongsToAuthenticatedUser = hook.params.user && hook.result && hook.params.user._id.toString() === hook.result._id.toString();
+        // console.log('hook.params', hook.params);
+        // console.log('currentId', hook.params.user ? hook.params.user._id : null);
+        // console.log('foundId', hook.result ? hook.result._id : null);
+        // console.log('identical', (hook.params.user && hook.result ) ? hook.params.user._id.toString() === hook.result._id.toString() : null);
+        return itemBelongsToAuthenticatedUser !== true;
+        // return (!hook.params.user || !hook.result.data || hook.params.user._id !== hook.result.data._id);
+      }, discard('email', 'verifyToken', 'verifyShortToken', 'doiToken'))
     ],
     create: [
-      when(isProvider('external'),
+      unless(isProvider('server'),
         sendVerificationEmail()
       ),
-      when(isProvider('external'),
+      unless(isProvider('server'  ),
         removeVerification()
       ),
       thumbnails(thumbnailOptions),

@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 
 const { asyncForEach, genInviteCode } = require('../../helper/seed-helpers');
-const { keyBy, isEmpty } = require('lodash');
+const { keyBy, isEmpty, isString } = require('lodash');
 
 class Service {
   constructor (options) {
@@ -12,8 +12,8 @@ class Service {
     this.app = options.app;
     this.seederstore = {};
   }
-  
-  async _fillSeederStore(services = []) {
+
+  async _fillSeederStore (services = []) {
     this.app.debug('###Filling seeder store...');
     await asyncForEach(services, async (service) => {
       const res = await this.app.service(service).find({ query: { $limit: 100 }});
@@ -35,7 +35,7 @@ class Service {
     if (Array.isArray(data)) {
       return Promise.all(data.map(current => this.create(current)));
     }
-    
+
     return new Promise(async (resolve, reject) => {
 
       if (data.seedBaseCategories || data.seedBaseBadges || data.seedFakeData || data.seedDemoData) {
@@ -99,12 +99,46 @@ class Service {
         // run the seeder
         this.app.debug('creatingInviceCodes...');
 
+        // get badges
+        const badges = await this.app.service('badges').find({
+          query: {
+            $limit: 100
+          }
+        });
+        // map badges by key
+        const badgeIds = keyBy(badges.data, 'image.alt');
+
         let output = [];
-        await asyncForEach(data.createInvites, async (email) => {
+        const mapBadges = function (badges = []) {
+          let output = [];
+          if (isString(badges)) {
+            badges = badges.split('|');
+          }
+
+          console.log(badges);
+          badges.forEach(badge => {
+            if (badgeIds.indexOf(badge) >= 0) {
+              output.push(badgeIds[badge]._id);
+            }
+          });
+
+          console.log('mapBadges');
+          console.log(output);
+          return output;
+        };
+        await asyncForEach(data.createInvites, async (invite) => {
           try {
+            console.log({
+              email: invite.email,
+              language: invite.language,
+              badges: mapBadges(invite.badges),
+              code: invite.language || genInviteCode()
+            });
             const res = await this.app.service('invites').create({
-              email: email,
-              code: genInviteCode()
+              email: invite.email,
+              language: invite.language,
+              badges: mapBadges(invite.badges),
+              code: invite.language || genInviteCode()
             });
             output.push(res);
           } catch (err) {

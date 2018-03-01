@@ -38,13 +38,6 @@ if (app.get('sentry').dns !== undefined && app.get('sentry').dns !== 'SENTRY_DNS
   app.use(Raven.requestHandler());
   // The error handler must be before any other error middleware
   app.use(Raven.errorHandler());
-  // Optional fallthrough error handler
-  /* app.use(function onError(err, req, res) {
-    // The error id is attached to `res.sentry` to be returned
-    // and optionally displayed to the user for support.
-    res.statusCode = 500;
-    res.end(res.sentry + '\n');
-  }); */
 }
 
 // Enable CORS, security, compression, favicon and body parsing
@@ -74,5 +67,6 @@ app.configure(services);
 // Configure middleware (see `middleware/index.js`) - always has to be last
 app.configure(middleware);
 app.hooks(appHooks);
+
 
 module.exports = app;

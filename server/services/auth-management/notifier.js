@@ -12,14 +12,15 @@ module.exports = function(app) {
   }
 
   function buildEmail(templatename, title, linktype, user, additionaloptions) {
+
     handlebars.registerPartial('header',
-      fs.readFileSync(path.join(__dirname, '../../../email-templates', 'layout', 'header.hbs'),'utf8')
+      fs.readFileSync(path.join(__dirname, '../../../email-templates', 'layout', 'header.hbs'), 'utf8')
     );
     handlebars.registerPartial('footer',
-      fs.readFileSync(path.join(__dirname, '../../../email-templates', 'layout', 'footer.hbs'),'utf8')
+      fs.readFileSync(path.join(__dirname, '../../../email-templates', 'layout', 'footer.hbs'), 'utf8')
     );
 
-    const templatePath = path.join(__dirname, '../../../email-templates/account', templatename);
+    const templatePath = path.join(__dirname, '../../../email-templates/account', templatename, user.language || 'en');
 
     const hashLink = getLink(linktype, user.verifyToken);
     const frontURL = app.get('frontURL');
