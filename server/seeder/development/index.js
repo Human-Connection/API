@@ -15,6 +15,7 @@ module.exports = function () {
     require('./comments'),
     require('./emotions'),
     require('./invites'),
-    require('./shouts')
+    require('./shouts'),
+    require('./usersettings')
   ];
 };
