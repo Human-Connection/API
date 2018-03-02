@@ -145,7 +145,7 @@ module.exports = {
       unless(isProvider('server'),
         sendVerificationEmail()
       ),
-      unless(isProvider('server'  ),
+      unless(isProvider('server'),
         removeVerification()
       ),
       thumbnails(thumbnailOptions),
