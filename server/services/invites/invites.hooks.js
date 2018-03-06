@@ -1,6 +1,7 @@
 const { when, isProvider, lowerCase } = require('feathers-hooks-common');
 const isAdmin = require('../../hooks/is-admin');
 
+const sendInviteEmail = require('./hooks/send-invite-email');
 const restrictAPIToAdmin = when(isProvider('external'),
   isAdmin()
 );
@@ -13,7 +14,7 @@ module.exports = {
     find: [],
     get: [],
     create: [
-      lowerCase('email', 'username'),
+      lowerCase('email', 'username')
     ],
     update: [],
     patch: [],
@@ -24,7 +25,9 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [],
+    create: [
+      sendInviteEmail()
+    ],
     update: [],
     patch: [],
     remove: []

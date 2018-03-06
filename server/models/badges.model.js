@@ -28,6 +28,7 @@ module.exports = function (app) {
     // some badges given by events or they are a gift form an other user
     // some badges may be temporary like moderator badge
     type: { type: String, required: true },
+    key: { type: String, required: true },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }
   });
