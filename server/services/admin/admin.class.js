@@ -109,38 +109,47 @@ class Service {
         const badgeIds = keyBy(badges.data, 'image.alt');
 
         let output = [];
-        const mapBadges = function (badges = []) {
+        const mapBadges = (badges = []) => {
+          this.app.debug('BADGES', badges);
+
           let output = [];
+
+          if (isEmpty(badges)) {
+            return output;
+          }
           if (isString(badges)) {
             badges = badges.split('|');
           }
 
-          console.log(badges);
+          this.app.debug(badges);
           badges.forEach(badge => {
-            if (badgeIds.indexOf(badge) >= 0) {
-              output.push(badgeIds[badge]._id);
+            if (!isEmpty(badgeIds[badge])) {
+              output.push(badgeIds[badge]._id.toString());
             }
           });
 
-          console.log('mapBadges');
-          console.log(output);
           return output;
         };
+
         await asyncForEach(data.createInvites, async (invite) => {
           try {
-            console.log({
+            const query = {
               email: invite.email,
-              language: invite.language,
-              badges: mapBadges(invite.badges),
-              code: invite.language || genInviteCode()
+              language: invite.language || null,
+              badgeIds: mapBadges(invite.badges),
+              code: invite.code || genInviteCode(),
+              sendEmail: data.sendInviteEmails === true
+            };
+            const userWithEmail = await this.app.service('users').find({
+              query: {
+                $limit: 1,
+                email: query.email
+              }
             });
-            const res = await this.app.service('invites').create({
-              email: invite.email,
-              language: invite.language,
-              badges: mapBadges(invite.badges),
-              code: invite.language || genInviteCode()
-            });
-            output.push(res);
+            if (!userWithEmail.total) {
+              const res = await this.app.service('invites').create(query);
+              output.push(res);
+            }
           } catch (err) {
             this.app.error(err);
           }

@@ -13,15 +13,19 @@ const search = require('feathers-mongodb-fuzzy-search');
 
 const { hashPassword } = require('feathers-authentication-local').hooks;
 
-const cleanupBasicData = unless(isProvider('server'),
+const cleanupBasicData = when(isProvider('external'),
   discard('password', '_computed', 'verifyExpires', 'resetExpires', 'verifyChanges')
 );
-const cleanupPersonalData = unless(isProvider('server'),
+const cleanupPersonalData = when(isProvider('external'),
   discard('email', 'verifyToken', 'verifyShortToken', 'doiToken')
 );
 
 const restrict = [
-  authenticate('jwt')
+  authenticate('jwt'),
+  restrictToOwner({
+    idField: '_id',
+    ownerField: '_id'
+  })
 ];
 
 const badgesSchema = {
@@ -72,7 +76,7 @@ module.exports = {
     create: [
       hashPassword(),
       lowerCase('email', 'username'),
-      unless(isProvider('server'),
+      when(isProvider('external'),
         inviteCode.before
       ),
       // We don't need email verification
@@ -84,7 +88,7 @@ module.exports = {
           return hook;
         }
       ),
-      unless(isProvider('server'),
+      when(isProvider('external'),
         restrictUserRole()
       ),
       createAdmin(),
@@ -94,7 +98,7 @@ module.exports = {
       ...restrict,
       hashPassword(),
       disableMultiItemChange(),
-      unless(isProvider('server'),
+      when(isProvider('external'),
         restrictUserRole()
       ),
       saveRemoteImages(['avatar', 'coverImg'])
@@ -110,7 +114,7 @@ module.exports = {
         },
         createSlug({ field: 'name' })
       ),
-      unless(isProvider('server'),
+      when(isProvider('external'),
         restrictUserRole()
       ),
       saveRemoteImages(['avatar', 'coverImg'])
@@ -142,10 +146,10 @@ module.exports = {
       }, discard('email', 'verifyToken', 'verifyShortToken', 'doiToken'))
     ],
     create: [
-      unless(isProvider('server'),
+      when(isProvider('external'),
         sendVerificationEmail()
       ),
-      unless(isProvider('server'),
+      when(isProvider('external'),
         removeVerification()
       ),
       thumbnails(thumbnailOptions),
