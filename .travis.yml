@@ -26,15 +26,6 @@ jobs:
       - rm -Rf tmp && NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha -- test/ --timeout 10000 --exit
       - cat ./coverage/lcov.info | codacy-coverage
       - rm ./config/local.json
-    - stage: Lets see
-      script: echo "hello world"
-    - stage: Deploy
-      if: branch = master AND type IN (push)
-      script:
-        # only deoloy when pushing to master but not on pull-requests
-        docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
-        docker push humanconnection/api-feathers:alpha;
-        fi
 
 after_success:
   # only deoloy when pushing to master but not on pull-requests
