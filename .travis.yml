@@ -22,7 +22,7 @@ jobs:
       - rm -rf ./coverage && rm ./config/local.json
     - script:
       - docker build -t humanconnection/api-feathers:alpha .
-    - stage: deploy:
+    - stage: deploy
       script:
       # only deoloy when pushing to master but not on pull-requests
       - if [ "$TRAVIS_BRANCH" == "master" ] AND type IN (push); then
