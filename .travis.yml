@@ -6,7 +6,7 @@ cache:
   directories:
     - node_modules
 install:
-  - yarn
+  #- yarn install --frozen-lockfile --non-interactive
 script:
   # copy the locale settings for running tests
   # - cp ./config/local.example.json ./config/local.json
@@ -14,7 +14,8 @@ script:
   # - rm ./config/local.json
   # copy the locale settings for running coverage
   - cp ./config/local.example.json ./config/local.json
-  - npm install codacy-coverage
+  - yarn install --frozen-lockfile --non-interactive
+  - npm install codacy-coverage istanbul
   - rm -Rf tmp && NODE_ENV=test istanbul cover _mocha -- test/ --recursive --timeout 10000 --exit --report lcovonly -R spec
   - cat ./coverage/lcov.info | codacy-coverage --accountToken $CODACY_TOKEN --username $CODACY_USER --projectName $CODACY_PROJECT
   - rm -rf ./coverage && rm ./config/local.json
