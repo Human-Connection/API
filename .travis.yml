@@ -28,8 +28,6 @@ jobs:
       - NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha -- test/ --timeout=10000 --exit
       - cat ./coverage/lcov.info | codacy-coverage
       - rm ./config/local.json
-
-jobs:
   include:
     - stage: Deploy
       if: branch = master AND type IN (push)
