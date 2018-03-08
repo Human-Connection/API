@@ -5,30 +5,27 @@ cache:
   yarn: true
   directories:
     - node_modules
-install:
-  #- yarn install --frozen-lockfile --non-interactive
-script:
-  # copy the locale settings for running tests
-  # - cp ./config/local.example.json ./config/local.json
-  # - rm -Rf tmp && NODE_ENV=test mocha test/ --recursive --timeout 10000 --exit
-  # - rm ./config/local.json
-  # copy the locale settings for running coverage
-  - cp ./config/local.example.json ./config/local.json
-  - yarn install --frozen-lockfile --non-interactive
-  - npm install codacy-coverage istanbul
-  - rm -Rf tmp && NODE_ENV=test istanbul cover _mocha -- test/ --recursive --timeout 10000 --exit --report lcovonly -R spec
-  - cat ./coverage/lcov.info | codacy-coverage --accountToken $CODACY_TOKEN --username $CODACY_USER --projectName $CODACY_PROJECT
-  - rm -rf ./coverage && rm ./config/local.json
 services:
   # we need docker for building the image and mongo for testing
   - docker
   - mongodb
-before_install:
-  # run the docker build
-  - docker build -t humanconnection/api-feathers:alpha .
-after_success:
-  # only deoloy when pushing to master but not on pull-requests
-  - if [ "$TRAVIS_BRANCH" == "master" ] AND type IN (push); then
-    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
-    docker push humanconnection/api-feathers:alpha;
-    fi
+
+jobs:
+  include:
+    -stage: build
+     script:
+      - cp ./config/local.example.json ./config/local.json
+      - yarn install --frozen-lockfile --non-interactive
+      - yarn install codacy-coverage istanbul
+      - rm -Rf tmp && NODE_ENV=test istanbul cover mocha -- test/ --recursive --timeout 10000 --exit
+      - cat ./coverage/lcov.info | codacy-coverage --accountToken $CODACY_TOKEN --username $CODACY_USER --projectName $CODACY_PROJECT
+      - rm -rf ./coverage && rm ./config/local.json
+     script:
+      - docker build -t humanconnection/api-feathers:alpha .
+    -stage: deploy:
+     script:
+      # only deoloy when pushing to master but not on pull-requests
+      - if [ "$TRAVIS_BRANCH" == "master" ] AND type IN (push); then
+        docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+        docker push humanconnection/api-feathers:alpha;
+        fi
