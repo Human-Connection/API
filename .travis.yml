@@ -9,13 +9,13 @@ install:
   - yarn
 script:
   # copy the locale settings for running tests
-  - cp ./config/local.example.json ./config/local.json
-  - npm run clear && NODE_ENV=test mocha test/ --recursive --timeout 10000 --exit
-  - rm ./config/local.json
+  # - cp ./config/local.example.json ./config/local.json
+  # - rm -Rf tmp && NODE_ENV=test mocha test/ --recursive --timeout 10000 --exit
+  # - rm ./config/local.json
   # copy the locale settings for running coverage
   - cp ./config/local.example.json ./config/local.json
   - npm install codacy-coverage
-  - npm run clear && test istanbul cover _mocha -- test/ --recursive --timeout 10000 --exit --report lcovonly -R spec && cat ./coverage/lcov.info | codacy-coverage && rm -rf ./coverage
+  - rm -Rf tmp && test istanbul cover _mocha -- test/ --recursive --timeout 10000 --exit --report lcovonly -R spec && cat ./coverage/lcov.info | codacy-coverage --accountToken $CODACY_TOKEN --username $CODACY_USER --projectName $CODACY_PROJECT && rm -rf ./coverage
   - rm ./config/local.json
 services:
   # we need docker for building the image and mongo for testing
