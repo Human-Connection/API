@@ -9,6 +9,8 @@ services:
   # we need docker for building the image and mongo for testing
   - docker
   - mongodb
+install:
+  # nothing!
 
 jobs:
   include:
