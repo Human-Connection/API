@@ -22,14 +22,19 @@ jobs:
     - script:
       - cp ./config/local.example.json ./config/local.json
       - yarn install --frozen-lockfile --non-interactive
-      - yarn add codacy-coverage istanbul
-      - rm -Rf tmp && NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha -- test/ --timeout 10000 --exit
+      - yarn add codacy-coverage
+      - rm -Rf tmp
+      - yarn eslint
+      - NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha -- test/ --timeout=10000 --exit
       - cat ./coverage/lcov.info | codacy-coverage
       - rm ./config/local.json
 
-after_success:
-  # only deoloy when pushing to master but not on pull-requests
-  - if [ "$TRAVIS_BRANCH" == "master" ] AND type IN (push); then
-    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
-    docker push humanconnection/api-feathers:alpha;
-    fi
+jobs:
+  include:
+    - stage: Deploy
+      if: branch = master AND type IN (push)
+      script:
+        # only deoloy when pushing to master but not on pull-requests
+        docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+        docker push humanconnection/api-feathers:alpha;
+        fi
