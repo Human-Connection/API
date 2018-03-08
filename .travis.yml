@@ -6,19 +6,27 @@ cache:
   directories:
     - node_modules
 install:
-#  - yarn
+  - yarn
 script:
+  # copy the locale settings for running tests
   - cp ./config/local.example.json ./config/local.json
   - npm run clear && NODE_ENV=test mocha test/ --recursive --timeout 10000 --exit
   - rm ./config/local.json
 services:
+  # we need docker for building the image and mongo for testing
   - docker
   - mongodb
 before_install:
+  # run the docker build
   - docker build -t humanconnection/api-feathers:alpha .
 after_success:
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+  # only deoloy when pushing to master but not on pull-requests
+  - if [ "$TRAVIS_BRANCH" == "master" ] AND type IN (push); then
     docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
     docker push humanconnection/api-feathers:alpha;
     fi
-#  - yarn run coverage
+# copy the locale settings for running coverage
+- cp ./config/local.example.json ./config/local.json
+- npm install codacy-coverage
+- npm run clear && test istanbul cover _mocha -- test/ --recursive --timeout 10000 --exit --report lcovonly -R spec && cat ./coverage/lcov.info | codacy-coverage && rm -rf ./coverage
+- rm ./config/local.json
