@@ -12,6 +12,11 @@ services:
 
 jobs:
   include:
+    - stage: Prepare Cache
+      script: true
+    - stage: Build and Test
+      script:
+      - docker build -t humanconnection/api-feathers:alpha .
     - script:
       - cp ./config/local.example.json ./config/local.json
       - yarn install --frozen-lockfile --non-interactive
@@ -19,8 +24,8 @@ jobs:
       - rm -Rf tmp && NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha -- test/ -R --timeout 10000 --exit
       - cat ./coverage/lcov.info | codacy-coverage --accountToken $CODACY_TOKEN --username $CODACY_USER --projectName $CODACY_PROJECT
       - rm -rf ./coverage && rm ./config/local.json
-    - script:
-      - docker build -t humanconnection/api-feathers:alpha .
+    - stage: Lets see
+      script: echo "hello world"
     - stage: Deploy
       if: branch = master AND type IN (push)
       script:
