@@ -9,21 +9,29 @@ services:
   # we need docker for building the image and mongo for testing
   - docker
   - mongodb
+jobs:
+  include:
+    - stage: test
+      script: ./test 1
+    - # stage name not required, will continue to use `test`
+      script: ./test 2
+    - stage: deploy
+      script: ./deploy
 
 jobs:
   include:
     - stage: build
-      script:
+    - script:
       - cp ./config/local.example.json ./config/local.json
       - yarn install --frozen-lockfile --non-interactive
       - yarn install codacy-coverage istanbul
       - rm -Rf tmp && NODE_ENV=test istanbul cover mocha -- test/ --recursive --timeout 10000 --exit
       - cat ./coverage/lcov.info | codacy-coverage --accountToken $CODACY_TOKEN --username $CODACY_USER --projectName $CODACY_PROJECT
       - rm -rf ./coverage && rm ./config/local.json
-      script:
+    - script:
       - docker build -t humanconnection/api-feathers:alpha .
     - stage: deploy:
-      script:
+    - script:
       # only deoloy when pushing to master but not on pull-requests
       - if [ "$TRAVIS_BRANCH" == "master" ] AND type IN (push); then
         docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
