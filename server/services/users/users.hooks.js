@@ -1,5 +1,5 @@
 const { authenticate } = require('feathers-authentication').hooks;
-const { isProvider, unless, when, discard, populate, disableMultiItemChange, lowerCase } = require('feathers-hooks-common');
+const { isProvider, when, discard, populate, disableMultiItemChange, lowerCase } = require('feathers-hooks-common');
 const { restrictToOwner } = require('feathers-authentication-hooks');
 const { addVerification, removeVerification } = require('feathers-authentication-management').hooks;
 
