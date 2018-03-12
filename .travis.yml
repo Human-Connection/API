@@ -30,7 +30,7 @@ jobs:
       - rm ./config/local.json
 
 after_success:
-  - if [ "$TRAVIS_BRANCH" == "master" ] AND type == "push"; then
+  - if [ "$TRAVIS_BRANCH" == "master" ] AND [ "$TRAVIS_EVENT_TYPE" == "push" ]; then
     docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
     docker push humanconnection/api-feathers:alpha;
     fi
