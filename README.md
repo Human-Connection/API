@@ -64,9 +64,9 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
    ``` bash
    # start mongodb, feathers and seed database
    $ yarn dev
-   $ yarn dev-win if you're on windows
+   $ yarn dev:win if you're on windows
    # start mongodb, feathers without seeding the database
-   $ yarn dev-noseed
+   $ yarn dev:noseed
    # start mongodb, feathers for production
    $ yarn start
    ```
