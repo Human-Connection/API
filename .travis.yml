@@ -29,15 +29,15 @@ jobs:
       - cat ./coverage/lcov.info | codacy-coverage
       - rm ./config/local.json
 
-deploy:
-  # deploy master to the production environment
-  - provider: script
-    script: docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"; docker push humanconnection/api-feathers:alpha;
-    on:
-      branch: master
+# deploy:
+#   # deploy master to the production environment
+#   - provider: script
+#     script: docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"; docker push humanconnection/api-feathers:alpha;
+#     on:
+#       branch: master
 
-#after_success:
-#  - if [ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_EVENT_TYPE" == "push" ]; then
-#    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
-#    docker push humanconnection/api-feathers:alpha;
-#    fi
+after_success:
+  - if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then
+    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+    docker push humanconnection/api-feathers:alpha;
+    fi
