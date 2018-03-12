@@ -18,6 +18,12 @@
     "url": "THUMBOR_URL",
     "key": "THUMBOR_KEY"
   },
+  "sentry": {
+    "dns": "SENTRY_DNS",
+    "options": {
+      "environment": "production"
+    }
+  },
   "apiSecret": "API_SECRET",
   "authentication": {
     "secret": "AUTH_SECRET",
