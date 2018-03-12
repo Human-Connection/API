@@ -10,6 +10,7 @@ module.exports = (seederstore) => {
         email: '{{internet.email}}',
         code: () => seedHelpers.genInviteCode(),
         badgeIds: () => seedHelpers.randomItems(seederstore.badges, '_id', 0, seederstore.badges.length),
+        language: () => seedHelpers.randomItems(['de', 'en']),
         wasSeeded: true
       }
     }]

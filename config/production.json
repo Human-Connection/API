@@ -1,8 +1,8 @@
 {
-  "host": "HOST",
-  "port": "PORT",
-  "baseURL": "BASE_URL",
-  "frontURL": "FRONT_URL",
+  "host": "API_HOST",
+  "port": "API_PORT",
+  "baseURL": "API_BASE_URL",
+  "frontURL": "WEBAPP_BASE_URL",
   "mongodb": "MONGO_DB",
   "debug": true,
   "smtpConfig": {
@@ -22,7 +22,7 @@
   "authentication": {
     "secret": "AUTH_SECRET",
     "jwt": {
-      "audience": "https://alpha.human-connection.org"
+      "audience": "WEBAPP_BASE_URL"
     }
   },
   "seeder": {

@@ -10,6 +10,7 @@ if (process.env.NODE_ENV !== 'production' && !fs.existsSync(configDir + '/local.
 
 const app = require('./app');
 const port = app.get('port');
+const host = app.get('host');
 
 process.on('unhandledRejection', function (err) {
   throw err;
@@ -20,7 +21,7 @@ process.on('uncaughtException', function (err) {
 });
 
 // Start server
-const server = app.listen(port);
+const server = app.listen(port, host);
 server.on('listening', () => {
   // Start seeder, after database is setup
   if (app.get('seeder').runOnInit === true) {

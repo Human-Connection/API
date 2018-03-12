@@ -1,0 +1,34 @@
+{{> header }}
+<tr>
+    <td class="content-wrap">
+        <meta itemprop="name" content="Confirm Email"/>
+        <table width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+                <td class="aligncenter content-block">
+                    <h1 class="aligncenter">Bestätige deine E-Mail-Adresse</h1>
+                </td>
+            </tr>
+            <tr>
+                <td class="aligncenter content-block">
+                    Hallo {{ name }}, bitte bestädige deine E-Mail-Adresse durch klick auf den unteren Link.
+                </td>
+            </tr>
+            <tr>
+                <td class="aligncenter content-block">
+                    Es ist wichtig das wir deine Korrekte E-Mail-Adresse um dein Konto zu schützen
+                </td>
+            </tr>
+            <tr>
+                <td class="aligncenter content-block" itemprop="handler" itemscope itemtype="http://schema.org/HttpActionHandler">
+                    <a href="{{ link }}" class="btn-primary" itemprop="url">Bestätige deine E-Mail-Adresse</a>
+                </td>
+            </tr>
+            <tr>
+                <td class="aligncenter content-block">
+                    &mdash; Human Connection
+                </td>
+            </tr>
+        </table>
+    </td>
+</tr>
+{{> footer }}
