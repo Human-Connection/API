@@ -12,6 +12,7 @@ module.exports = function (app) {
       enum: ['admin', 'moderator', 'manager', 'editor', 'user'],
       default: 'user'
     },
+    language: { type: String },
     badgeIds: [],
     wasUsed: { type: Boolean },
     createdAt: { type: Date, default: Date.now },

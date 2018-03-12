@@ -39,26 +39,33 @@ module.exports = {
     update: [
       authenticate('jwt'),
       isVerified(),
-      restrictToOwner(),
+      unless(isProvider('server'),
+        restrictToOwner()
+      ),
       createExcerpt()
     ],
     patch: [
       authenticate('jwt'),
       isVerified(),
-      unless((hook) => {
-        // only allow upvoteCount increment for non owners
-        // the data has to be the exact copy of the valid object
-        const valid = {$inc: {upvoteCount: 1}};
-        return (!_.difference(_.keys(valid), _.keys(hook.data)).length) &&
-               (!_.difference(_.keys(valid.$inc), _.keys(hook.data.$inc)).length) &&
-               (!_.difference(_.values(valid.$inc), _.values(hook.data.$inc)).length);
-      }, restrictToOwner()),
+      unless(isProvider('server'),
+        unless((hook) => {
+          // TODO: change that to a more sane method by going through the server with an constum service
+          // only allow upvoteCount increment for non owners
+          // the data has to be the exact copy of the valid object
+          const valid = {$inc: {upvoteCount: 1}};
+          return (!_.difference(_.keys(valid), _.keys(hook.data)).length) &&
+                (!_.difference(_.keys(valid.$inc), _.keys(hook.data.$inc)).length) &&
+                (!_.difference(_.values(valid.$inc), _.values(hook.data.$inc)).length);
+        }, restrictToOwner())
+      ),
       createExcerpt()
     ],
     remove: [
       authenticate('jwt'),
       isVerified(),
-      restrictToOwner()
+      unless(isProvider('server'),
+        restrictToOwner()
+      )
     ]
   },
 
