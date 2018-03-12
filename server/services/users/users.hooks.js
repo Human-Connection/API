@@ -1,5 +1,5 @@
 const { authenticate } = require('feathers-authentication').hooks;
-const { isProvider, when, discard, populate, disableMultiItemChange, lowerCase } = require('feathers-hooks-common');
+const { isProvider, when, iff, discard, populate, disableMultiItemChange, lowerCase } = require('feathers-hooks-common');
 const { restrictToOwner } = require('feathers-authentication-hooks');
 const { addVerification, removeVerification } = require('feathers-authentication-management').hooks;
 
@@ -134,16 +134,20 @@ module.exports = {
     ],
     get: [
       thumbnails(thumbnailOptions),
-      // remove personal data if its not the current autenticated user
-      when(hook => {
-        const itemBelongsToAuthenticatedUser = hook.params.user && hook.result && hook.params.user._id.toString() === hook.result._id.toString();
-        // console.log('hook.params', hook.params);
-        // console.log('currentId', hook.params.user ? hook.params.user._id : null);
-        // console.log('foundId', hook.result ? hook.result._id : null);
-        // console.log('identical', (hook.params.user && hook.result ) ? hook.params.user._id.toString() === hook.result._id.toString() : null);
-        return itemBelongsToAuthenticatedUser !== true;
-        // return (!hook.params.user || !hook.result.data || hook.params.user._id !== hook.result.data._id);
-      }, discard('email', 'verifyToken', 'verifyShortToken', 'doiToken'))
+
+      // remove personal data if its not the current authenticated user
+      iff(isProvider('external'),
+        when(hook => {
+          const itemBelongsToAuthenticatedUser = hook.params.user && hook.result && hook.params.user._id.toString() === hook.result._id.toString();
+          // console.log('hook.params', hook.params);
+          // console.log('currentId', hook.params.user ? hook.params.user._id : null);
+          // console.log('foundId', hook.result ? hook.result._id : null);
+          // console.log('identical', (hook.params.user && hook.result ) ? hook.params.user._id.toString() === hook.result._id.toString() : null);
+          return itemBelongsToAuthenticatedUser !== true;
+          // return (!hook.params.user || !hook.result.data || hook.params.user._id !== hook.result.data._id);
+        }, discard('email', 'verifyToken', 'verifyShortToken', 'doiToken'))
+      )
+
     ],
     create: [
       when(isProvider('external'),
