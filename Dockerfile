@@ -17,6 +17,7 @@ EXPOSE 3030
 # ENV NPM_CONFIG_PRODUCTION=false
 # ENV HOST=0.0.0.0
 ENV NODE_ENV=production
+ENV API_PORT=3030
 
 # install PM2 process manager and configure it for autostart
 RUN npm install pm2 -g
