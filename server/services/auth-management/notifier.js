@@ -76,7 +76,7 @@ module.exports = function (app) {
         app.debug(err);
       }
 
-      if (err)  {
+      if (err || !result)  {
         return null;
       }
       const email = {
