@@ -75,6 +75,10 @@ module.exports = function (app) {
       if (err && app.get('debug')) {
         app.debug(err);
       }
+
+      if (err)  {
+        return null;
+      }
       const email = {
         from: returnEmail,
         to: user.email,
