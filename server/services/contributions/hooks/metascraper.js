@@ -19,7 +19,7 @@ module.exports = function () {
 
       try {
         // find links
-        const youtubeRegex = new RegExp(/(?:(?:https?:)?\/\/)?(?:www\.)?youtu(?:be\.com\/(?:watch\?(?:.*?&(?:amp;)?)*v=|v\/|embed\/)|\.be\/)([\w‌​\-]+)(?:(?:&(?:amp;)?|\?)[\w\?=]*)*/, 'ig');
+        const youtubeRegex = new RegExp(/(?:(?:https?:)?\/\/)?(?:www\.)?youtu(?:be\.com\/(?:watch\?(?:.*?&(?:amp;)?)*v=|v\/|embed\/)|\.be\/)([\w‌​\-]+)(?:(?:&(?:amp;)?|\?)[\w\?=]*)*/, 'ig'); // eslint-disable-line
         const youtubeLinks = youtubeRegex.exec(hook.data.content);
 
         // here you could scrape the url for metadata
@@ -33,7 +33,7 @@ module.exports = function () {
           hook.data.teaserImg = `https://img.youtube.com/vi/${youtubeLinks[1]}/maxresdefault.jpg`;
           hook.data.meta = Object.assign(hook.data.meta || {}, { hasVideo: true });
         }
-      } catch (err) {}
+      } catch (err) {} // eslint-disable-line
 
       return resolve(hook);
     });
