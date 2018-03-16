@@ -3,7 +3,7 @@ const _ = require('lodash');
 
 function clean (dirty, hook) {
   return sanitizeHtml(dirty, {
-    allowedTags: ['iframe', 'img', 'p', 'br', 'b', 'i', 'em', 'strong', 'a', 'pre'],
+    allowedTags: ['iframe', 'img', 'p', 'br', 'b', 'i', 'em', 'strong', 'a', 'pre', 'ul', 'li', 'ol'],
     allowedAttributes: {
       a: ['href', 'data-*'],
       img: [ 'src' ],
