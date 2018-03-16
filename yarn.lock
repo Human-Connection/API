@@ -2285,7 +2285,7 @@ got@^6.7.1:
     unzip-response "^2.0.1"
     url-parse-lax "^1.0.0"
 
-got@^8.3.0:
+got@~8.3.0:
   version "8.3.0"
   resolved "https://registry.yarnpkg.com/got/-/got-8.3.0.tgz#6ba26e75f8a6cc4c6b3eb1fe7ce4fec7abac8533"
   dependencies:
@@ -3573,7 +3573,7 @@ metascraper-video@^3.9.2:
     "@metascraper/helpers" "^3.9.2"
     video-extensions "~1.1.0"
 
-metascraper@^3.9.2:
+metascraper@~3.9.2:
   version "3.9.2"
   resolved "https://registry.yarnpkg.com/metascraper/-/metascraper-3.9.2.tgz#bc2d1705a80be619ddc254716d2bf9d98e92b1c2"
   dependencies:
@@ -4682,7 +4682,7 @@ safe-buffer@5.1.1, safe-buffer@^5.0.1, safe-buffer@^5.1.1, safe-buffer@~5.1.0, s
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.1.tgz#893312af69b2123def71f57889001671eeb2c853"
 
-sanitize-html@~1.18.2:
+sanitize-html@^1.18.2, sanitize-html@~1.18.2:
   version "1.18.2"
   resolved "https://registry.yarnpkg.com/sanitize-html/-/sanitize-html-1.18.2.tgz#61877ba5a910327e42880a28803c2fbafa8e4642"
   dependencies:

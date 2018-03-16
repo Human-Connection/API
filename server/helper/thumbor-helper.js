@@ -18,7 +18,7 @@ ThumborUrlHelper.prototype = {
    * Set path of image
    * @param {String} imagePath [description]
    */
-  setImagePath: function(imagePath) {
+  setImagePath: function (imagePath) {
     this.imagePath = (imagePath.charAt(0) === '/') ?
       imagePath.substring(1, imagePath.length) : imagePath;
     return this;
@@ -27,7 +27,7 @@ ThumborUrlHelper.prototype = {
    * Combine image url and operations with secure and unsecure (unsafe) paths
    * @return {String}
    */
-  buildUrl: function(operations) {
+  buildUrl: function (operations) {
 
     if (this.THUMBOR_SECURITY_KEY) {
 
