@@ -8,8 +8,8 @@ module.exports = (seederstore) => {
       count: 500,
       template: {
         userId: () => seedHelpers.randomItem(seederstore.users)._id,
-        uiLanguage: ['de'],
-        contributionLanguage: ['de']
+        uiLanguage: 'de',
+        contributionLanguages: ['German']
       }
     }]
   };
