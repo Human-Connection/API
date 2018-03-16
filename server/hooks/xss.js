@@ -2,7 +2,7 @@ const sanitizeHtml = require('sanitize-html');
 const _ = require('lodash');
 
 function clean (dirty, hook) {
-  return sanitizeHtml(dirty, {
+  dirty = sanitizeHtml(dirty, {
     allowedTags: ['iframe', 'img', 'p', 'br', 'b', 'i', 'em', 'strong', 'a', 'pre', 'ul', 'li', 'ol'],
     allowedAttributes: {
       a: ['href', 'data-*'],
@@ -12,22 +12,23 @@ function clean (dirty, hook) {
     allowedIframeHostnames: ['www.youtube.com', 'player.vimeo.com'],
     parser: {
       lowerCaseTags: true
-    }
-    // transformTags: {
+    },
+    transformTags: {
+      i: 'em',
+      b: 'strong'
     //   'img': function (tagName, attribs) {
     //     let src = attribs.src;
-
-    //     const config = hook.app.get('thumbor');
-    //     if (config && src.indexOf(config < 0)) {
-    //       // download image
-
-    //       // make thumbnail
-
-    //       // const ThumborUrlHelper = require('../helper/thumbor-helper');
-    //       // const Thumbor = new ThumborUrlHelper(config.key || null, config.url || null);
-    //       // src = Thumbor
-    //       //   .setImagePath(src)
-    //       //   .buildUrl('740x0');
+    //     if (_.isEmpty(hook.result)) {
+    //       const config = hook.app.get('thumbor');
+    //       if (config && src.indexOf(config < 0)) {
+    //         // download image
+    //
+    //         // const ThumborUrlHelper = require('../helper/thumbor-helper');
+    //         // const Thumbor = new ThumborUrlHelper(config.key || null, config.url || null);
+    //         // src = Thumbor
+    //         //   .setImagePath(src)
+    //         //   .buildUrl('740x0');
+    //       }
     //     }
     //     return {
     //       tagName: 'img',
@@ -36,8 +37,17 @@ function clean (dirty, hook) {
     //       }
     //     };
     //   }
-    // }
+    }
   });
+
+  // remove empty html tags and duplicated returns
+  dirty = dirty
+    .replace(/<[a-z]>[\s]*<\/[a-z]>/igm, '')
+    .replace(/(<iframe(?!.*?src=(['"]).*?\2)[^>]*)(>)[^>]*\/*>/igm, '')
+    .replace(/<p>[\s]*(<br ?\/?>)+[\s]*<\/p>/igm, '<br />')
+    .replace(/(<br ?\/?>){2,}/igm, '<br />')
+    .replace(/[\n]{3,}/igm, '\n\n');
+  return dirty;
 }
 
 module.exports = function (options = { fields: [] }) {
@@ -60,7 +70,6 @@ module.exports = function (options = { fields: [] }) {
           hook.app.error(err);
         }
       });
-
       resolve(hook);
     });
   };

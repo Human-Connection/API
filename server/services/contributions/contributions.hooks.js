@@ -92,7 +92,7 @@ module.exports = {
         isVerified()
       ),
       associateCurrentUser(),
-      // xss({ fields: ['content'] }),
+      // xss({ fields: ['content', 'contentExcerpt'] }),
       createSlug({ field: 'title' }),
       metascraper(),
       saveRemoteImages(['teaserImg']),
@@ -107,7 +107,7 @@ module.exports = {
         excludeDisabled(),
         restrictToOwner()
       ),
-      // xss({ fields: ['content'] }),
+      // xss({ fields: ['content', 'contentExcerpt'] }),
       metascraper(),
       saveRemoteImages(['teaserImg']),
       createExcerpt()
@@ -121,7 +121,7 @@ module.exports = {
         excludeDisabled(),
         restrictToOwner()
       ),
-      // xss({ fields: ['content'] }),
+      // xss({ fields: ['content', 'contentExcerpt'] }),
       metascraper(),
       saveRemoteImages(['teaserImg']),
       createExcerpt()
@@ -147,7 +147,7 @@ module.exports = {
       when(isSingleItem(),
         getAssociatedCanDos()
       ),
-      xss({ fields: ['content'] }),
+      xss({ fields: ['content', 'contentExcerpt'] }),
       thumbnails({
         teaserImg: {
           cardS: '300x0',
@@ -162,7 +162,7 @@ module.exports = {
     ],
     get: [
       getAssociatedCanDos(),
-      xss({ fields: ['content'] }),
+      xss({ fields: ['content', 'contentExcerpt'] }),
       thumbnails({
         teaserImg: {
           cardS: '300x0',
@@ -177,7 +177,7 @@ module.exports = {
     ],
     create: [
       createMentionNotifications(),
-      xss({ fields: ['content'] }),
+      xss({ fields: ['content', 'contentExcerpt'] }),
       thumbnails({
         teaserImg: {
           cardS: '300x0',
@@ -192,7 +192,7 @@ module.exports = {
     ],
     update: [
       createMentionNotifications(),
-      xss({ fields: ['content'] }),
+      xss({ fields: ['content', 'contentExcerpt'] }),
       thumbnails({
         teaserImg: {
           cardS: '300x0',
@@ -207,7 +207,7 @@ module.exports = {
     ],
     patch: [
       createMentionNotifications(),
-      xss({ fields: ['content'] }),
+      xss({ fields: ['content', 'contentExcerpt'] }),
       thumbnails({
         teaserImg: {
           cardS: '300x0',
