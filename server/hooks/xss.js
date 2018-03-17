@@ -1,7 +1,7 @@
 const sanitizeHtml = require('sanitize-html');
 const _ = require('lodash');
 
-function clean (dirty, hook) {
+function clean (dirty) {
   dirty = sanitizeHtml(dirty, {
     allowedTags: ['iframe', 'img', 'p', 'br', 'b', 'i', 'em', 'strong', 'a', 'pre', 'ul', 'li', 'ol'],
     allowedAttributes: {
@@ -64,7 +64,7 @@ module.exports = function (options = { fields: [] }) {
               }
             });
           } else if (!_.isEmpty(hook.data) && !_.isEmpty(hook.data[field])) {
-            hook.data[field] = clean(hook.data[field], hook);
+            hook.data[field] = clean(hook.data[field]);
           }
         } catch (err) {
           hook.app.error(err);

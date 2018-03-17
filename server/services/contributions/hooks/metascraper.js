@@ -22,6 +22,9 @@ module.exports = function () {
         const youtubeRegex = new RegExp(/(?:(?:https?:)?\/\/)?(?:www\.)?youtu(?:be\.com\/(?:watch\?(?:.*?&(?:amp;)?)*v=|v\/|embed\/)|\.be\/)([\w‌​\-]+)(?:(?:&(?:amp;)?|\?)[\w\?=]*)*/, 'ig'); // eslint-disable-line
         const youtubeLinks = youtubeRegex.exec(hook.data.content);
 
+        // html link
+        // const htmlLink = new RegExp(/<a\s[^>]*href=\"([^\"]*)\"[^>]*>(.*)<\/a>/, 'ig'); // eslint-disable-line
+
         // here you could scrape the url for metadata
         // hook.app.debug('#6');
         // const { body: html, url } = await got(youtubeLinks[0]);
