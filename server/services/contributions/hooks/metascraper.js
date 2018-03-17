@@ -30,7 +30,7 @@ module.exports = function () {
         // hook.app.debug(metadata);
 
         if (youtubeLinks.length >= 2) {
-          hook.data.teaserImg = `https://img.youtube.com/vi/${youtubeLinks[1]}/default.jpg`;
+          hook.data.teaserImg = `https://img.youtube.com/vi/${youtubeLinks[1]}/hqdefault.jpg`;
           hook.data.meta = Object.assign(hook.data.meta || {}, { hasVideo: true });
         }
       } catch (err) {} // eslint-disable-line
