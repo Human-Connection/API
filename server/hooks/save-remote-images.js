@@ -2,11 +2,13 @@
 // For more information on hooks see: http://docs.feathersjs.com/api/hooks.html
 
 const errors = require('feathers-errors');
+const { isEmpty } = require('lodash');
 const fs = require('fs');
 const path = require('path');
 const request = require('request');
 const faker = require('faker');
 const mime = require('mime/lite');
+// const validUrl = require('valid-url');
 
 module.exports = function (options = []) { // eslint-disable-line no-unused-vars
   return function async (hook) {
@@ -28,10 +30,19 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
 
         // save all given fields and update the hook data
         options.forEach((field) => {
-          if (!hook.data[field] || (typeof hook.data[field] === 'string' && hook.data[field].search(uploadsUrl) >= 0)) {
+          if (isEmpty(hook.data[field]) || (typeof hook.data[field] === 'string' && hook.data[field].search(uploadsUrl) >= 0)) {
             // skip invalid and local data
+            // hook.app.debug(`skip invalid and local data: ${field} - ${hook.data[field]}`);
             return;
           }
+          // cant only check for validUrl as we also get blobs
+          // if (!validUrl.isWebUri(hook.data[field])) {
+          //   // cancel on invalid image url
+          //   hook.app.debug(`cancel on invalid image url: ${hook.data[field]}`);
+          //   return;
+          // }
+          hook.app.debug(`try to get image: ${hook.data[field]}`);
+
           loading++;
           imgCount++;
           // TODO: fix that to use the data _id or somethink similar
@@ -95,7 +106,7 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
             });
           }
 
-          hook.app.debug('Downloading', hook.data[field]);
+          hook.app.debug(`Downloading: ${hook.data[field]}`);
         });
 
         if (imgCount > 0 && loading <= 0) {
@@ -104,7 +115,7 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
         } else if (!imgCount) {
           resolve(hook);
         }
-      } catch(err) {
+      } catch (err) {
         // reject(err);
         if (imgCount) {
           hook.app.error('Thumbnail download failed');

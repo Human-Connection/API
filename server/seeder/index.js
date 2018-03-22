@@ -21,6 +21,7 @@ let configs = [...baseConfigs, ...developmentConfigs];
 // seed service and add results to the seeder store
 const seedAndAssign = async (config, seeder, app) => {
   const key = config.path;
+  app.debug(`>> SEEDING: ${key}`);
   try {
     const res = await seeder.seed(config);
     if (_.isEmpty(seederstore[key])) {
