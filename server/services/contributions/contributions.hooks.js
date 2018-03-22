@@ -73,10 +73,10 @@ const thumbs = {
     cardS: '300x0/filters:background_color(fff):upscale()',
     cardM: '400x0/filters:background_color(fff):upscale()',
     cardL: '740x0/filters:background_color(fff):upscale()',
-    placeholder: '100x0/filters:blur(30):background_color(fff):upscale()',
-    zoom: '0x1024/filters:background_color(fff):upscale()',
+    placeholder: '100x0/filters:blur(30):background_color(fff)',
+    zoom: '0x1024/filters:background_color(fff)',
     cover: '729x300/smart/filters:background_color(fff):upscale()',
-    coverPlaceholder: '243x100/smart/filters:blur(30):background_color(fff):upscale()'
+    coverPlaceholder: '243x100/smart/filters:blur(30):background_color(fff)'
   }
 };
 
