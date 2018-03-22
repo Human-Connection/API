@@ -68,6 +68,18 @@ const commentsSchema = {
   }
 };
 
+const thumbs = {
+  teaserImg: {
+    cardS: '300x0/filters:background_color(fff)',
+    cardM: '400x0/filters:background_color(fff)',
+    cardL: '740x0/filters:background_color(fff)',
+    placeholder: '100x0/filters:blur(30):background_color(fff)',
+    zoom: '0x1024/filters:background_color(fff)',
+    cover: '729x300/smart/filters:background_color(fff)',
+    coverPlaceholder: '243x100/smart/filters:blur(30):background_color(fff)'
+  }
+};
+
 module.exports = {
   before: {
     all: [],
@@ -148,77 +160,27 @@ module.exports = {
         getAssociatedCanDos()
       ),
       xss({ fields: ['content', 'contentExcerpt'] }),
-      thumbnails({
-        teaserImg: {
-          cardS: '300x0',
-          cardM: '400x0',
-          cardL: '740x0',
-          placeholder: '100x0/filters:blur(30)',
-          zoom: '0x1024',
-          cover: '729x300/smart',
-          coverPlaceholder: '243x100/smart/filters:blur(30)'
-        }
-      })
+      thumbnails(thumbs)
     ],
     get: [
       getAssociatedCanDos(),
       xss({ fields: ['content', 'contentExcerpt'] }),
-      thumbnails({
-        teaserImg: {
-          cardS: '300x0',
-          cardM: '400x0',
-          cardL: '740x0',
-          zoom: '0x1024',
-          cover: '800x300/smart',
-          placeholder: '800x300/filters:blur(10)',
-          coverPlaceholder: '243x100/smart/filters:blur(30)'
-        }
-      })
+      thumbnails(thumbs)
     ],
     create: [
       createMentionNotifications(),
       xss({ fields: ['content', 'contentExcerpt'] }),
-      thumbnails({
-        teaserImg: {
-          cardS: '300x0',
-          cardM: '400x0',
-          cardL: '740x0',
-          placeholder: '100x0/filters:blur(30)',
-          zoom: '0x1024',
-          cover: '729x300/smart',
-          coverPlaceholder: '243x100/smart/filters:blur(30)'
-        }
-      })
+      thumbnails(thumbs)
     ],
     update: [
       createMentionNotifications(),
       xss({ fields: ['content', 'contentExcerpt'] }),
-      thumbnails({
-        teaserImg: {
-          cardS: '300x0',
-          cardM: '400x0',
-          cardL: '740x0',
-          placeholder: '100x0/filters:blur(30)',
-          zoom: '0x1024',
-          cover: '729x300/smart',
-          coverPlaceholder: '243x100/smart/filters:blur(30)'
-        }
-      })
+      thumbnails(thumbs)
     ],
     patch: [
       createMentionNotifications(),
       xss({ fields: ['content', 'contentExcerpt'] }),
-      thumbnails({
-        teaserImg: {
-          cardS: '300x0',
-          cardM: '400x0',
-          cardL: '740x0',
-          placeholder: '100x0/filters:blur(30)',
-          zoom: '0x1024',
-          cover: '729x300/smart',
-          coverPlaceholder: '243x100/smart/filters:blur(30)'
-        }
-      })
+      thumbnails(thumbs)
     ],
     remove: []
   },
