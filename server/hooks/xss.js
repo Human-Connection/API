@@ -3,9 +3,9 @@ const _ = require('lodash');
 
 function clean (dirty) {
   dirty = sanitizeHtml(dirty, {
-    allowedTags: ['iframe', 'img', 'p', 'br', 'b', 'i', 'em', 'strong', 'a', 'pre', 'ul', 'li', 'ol'],
+    allowedTags: ['iframe', 'img', 'p', 'br', 'b', 'i', 'em', 'strong', 'a', 'pre', 'ul', 'li', 'ol', 'span'],
     allowedAttributes: {
-      a: ['href', 'data-*'],
+      a: ['href', 'target', 'data-*'],
       img: [ 'src' ],
       iframe: ['src', 'class', 'frameborder', 'allowfullscreen']
     },
@@ -15,6 +15,15 @@ function clean (dirty) {
     },
     transformTags: {
       i: 'em',
+      a: function (tagName, attribs) {
+        return {
+          tagName: 'a',
+          attribs: {
+            href: attribs.href,
+            target: '_blank'
+          }
+        };
+      },
       b: 'strong'
     //   'img': function (tagName, attribs) {
     //     let src = attribs.src;
