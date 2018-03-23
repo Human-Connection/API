@@ -34,7 +34,7 @@ module.exports = {
         isVerified()
       ),
       associateCurrentUser(),
-      createExcerpt()
+      createExcerpt({ length: 180 })
     ],
     update: [
       authenticate('jwt'),
@@ -42,7 +42,7 @@ module.exports = {
       unless(isProvider('server'),
         restrictToOwner()
       ),
-      createExcerpt()
+      createExcerpt({ length: 180 })
     ],
     patch: [
       authenticate('jwt'),
@@ -58,7 +58,7 @@ module.exports = {
                 (!_.difference(_.values(valid.$inc), _.values(hook.data.$inc)).length);
         }, restrictToOwner())
       ),
-      createExcerpt()
+      createExcerpt({ length: 180 })
     ],
     remove: [
       authenticate('jwt'),
