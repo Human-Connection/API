@@ -41,6 +41,10 @@ module.exports = function () {
         return resolve(hook);
       }
 
+      if (!hook.data.meta) {
+        hook.data.meta = {};
+      }
+
       let promises = [];
       let embedds = {};
 
