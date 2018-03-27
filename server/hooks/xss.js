@@ -1,7 +1,19 @@
 const sanitizeHtml = require('sanitize-html');
+// const utils = require('quill-url-embeds');
 const _ = require('lodash');
+const cheerio = require('cheerio');
 
 function clean (dirty) {
+  // Convert embeds to a-tags
+  // dirty = utils.embedToAnchor(dirty);
+  const $ = cheerio.load(dirty);
+  $('div[data-url-embed]').each((i, el) => {
+    let url = el.attribs['data-url-embed'];
+    let aTag = $(`<a href="${url}" target="_blank">${url}</a>`);
+    $(el).replaceWith(aTag);
+  })
+  dirty = $('body').html();
+
   dirty = sanitizeHtml(dirty, {
     allowedTags: ['iframe', 'img', 'p', 'br', 'b', 'i', 'em', 'strong', 'a', 'pre', 'ul', 'li', 'ol', 'span'],
     allowedAttributes: {
