@@ -1,13 +1,19 @@
 const seedHelpers = require('../../helper/seed-helpers');
+const _ = require('lodash');
+
+let userKeys = [];
 
 // eslint-disable-next-line no-unused-vars
 module.exports = (seederstore) => {
+  userKeys = _.keys(seederstore.users);
   return {
     services: [{
       path: 'usersettings',
-      count: 500,
+      count: _.size(seederstore.users),
       template: {
-        userId: () => seedHelpers.randomItem(seederstore.users)._id,
+        userId: () => {
+          return userKeys.pop();
+        },
         uiLanguage: 'de',
         contributionLanguages: ['German']
       }
