@@ -28,6 +28,12 @@ module.exports = function (app) {
     teaserImg: { type: String },
     language: { type: String, required: true },
     shoutCount: { type: Number, default: 0 },
+    meta: {
+      type: Object,
+      default: {
+        hasVideo: false
+      }
+    },
     visibility: {
       type: String,
       enum: ['public', 'friends', 'private'],

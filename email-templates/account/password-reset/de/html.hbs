@@ -1,0 +1,29 @@
+{{> header }}
+<tr>
+	<td class="content-wrap">
+		<meta itemprop="name" content="Password reset"/>
+		<table width="100%" cellpadding="0" cellspacing="0">
+		  <tr>
+				<td class="aligncenter content-block">
+					<h1 class="aligncenter">Passwort erfolgreich zurückgesetzt</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="aligncenter content-block">
+					Hallo {{ name }}, dein passwort wurde erfolgreich zurückgesetzt.
+				</td>
+			</tr>
+			<tr>
+				<td class="aligncenter content-block">
+					Wenn du es nicht warst der dein Passwort zurücksetzen wollte <a href='mailto:{{returnEmail}}?subject=I did not reset my password&body=Someone unauthorized changed my password. Can you send me a reset link?'>lass es uns wissen!</a>
+				</td>
+			</tr>
+			<tr>
+				<td class="aligncenter content-block">
+					&mdash; Human Connection
+				</td>
+			</tr>
+		</table>
+	</td>
+</tr>
+{{> footer }}

@@ -63,6 +63,9 @@ module.exports = {
     }
     return res;
   },
+  random: (items) => {
+    return _.shuffle(items).pop();
+  },
   randomDifficulty: () => {
     return _.shuffle(difficulties).pop();
   },

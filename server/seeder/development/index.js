@@ -4,6 +4,7 @@
 module.exports = function () {
   // Add your seeder configs here
   return [
+    require('./users-admin'),
     require('./users'),
     require('./moderators'),
     require('./contributions'),

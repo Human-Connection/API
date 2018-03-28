@@ -15,7 +15,9 @@ const isModerator = require('../../hooks/is-moderator-boolean');
 const excludeDisabled = require('../../hooks/exclude-disabled');
 const getAssociatedCanDos = require('./hooks/get-associated-can-dos');
 const createMentionNotifications = require('./hooks/create-mention-notifications');
+const metascraper = require('./hooks/metascraper');
 const isSingleItem = require('../../hooks/is-single-item');
+const xss = require('../../hooks/xss');
 
 const userSchema = {
   include: {
@@ -66,6 +68,18 @@ const commentsSchema = {
   }
 };
 
+const thumbs = {
+  teaserImg: {
+    cardS: '300x0/filters:background_color(fff):upscale()',
+    cardM: '400x0/filters:background_color(fff):upscale()',
+    cardL: '740x0/filters:background_color(fff):upscale()',
+    placeholder: '100x0/filters:blur(30):background_color(fff)',
+    zoom: '0x1024/filters:background_color(fff)',
+    cover: '729x300/smart/filters:background_color(fff):upscale()',
+    coverPlaceholder: '243x100/smart/filters:blur(30):background_color(fff)'
+  }
+};
+
 module.exports = {
   before: {
     all: [],
@@ -90,7 +104,9 @@ module.exports = {
         isVerified()
       ),
       associateCurrentUser(),
+      // xss({ fields: ['content', 'contentExcerpt'] }),
       createSlug({ field: 'title' }),
+      metascraper(),
       saveRemoteImages(['teaserImg']),
       createExcerpt()
     ],
@@ -103,6 +119,8 @@ module.exports = {
         excludeDisabled(),
         restrictToOwner()
       ),
+      // xss({ fields: ['content', 'contentExcerpt'] }),
+      metascraper(),
       saveRemoteImages(['teaserImg']),
       createExcerpt()
     ],
@@ -115,6 +133,8 @@ module.exports = {
         excludeDisabled(),
         restrictToOwner()
       ),
+      // xss({ fields: ['content', 'contentExcerpt'] }),
+      metascraper(),
       saveRemoteImages(['teaserImg']),
       createExcerpt()
     ],
@@ -139,73 +159,28 @@ module.exports = {
       when(isSingleItem(),
         getAssociatedCanDos()
       ),
-      thumbnails({
-        teaserImg: {
-          cardS: '300x0',
-          cardM: '400x0',
-          cardL: '740x0',
-          placeholder: '100x0/filters:blur(30)',
-          zoom: '0x1024',
-          cover: '729x300/smart',
-          coverPlaceholder: '243x100/smart/filters:blur(30)'
-        }
-      })
+      xss({ fields: ['content', 'contentExcerpt'] }),
+      thumbnails(thumbs)
     ],
     get: [
       getAssociatedCanDos(),
-      thumbnails({
-        teaserImg: {
-          cardS: '300x0',
-          cardM: '400x0',
-          cardL: '740x0',
-          zoom: '0x1024',
-          cover: '800x300/smart',
-          placeholder: '800x300/filters:blur(10)',
-          coverPlaceholder: '243x100/smart/filters:blur(30)'
-        }
-      })
+      xss({ fields: ['content', 'contentExcerpt'] }),
+      thumbnails(thumbs)
     ],
     create: [
       createMentionNotifications(),
-      thumbnails({
-        teaserImg: {
-          cardS: '300x0',
-          cardM: '400x0',
-          cardL: '740x0',
-          placeholder: '100x0/filters:blur(30)',
-          zoom: '0x1024',
-          cover: '729x300/smart',
-          coverPlaceholder: '243x100/smart/filters:blur(30)'
-        }
-      })
+      xss({ fields: ['content', 'contentExcerpt'] }),
+      thumbnails(thumbs)
     ],
     update: [
       createMentionNotifications(),
-      thumbnails({
-        teaserImg: {
-          cardS: '300x0',
-          cardM: '400x0',
-          cardL: '740x0',
-          placeholder: '100x0/filters:blur(30)',
-          zoom: '0x1024',
-          cover: '729x300/smart',
-          coverPlaceholder: '243x100/smart/filters:blur(30)'
-        }
-      })
+      xss({ fields: ['content', 'contentExcerpt'] }),
+      thumbnails(thumbs)
     ],
     patch: [
       createMentionNotifications(),
-      thumbnails({
-        teaserImg: {
-          cardS: '300x0',
-          cardM: '400x0',
-          cardL: '740x0',
-          placeholder: '100x0/filters:blur(30)',
-          zoom: '0x1024',
-          cover: '729x300/smart',
-          coverPlaceholder: '243x100/smart/filters:blur(30)'
-        }
-      })
+      xss({ fields: ['content', 'contentExcerpt'] }),
+      thumbnails(thumbs)
     ],
     remove: []
   },
