@@ -9,7 +9,7 @@ function clean (dirty) {
   const $ = cheerio.load(dirty);
   $('div[data-url-embed]').each((i, el) => {
     let url = el.attribs['data-url-embed'];
-    let aTag = $(`<a href="${url}" target="_blank">${url}</a>`);
+    let aTag = $(`<a href="${url}" target="_blank" data-url-embed>${url}</a>`);
     $(el).replaceWith(aTag);
   })
   dirty = $('body').html();
@@ -17,7 +17,7 @@ function clean (dirty) {
   dirty = sanitizeHtml(dirty, {
     allowedTags: ['iframe', 'img', 'p', 'br', 'b', 'i', 'em', 'strong', 'a', 'pre', 'ul', 'li', 'ol', 'span'],
     allowedAttributes: {
-      a: ['href', 'target', 'data-*'],
+      a: ['href', 'class', 'target', 'data-*'],
       img: [ 'src' ],
       iframe: ['src', 'class', 'frameborder', 'allowfullscreen']
     },
@@ -27,15 +27,6 @@ function clean (dirty) {
     },
     transformTags: {
       i: 'em',
-      a: function (tagName, attribs) {
-        return {
-          tagName: 'a',
-          attribs: {
-            href: attribs.href,
-            target: '_blank'
-          }
-        };
-      },
       b: 'strong'
     //   'img': function (tagName, attribs) {
     //     let src = attribs.src;
