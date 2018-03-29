@@ -15,7 +15,7 @@ const isModerator = require('../../hooks/is-moderator-boolean');
 const excludeDisabled = require('../../hooks/exclude-disabled');
 const getAssociatedCanDos = require('./hooks/get-associated-can-dos');
 const createMentionNotifications = require('./hooks/create-mention-notifications');
-const metascraper = require('./hooks/metascraper');
+// const metascraper = require('./hooks/metascraper');
 const isSingleItem = require('../../hooks/is-single-item');
 const xss = require('../../hooks/xss');
 
@@ -106,7 +106,7 @@ module.exports = {
       associateCurrentUser(),
       // xss({ fields: ['content', 'contentExcerpt'] }),
       createSlug({ field: 'title' }),
-      metascraper(),
+      // metascraper(),
       saveRemoteImages(['teaserImg']),
       createExcerpt()
     ],
@@ -120,7 +120,7 @@ module.exports = {
         restrictToOwner()
       ),
       // xss({ fields: ['content', 'contentExcerpt'] }),
-      metascraper(),
+      // metascraper(),
       saveRemoteImages(['teaserImg']),
       createExcerpt()
     ],
@@ -134,7 +134,7 @@ module.exports = {
         restrictToOwner()
       ),
       // xss({ fields: ['content', 'contentExcerpt'] }),
-      metascraper(),
+      // metascraper(),
       saveRemoteImages(['teaserImg']),
       createExcerpt()
     ],
