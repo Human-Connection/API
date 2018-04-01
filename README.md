@@ -14,16 +14,6 @@ The API for a better world. More information under [human-connection.org](https:
 
 > **Note:** This is only the API part of Human-Connection, you have to also checkout the [WebApp](https://github.com/Human-Connection/WebApp) which uses this API.
 
-## Start Server
-
-Make sure you have installed [docker](https://www.docker.com/community-edition).
-
-To start the service simply run:
-
-```bash
-docker-compose up
-```
-
 ## Development
 
 > we recommand to install the project locally for the best development ease and performance
