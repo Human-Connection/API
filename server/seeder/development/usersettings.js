@@ -15,7 +15,7 @@ module.exports = (seederstore) => {
           return userKeys.pop();
         },
         uiLanguage: 'de',
-        contributionLanguages: ['German']
+        contentLanguages: ['de']
       }
     }]
   };

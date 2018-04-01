@@ -10,6 +10,7 @@ const createSlug = require('../../hooks/create-slug');
 const thumbnails = require('../../hooks/thumbnails');
 const inviteCode = require('./hooks/invite-code')();
 const search = require('feathers-mongodb-fuzzy-search');
+const isOwnEntry = require('./hooks/is-own-entry');
 
 const { hashPassword } = require('feathers-authentication-local').hooks;
 
@@ -19,6 +20,7 @@ const cleanupBasicData = when(isProvider('external'),
 const cleanupPersonalData = when(isProvider('external'),
   discard('email', 'verifyToken', 'verifyShortToken', 'doiToken')
 );
+
 
 const restrict = [
   authenticate('jwt'),
@@ -45,6 +47,16 @@ const candosSchema = {
     parentField: '_id',
     childField: 'userId',
     asArray: true
+  }
+};
+
+const userSettingsSchema = {
+  include: {
+    service: 'usersettings',
+    nameAs: 'usersettings',
+    parentField: '_id',
+    childField: 'userId',
+    asArray: false
   }
 };
 
@@ -105,7 +117,7 @@ module.exports = {
     ],
     patch: [
       ...restrict,
-      hashPassword(),
+      // hashPassword(),
       disableMultiItemChange(),
       // Only set slug once
       when(
@@ -137,17 +149,13 @@ module.exports = {
 
       // remove personal data if its not the current authenticated user
       iff(isProvider('external'),
-        when(hook => {
-          const itemBelongsToAuthenticatedUser = hook.params.user && hook.result && hook.params.user._id.toString() === hook.result._id.toString();
-          // console.log('hook.params', hook.params);
-          // console.log('currentId', hook.params.user ? hook.params.user._id : null);
-          // console.log('foundId', hook.result ? hook.result._id : null);
-          // console.log('identical', (hook.params.user && hook.result ) ? hook.params.user._id.toString() === hook.result._id.toString() : null);
-          return itemBelongsToAuthenticatedUser !== true;
-          // return (!hook.params.user || !hook.result.data || hook.params.user._id !== hook.result.data._id);
-        }, discard('email', 'verifyToken', 'verifyShortToken', 'doiToken'))
+        when(isOwnEntry(false), [
+          cleanupPersonalData
+        ])
+      ),
+      iff(isOwnEntry(),
+        populate({ schema: userSettingsSchema })
       )
-
     ],
     create: [
       when(isProvider('external'),
