@@ -14,11 +14,17 @@ The API for a better world. More information under [human-connection.org](https:
 
 > **Note:** This is only the API part of Human-Connection, you have to also checkout the [WebApp](https://github.com/Human-Connection/WebApp) which uses this API.
 
-## Framework
+## Start Server
 
-This project uses [Feathers](http://feathersjs.com). An open source web framework for building modern real-time applications.
+Make sure you have installed [docker](https://www.docker.com/community-edition).
 
-## Getting Started
+To start the service simply run:
+
+```bash
+docker-compose up
+```
+
+## Development
 
 > we recommand to install the project locally for the best development ease and performance
 
