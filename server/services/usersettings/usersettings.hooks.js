@@ -1,12 +1,17 @@
-
+const { restrictToOwner } = require('feathers-authentication-hooks');
+const mapCreateToUpsert = require('../../hooks/map-create-to-upsert');
 
 module.exports = {
   before: {
-    all: [
-    ],
+    all: [],
     find: [],
     get: [],
-    create: [],
+    create: [
+      mapCreateToUpsert(context => {
+        const { data } = context;
+        return { userId: data.userId };
+      })
+    ],
     update: [],
     patch: [],
     remove: []

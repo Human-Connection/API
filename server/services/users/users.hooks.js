@@ -21,7 +21,6 @@ const cleanupPersonalData = when(isProvider('external'),
   discard('email', 'verifyToken', 'verifyShortToken', 'doiToken')
 );
 
-
 const restrict = [
   authenticate('jwt'),
   restrictToOwner({
@@ -53,7 +52,7 @@ const candosSchema = {
 const userSettingsSchema = {
   include: {
     service: 'usersettings',
-    nameAs: 'usersettings',
+    nameAs: 'userSettings',
     parentField: '_id',
     childField: 'userId',
     asArray: false
