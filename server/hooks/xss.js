@@ -18,6 +18,15 @@ function clean (dirty) {
     },
     transformTags: {
       i: 'em',
+      // a: function (tagName, attribs) {
+      //   return {
+      //     tagName: 'a',
+      //     attribs: {
+      //       href: attribs.href,
+      //       target: '_blank'
+      //     }
+      //   };
+      // },
       b: 'strong'
     //   'img': function (tagName, attribs) {
     //     let src = attribs.src;
