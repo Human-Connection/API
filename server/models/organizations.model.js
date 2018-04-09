@@ -16,6 +16,7 @@ module.exports = function (app) {
     description: { type: String },
     publicEmail: { type: String },
     website: { type: String },
+    type: { type: String },
     // will be generated automatically
     descriptionExcerpt: { type: String },
     addresses: { type: Array, default: [] },
