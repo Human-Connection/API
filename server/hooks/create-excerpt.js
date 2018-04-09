@@ -1,8 +1,13 @@
 /* eslint-disable */
-
 // https://github.com/yangsibai/node-html-excerpt
 // const excerpt = require('html-excerpt');
+
+const sanitizeHtml = require('sanitize-html');
 const trunc = require('trunc-html');
+
+const sanitizeOptions = {
+  allowedTags: [ 'br' ]
+};
 
 module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
   return function (hook) {
@@ -15,9 +20,8 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
 
     try {
       /* eslint no-use-before-define: 0 */  // --> OFF
-      const content = hook.data[options.field]
-      .replace(/\<br\>|\<\/br\>|\<\/ br\>|\<br\>|\<br\\\>|\<p\>|\<\/p\>/ig, "\n")
-      .replace(/\<(strong|b|i|blockquote|pre|em|u|h[1-6]|a)>|\<\/(strong|b|i|blockquote|pre|em|u|h[1-6]|a)>/ig, '')
+      const content = sanitizeHtml(hook.data[options.field], sanitizeOptions)
+      .replace(/\<br\>|\<\/br\>|\<\/ br\>|\<br\>|\<br\\\>/ig, "\n")
       .replace(/\<p\>\<br\>\<\/p\>/ig, ' ')
       .replace(/(\ ){2,}/ig, ' ')
       .trim();
