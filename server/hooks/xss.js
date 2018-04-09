@@ -17,7 +17,7 @@ function clean (dirty) {
   // Convert embeds to a-tags
   dirty = embedToAnchor(dirty);
   dirty = sanitizeHtml(dirty, {
-    allowedTags: ['iframe', 'img', 'p', 'br', 'b', 'i', 'em', 'strong', 'a', 'pre', 'ul', 'li', 'ol', 'span'],
+    allowedTags: ['iframe', 'img', 'p', 'br', 'b', 'i', 'em', 'strong', 'a', 'pre', 'ul', 'li', 'ol', 'span', 'blockquote'],
     allowedAttributes: {
       a: ['href', 'class', 'target', 'data-*'],
       img: [ 'src' ],
