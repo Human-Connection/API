@@ -19,7 +19,7 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
       .replace(/\<br\>|\<\/br\>|\<\/ br\>|\<br\>|\<br\\\>|\<p\>|\<\/p\>/ig, "\n")
       .replace(/\<(strong|b|i|blockquote|pre|em|u|h[1-6]|a)>|\<\/(strong|b|i|blockquote|pre|em|u|h[1-6]|a)>/ig, '')
       .replace(/\<p\>\<br\>\<\/p\>/ig, ' ')
-      .replace(/(\ )[2,]/ig, ' ')
+      .replace(/(\ ){2,}/ig, ' ')
       .trim();
       hook.data[`${options.field}Excerpt`] = trunc(content, options.length, {
         ignoreTags: ['img', 'script', 'iframe']
