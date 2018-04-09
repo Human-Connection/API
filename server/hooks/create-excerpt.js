@@ -32,7 +32,7 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
       }
     }
     hook.data[options.field] = hook.data[options.field]
-      .replace(/(\ )[2,]/ig, ' ')
+      .replace(/(\ ){2,}/ig, ' ')
 
     return Promise.resolve(hook);
   };
