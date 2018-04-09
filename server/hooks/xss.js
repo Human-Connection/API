@@ -1,6 +1,17 @@
 const sanitizeHtml = require('sanitize-html');
-const embedToAnchor = require('quill-url-embeds/dist/embed-to-anchor');
+// const embedToAnchor = require('quill-url-embeds/dist/embed-to-anchor');
 const _ = require('lodash');
+const cheerio = require('cheerio');
+
+const embedToAnchor = (content) => {
+  const $ = cheerio.load(content);
+  $('div[data-url-embed]').each((i, el) => {
+    let url = el.attribs['data-url-embed'];
+    let aTag = $(`<a href="${url}" target="_blank" data-url-embed="">${url}</a>`);
+    $(el).replaceWith(aTag);
+  });
+  return $('body').html();
+};
 
 function clean (dirty) {
   // Convert embeds to a-tags

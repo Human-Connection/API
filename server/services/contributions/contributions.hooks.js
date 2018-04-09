@@ -103,7 +103,7 @@ module.exports = {
         isVerified()
       ),
       associateCurrentUser(),
-      // xss({ fields: ['content', 'contentExcerpt'] }),
+      xss({ fields: ['content', 'contentExcerpt'] }),
       createSlug({ field: 'title' }),
       saveRemoteImages(['teaserImg']),
       createExcerpt()
@@ -117,7 +117,7 @@ module.exports = {
         excludeDisabled(),
         restrictToOwner()
       ),
-      // xss({ fields: ['content', 'contentExcerpt'] }),
+      xss({ fields: ['content', 'contentExcerpt'] }),
       saveRemoteImages(['teaserImg']),
       createExcerpt()
     ],
@@ -130,7 +130,7 @@ module.exports = {
         excludeDisabled(),
         restrictToOwner()
       ),
-      // xss({ fields: ['content', 'contentExcerpt'] }),
+      xss({ fields: ['content', 'contentExcerpt'] }),
       saveRemoteImages(['teaserImg']),
       createExcerpt()
     ],
