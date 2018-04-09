@@ -12,9 +12,15 @@ module.exports = {
         return { userId: data.userId };
       })
     ],
-    update: [],
-    patch: [],
-    remove: []
+    update: [
+      restrictToOwner()
+    ],
+    patch: [
+      restrictToOwner()
+    ],
+    remove: [
+      restrictToOwner()
+    ]
   },
   after: {
     all: [],

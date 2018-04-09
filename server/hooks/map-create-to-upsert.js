@@ -3,7 +3,7 @@
 
 module.exports = function (upsertQuery) {
   if (typeof upsertQuery !== 'function') {
-    console.warn('No `upsertQuery` function was passed to the mapCreateToUpsert hook. Please set params.upsertQuery in the hook context to dynamically declare the function.');
+    throw new Error('No `upsertQuery` function was passed to the mapCreateToUpsert hook. Please set params.upsertQuery in the hook context to dynamically declare the function.');
   }
 
   return function mapCreateToUpsert (context) {
