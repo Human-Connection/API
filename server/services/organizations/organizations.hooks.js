@@ -1,4 +1,4 @@
-const { unless, isProvider } = require('feathers-hooks-common');
+const { unless, isProvider, softDelete } = require('feathers-hooks-common');
 const { isVerified } = require('feathers-authentication-management').hooks;
 const { authenticate } = require('feathers-authentication').hooks;
 const { associateCurrentUser, restrictToOwner } = require('feathers-authentication-hooks');
@@ -24,7 +24,7 @@ const thumbnailOptions = {
 
 module.exports = {
   before: {
-    all: [],
+    all: softDelete(),
     find: [
       unless(isModerator(),
         excludeDisabled()

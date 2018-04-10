@@ -26,6 +26,10 @@ module.exports = function (app) {
       type: Boolean,
       default: false
     },
+    deleted: {
+      type: Boolean,
+      default: false
+    },
     wasSeeded: { type: Boolean }
   });
 

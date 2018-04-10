@@ -41,7 +41,7 @@
     "dev:debug": "npm run clear && concurrently '$npm_package_config_mongoDev' 'wait-on tcp:27017 && NODE_ENV=development nodemon --inspect server/'",
     "dev": "npm run clear && concurrently '$npm_package_config_mongoDev' 'wait-on tcp:27017 && NODE_ENV=development DEBUG=feathers nodemon server/'",
     "dev:noseed": "concurrently 'mongod --dbpath data' 'wait-on tcp:27017 && NODE_ENV=development DEBUG=feathers nodemon server/'",
-    "dev:win": "npm run clear && concurrently \"mongod --dbpath data\" \"wait-on tcp:27017&&SET NODE_ENV=development&&SET DEBUG=feathers&& nodemon --inspect server/\"",
+    "dev:win": "npm run clear && concurrently \"mongod --dbpath /data/db\" \"wait-on tcp:27017&& cross-env NODE_ENV=development&& cross-env DEBUG=feathers&& nodemon --inspect server/\"",
     "mocha": "npm run clear && $npm_package_config_concurrently '$npm_package_config_mongoDev &>/dev/null' 'wait-on tcp:27017 && NODE_ENV=test $npm_package_config_mocha'",
     "coverage": "npm run clear && $npm_package_config_concurrently '$npm_package_config_mongoDev &>/dev/null' 'wait-on tcp:27017 && NODE_ENV=test istanbul cover $npm_package_config_mochaCoverage'"
   },
@@ -55,6 +55,7 @@
     "body-parser": "~1.18.2",
     "compression": "~1.7.1",
     "cors": "~2.8.4",
+    "cross-env": "^5.1.4",
     "crypto": "~1.0.1",
     "crypto-js": "~3.1.9-1",
     "dauria": "~2.0.0",
