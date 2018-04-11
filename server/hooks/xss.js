@@ -17,7 +17,7 @@ function clean (dirty) {
   // Convert embeds to a-tags
   dirty = embedToAnchor(dirty);
   dirty = sanitizeHtml(dirty, {
-    allowedTags: ['iframe', 'img', 'p', 'br', 'b', 'i', 'em', 'strong', 'a', 'pre', 'ul', 'li', 'ol', 'span', 'blockquote'],
+    allowedTags: ['iframe', 'img', 'p', 'br', 'b', 'i', 'em', 'strong', 'a', 'pre', 'ul', 'li', 'ol', 's', 'strike', 'span', 'blockquote'],
     allowedAttributes: {
       a: ['href', 'class', 'target', 'data-*'],
       img: [ 'src' ],
@@ -38,7 +38,8 @@ function clean (dirty) {
       //     }
       //   };
       // },
-      b: 'strong'
+      b: 'strong',
+      s: 'strike'
     //   'img': function (tagName, attribs) {
     //     let src = attribs.src;
     //     if (_.isEmpty(hook.result)) {
