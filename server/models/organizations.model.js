@@ -17,6 +17,7 @@ module.exports = function (app) {
     publicEmail: { type: String },
     website: { type: String },
     type: { type: String },
+    language: { type: String, required: true, default: 'de' },
     // will be generated automatically
     descriptionExcerpt: { type: String },
     addresses: { type: Array, default: [] },
