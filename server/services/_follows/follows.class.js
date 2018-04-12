@@ -42,16 +42,18 @@ class Service {
     this.allowedServices = ['users', 'organizations', 'projects'];
   }
 
-  /* find (params) {
-    return Promise.resolve([]);
-  } */
+  async find (params) {
+    let query = params.query || {};
+
+    let user = await this.users.findById(id);
+  }
 
   /**
    * @param id
    * @param params
    * @returns {Promise}
    *
-   * @todo use the services for retreiving data to not reveal sensitive data
+   * @todo use the services for retrieving data to not reveal sensitive data
    */
   async get (id, params) {
     let query = params.query || {};
@@ -81,7 +83,7 @@ class Service {
    *    "type": "users"
    *  }
    *
-   * @todo use the services for retreiving data to not reveal sensitive data
+   * @todo use the services for retrieving data to not reveal sensitive data
    * @todo do not allow another users then the logged in one to create a follow entry
    */
   async create (data, params) {

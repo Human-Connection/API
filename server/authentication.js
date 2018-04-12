@@ -24,4 +24,15 @@ module.exports = function () {
       ]
     }
   });
+
+  app.on('login', (result, meta) => {
+    try {
+      if (meta.connection && meta.connection.user) {
+        // update last active timestamp on loggedin user
+        app.service('users').patch(meta.connection.user, {
+          lastActiveAt: new Date()
+        });
+      }
+    } catch (err) {}
+  });
 };

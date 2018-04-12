@@ -1,4 +1,3 @@
-// Set done date, when cando is done
 module.exports = () => async hook => {
 
   // get count of all shouts on this thing
@@ -10,7 +9,7 @@ module.exports = () => async hook => {
     }
   });
 
-  // update the shoud count on the foreign service
+  // update the should count on the foreign service
   await hook.app.service(hook.result.foreignService)
     .patch(hook.result.foreignId, {
       $set: {

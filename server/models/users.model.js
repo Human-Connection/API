@@ -6,17 +6,18 @@
 module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
   const followsSchema = mongooseClient.Schema({
-    type: String,
-    id: String
-  });
+    users: { type: Number, default: 0 },
+    organizations: { type: Number, default: 0 },
+    projects: { type: Number, default: 0 }
+  }, { minimize: false });
   const users = new mongooseClient.Schema({
     email: {type: String, required: true, unique: true},
     password: { type: String },
     name: { type: String },
     slug: { type: String },
     gender: { type: String },
-    followerIds: [],
-    follows: [followsSchema],
+    followersCounts: followsSchema,
+    followingCounts: followsSchema,
     isnothere: { type: Boolean },
     timezone: { type: String },
     avatar: { type: String },
@@ -27,6 +28,7 @@ module.exports = function (app) {
     deletedAt: { type: Date },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
+    lastActiveAt: { type: Date },
     // Needed for verification
     isVerified: { type: Boolean },
     role: {
@@ -44,7 +46,7 @@ module.exports = function (app) {
     wasSeeded: { type: Boolean },
     wasInvited: { type: Boolean },
     language: { type: String, default: 'en' }
-  });
+  }, { minimize: false });
 
   users.index({
     name: 'text'
