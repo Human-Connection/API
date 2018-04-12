@@ -1,11 +1,25 @@
 const sanitizeHtml = require('sanitize-html');
+// const embedToAnchor = require('quill-url-embeds/dist/embed-to-anchor');
 const _ = require('lodash');
+const cheerio = require('cheerio');
+
+const embedToAnchor = (content) => {
+  const $ = cheerio.load(content);
+  $('div[data-url-embed]').each((i, el) => {
+    let url = el.attribs['data-url-embed'];
+    let aTag = $(`<a href="${url}" target="_blank" data-url-embed="">${url}</a>`);
+    $(el).replaceWith(aTag);
+  });
+  return $('body').html();
+};
 
 function clean (dirty) {
+  // Convert embeds to a-tags
+  dirty = embedToAnchor(dirty);
   dirty = sanitizeHtml(dirty, {
-    allowedTags: ['iframe', 'img', 'p', 'br', 'b', 'i', 'em', 'strong', 'a', 'pre', 'ul', 'li', 'ol', 'span', 'blockquote'],
+    allowedTags: ['iframe', 'img', 'p', 'br', 'b', 'i', 'em', 'strong', 'a', 'pre', 'ul', 'li', 'ol', 's', 'strike', 'span', 'blockquote'],
     allowedAttributes: {
-      a: ['href', 'target', 'data-*'],
+      a: ['href', 'class', 'target', 'data-*'],
       img: [ 'src' ],
       iframe: ['src', 'class', 'frameborder', 'allowfullscreen']
     },
@@ -15,16 +29,17 @@ function clean (dirty) {
     },
     transformTags: {
       i: 'em',
-      a: function (tagName, attribs) {
-        return {
-          tagName: 'a',
-          attribs: {
-            href: attribs.href,
-            target: '_blank'
-          }
-        };
-      },
-      b: 'strong'
+      // a: function (tagName, attribs) {
+      //   return {
+      //     tagName: 'a',
+      //     attribs: {
+      //       href: attribs.href,
+      //       target: '_blank'
+      //     }
+      //   };
+      // },
+      b: 'strong',
+      s: 'strike'
     //   'img': function (tagName, attribs) {
     //     let src = attribs.src;
     //     if (_.isEmpty(hook.result)) {

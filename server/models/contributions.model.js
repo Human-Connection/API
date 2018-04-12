@@ -14,6 +14,17 @@ module.exports = function (app) {
     reason: { type: String }
   });
 
+  const metaSchema = mongooseClient.Schema({
+    hasVideo: {
+      type: Boolean,
+      default: false
+    },
+    embedds: {
+      type: Object,
+      default: {}
+    }
+  });
+
   const contributions = new mongooseClient.Schema({
     userId: { type: String, required: true },
     categoryIds: { type: Array },
@@ -28,12 +39,7 @@ module.exports = function (app) {
     teaserImg: { type: String },
     language: { type: String, required: true },
     shoutCount: { type: Number, default: 0 },
-    meta: {
-      type: Object,
-      default: {
-        hasVideo: false
-      }
-    },
+    meta: metaSchema,
     visibility: {
       type: String,
       enum: ['public', 'friends', 'private'],
