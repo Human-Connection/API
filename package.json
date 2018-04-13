@@ -33,7 +33,7 @@
     "yarn": ">= 1.3.0"
   },
   "scripts": {
-    "clear": "shx rm -Rf tmp",
+    "clear": "rm -Rf tmp",
     "test": "npm run eslint && npm run mocha",
     "eslint": "eslint server/. test/. --config .eslintrc.json",
     "start": "concurrently 'mongod' 'wait-on tcp:27017 && NODE_ENV=production node server/'",

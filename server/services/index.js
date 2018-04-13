@@ -18,6 +18,7 @@ const admin = require('./admin/admin.service.js');
 const invites = require('./invites/invites.service.js');
 const usersCandos = require('./users-candos/users-candos.service.js');
 const search = require('./search/search.service.js');
+const usersettings = require('./usersettings/usersettings.service.js');
 
 module.exports = function () {
   const app = this; // eslint-disable-line no-unused-vars
@@ -41,4 +42,5 @@ module.exports = function () {
   app.configure(invites);
   app.configure(usersCandos);
   app.configure(search);
+  app.configure(usersettings);
 };
