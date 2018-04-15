@@ -1,7 +1,7 @@
 // Check if user is moderator
 module.exports = () => hook => {
-  if(!hook.params || !hook.params.user || !['admin','moderator'].includes(hook.params.user.role)) {
+  if(!hook.params || !hook.params.user) {
     return false;
   }
-  return true;
+  return ['admin', 'moderator'].includes(hook.params.user.role);
 };

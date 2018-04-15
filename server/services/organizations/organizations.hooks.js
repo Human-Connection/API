@@ -43,7 +43,7 @@ module.exports = {
       ),
       associateCurrentUser(),
       createSlug({ field: 'name' }),
-      createExcerpt({ field: 'description '}),
+      createExcerpt({ field: 'description' }),
       saveRemoteImages(['logo', 'coverImg'])
     ],
     update: [
@@ -56,7 +56,7 @@ module.exports = {
         restrictToOwner()
       ),
       createSlug({ field: 'name', overwrite: true }),
-      createExcerpt({ field: 'description '}),
+      createExcerpt({ field: 'description' }),
       saveRemoteImages(['logo', 'coverImg'])
     ],
     patch: [
