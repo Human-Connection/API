@@ -1,13 +1,16 @@
-const { unless, isProvider, softDelete } = require('feathers-hooks-common');
+const { unless, when, isProvider, softDelete, stashBefore } = require('feathers-hooks-common');
 const { isVerified } = require('feathers-authentication-management').hooks;
 const { authenticate } = require('feathers-authentication').hooks;
-const { associateCurrentUser, restrictToOwner } = require('feathers-authentication-hooks');
+const { associateCurrentUser } = require('feathers-authentication-hooks');
 const createSlug = require('../../hooks/create-slug');
 const saveRemoteImages = require('../../hooks/save-remote-images');
 const createExcerpt = require('../../hooks/create-excerpt');
 const isModerator = require('../../hooks/is-moderator-boolean');
-const excludeDisabled = require('../../hooks/exclude-disabled');
+// const excludeDisabled = require('../../hooks/exclude-disabled');
 const thumbnails = require('../../hooks/thumbnails');
+const restrictToOwnerOrModerator = require('../../hooks/restrictToOwnerOrModerator');
+const restrictReviewAndEnableChange = require('../../hooks/restrictReviewAndEnableChange');
+const xss = require('../../hooks/xss');
 
 const thumbnailOptions = {
   logo: {
@@ -22,24 +25,31 @@ const thumbnailOptions = {
   }
 };
 
+const xssFields = ['description', 'descriptionExcerpt'];
+
 module.exports = {
   before: {
-    all: softDelete(),
+    all: [
+      softDelete(),
+      xss({ fields: xssFields })
+    ],
     find: [
-      unless(isModerator(),
-        excludeDisabled()
-      )
+      restrictToOwnerOrModerator({ isEnabled: true, isReviewed: true })
     ],
     get: [
-      unless(isModerator(),
-        excludeDisabled()
-      )
+      restrictToOwnerOrModerator({ isEnabled: true, isReviewed: true })
     ],
     create: [
       authenticate('jwt'),
       // Allow seeder to seed contributions
       unless(isProvider('server'),
         isVerified()
+      ),
+      when(isModerator(),
+        hook => {
+          hook.data.isReviewed = true;
+          return hook;
+        }
       ),
       associateCurrentUser(),
       createSlug({ field: 'name' }),
@@ -51,10 +61,9 @@ module.exports = {
       unless(isProvider('server'),
         isVerified()
       ),
-      unless(isModerator(),
-        excludeDisabled(),
-        restrictToOwner()
-      ),
+      stashBefore(),
+      restrictReviewAndEnableChange(),
+      restrictToOwnerOrModerator({ isEnabled: true }),
       createSlug({ field: 'name', overwrite: true }),
       createExcerpt({ field: 'description' }),
       saveRemoteImages(['logo', 'coverImg'])
@@ -64,10 +73,9 @@ module.exports = {
       unless(isProvider('server'),
         isVerified()
       ),
-      unless(isModerator(),
-        excludeDisabled(),
-        restrictToOwner()
-      ),
+      stashBefore(),
+      restrictReviewAndEnableChange(),
+      restrictToOwnerOrModerator({ isEnabled: true }),
       createSlug({ field: 'name', overwrite: true }),
       createExcerpt({ field: 'description' }),
       saveRemoteImages(['logo', 'coverImg'])
@@ -75,15 +83,14 @@ module.exports = {
     remove: [
       authenticate('jwt'),
       isVerified(),
-      unless(isModerator(),
-        excludeDisabled(),
-        restrictToOwner()
-      )
+      stashBefore(),
+      restrictToOwnerOrModerator({ isEnabled: true })
     ]
   },
 
   after: {
     all: [
+      xss({ fields: xssFields })
       // populate({ schema: userSchema }),
       // populate({ schema: followerSchema })
     ],

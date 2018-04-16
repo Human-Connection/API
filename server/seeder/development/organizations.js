@@ -21,6 +21,7 @@ module.exports = (seederstore) => {
         isVerified: () => seedHelpers.randomItem([true, false]),
         deletedAt: null,
         isEnabled: true,
+        isReviewed: true,
         createdAt: '{{date.recent}}',
         updatedAt: '{{date.recent}}',
         wasSeeded: true
