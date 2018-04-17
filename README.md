@@ -14,11 +14,7 @@ The API for a better world. More information under [human-connection.org](https:
 
 > **Note:** This is only the API part of Human-Connection, you have to also checkout the [WebApp](https://github.com/Human-Connection/WebApp) which uses this API.
 
-## Framework
-
-This project uses [Feathers](http://feathersjs.com). An open source web framework for building modern real-time applications.
-
-## Getting Started
+## Development
 
 > we recommand to install the project locally for the best development ease and performance
 

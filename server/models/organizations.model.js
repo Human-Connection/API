@@ -16,12 +16,25 @@ module.exports = function (app) {
     description: { type: String },
     publicEmail: { type: String },
     website: { type: String },
+    type: {
+      type: String,
+      enum: ['ngo', 'npo', 'goodpurpose', 'ev', 'eva']
+    },
+    language: { type: String, required: true, default: 'de' },
     // will be generated automatically
     descriptionExcerpt: { type: String },
     addresses: { type: Array, default: [] },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
     isEnabled: {
+      type: Boolean,
+      default: false
+    },
+    isReviewed: {
+      type: Boolean,
+      default: false
+    },
+    deleted: {
       type: Boolean,
       default: false
     },
