@@ -11,6 +11,7 @@ module.exports = function (app) {
     slot: { type: String },
     showOnce: { type: Boolean, default: true },
     requireConfirmation: { type: Boolean, default: false },
+    active: { type: Boolean, default: true },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
     wasSeeded: { type: Boolean }
