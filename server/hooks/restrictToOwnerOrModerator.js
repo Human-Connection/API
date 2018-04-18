@@ -19,7 +19,8 @@ module.exports = function restrictToOwnerOrModerator (query = {}) { // eslint-di
     const isModOrAdmin = role && ['admin', 'moderator'].includes(role);
 
     const userId = getByDot(hook, 'params.user._id');
-    const isOwner = userId && getByDot(hook, 'params.before.userId');
+    const ownerId = getByDot(hook, 'params.before.userId');
+    const isOwner = userId && ownerId && ownerId.toString() === userId.toString();
 
     // allow for mods or admins
     if (isModOrAdmin) {
@@ -28,11 +29,14 @@ module.exports = function restrictToOwnerOrModerator (query = {}) { // eslint-di
 
     // change the query if the method is find or get
     if (isFindOrGet) {
-      // add given query on top of it
-      hook.data = Object.assign(hook.data, query);
-      // if not an mod or admin, restrict to owner
-      hook.data.userId = userId;
-
+      // restrict to owner or given query
+      const restrictedQuery = {
+        $or: [
+          { userId },
+          { ...query }
+        ]
+      };
+      hook.params.query = Object.assign(hook.params.query, restrictedQuery);
       return hook;
     }
 

@@ -34,10 +34,10 @@ module.exports = {
       xss({ fields: xssFields })
     ],
     find: [
-      restrictToOwnerOrModerator({ isEnabled: true, isReviewed: true })
+      restrictToOwnerOrModerator({ isEnabled: true, reviewedBy: { $ne: null } })
     ],
     get: [
-      restrictToOwnerOrModerator({ isEnabled: true, isReviewed: true })
+      restrictToOwnerOrModerator({ isEnabled: true, reviewedBy: { $ne: null } })
     ],
     create: [
       authenticate('jwt'),
@@ -47,7 +47,7 @@ module.exports = {
       ),
       when(isModerator(),
         hook => {
-          hook.data.isReviewed = true;
+          hook.data.reviewedBy = hook.params.user.userId;
           return hook;
         }
       ),

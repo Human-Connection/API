@@ -100,9 +100,9 @@ module.exports = {
         }
       ),
       when(isProvider('external'),
-        restrictUserRole()
+        restrictUserRole(),
+        createAdmin()
       ),
-      createAdmin(),
       saveRemoteImages(['avatar', 'coverImg'])
     ],
     update: [
