@@ -7,8 +7,8 @@ module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
   const usersettings = new mongooseClient.Schema({
     userId: {type: String, required: true, unique: true},
-    uiLanguage: {type: String, required: true, default: 'de'},
-    contentLanguages: {type: Array, default: ['de']},
+    uiLanguage: {type: String, required: true},
+    contentLanguages: {type: Array, default: []},
     updatedAt: { type: Date, default: Date.now }
   });
 
