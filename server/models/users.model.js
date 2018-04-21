@@ -43,7 +43,8 @@ module.exports = function (app) {
     resetExpires: { type: Date },
     wasSeeded: { type: Boolean },
     wasInvited: { type: Boolean },
-    language: { type: String, default: 'en' }
+    language: { type: String, default: 'en' },
+    agbAccepted: { type: Date }
   });
 
   users.index({
