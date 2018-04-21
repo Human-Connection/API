@@ -27,6 +27,7 @@ module.exports = function (app) {
     deletedAt: { type: Date },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
+    lastActiveAt: { type: Date, default: Date.now },
     // Needed for verification
     isVerified: { type: Boolean },
     role: {

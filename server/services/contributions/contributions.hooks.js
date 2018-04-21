@@ -79,9 +79,13 @@ const thumbs = {
   }
 };
 
+const xssFields = ['content', 'contentExcerpt', 'cando.reason'];
+
 module.exports = {
   before: {
-    all: [],
+    all: [
+      xss({ fields: xssFields })
+    ],
     find: [
       unless(isModerator(),
         excludeDisabled()
@@ -103,7 +107,6 @@ module.exports = {
         isVerified()
       ),
       associateCurrentUser(),
-      xss({ fields: ['content', 'contentExcerpt'] }),
       createSlug({ field: 'title' }),
       saveRemoteImages(['teaserImg']),
       createExcerpt()
@@ -117,7 +120,6 @@ module.exports = {
         excludeDisabled(),
         restrictToOwner()
       ),
-      xss({ fields: ['content', 'contentExcerpt'] }),
       saveRemoteImages(['teaserImg']),
       createExcerpt()
     ],
@@ -130,7 +132,6 @@ module.exports = {
         excludeDisabled(),
         restrictToOwner()
       ),
-      xss({ fields: ['content', 'contentExcerpt'] }),
       saveRemoteImages(['teaserImg']),
       createExcerpt()
     ],
@@ -146,6 +147,7 @@ module.exports = {
 
   after: {
     all: [
+      xss({ fields: xssFields }),
       populate({ schema: userSchema }),
       populate({ schema: categoriesSchema }),
       populate({ schema: candosSchema }),
@@ -155,27 +157,22 @@ module.exports = {
       when(isSingleItem(),
         getAssociatedCanDos()
       ),
-      xss({ fields: ['content', 'contentExcerpt'] }),
       thumbnails(thumbs)
     ],
     get: [
       getAssociatedCanDos(),
-      xss({ fields: ['content', 'contentExcerpt'] }),
       thumbnails(thumbs)
     ],
     create: [
       createMentionNotifications(),
-      xss({ fields: ['content', 'contentExcerpt'] }),
       thumbnails(thumbs)
     ],
     update: [
       createMentionNotifications(),
-      xss({ fields: ['content', 'contentExcerpt'] }),
       thumbnails(thumbs)
     ],
     patch: [
       createMentionNotifications(),
-      xss({ fields: ['content', 'contentExcerpt'] }),
       thumbnails(thumbs)
     ],
     remove: []

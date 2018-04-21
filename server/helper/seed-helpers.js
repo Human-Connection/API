@@ -78,7 +78,7 @@ module.exports = {
     }
     return 'https://source.unsplash.com/daily?' + unsplashTopicsTmp.pop() + ',' + unsplashTopicsTmp.pop();
   },
-  randomCategories: (seederstore, allowEmpty = true) => {
+  randomCategories: (seederstore, allowEmpty = false) => {
     let count = Math.round(Math.random() * 3);
     if (allowEmpty === false && count === 0) {
       count = 1;
