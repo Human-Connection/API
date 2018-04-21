@@ -12,6 +12,7 @@ module.exports = function (app) {
     showOnce: { type: Boolean, default: true },
     requireConfirmation: { type: Boolean, default: false },
     active: { type: Boolean, default: true },
+    totalCount: { type: Number, default: 0 },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
     wasSeeded: { type: Boolean }
