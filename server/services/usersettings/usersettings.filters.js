@@ -1,0 +1,1 @@
+/* eslint no-console: 1 */

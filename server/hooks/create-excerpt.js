@@ -21,19 +21,14 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
     try {
       /* eslint no-use-before-define: 0 */  // --> OFF
       const content = sanitizeHtml(hook.data[options.field], sanitizeOptions)
-      .replace(/\<br\>|\<\/br\>|\<\/ br\>|\<br\>|\<br\\\>/ig, "\n")
-      .replace(/\<p\>\<br\>\<\/p\>/ig, ' ')
+      .replace(/\<br\s*\>|\<br\s*\/\>/ig, "\n")
       .replace(/(\ ){2,}/ig, ' ')
       .trim();
       hook.data[`${options.field}Excerpt`] = trunc(content, options.length, {
         ignoreTags: ['img', 'script', 'iframe']
       }).html;
     } catch (err) {
-      if (hook.data.teaserImg) {
-        hook.data[`${options.field}Excerpt`] = '-----';
-      } else {
-        throw new Error('Text content needed!');
-      }
+      throw new Error('Text content needed!');
     }
     hook.data[options.field] = hook.data[options.field]
       .replace(/(\ ){2,}/ig, ' ')

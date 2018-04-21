@@ -8,14 +8,15 @@ module.exports = function () {
     require('./users'),
     require('./moderators'),
     require('./contributions'),
+    require('./organizations'),
     require('./candos'),
     require('./users-candos'),
-    require('./organizations'),
     require('./projects'),
     require('./follows'),
     require('./comments'),
     require('./emotions'),
     require('./invites'),
-    require('./shouts')
+    require('./shouts'),
+    require('./usersettings')
   ];
 };
