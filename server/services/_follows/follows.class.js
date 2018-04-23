@@ -45,7 +45,7 @@ class Service {
   async find (params) {
     let query = params.query || {};
 
-    let user = await this.users.findById(id);
+    // let user = await this.users.findById(id);
   }
 
   /**
@@ -87,34 +87,35 @@ class Service {
    * @todo do not allow another users then the logged in one to create a follow entry
    */
   async create (data, params) {
+    throw new NotAcceptable('you can only create one follow at a time');
     if (Array.isArray(data)) {
-      return Promise.all(data.map(current => this.create(current)));
+      throw new NotAcceptable('you can only create one follow at a time');
     }
     const user = params.user || await this.users.findById(data.userId);
-    if (this.allowedServices.indexOf(data.type) < 0) {
+    if (this.allowedServices.includes(data.foreignService)) {
       throw new NotAcceptable('following of the given service is not allowed, ' +
         'please use on of the following services: ' + this.allowedServices.join(', '));
     }
-    const followingModel = this[data.type];
-    const following = await followingModel.findById(data.followingId);
+    const followingModel = this[data.foreignService];
+    const following = await followingModel.findById(data.foreignId);
 
     if (_.isEmpty(user) || _.isEmpty(following)) {
       throw new NotFound('user with the given id could not be found');
     }
     if (_.isEmpty(user) || _.isEmpty(following)) {
-      throw new NotFound(`${data.type} with the given id could not be found`);
+      throw new NotFound(`${data.foreignService} with the given id could not be found`);
     }
 
-    const userFolowEntry = {
-      type: data.type,
-      id: data.followingId
+    const userFollowEntry = {
+      foreignService: data.foreignService,
+      foreignId: data.foreignId
     };
 
-    if (_.findIndex(user.follows, userFolowEntry) < 0) {
+    if (_.findIndex(user.follows, userFollowEntry) < 0) {
       // push follow entry to user if not already present
       await this.users.findOneAndUpdate({ _id: user._id }, {
         $push: {
-          follows: userFolowEntry
+          follows: userFollowEntry
         }
       });
     }

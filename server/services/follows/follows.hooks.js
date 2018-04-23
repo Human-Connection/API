@@ -31,11 +31,11 @@ module.exports = {
       unless(isProvider('server'),
         isVerified(),
         associateCurrentUser()
-      ),
-      mapCreateToUpsert(context => {
-        const { data } = context;
-        return { userId: data.userId, foreignId: data.foreignId, foreignService: data.foreignService };
-      })
+      )
+      // mapCreateToUpsert(context => {
+      //   const { data } = context;
+      //   return { userId: data.userId, foreignId: data.foreignId, foreignService: data.foreignService };
+      // })
     ],
     update: [
       authenticate('jwt'),
@@ -67,10 +67,10 @@ module.exports = {
       setFollowCount()
     ],
     update: [
-      setFollowCount()
+      // setFollowCount()
     ],
     patch: [
-      setFollowCount()
+      // setFollowCount()
     ],
     remove: [
       setFollowCount()

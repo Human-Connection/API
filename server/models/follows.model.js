@@ -13,7 +13,7 @@ module.exports = function (app) {
   });
 
   follows.index(
-    { userId: 1, foreignId: 1 },
+    { userId: 1, foreignId: 1, foreignService: 1 },
     { unique: true }
   );
 

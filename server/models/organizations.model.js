@@ -5,10 +5,16 @@
 module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
   const { Schema } = mongooseClient;
+  const followsSchema = mongooseClient.Schema({
+    users: { type: Number, default: 0 },
+    organizations: { type: Number, default: 0 },
+    projects: { type: Number, default: 0 }
+  }, { minimize: false });
   const organizations = new Schema({
     name: { type: String, required: true },
     slug: { type: String, required: true, unique: true },
-    followerIds: [],
+    followersCounts: followsSchema,
+    followingCounts: followsSchema,
     categoryIds: { type: Array },
     logo: { type: String },
     coverImg: { type: String },
