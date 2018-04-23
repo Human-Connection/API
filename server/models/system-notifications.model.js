@@ -9,6 +9,7 @@ module.exports = function (app) {
     title: { type: String },
     content: { type: String },
     slot: { type: String },
+    language: { type: String },
     showOnce: { type: Boolean, default: true },
     requireConfirmation: { type: Boolean, default: false },
     active: { type: Boolean, default: true },
