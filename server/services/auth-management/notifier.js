@@ -44,7 +44,8 @@ module.exports = function (app) {
       user.language || 'en'
     );
 
-    const hashLink = getLink(linktype, user.verifyToken || null);
+    const token = user.verifyToken || user.resetToken || user.changeToken;
+    const hashLink = getLink(linktype, token || null);
     const frontURL = app.get('frontURL');
     const backURL = app.get('baseURL');
 
@@ -132,15 +133,19 @@ module.exports = function (app) {
           'verify',
           user
         );
-      case 'resetPwd':
-        return buildEmail('reset-password', 'Password reset', 'reset', user);
       case 'sendResetPwd':
         return buildEmail(
-          'password-was-reset',
-          'Your password was reset',
+          'reset-password',
+          'Password reset',
           'reset',
           user
         );
+      case 'resetPwd':
+        return buildEmail(
+          'password-reset',
+          'Your password was reset',
+          'reset',
+          user);
       case 'passwordChange':
         return buildEmail(
           'password-change',
