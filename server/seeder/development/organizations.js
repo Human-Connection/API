@@ -18,10 +18,9 @@ module.exports = (seederstore) => {
         addresses: () => seedHelpers.randomAddresses(),
         type: () => seedHelpers.randomItem(['ngo', 'npo', 'goodpurpose', 'ev', 'eva']),
         description: '{{lorem.text}}',
-        isVerified: () => seedHelpers.randomItem([true, false]),
         deletedAt: null,
         isEnabled: true,
-        isReviewed: true,
+        reviewedBy: null,
         createdAt: '{{date.recent}}',
         updatedAt: '{{date.recent}}',
         wasSeeded: true

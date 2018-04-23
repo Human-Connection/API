@@ -1,7 +1,7 @@
 const { getByDot, setByDot, getItems, replaceItems } = require('feathers-hooks-common');
 const sanitizeHtml = require('sanitize-html');
 // const embedToAnchor = require('quill-url-embeds/dist/embed-to-anchor');
-const { isEmpty } = require('lodash');
+const { isEmpty, intersection } = require('lodash');
 const cheerio = require('cheerio');
 
 const embedToAnchor = (content) => {
@@ -80,7 +80,7 @@ function clean (dirty) {
 }
 
 // iterate through all fields and clean the values
-function cleanAllFields (items, fields) {
+function cleanAllFields (items, fields, hook) {
   if (!items) {
     return items;
   }
@@ -90,7 +90,7 @@ function cleanAllFields (items, fields) {
     items.forEach((item, key) => {
       items[key] = cleanAllFields(items[key], fields);
     });
-  } else {
+  } else if (intersection(Object.keys(items), fields).length) {
     // clean value for all fields on the single given item
     fields.forEach((field) => {
       // get item by dot notation
@@ -99,6 +99,11 @@ function cleanAllFields (items, fields) {
       setByDot(items, field, clean(value));
     });
   }
+
+  if (hook && items) {
+    replaceItems(hook, items);
+  }
+
   return items;
 }
 
@@ -108,7 +113,7 @@ module.exports = function (options = { fields: [] }) {
       const isFindOrGet = ['find', 'get'].includes(hook.method);
       const items = getItems(hook);
       if (!isEmpty(items) && !(isFindOrGet && hook.type === 'before')) {
-        replaceItems(hook, cleanAllFields(items, options.fields));
+        cleanAllFields(items, options.fields, hook);
       }
       resolve(hook);
     });

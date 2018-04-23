@@ -9,13 +9,21 @@ module.exports = function restrictReviewAndEnableChange () { // eslint-disable-l
 
     const role = getByDot(hook, 'params.user.role');
     const isModOrAdmin = role && ['admin', 'moderator'].includes(role);
-    const isReviewed = getByDot(hook, 'params.before.isReviewed');
+    const isReviewed = getByDot(hook, 'params.before.reviewedBy');
     const userId = getByDot(hook, 'params.user._id');
-    const isOwner = userId && getByDot(hook, 'params.before.userId');
+    const ownerId = getByDot(hook, 'params.before.userId');
+    const isOwner = userId && ownerId && ownerId.toString() === userId.toString();
 
     // only allow mods and admins to change the review status
     if (!isModOrAdmin) {
       deleteByDot(hook.data, 'isReviewed');
+    }
+
+    // set reviewedBy to current user if the user has mod rights
+    // and wants to confirm the review status
+    deleteByDot(hook.data, 'reviewedBy');
+    if (hook.data.isReviewed) {
+      hook.data.reviewedBy = userId;
     }
 
     // only allow changes to mods, admin and owners (if its already reviewed)

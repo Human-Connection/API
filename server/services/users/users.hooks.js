@@ -100,15 +100,16 @@ module.exports = {
         }
       ),
       when(isProvider('external'),
-        restrictUserRole()
+        restrictUserRole(),
+        createAdmin()
       ),
-      createAdmin(),
       saveRemoteImages(['avatar', 'coverImg'])
     ],
     update: [
       ...restrict,
       hashPassword(),
       disableMultiItemChange(),
+      lowerCase('email', 'username'),
       when(isProvider('external'),
         restrictUserRole()
       ),
@@ -118,6 +119,7 @@ module.exports = {
       ...restrict,
       // hashPassword(),
       disableMultiItemChange(),
+      lowerCase('email', 'username'),
       // Only set slug once
       when(
         hook => {

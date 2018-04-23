@@ -1,4 +1,4 @@
-const { unless, when, isProvider, softDelete, stashBefore } = require('feathers-hooks-common');
+const { unless, when, isProvider, populate, softDelete, stashBefore } = require('feathers-hooks-common');
 const { isVerified } = require('feathers-authentication-management').hooks;
 const { authenticate } = require('feathers-authentication').hooks;
 const { associateCurrentUser } = require('feathers-authentication-hooks');
@@ -27,6 +27,15 @@ const thumbnailOptions = {
 
 const xssFields = ['description', 'descriptionExcerpt'];
 
+const reviewerSchema = {
+  include: {
+    service: 'users',
+    nameAs: 'reviewer',
+    parentField: 'reviewedBy',
+    childField: '_id'
+  }
+};
+
 module.exports = {
   before: {
     all: [
@@ -34,10 +43,10 @@ module.exports = {
       xss({ fields: xssFields })
     ],
     find: [
-      restrictToOwnerOrModerator({ isEnabled: true, isReviewed: true })
+      restrictToOwnerOrModerator({ isEnabled: true, reviewedBy: { $ne: null } })
     ],
     get: [
-      restrictToOwnerOrModerator({ isEnabled: true, isReviewed: true })
+      restrictToOwnerOrModerator({ isEnabled: true, reviewedBy: { $ne: null } })
     ],
     create: [
       authenticate('jwt'),
@@ -47,7 +56,7 @@ module.exports = {
       ),
       when(isModerator(),
         hook => {
-          hook.data.isReviewed = true;
+          hook.data.reviewedBy = hook.params.user.userId;
           return hook;
         }
       ),
@@ -90,7 +99,8 @@ module.exports = {
 
   after: {
     all: [
-      xss({ fields: xssFields })
+      xss({ fields: xssFields }),
+      populate({ schema: reviewerSchema }),
       // populate({ schema: userSchema }),
       // populate({ schema: followerSchema })
     ],
