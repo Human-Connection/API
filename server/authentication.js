@@ -1,6 +1,7 @@
 const authentication = require('feathers-authentication');
 const jwt = require('feathers-authentication-jwt');
 const local = require('feathers-authentication-local');
+const { lowerCase } = require('feathers-hooks-common');
 
 module.exports = function () {
   const app = this;
@@ -17,6 +18,7 @@ module.exports = function () {
   app.service('authentication').hooks({
     before: {
       create: [
+        lowerCase('email', 'username'),
         authentication.hooks.authenticate(config.strategies)
       ],
       remove: [
