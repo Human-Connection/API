@@ -1,4 +1,4 @@
-const { unless, when, isProvider, softDelete, stashBefore } = require('feathers-hooks-common');
+const { unless, when, isProvider, populate, softDelete, stashBefore } = require('feathers-hooks-common');
 const { isVerified } = require('feathers-authentication-management').hooks;
 const { authenticate } = require('feathers-authentication').hooks;
 const { associateCurrentUser } = require('feathers-authentication-hooks');
@@ -26,6 +26,15 @@ const thumbnailOptions = {
 };
 
 const xssFields = ['description', 'descriptionExcerpt'];
+
+const reviewerSchema = {
+  include: {
+    service: 'users',
+    nameAs: 'reviewer',
+    parentField: 'reviewedBy',
+    childField: '_id'
+  }
+};
 
 module.exports = {
   before: {
@@ -90,7 +99,8 @@ module.exports = {
 
   after: {
     all: [
-      xss({ fields: xssFields })
+      xss({ fields: xssFields }),
+      populate({ schema: reviewerSchema }),
       // populate({ schema: userSchema }),
       // populate({ schema: followerSchema })
     ],
