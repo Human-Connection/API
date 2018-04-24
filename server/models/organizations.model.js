@@ -36,7 +36,7 @@ module.exports = function (app) {
       type: Boolean,
       default: false
     },
-    reviewedBy: { type: String },
+    reviewedBy: { type: String, default: null },
     deleted: {
       type: Boolean,
       default: false

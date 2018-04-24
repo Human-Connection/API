@@ -1,8 +1,8 @@
 // const { authenticate } = require('feathers-authentication').hooks;
-const { disallow, populate } = require('feathers-hooks-common');
-const {
-  restrictToOwner
-} = require('feathers-authentication-hooks');
+const { disallow, populate, unless } = require('feathers-hooks-common');
+const { restrictToOwner } = require('feathers-authentication-hooks');
+const isAdmin = require('../../hooks/is-admin');
+
 const restrict = [
   restrictToOwner()
 ];
@@ -43,7 +43,11 @@ const userSchema = {
 module.exports = {
   before: {
     all: [ ],
-    find: [ ...restrict ],
+    find: [
+      unless(isAdmin(),
+        restrictToOwner()
+      )
+    ],
     get: [ ...restrict ],
     create: [ disallow('external') ],
     update: [ ...restrict ],
