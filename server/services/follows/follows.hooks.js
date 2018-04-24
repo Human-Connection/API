@@ -15,7 +15,7 @@ const userSchema = {
     parentField: 'foreignId',
     childField: '_id',
     query: {
-      $select: ['_id', 'name', 'slug', 'avatar', 'createdAt']
+      $select: ['_id', 'name', 'slug', 'avatar', 'createdAt', 'lastActiveAt']
     }
   }
 };

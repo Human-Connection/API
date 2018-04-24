@@ -19,6 +19,7 @@ module.exports = (seederstore) => {
         role : 'user',
         badgeIds: () => seedHelpers.randomItems(seederstore.badges, '_id', 0, seederstore.badges.length),
         doiToken: null,
+        lastActiveAt: '{{date.recent}}',
         confirmedAt: null,
         deletedAt: null,
         wasSeeded: true
