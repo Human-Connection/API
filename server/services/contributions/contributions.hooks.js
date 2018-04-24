@@ -15,6 +15,7 @@ const isModerator = require('../../hooks/is-moderator-boolean');
 const excludeDisabled = require('../../hooks/exclude-disabled');
 const getAssociatedCanDos = require('./hooks/get-associated-can-dos');
 const createMentionNotifications = require('./hooks/create-mention-notifications');
+const notifyFollowers = require('./hooks/notify-followers');
 const isSingleItem = require('../../hooks/is-single-item');
 const xss = require('../../hooks/xss');
 
@@ -165,6 +166,7 @@ module.exports = {
     ],
     create: [
       createMentionNotifications(),
+      notifyFollowers(),
       thumbnails(thumbs)
     ],
     update: [

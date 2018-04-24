@@ -1,5 +1,5 @@
 // comments-model.js - A mongoose model
-// 
+//
 // See http://mongoosejs.com/docs/models.html
 // for more of what you can do here.
 module.exports = function (app) {
@@ -10,6 +10,7 @@ module.exports = function (app) {
     content: { type: String, required: true },
     // Generated from content
     contentExcerpt: { type: String, required: true },
+    hasMore: { type: Boolean },
     upvotes: { type: Array, default: [] },
     upvoteCount: { type: Number, default: 0 },
     language: { type: String, required: true },

@@ -36,6 +36,7 @@ module.exports = function (app) {
     content: { type: String, required: true },
     // Generated from content
     contentExcerpt: { type: String, required: true },
+    hasMore: { type: Boolean },
     teaserImg: { type: String },
     language: { type: String, required: true },
     shoutCount: { type: Number, default: 0 },

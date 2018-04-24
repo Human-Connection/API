@@ -1,5 +1,5 @@
 // notifications-model.js - A mongoose model
-// 
+//
 // See http://mongoosejs.com/docs/models.html
 // for more of what you can do here.
 module.exports = function (app) {
@@ -10,7 +10,12 @@ module.exports = function (app) {
     type: {
       type: String,
       required: true,
-      enum: ['comment','comment-mention','contribution-mention']
+      enum: [
+        'comment',
+        'comment-mention',
+        'contribution-mention',
+        'following-contribution'
+      ]
     },
     relatedUserId: { type: String },
     relatedContributionId: { type: String },
