@@ -19,8 +19,6 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
     let content = getByDot(hook.data, options.field);
 
     if(!hook.data || isEmpty(content)) {
-      hook.app.debug('#excerpt failed target field is empty: ' + options.field);
-      hook.app.debug(hook.data);
       return hook;
     }
 
@@ -32,6 +30,8 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
       .trim();
 
       contentSanitized = trunc(contentSanitized, options.length).html
+
+      setByDot(hook.data, 'hasMore', contentSanitized.length < content.length)
 
       // set excerpt
       setByDot(hook.data, `${options.field}Excerpt`, contentSanitized)
