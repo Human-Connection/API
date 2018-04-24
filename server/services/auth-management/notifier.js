@@ -37,8 +37,7 @@ module.exports = function (app) {
       )
     );
 
-    let language = user.userSettings && user.userSettings.uiLanguage ?
-      user.userSettings.uiLanguage : 'en';
+    let language = user.userSettings ? user.userSettings.uiLanguage : user.language || 'en';
 
     const templatePath = path.join(
       __dirname,
@@ -82,7 +81,7 @@ module.exports = function (app) {
       name: user.name || user.email,
       email: user.email,
       code: user.code || null,
-      language: user.language || 'en',
+      language: language,
       link: hashLink,
       returnEmail: returnEmail,
       frontURL,
