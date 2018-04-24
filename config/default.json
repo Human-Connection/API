@@ -5,6 +5,7 @@
   "frontURL": "http://localhost:3000",
   "public": "../public/",
   "debug": true,
+  "logLevel": "log",
   "paginate": {
     "default": 10,
     "max": 50
