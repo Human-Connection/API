@@ -1,6 +1,5 @@
 const { authenticate } = require('feathers-authentication').hooks;
 const { unless, isProvider, populate } = require('feathers-hooks-common');
-const mapCreateToUpsert = require('../../hooks/map-create-to-upsert');
 const isModerator = require('../../hooks/is-moderator-boolean');
 const setFollowCount = require('./hooks/set-follow-count');
 const {
