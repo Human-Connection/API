@@ -44,7 +44,23 @@ module.exports = function (app) {
       user.language || 'en'
     );
 
-    const token = user.verifyToken || user.resetToken || user.changeToken;
+    let token;
+
+    switch (linktype) {
+    case 'invite-email':
+      token = user.verifyToken;
+      break;
+    case 'verify':
+      token = user.verifyToken;
+      break;
+    case 'reset':
+      token = user.resetToken;
+      break;
+    case 'verifyChanges':
+      token = user.changeToken;
+      break;
+    }
+
     const hashLink = getLink(linktype, token || null);
     const frontURL = app.get('frontURL');
     const backURL = app.get('baseURL');
@@ -96,9 +112,7 @@ module.exports = function (app) {
     if (app.get('debug')) {
       const filename = String(Date.now()) + '.html';
       const filepath = path.join(__dirname, '../../../tmp/emails/', filename);
-      fs.outputFile(filepath, email.html).catch(err => {
-        app.error('Error saving email', err);
-      });
+      fs.outputFileSync(filepath, email.html);
     }
 
     return app
@@ -125,7 +139,11 @@ module.exports = function (app) {
           user
         );
       case 'resendVerifySignup':
-        return buildEmail('verify-email', 'Confirm signup', 'verify', user);
+        return buildEmail(
+          'verify-email',
+          'Confirm signup',
+          'verify',
+          user);
       case 'verifySignup':
         return buildEmail(
           'email-verified',
