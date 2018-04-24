@@ -17,7 +17,7 @@ module.exports = () => async hook => {
       try {
         const query = {$inc: {}};
         query.$inc['followingCounts.users'] = inc;
-        following = await hook.app.service('users')
+        await hook.app.service('users')
           .patch(userId, query);
 
         resolve();
@@ -32,7 +32,7 @@ module.exports = () => async hook => {
       try {
         const query = {$inc: {}};
         query.$inc['followersCounts.users'] = inc;
-        followers = await hook.app.service(result.foreignService)
+        await hook.app.service(result.foreignService)
           .patch(result.foreignId, query);
 
         resolve();
