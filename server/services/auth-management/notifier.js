@@ -37,11 +37,14 @@ module.exports = function (app) {
       )
     );
 
+    let language = user.userSettings && user.userSettings.uiLanguage ?
+      user.userSettings.uiLanguage : 'en';
+
     const templatePath = path.join(
       __dirname,
       '../../../email-templates/account',
       templatename,
-      user.language || 'en'
+      language
     );
 
     let token;
