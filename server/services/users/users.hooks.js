@@ -49,12 +49,25 @@ const candosSchema = {
   }
 };
 
+const userSettingsPrivateSchema = {
+  include: {
+    service: 'usersettings',
+    nameAs: 'userSettings',
+    parentField: '_id',
+    childField: 'userId',
+    asArray: false
+  }
+};
+
 const userSettingsSchema = {
   include: {
     service: 'usersettings',
     nameAs: 'userSettings',
     parentField: '_id',
     childField: 'userId',
+    query: {
+      $select: ['uiLanguage', 'contentLanguages'],
+    },
     asArray: false
   }
 };
@@ -139,6 +152,7 @@ module.exports = {
     all: [
       populate({ schema: badgesSchema }),
       populate({ schema: candosSchema }),
+      populate({ schema: userSettingsSchema }),
       cleanupBasicData
     ],
     find: [
@@ -147,15 +161,12 @@ module.exports = {
     ],
     get: [
       thumbnails(thumbnailOptions),
-
       // remove personal data if its not the current authenticated user
-      iff(isProvider('external'),
-        when(isOwnEntry(false), [
-          cleanupPersonalData
-        ])
+      iff(isOwnEntry(false),
+        cleanupPersonalData,
       ),
       iff(isOwnEntry(),
-        populate({ schema: userSettingsSchema })
+        populate({ schema: userSettingsPrivateSchema })
       )
     ],
     create: [
