@@ -37,14 +37,33 @@ module.exports = function (app) {
       )
     );
 
+    let language = user.userSettings ? user.userSettings.uiLanguage : user.language || 'en';
+
     const templatePath = path.join(
       __dirname,
       '../../../email-templates/account',
       templatename,
-      user.language || 'en'
+      language
     );
 
-    const hashLink = getLink(linktype, user.verifyToken || null);
+    let token;
+
+    switch (linktype) {
+    case 'invite-email':
+      token = user.verifyToken;
+      break;
+    case 'verify':
+      token = user.verifyToken;
+      break;
+    case 'reset':
+      token = user.resetToken;
+      break;
+    case 'verifyChanges':
+      token = user.changeToken;
+      break;
+    }
+
+    const hashLink = getLink(linktype, token || null);
     const frontURL = app.get('frontURL');
     const backURL = app.get('baseURL');
 
@@ -62,7 +81,7 @@ module.exports = function (app) {
       name: user.name || user.email,
       email: user.email,
       code: user.code || null,
-      language: user.language || 'en',
+      language: language,
       link: hashLink,
       returnEmail: returnEmail,
       frontURL,
@@ -95,9 +114,7 @@ module.exports = function (app) {
     if (app.get('debug')) {
       const filename = String(Date.now()) + '.html';
       const filepath = path.join(__dirname, '../../../tmp/emails/', filename);
-      fs.outputFile(filepath, email.html).catch(err => {
-        app.error('Error saving email', err);
-      });
+      fs.outputFileSync(filepath, email.html);
     }
 
     return app
@@ -124,7 +141,11 @@ module.exports = function (app) {
           user
         );
       case 'resendVerifySignup':
-        return buildEmail('verify-email', 'Confirm signup', 'verify', user);
+        return buildEmail(
+          'verify-email',
+          'Confirm signup',
+          'verify',
+          user);
       case 'verifySignup':
         return buildEmail(
           'email-verified',
@@ -132,15 +153,19 @@ module.exports = function (app) {
           'verify',
           user
         );
-      case 'resetPwd':
-        return buildEmail('reset-password', 'Password reset', 'reset', user);
       case 'sendResetPwd':
         return buildEmail(
-          'password-was-reset',
-          'Your password was reset',
+          'reset-password',
+          'Password reset',
           'reset',
           user
         );
+      case 'resetPwd':
+        return buildEmail(
+          'password-reset',
+          'Your password was reset',
+          'reset',
+          user);
       case 'passwordChange':
         return buildEmail(
           'password-change',

@@ -4,14 +4,9 @@
   "baseURL": "http://localhost:3030",
   "frontURL": "http://localhost:3000",
   "smtpConfig": {
-    "host": "localhost",
+    "host": "0.0.0.0",
     "port": 1025,
-    "secure": false,
-    "ignoreTLS": true,
-    "auth": {
-      "user": "",
-      "pass": ""
-    }
+    "ignoreTLS": true
   },
   "thumbor": {
     "url": "",
