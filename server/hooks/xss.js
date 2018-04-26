@@ -24,8 +24,9 @@ function clean (dirty) {
   dirty = sanitizeHtml(dirty, {
     allowedTags: ['iframe', 'img', 'p', 'br', 'b', 'i', 'em', 'strong', 'a', 'pre', 'ul', 'li', 'ol', 's', 'strike', 'span', 'blockquote'],
     allowedAttributes: {
-      a: ['href', 'class', 'target', 'data-*'],
-      img: [ 'src' ],
+      a: ['href', 'class', 'target', 'data-*' , 'contenteditable'],
+      span: ['contenteditable'],
+      img: ['src'],
       iframe: ['src', 'class', 'frameborder', 'allowfullscreen']
     },
     allowedIframeHostnames: ['www.youtube.com', 'player.vimeo.com'],
