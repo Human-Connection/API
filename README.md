@@ -44,7 +44,7 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
     
    ``` bash
    # install mail dev (only has to be done once)
-   $ npm install -g maildev
+   $ yarn global add maildev
    
    # start the server, it will output the web url 
    # which normally is http://localhost:1080
@@ -112,7 +112,7 @@ Simply run `yarn test` and all your tests in the `test/` directory will be run.
 Feathers has a powerful command line interface. Here are a few things it can do:
 
 ``` bash
-$ npm install -g feathers-cli             # Install Feathers CLI
+$ yarn global add feathers-cli             # Install Feathers CLI
 
 $ feathers generate service               # Generate a new Service
 $ feathers generate hook                  # Generate a new Hook
