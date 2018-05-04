@@ -82,7 +82,7 @@
     "feathers-seeder": "~1.0.10",
     "feathers-socketio": "~2.0.1",
     "fs-blob-store": "~5.2.1",
-    "fs-extra": "~4.0.2",
+    "fs-extra": "~6.0.0",
     "handlebars": "~4.0.11",
     "handlebars-layouts": "~3.1.4",
     "helmet": "~3.10.0",
