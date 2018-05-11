@@ -1,6 +1,6 @@
 const isEnabled = require('../../hooks/is-enabled');
 const { authenticate } = require('feathers-authentication').hooks;
-const commonHooks = require('feathers-hooks-common');
+const { iff } = require('feathers-hooks-common');
 
 const isAction = () => {
   let args = Array.from(arguments);
@@ -13,7 +13,7 @@ module.exports = {
     find: [],
     get: [],
     create: [
-      commonHooks.iff(
+      iff(
         isAction('passwordChange', 'identityChange'),
         [
           authenticate('jwt'),
