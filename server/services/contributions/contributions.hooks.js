@@ -16,6 +16,7 @@ const excludeDisabled = require('../../hooks/exclude-disabled');
 const getAssociatedCanDos = require('./hooks/get-associated-can-dos');
 const createMentionNotifications = require('./hooks/create-mention-notifications');
 const notifyFollowers = require('./hooks/notify-followers');
+const canEditOrganization = require('../organizations/hooks/can-edit-organization');
 const isSingleItem = require('../../hooks/is-single-item');
 const xss = require('../../hooks/xss');
 
@@ -24,6 +25,15 @@ const userSchema = {
     service: 'users',
     nameAs: 'user',
     parentField: 'userId',
+    childField: '_id'
+  }
+};
+
+const organizationSchema = {
+  include: {
+    service: 'organizations',
+    nameAs: 'organization',
+    parentField: 'organizationId',
     childField: '_id'
   }
 };
@@ -104,10 +114,11 @@ module.exports = {
     create: [
       authenticate('jwt'),
       // Allow seeder to seed contributions
-      unless(isProvider('server'),
-        isVerified()
-      ),
       associateCurrentUser(),
+      unless(isProvider('server'),
+        isVerified(),
+        canEditOrganization()
+      ),
       createSlug({ field: 'title' }),
       saveRemoteImages(['teaserImg']),
       createExcerpt()
@@ -115,7 +126,8 @@ module.exports = {
     update: [
       authenticate('jwt'),
       unless(isProvider('server'),
-        isVerified()
+        isVerified(),
+        canEditOrganization()
       ),
       unless(isModerator(),
         excludeDisabled(),
@@ -127,7 +139,8 @@ module.exports = {
     patch: [
       authenticate('jwt'),
       unless(isProvider('server'),
-        isVerified()
+        isVerified(),
+        canEditOrganization()
       ),
       unless(isModerator(),
         excludeDisabled(),
@@ -140,6 +153,7 @@ module.exports = {
       authenticate('jwt'),
       isVerified(),
       unless(isModerator(),
+        canEditOrganization(),
         excludeDisabled(),
         restrictToOwner()
       )
@@ -150,6 +164,7 @@ module.exports = {
     all: [
       xss({ fields: xssFields }),
       populate({ schema: userSchema }),
+      populate({ schema: organizationSchema }),
       populate({ schema: categoriesSchema }),
       populate({ schema: candosSchema }),
       populate({ schema: commentsSchema })

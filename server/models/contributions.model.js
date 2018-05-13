@@ -26,33 +26,37 @@ module.exports = function (app) {
   });
 
   const contributions = new mongooseClient.Schema({
-    userId: { type: String, required: true },
+    userId: { type: String, required: true, index: true },
+    organizationId: { type: String, index: true },
     categoryIds: { type: Array },
     title: { type: String, required: true },
     // Generated from title
-    slug: { type: String, required: true, unique: true },
-    type: { type: String, required: true },
+    slug: { type: String, required: true, unique: true, index: true },
+    type: { type: String, required: true, index: true },
     cando: candoSchema,
     content: { type: String, required: true },
     // Generated from content
     contentExcerpt: { type: String, required: true },
     hasMore: { type: Boolean },
     teaserImg: { type: String },
-    language: { type: String, required: true },
-    shoutCount: { type: Number, default: 0 },
+    language: { type: String, required: true, index: true },
+    shoutCount: { type: Number, default: 0, index: true },
     meta: metaSchema,
     visibility: {
       type: String,
       enum: ['public', 'friends', 'private'],
-      default: 'public'
+      default: 'public',
+      index: true
     },
     isEnabled: {
       type: Boolean,
-      default: true
+      default: true,
+      index: true
     },
     tags: { type: Array },
     emotions: {
       type: Object,
+      index: true,
       default: {
         angry: {
           count: 0,
