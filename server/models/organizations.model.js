@@ -10,33 +10,44 @@ module.exports = function (app) {
     organizations: { type: Number, default: 0 },
     projects: { type: Number, default: 0 }
   }, { minimize: false });
+  const addressSchema = mongooseClient.Schema({
+    street: { type: String, required: true },
+    zipCode: { type: String, required: true },
+    city: { type: String, required: true },
+    country: { type: String, required: true },
+    lat: { type: Number, required: true },
+    lng: { type: Number, required: true }
+  });
   const organizations = new Schema({
-    name: { type: String, required: true },
-    slug: { type: String, required: true, unique: true },
+    name: { type: String, required: true, index: true },
+    slug: { type: String, required: true, unique: true, index: true },
     followersCounts: followsSchema,
     followingCounts: followsSchema,
     categoryIds: { type: Array },
     logo: { type: String },
     coverImg: { type: String },
-    userId: { type: String, required: true },
+    userId: { type: String, required: true, index: true },
     description: { type: String },
     publicEmail: { type: String },
     website: { type: String },
     type: {
       type: String,
+      index: true,
       enum: ['ngo', 'npo', 'goodpurpose', 'ev', 'eva']
     },
-    language: { type: String, required: true, default: 'de' },
+    language: { type: String, required: true, default: 'de', index: true },
     // will be generated automatically
     descriptionExcerpt: { type: String },
-    addresses: { type: Array, default: [] },
+    addresses: { type: [addressSchema], default: [] },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
     isEnabled: {
       type: Boolean,
-      default: false
+      default: false,
+      index: true
     },
-    reviewedBy: { type: String, default: null },
+    reviewedBy: { type: String, default: null, index: true },
+    tags: { type: Array, index: true },
     deleted: {
       type: Boolean,
       default: false
