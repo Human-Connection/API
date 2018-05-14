@@ -11,6 +11,7 @@ const createExcerpt = require('../../hooks/create-excerpt');
 const createNotifications = require('./hooks/create-notifications');
 const createMentionNotifications = require('./hooks/create-mention-notifications');
 const _ = require('lodash');
+const xss = require('../../hooks/xss');
 
 const userSchema = {
   include: {
@@ -21,10 +22,14 @@ const userSchema = {
   }
 };
 
+const xssFields = ['content', 'contentExcerpt'];
+
 //ToDo: Only let users create comments for contributions they are allowed to
 module.exports = {
   before: {
-    all: [],
+    all: [
+      xss({ fields: xssFields })
+    ],
     find: [],
     get: [],
     create: [
@@ -71,7 +76,8 @@ module.exports = {
 
   after: {
     all: [
-      populate({ schema: userSchema })
+      populate({ schema: userSchema }),
+      xss({ fields: xssFields })
     ],
     find: [
       discard('content', 'user.coverImg', 'badgeIds')

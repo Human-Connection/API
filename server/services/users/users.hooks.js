@@ -49,12 +49,25 @@ const candosSchema = {
   }
 };
 
+const userSettingsPrivateSchema = {
+  include: {
+    service: 'usersettings',
+    nameAs: 'userSettings',
+    parentField: '_id',
+    childField: 'userId',
+    asArray: false
+  }
+};
+
 const userSettingsSchema = {
   include: {
     service: 'usersettings',
     nameAs: 'userSettings',
     parentField: '_id',
     childField: 'userId',
+    query: {
+      $select: ['uiLanguage', 'contentLanguages'],
+    },
     asArray: false
   }
 };
@@ -100,15 +113,16 @@ module.exports = {
         }
       ),
       when(isProvider('external'),
-        restrictUserRole()
+        restrictUserRole(),
+        createAdmin()
       ),
-      createAdmin(),
       saveRemoteImages(['avatar', 'coverImg'])
     ],
     update: [
       ...restrict,
       hashPassword(),
       disableMultiItemChange(),
+      lowerCase('email', 'username'),
       when(isProvider('external'),
         restrictUserRole()
       ),
@@ -118,6 +132,7 @@ module.exports = {
       ...restrict,
       // hashPassword(),
       disableMultiItemChange(),
+      lowerCase('email', 'username'),
       // Only set slug once
       when(
         hook => {
@@ -137,6 +152,7 @@ module.exports = {
     all: [
       populate({ schema: badgesSchema }),
       populate({ schema: candosSchema }),
+      populate({ schema: userSettingsSchema }),
       cleanupBasicData
     ],
     find: [
@@ -145,15 +161,12 @@ module.exports = {
     ],
     get: [
       thumbnails(thumbnailOptions),
-
       // remove personal data if its not the current authenticated user
-      iff(isProvider('external'),
-        when(isOwnEntry(false), [
-          cleanupPersonalData
-        ])
+      iff(isOwnEntry(false),
+        cleanupPersonalData,
       ),
       iff(isOwnEntry(),
-        populate({ schema: userSettingsSchema })
+        populate({ schema: userSettingsPrivateSchema })
       )
     ],
     create: [

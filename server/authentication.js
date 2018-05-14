@@ -1,6 +1,7 @@
 const authentication = require('feathers-authentication');
 const jwt = require('feathers-authentication-jwt');
 const local = require('feathers-authentication-local');
+const { lowerCase } = require('feathers-hooks-common');
 
 module.exports = function () {
   const app = this;
@@ -17,11 +18,25 @@ module.exports = function () {
   app.service('authentication').hooks({
     before: {
       create: [
+        lowerCase('email', 'username'),
         authentication.hooks.authenticate(config.strategies)
       ],
       remove: [
         authentication.hooks.authenticate('jwt')
       ]
+    }
+  });
+
+  app.on('login', (result, meta) => {
+    try {
+      if (meta.connection && meta.connection.user) {
+        // update last active timestamp on loggedin user
+        app.service('users').patch(meta.connection.user, {
+          lastActiveAt: new Date()
+        });
+      }
+    } catch (err) {
+      app.error(err);
     }
   });
 };

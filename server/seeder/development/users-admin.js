@@ -35,6 +35,21 @@ module.exports = (seederstore) => {
         doiToken: null,
         confirmedAt: null,
         deletedAt: null
+      },
+      {
+        email: 'test3@test3.de',
+        password: '1234',
+        name: 'Sepp',
+        slug: 'sepp',
+        isnothere: true,
+        timezone: 'Europe/Berlin',
+        avatar: '{{internet.avatar}}',
+        coverImg: 'https://source.unsplash.com/random/1250x280',
+        role: 'user',
+        badgeIds: () => [keys(seederstore.badges)[1]],
+        doiToken: null,
+        confirmedAt: null,
+        deletedAt: null
       }]
     }]
   };
