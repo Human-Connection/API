@@ -52,7 +52,7 @@
     "concurrently": "concurrently --kill-others --success first"
   },
   "dependencies": {
-    "body-parser": "~1.18.2",
+    "body-parser": "~1.18.3",
     "cheerio": "^1.0.0-rc.2",
     "compression": "~1.7.2",
     "cors": "~2.8.4",
