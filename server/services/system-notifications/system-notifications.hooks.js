@@ -1,42 +1,38 @@
 const { unless, isProvider } = require('feathers-hooks-common');
 const { isVerified } = require('feathers-authentication-management').hooks;
 const { authenticate } = require('feathers-authentication').hooks;
-const isModerator = require('../../hooks/is-moderator-boolean');
+const isAdmin = require('../../hooks/is-admin');
 
 module.exports = {
   before: {
     all: [],
-    find: [
-      unless(isModerator())
-    ],
-    get: [
-      unless(isModerator())
-    ],
+    find: [],
+    get: [],
     create: [
       authenticate('jwt'),
-      // Allow seeder to seed contributions
       unless(isProvider('server'),
-        isVerified()
-      ),
+        isVerified(),
+        isAdmin()
+      )
     ],
     update: [
       authenticate('jwt'),
       unless(isProvider('server'),
-        isVerified()
-      ),
-      unless(isModerator())
+        isVerified(),
+        isAdmin()
+      )
     ],
     patch: [
       authenticate('jwt'),
       unless(isProvider('server'),
-        isVerified()
-      ),
-      unless(isModerator())
+        isVerified(),
+        isAdmin()
+      )
     ],
     remove: [
       authenticate('jwt'),
       isVerified(),
-      unless(isModerator())
+      isAdmin()
     ]
   },
 
