@@ -1,5 +1,5 @@
 // system-notifications-model.js - A mongoose model
-// 
+//
 // See http://mongoosejs.com/docs/models.html
 // for more of what you can do here.
 module.exports = function (app) {
@@ -10,7 +10,7 @@ module.exports = function (app) {
     content: { type: String },
     slot: { type: String },
     language: { type: String },
-    showOnce: { type: Boolean, default: true },
+    permanent: { type: Boolean, default: false },
     requireConfirmation: { type: Boolean, default: false },
     active: { type: Boolean, default: true },
     totalCount: { type: Number, default: 0 },
