@@ -45,7 +45,8 @@ module.exports = function (app) {
     wasSeeded: { type: Boolean },
     wasInvited: { type: Boolean },
     language: { type: String, default: 'en' },
-    agbAccepted: { type: Date }
+    termsAndConditionsAccepted: { type: Date },
+    systemNotificationsSeen: { type: Array, default: [] }
   });
 
   users.index({
