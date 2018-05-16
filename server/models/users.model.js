@@ -45,7 +45,7 @@ module.exports = function (app) {
     wasSeeded: { type: Boolean },
     wasInvited: { type: Boolean },
     language: { type: String, default: 'en' },
-    termsAndConditionsAccepted: { type: Date },
+    termsAndConditionsAccepted: { type: Date, default: Date.now }, // we display the terms and conditions on registration
     systemNotificationsSeen: { type: Array, default: [] }
   });
 
