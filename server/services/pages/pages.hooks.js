@@ -4,6 +4,16 @@ const { authenticate } = require('feathers-authentication').hooks;
 const isAdmin = require('../../hooks/is-admin');
 const createSlug = require('../../hooks/create-slug');
 
+const cleanupHTML = () => {
+  return (hook) => {
+    hook.data.content = hook.data.content
+      .replace(/<[a-z]>[\s]*<\/[a-z]>/igm, '')
+      .replace(/<p>[\s]*(<br ?\/?>)+[\s]*<\/p>/igm, '<br />')
+      .replace(/(<br ?\/?>){2,}/igm, '<br />')
+      .replace(/[\n]{3,}/igm, '\n\n');
+  };
+};
+
 module.exports = {
   before: {
     all: [],
@@ -15,21 +25,24 @@ module.exports = {
         isVerified(),
         isAdmin()
       ),
-      createSlug({ field: 'title' })
+      createSlug({ field: 'key', unique: false }),
+      cleanupHTML()
     ],
     update: [
       authenticate('jwt'),
       unless(isProvider('server'),
         isVerified(),
         isAdmin()
-      )
+      ),
+      cleanupHTML()
     ],
     patch: [
       authenticate('jwt'),
       unless(isProvider('server'),
         isVerified(),
         isAdmin()
-      )
+      ),
+      cleanupHTML()
     ],
     remove: [
       authenticate('jwt'),

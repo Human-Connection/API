@@ -17,5 +17,10 @@ module.exports = function (app) {
     wasSeeded: { type: Boolean }
   });
 
+  pages.index(
+    { slug: 1, language: 1 },
+    { unique: true }
+  );
+
   return mongooseClient.model('pages', pages);
 };
