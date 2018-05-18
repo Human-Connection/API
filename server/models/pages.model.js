@@ -8,6 +8,7 @@ module.exports = function (app) {
     title: { type: String, required: true },
     slug: { type: String, required: true },
     type: { type: String, required: true, default: 'page' },
+    key: { type: String, required: true },
     content: { type: String, required: true },
     language: { type: String, required: true, index: true },
     active: { type: Boolean, default: true, index: true },
