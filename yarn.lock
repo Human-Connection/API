@@ -1851,9 +1851,9 @@ feathers-hooks@^2.0.1, feathers-hooks@~2.1.2:
     feathers-commons "^0.8.6"
     uberproto "^1.2.0"
 
-feathers-logger@~0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/feathers-logger/-/feathers-logger-0.3.0.tgz#76078c61c96a79aded09233d6644045395b145be"
+feathers-logger@0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/feathers-logger/-/feathers-logger-0.2.3.tgz#cf47f076220e8ce6890dcab7eb51d264e6887491"
   dependencies:
     uberproto "^1.2.0"
 
