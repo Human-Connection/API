@@ -1,5 +1,5 @@
 const { authenticate } = require('feathers-authentication').hooks;
-const { unless, isProvider, populate, discard } = require('feathers-hooks-common');
+const { unless, isProvider, populate, discard, softDelete } = require('feathers-hooks-common');
 const {
   //queryWithCurrentUser,
   associateCurrentUser,
@@ -8,6 +8,8 @@ const {
 } = require('feathers-authentication-hooks');
 const { isVerified } = require('feathers-authentication-management').hooks;
 const createExcerpt = require('../../hooks/create-excerpt');
+const addDeleted = require('../../hooks/add-deleted');
+const hideDeletedData = require('../../hooks/hide-deleted-data');
 const createNotifications = require('./hooks/create-notifications');
 const createMentionNotifications = require('./hooks/create-mention-notifications');
 const _ = require('lodash');
@@ -28,9 +30,12 @@ const xssFields = ['content', 'contentExcerpt'];
 module.exports = {
   before: {
     all: [
+      softDelete(),
       xss({ fields: xssFields })
     ],
-    find: [],
+    find: [
+      addDeleted()
+    ],
     get: [],
     create: [
       authenticate('jwt'),
@@ -80,7 +85,8 @@ module.exports = {
       xss({ fields: xssFields })
     ],
     find: [
-      discard('content', 'user.coverImg', 'badgeIds')
+      discard('content', 'user.coverImg', 'badgeIds'),
+      hideDeletedData()
     ],
     get: [],
     create: [
