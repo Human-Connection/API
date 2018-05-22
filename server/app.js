@@ -27,7 +27,7 @@ app.configure(require('feathers-logger')(logger));
 // Load app configuration
 app.configure(configuration(path.join(__dirname, '..')));
 
-if (app.get('sentry').dns !== undefined && app.get('sentry').dns !== 'SENTRY_DNS') {
+if (app.get('sentry') && app.get('sentry').dns !== undefined && app.get('sentry').dns !== 'SENTRY_DNS') {
   // LOGGING IS ENABLED
   app.info('SENTRY LOGGING IS ENABLED');
 

@@ -45,7 +45,9 @@ module.exports = function (app) {
     resetExpires: { type: Date },
     wasSeeded: { type: Boolean },
     wasInvited: { type: Boolean },
-    language: { type: String, default: 'en' }
+    language: { type: String, default: 'en' },
+    termsAndConditionsAccepted: { type: Date }, // we display the terms and conditions on registration
+    systemNotificationsSeen: { type: Array, default: [] }
   }, { minimize: false });
 
   users.index({
