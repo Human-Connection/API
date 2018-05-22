@@ -18,7 +18,7 @@ const cleanupBasicData = when(isProvider('external'),
   discard('password', '_computed', 'verifyExpires', 'resetExpires', 'verifyChanges')
 );
 const cleanupPersonalData = when(isProvider('external'),
-  discard('email', 'verifyToken', 'verifyShortToken', 'doiToken')
+  discard('email', 'verifyToken', 'verifyShortToken', 'doiToken', 'systemNnotificationsSeen')
 );
 
 const restrict = [
@@ -163,7 +163,7 @@ module.exports = {
       thumbnails(thumbnailOptions),
       // remove personal data if its not the current authenticated user
       iff(isOwnEntry(false),
-        cleanupPersonalData,
+        cleanupPersonalData
       ),
       iff(isOwnEntry(),
         populate({ schema: userSettingsPrivateSchema })
