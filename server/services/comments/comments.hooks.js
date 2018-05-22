@@ -1,5 +1,5 @@
 const { authenticate } = require('feathers-authentication').hooks;
-const { unless, isProvider, populate, discard, softDelete } = require('feathers-hooks-common');
+const { unless, isProvider, populate, discard, softDelete, setNow } = require('feathers-hooks-common');
 const {
   //queryWithCurrentUser,
   associateCurrentUser,
@@ -8,7 +8,7 @@ const {
 } = require('feathers-authentication-hooks');
 const { isVerified } = require('feathers-authentication-management').hooks;
 const createExcerpt = require('../../hooks/create-excerpt');
-const addDeleted = require('../../hooks/add-deleted');
+const nullDeletedData = require('../../hooks/null-deleted-data');
 const hideDeletedData = require('../../hooks/hide-deleted-data');
 const createNotifications = require('./hooks/create-notifications');
 const createMentionNotifications = require('./hooks/create-mention-notifications');
@@ -30,13 +30,12 @@ const xssFields = ['content', 'contentExcerpt'];
 module.exports = {
   before: {
     all: [
-      softDelete(),
       xss({ fields: xssFields })
     ],
-    find: [
-      addDeleted()
+    find: [],
+    get: [
+      softDelete()
     ],
-    get: [],
     create: [
       authenticate('jwt'),
       // Allow seeder to seed comments
@@ -44,7 +43,8 @@ module.exports = {
         isVerified()
       ),
       associateCurrentUser(),
-      createExcerpt({ length: 180 })
+      createExcerpt({ length: 180 }),
+      softDelete()
     ],
     update: [
       authenticate('jwt'),
@@ -52,7 +52,9 @@ module.exports = {
       unless(isProvider('server'),
         restrictToOwner()
       ),
-      createExcerpt({ length: 180 })
+      createExcerpt({ length: 180 }),
+      softDelete(),
+      setNow('updatedAt')
     ],
     patch: [
       authenticate('jwt'),
@@ -68,25 +70,31 @@ module.exports = {
                 (!_.difference(_.values(valid.$inc), _.values(hook.data.$inc)).length);
         }, restrictToOwner())
       ),
-      createExcerpt({ length: 180 })
+      createExcerpt({ length: 180 }),
+      softDelete(),
+      setNow('updatedAt'),
+      // SoftDelete uses patch to delete items
+      // Make changes to deleted items here
+      nullDeletedData({ fields: [ 'content', 'contentExcerpt' ]})
     ],
     remove: [
       authenticate('jwt'),
       isVerified(),
       unless(isProvider('server'),
         restrictToOwner()
-      )
+      ),
+      softDelete()
     ]
   },
 
   after: {
     all: [
       populate({ schema: userSchema }),
-      xss({ fields: xssFields })
+      xss({ fields: xssFields }),
+      hideDeletedData()
     ],
     find: [
-      discard('content', 'user.coverImg', 'badgeIds'),
-      hideDeletedData()
+      discard('content', 'user.coverImg', 'badgeIds')
     ],
     get: [],
     create: [

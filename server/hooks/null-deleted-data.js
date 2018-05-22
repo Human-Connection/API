@@ -1,12 +1,9 @@
-// Remove data from deleted items
+// Null specific fields on deleted records
 const alterItems = require('../helper/alter-items');
 
 const defaults = {
   fields: [
-    '_id',
-    'deleted',
-    'createdAt',
-    'updatedAt'
+    'content'
   ]
 };
 
@@ -14,10 +11,8 @@ module.exports = (options = defaults) => alterItems(handleItem(options));
 
 const handleItem = options => item => {
   if (item.deleted) {
-    Object.keys(item).forEach(key => {
-      if (!options.fields.includes(key)) {
-        delete item[key];
-      }
+    options.fields.forEach(field => {
+      item[field] = 'DELETED';
     });
   }
   return item;
