@@ -81,7 +81,7 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
                 const mimeType = res.headers['content-type'];
                 if (mimeType.indexOf('image') !== 0) {
                   hook.app.error('its not an image');
-                  reject('its not an image');
+                  reject(new Error('its not an image'));
                 }
 
                 const ext = mime.getExtension(mimeType);
@@ -99,9 +99,12 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
                 if (imgCount > 0 && loading <= 0) {
                   hook.app.debug('Download(s) finished', urls);
                   resolve(hook);
+                } else if (!imgCount) {
+                  resolve(hook);
                 }
               } catch (err) {
                 hook.app.error(err);
+                reject(err);
               }
             });
           }
