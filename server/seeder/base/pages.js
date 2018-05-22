@@ -32,9 +32,9 @@ module.exports = (seederstore) => {
       {
         path: 'pages',
         template: {
-          title: 'Privacy Policy',
-          type: 'privacyPolicy',
-          key: 'privacy-policy',
+          title: 'Data Privacy',
+          type: 'dataPrivacy',
+          key: 'data-privacy',
           content: '<strong>ADD PRIVACY POLICY!</strong>',
           language: 'en',
           wasSeeded: true
@@ -43,9 +43,9 @@ module.exports = (seederstore) => {
       {
         path: 'pages',
         template: {
-          title: 'Datenschutz',
-          type: 'privacyPolicy',
-          key: 'privacy-policy',
+          title: 'Datenschutzerklärung',
+          type: 'dataPrivacy',
+          key: 'data-privacy',
           content: '<strong>FÜGE DATENSCHUTZRICHTLINIEN HINZU!</strong>',
           language: 'de',
           wasSeeded: true
