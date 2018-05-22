@@ -88,6 +88,12 @@
   dependencies:
     debug "^3.1.0"
 
+"@feathersjs/errors@^3.3.0":
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/@feathersjs/errors/-/errors-3.3.0.tgz#c5fcc163f49d6b139f10d118eec36e8f90818aff"
+  dependencies:
+    debug "^3.1.0"
+
 "@types/node@*":
   version "9.3.0"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-9.3.0.tgz#3a129cda7c4e5df2409702626892cb4b96546dd5"
@@ -1795,13 +1801,14 @@ feathers-authentication@~1.3.1:
     passport "^0.4.0"
     uuid "^3.1.0"
 
-feathers-blob@~1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/feathers-blob/-/feathers-blob-1.3.1.tgz#d0db42073bded7e5e4d7812234ada4932f9dcd7f"
+feathers-blob@~2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/feathers-blob/-/feathers-blob-2.0.0.tgz#4e7a2a956ee9e0e2520479026933b51326c23f3f"
   dependencies:
+    "@feathersjs/errors" "^3.3.0"
     concat-stream "^1.5.1"
     dauria "^2.0.0"
-    debug "^2.2.0"
+    debug "^3.1.0"
     from2 "^2.1.1"
     mime-types "^2.1.10"
     uberproto "^1.2.0"
