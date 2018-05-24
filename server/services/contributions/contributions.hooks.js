@@ -1,15 +1,16 @@
-const { authenticate } = require('feathers-authentication').hooks;
-const { when, unless, isProvider, populate, softDelete, setNow } = require('feathers-hooks-common');
+const {authenticate} = require('feathers-authentication').hooks;
+const {when, unless, isProvider, populate, softDelete, setNow} = require('feathers-hooks-common');
 const {
   //queryWithCurrentUser,
   associateCurrentUser,
   restrictToOwner
 } = require('feathers-authentication-hooks');
-const { isVerified } = require('feathers-authentication-management').hooks;
+const {isVerified} = require('feathers-authentication-management').hooks;
 const createSlug = require('../../hooks/create-slug');
 const saveRemoteImages = require('../../hooks/save-remote-images');
 const createExcerpt = require('../../hooks/create-excerpt');
-const nullDeletedData = require('../../hooks/null-deleted-data');
+const patchDeletedData = require('../../hooks/patch-deleted-data');
+const cleanupRelatedItems = require('../../hooks/cleanup-related-items');
 const keepDeletedDataFields = require('../../hooks/keep-deleted-data-fields');
 const search = require('feathers-mongodb-fuzzy-search');
 const thumbnails = require('../../hooks/thumbnails');
@@ -86,7 +87,7 @@ const xssFields = ['content', 'contentExcerpt', 'cando.reason'];
 module.exports = {
   before: {
     all: [
-      xss({ fields: xssFields })
+      xss({fields: xssFields})
     ],
     find: [
       unless(isModerator(),
@@ -95,7 +96,8 @@ module.exports = {
       search(),
       search({
         fields: ['title', 'content']
-      })
+      }),
+      softDelete()
     ],
     get: [
       unless(isModerator(),
@@ -110,7 +112,7 @@ module.exports = {
         isVerified()
       ),
       associateCurrentUser(),
-      createSlug({ field: 'title' }),
+      createSlug({field: 'title'}),
       saveRemoteImages(['teaserImg']),
       createExcerpt(),
       softDelete()
@@ -144,7 +146,25 @@ module.exports = {
       setNow('updatedAt'),
       // SoftDelete uses patch to delete items
       // Make changes to deleted items here
-      nullDeletedData({ fields: [ 'content', 'contentExcerpt' ]})
+      patchDeletedData({
+        data: {
+          $set: {
+            title: 'DELETED',
+            type: 'DELETED',
+            content: 'DELETED',
+            contentExcerpt: 'DELETED',
+            categoryIds: undefined,
+            teaserImg: undefined,
+            shoutCount: 0,
+            tags: undefined,
+            emotions: undefined
+          },
+          $unset: {
+            cando: '',
+            meta: ''
+          }
+        }
+      })
     ],
     remove: [
       authenticate('jwt'),
@@ -159,17 +179,19 @@ module.exports = {
 
   after: {
     all: [
-      xss({ fields: xssFields }),
-      populate({ schema: userSchema }),
-      populate({ schema: categoriesSchema }),
-      populate({ schema: candosSchema }),
-      populate({ schema: commentsSchema }),
-      keepDeletedDataFields({ fields: [
-        '_id',
-        'deleted',
-        'createdAt',
-        'updatedAt'
-      ]})
+      xss({fields: xssFields}),
+      populate({schema: userSchema}),
+      populate({schema: categoriesSchema}),
+      populate({schema: candosSchema}),
+      populate({schema: commentsSchema}),
+      keepDeletedDataFields({
+        fields: [
+          '_id',
+          'deleted',
+          'createdAt',
+          'updatedAt'
+        ]
+      })
     ],
     find: [
       when(isSingleItem(),
@@ -193,7 +215,35 @@ module.exports = {
       createMentionNotifications(),
       thumbnails(thumbs)
     ],
-    remove: []
+    remove: [
+      cleanupRelatedItems({
+        connections: [
+          {
+            service: 'comments',
+            parentField: '_id',
+            childField: 'contributionId'
+          },
+          {
+            service: 'emotions',
+            parentField: '_id',
+            childField: 'contributionId'
+          },
+          {
+            service: 'shouts',
+            parentField: '_id',
+            childField: 'foreignId',
+            query: {
+              foreignService: 'contributions'
+            }
+          },
+          {
+            service: 'users-candos',
+            parentField: '_id',
+            childField: 'contributionId'
+          }
+        ]
+      })
+    ]
   },
 
   error: {

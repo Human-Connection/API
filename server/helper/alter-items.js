@@ -14,9 +14,9 @@ module.exports = func => hook => {
   }
   let items = getItems(hook);
   if (Array.isArray(items)) {
-    items.map(item => func(item));
+    items.map(item => func(item, hook));
   } else if (items) {
-    items = func(items);
+    items = func(items, hook);
   }
   replaceItems(hook, items);
   return hook;
