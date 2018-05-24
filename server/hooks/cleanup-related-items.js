@@ -25,7 +25,8 @@ const deleteItem = async (item, connection, hook) => {
     await hook.app.service(connection.service)
       .remove(null, { query });
   } catch (err) {
-    throw new Error(err);
+    hook.app.error(`issue while deleting related item '${connection.service}'`);
+    hook.app.error(query);
   }
 
 };

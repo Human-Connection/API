@@ -53,9 +53,7 @@ module.exports = {
     patch: [
       setShoutCount()
     ],
-    remove: [
-      setShoutCount()
-    ]
+    remove: []
   },
 
   error: {
