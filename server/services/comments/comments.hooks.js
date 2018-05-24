@@ -9,7 +9,7 @@ const {
 const { isVerified } = require('feathers-authentication-management').hooks;
 const createExcerpt = require('../../hooks/create-excerpt');
 const nullDeletedData = require('../../hooks/null-deleted-data');
-const hideDeletedData = require('../../hooks/hide-deleted-data');
+const keepDeletedDataFields = require('../../hooks/keep-deleted-data-fields');
 const createNotifications = require('./hooks/create-notifications');
 const createMentionNotifications = require('./hooks/create-mention-notifications');
 const _ = require('lodash');
@@ -91,7 +91,7 @@ module.exports = {
     all: [
       populate({ schema: userSchema }),
       xss({ fields: xssFields }),
-      hideDeletedData()
+      keepDeletedDataFields()
     ],
     find: [
       discard('content', 'user.coverImg', 'badgeIds')

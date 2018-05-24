@@ -1,5 +1,5 @@
 const { authenticate } = require('feathers-authentication').hooks;
-const { when, unless, isProvider, populate } = require('feathers-hooks-common');
+const { when, unless, isProvider, populate, softDelete, setNow } = require('feathers-hooks-common');
 const {
   //queryWithCurrentUser,
   associateCurrentUser,
@@ -9,6 +9,8 @@ const { isVerified } = require('feathers-authentication-management').hooks;
 const createSlug = require('../../hooks/create-slug');
 const saveRemoteImages = require('../../hooks/save-remote-images');
 const createExcerpt = require('../../hooks/create-excerpt');
+const nullDeletedData = require('../../hooks/null-deleted-data');
+const keepDeletedDataFields = require('../../hooks/keep-deleted-data-fields');
 const search = require('feathers-mongodb-fuzzy-search');
 const thumbnails = require('../../hooks/thumbnails');
 const isModerator = require('../../hooks/is-moderator-boolean');
@@ -98,7 +100,8 @@ module.exports = {
     get: [
       unless(isModerator(),
         excludeDisabled()
-      )
+      ),
+      softDelete()
     ],
     create: [
       authenticate('jwt'),
@@ -109,7 +112,8 @@ module.exports = {
       associateCurrentUser(),
       createSlug({ field: 'title' }),
       saveRemoteImages(['teaserImg']),
-      createExcerpt()
+      createExcerpt(),
+      softDelete()
     ],
     update: [
       authenticate('jwt'),
@@ -121,7 +125,9 @@ module.exports = {
         restrictToOwner()
       ),
       saveRemoteImages(['teaserImg']),
-      createExcerpt()
+      createExcerpt(),
+      softDelete(),
+      setNow('updatedAt')
     ],
     patch: [
       authenticate('jwt'),
@@ -133,7 +139,12 @@ module.exports = {
         restrictToOwner()
       ),
       saveRemoteImages(['teaserImg']),
-      createExcerpt()
+      createExcerpt(),
+      softDelete(),
+      setNow('updatedAt'),
+      // SoftDelete uses patch to delete items
+      // Make changes to deleted items here
+      nullDeletedData({ fields: [ 'content', 'contentExcerpt' ]})
     ],
     remove: [
       authenticate('jwt'),
@@ -141,7 +152,8 @@ module.exports = {
       unless(isModerator(),
         excludeDisabled(),
         restrictToOwner()
-      )
+      ),
+      softDelete()
     ]
   },
 
@@ -151,7 +163,13 @@ module.exports = {
       populate({ schema: userSchema }),
       populate({ schema: categoriesSchema }),
       populate({ schema: candosSchema }),
-      populate({ schema: commentsSchema })
+      populate({ schema: commentsSchema }),
+      keepDeletedDataFields({ fields: [
+        '_id',
+        'deleted',
+        'createdAt',
+        'updatedAt'
+      ]})
     ],
     find: [
       when(isSingleItem(),
