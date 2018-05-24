@@ -5,6 +5,7 @@ module.exports = function () {
   // Add your seeder configs here
   return [
     require('./categories'),
+    require('./pages'),
     require('./badges')
   ];
 };
