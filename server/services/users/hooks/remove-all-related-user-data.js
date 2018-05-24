@@ -32,21 +32,26 @@ module.exports = () => {
         type: 'post'
       });
     }
+    delete hook.params.query.deleteContributions;
+
     if (query.deleteCandos === true) {
       await deleteData('contributions', {
         userId: user._id,
         type: 'cando'
       });
     }
+    delete hook.params.query.deleteCandos;
+
     if (query.deleteComments === true) {
       await deleteData('comments', {
         userId: user._id
       });
     }
-    // TODO: find a way to remove shouts without error
-    // await deleteData('shouts', {
-    //   userId: user._id
-    // });
+    delete hook.params.query.deleteComments;
+
+    await deleteData('shouts', {
+      userId: user._id
+    });
     await deleteData('users-candos', {
       userId: user._id
     });
@@ -60,7 +65,6 @@ module.exports = () => {
       email: user.email
     });
 
-    // throw new errors.FeathersError('BOOOM');
     return hook;
   };
 };
