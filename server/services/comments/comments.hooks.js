@@ -12,6 +12,7 @@ const nullDeletedData = require('../../hooks/null-deleted-data');
 const hideDeletedData = require('../../hooks/hide-deleted-data');
 const createNotifications = require('./hooks/create-notifications');
 const createMentionNotifications = require('./hooks/create-mention-notifications');
+const isModerator = require('../../hooks/is-moderator-boolean');
 const _ = require('lodash');
 const xss = require('../../hooks/xss');
 
@@ -58,8 +59,8 @@ module.exports = {
     ],
     patch: [
       authenticate('jwt'),
-      isVerified(),
       unless(isProvider('server'),
+        isVerified(),
         unless((hook) => {
           // TODO: change that to a more sane method by going through the server with an constum service
           // only allow upvoteCount increment for non owners
@@ -79,8 +80,7 @@ module.exports = {
     ],
     remove: [
       authenticate('jwt'),
-      isVerified(),
-      unless(isProvider('server'),
+      unless(isModerator(),
         restrictToOwner()
       ),
       softDelete()

@@ -137,9 +137,7 @@ module.exports = {
     ],
     remove: [
       authenticate('jwt'),
-      isVerified(),
       unless(isModerator(),
-        excludeDisabled(),
         restrictToOwner()
       )
     ]
