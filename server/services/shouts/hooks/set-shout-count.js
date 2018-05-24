@@ -1,22 +1,27 @@
-// Set done date, when cando is done
-module.exports = () => async hook => {
+const { getItems } = require('feathers-hooks-common');
+const { asyncForEach } = require('../../../helper/seed-helpers');
 
-  // get count of all shouts on this thing
-  const shoutCount = await hook.app.service('shouts').find({
-    query: {
-      foreignService: hook.result.foreignService,
-      foreignId: hook.result.foreignId,
-      $limit: 0
-    }
-  });
-
-  // update the shoud count on the foreign service
-  await hook.app.service(hook.result.foreignService)
-    .patch(hook.result.foreignId, {
-      $set: {
-        shoutCount: shoutCount.total
+module.exports = () => async (hook) => {
+  let items = getItems(hook);
+  if (!Array.isArray(items)) {
+    items = [items];
+  }
+  await asyncForEach(items, async (result) => {
+    // get count of all shouts on this thing
+    const shoutCount = await hook.app.service('shouts').find({
+      query: {
+        foreignService: result.foreignService,
+        foreignId: result.foreignId,
+        $limit: 0
       }
     });
-
+    // update the shout count on the foreign service
+    await hook.app.service(result.foreignService)
+      .patch(result.foreignId, {
+        $set: {
+          shoutCount: shoutCount.total
+        }
+      });
+  });
   return hook;
 };

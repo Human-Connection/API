@@ -1,17 +1,18 @@
-const {authenticate} = require('feathers-authentication').hooks;
-const {unless, isProvider, populate, discard, softDelete, setNow} = require('feathers-hooks-common');
+const { authenticate } = require('feathers-authentication').hooks;
+const { unless, isProvider, populate, discard, softDelete, setNow } = require('feathers-hooks-common');
 const {
   //queryWithCurrentUser,
   associateCurrentUser,
   // restrictToAuthenticated,
   restrictToOwner
 } = require('feathers-authentication-hooks');
-const {isVerified} = require('feathers-authentication-management').hooks;
+const { isVerified } = require('feathers-authentication-management').hooks;
 const createExcerpt = require('../../hooks/create-excerpt');
 const patchDeletedData = require('../../hooks/patch-deleted-data');
 const keepDeletedDataFields = require('../../hooks/keep-deleted-data-fields');
 const createNotifications = require('./hooks/create-notifications');
 const createMentionNotifications = require('./hooks/create-mention-notifications');
+const isModerator = require('../../hooks/is-moderator-boolean');
 const _ = require('lodash');
 const xss = require('../../hooks/xss');
 
@@ -30,7 +31,7 @@ const xssFields = ['content', 'contentExcerpt'];
 module.exports = {
   before: {
     all: [
-      xss({fields: xssFields})
+      xss({ fields: xssFields })
     ],
     find: [],
     get: [
@@ -43,7 +44,7 @@ module.exports = {
         isVerified()
       ),
       associateCurrentUser(),
-      createExcerpt({length: 180}),
+      createExcerpt({ length: 180 }),
       softDelete()
     ],
     update: [
@@ -52,7 +53,7 @@ module.exports = {
         isVerified(),
         restrictToOwner()
       ),
-      createExcerpt({length: 180}),
+      createExcerpt({ length: 180 }),
       softDelete(),
       setNow('updatedAt')
     ],
@@ -66,11 +67,11 @@ module.exports = {
           // the data has to be the exact copy of the valid object
           const valid = {$inc: {upvoteCount: 1}};
           return (!_.difference(_.keys(valid), _.keys(hook.data)).length) &&
-            (!_.difference(_.keys(valid.$inc), _.keys(hook.data.$inc)).length) &&
-            (!_.difference(_.values(valid.$inc), _.values(hook.data.$inc)).length);
+                (!_.difference(_.keys(valid.$inc), _.keys(hook.data.$inc)).length) &&
+                (!_.difference(_.values(valid.$inc), _.values(hook.data.$inc)).length);
         }, restrictToOwner())
       ),
-      createExcerpt({length: 180}),
+      createExcerpt({ length: 180 }),
       softDelete(),
       setNow('updatedAt'),
       // SoftDelete uses patch to delete items
@@ -85,8 +86,10 @@ module.exports = {
     remove: [
       authenticate('jwt'),
       unless(isProvider('server'),
-        isVerified(),
-        restrictToOwner()
+        unless(isModerator(),
+          isVerified(),
+          restrictToOwner()
+        )
       ),
       softDelete()
     ]
@@ -94,8 +97,8 @@ module.exports = {
 
   after: {
     all: [
-      populate({schema: userSchema}),
-      xss({fields: xssFields}),
+      populate({ schema: userSchema }),
+      xss({ fields: xssFields }),
       keepDeletedDataFields()
     ],
     find: [
