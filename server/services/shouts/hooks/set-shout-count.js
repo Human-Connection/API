@@ -16,12 +16,17 @@ module.exports = () => async (hook) => {
       }
     });
     // update the shout count on the foreign service
-    await hook.app.service(result.foreignService)
-      .patch(result.foreignId, {
-        $set: {
-          shoutCount: shoutCount.total
-        }
-      });
+    try {
+      await hook.app.service(result.foreignService)
+        .patch(result.foreignId, {
+          $set: {
+            shoutCount: shoutCount.total
+          }
+        });
+    } catch (err) {
+      hook.app.error(`issue setting shout count on '${result.foreignService}' with id '${result.foreignId}'`);
+      hook.app.error(err);
+    }
   });
   return hook;
 };
