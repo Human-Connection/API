@@ -11,6 +11,7 @@ const thumbnails = require('../../hooks/thumbnails');
 const inviteCode = require('./hooks/invite-code')();
 const search = require('feathers-mongodb-fuzzy-search');
 const isOwnEntry = require('./hooks/is-own-entry');
+const removeAllRelatedUserData = require('./hooks/remove-all-related-user-data');
 
 const { hashPassword } = require('feathers-authentication-local').hooks;
 
@@ -18,7 +19,7 @@ const cleanupBasicData = when(isProvider('external'),
   discard('password', '_computed', 'verifyExpires', 'resetExpires', 'verifyChanges')
 );
 const cleanupPersonalData = when(isProvider('external'),
-  discard('email', 'verifyToken', 'verifyShortToken', 'doiToken')
+  discard('email', 'verifyToken', 'verifyShortToken', 'doiToken', 'systemNnotificationsSeen')
 );
 
 const restrict = [
@@ -145,7 +146,11 @@ module.exports = {
       ),
       saveRemoteImages(['avatar', 'coverImg'])
     ],
-    remove: [ ...restrict, disableMultiItemChange() ]
+    remove: [
+      ...restrict,
+      disableMultiItemChange(),
+      removeAllRelatedUserData()
+    ]
   },
 
   after: {
@@ -163,7 +168,7 @@ module.exports = {
       thumbnails(thumbnailOptions),
       // remove personal data if its not the current authenticated user
       iff(isOwnEntry(false),
-        cleanupPersonalData,
+        cleanupPersonalData
       ),
       iff(isOwnEntry(),
         populate({ schema: userSettingsPrivateSchema })

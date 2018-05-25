@@ -14,13 +14,16 @@ module.exports = {
       ])
     ],
     update: [
-      authenticate('jwt')
+      authenticate('jwt'),
+      hooks.restrictToOwner()
     ],
     patch: [
-      authenticate('jwt')
+      authenticate('jwt'),
+      hooks.restrictToOwner()
     ],
     remove: [
-      authenticate('jwt')
+      authenticate('jwt'),
+      hooks.restrictToOwner()
     ]
   },
 
