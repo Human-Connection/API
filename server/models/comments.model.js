@@ -12,7 +12,7 @@ module.exports = function (app) {
     contentExcerpt: { type: String, required: true },
     upvotes: { type: Array, default: [] },
     upvoteCount: { type: Number, default: 0 },
-    language: { type: String, required: true },
+    deleted: { type: Boolean, default: false },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
     wasSeeded: { type: Boolean }

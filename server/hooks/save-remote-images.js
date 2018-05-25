@@ -111,10 +111,8 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
 
         if (imgCount > 0 && loading <= 0) {
           hook.app.debug('Download(s) finished', urls);
-          resolve(hook);
-        } else if (!imgCount) {
-          resolve(hook);
         }
+        resolve(hook);
       } catch (err) {
         // reject(err);
         if (imgCount) {

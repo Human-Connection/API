@@ -75,6 +75,7 @@ module.exports = function (app) {
         }
       }
     },
+    deleted: { type: Boolean, default: false },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
     wasSeeded: { type: Boolean }

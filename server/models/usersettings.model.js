@@ -9,6 +9,7 @@ module.exports = function (app) {
     userId: {type: String, required: true, unique: true},
     uiLanguage: {type: String, required: true},
     contentLanguages: {type: Array, default: []},
+    hideUsersWithoutTermsOfUseSigniture: {type: Boolean},
     updatedAt: { type: Date, default: Date.now }
   });
 
