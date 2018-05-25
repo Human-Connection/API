@@ -7,7 +7,7 @@ module.exports = () => {
       try {
         return await hook.app.service(service).remove(null, {query});
       } catch (err) {
-        console.log('ERROR ON SERVICE', service);
+        hook.app.error('ERROR ON SERVICE' + service);
         throw new errors.GeneralError(err.message);
       }
     }
@@ -23,8 +23,6 @@ module.exports = () => {
     }
 
     const query = hook.params.query;
-
-    let res;
 
     if (query.deleteContributions === true) {
       await deleteData('contributions', {
