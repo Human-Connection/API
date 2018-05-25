@@ -32,7 +32,7 @@ module.exports = (seederstore) => {
         template: {
           title: 'Data Privacy',
           type: 'dataPrivacy',
-          key: 'data-privacy',
+          key: 'privacy',
           content: '<strong>ADD PRIVACY POLICY!</strong>',
           language: 'en'
         }
@@ -42,7 +42,7 @@ module.exports = (seederstore) => {
         template: {
           title: 'Datenschutzerklärung',
           type: 'dataPrivacy',
-          key: 'data-privacy',
+          key: 'privacy',
           content: '<strong>FÜGE DATENSCHUTZRICHTLINIEN HINZU!</strong>',
           language: 'de'
         }
