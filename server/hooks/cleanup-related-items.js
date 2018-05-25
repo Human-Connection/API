@@ -27,6 +27,6 @@ const deleteItem = async (item, connection, hook) => {
   } catch (err) {
     hook.app.error(`issue while deleting related item '${connection.service}'`);
     hook.app.error(query);
+    hook.app.error(err);
   }
-
 };
