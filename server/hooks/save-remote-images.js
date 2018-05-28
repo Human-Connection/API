@@ -17,14 +17,14 @@ function createUploadDirIfNeeded () {
   }
 }
 
-class SaveRemoveImage {
-  constructor (hook) {
-    this.hook = hook;
-  }
-  uploadBlob () {
-
-  }
-}
+// lass SaveRemoveImage {
+//  constructor (hook) {
+//    this.hook = hook;
+//  }
+//  uploadBlob () {
+//
+//  }
+//
 
 module.exports = function (options = []) { // eslint-disable-line no-unused-vars
   return function async (hook) {
@@ -53,7 +53,7 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
           //   hook.app.debug(`cancel on invalid image url: ${hook.data[field]}`);
           //   return;
           // }
-          hook.app.debug(`###try to get image: ${hook.data[field]}`);
+          // hook.app.debug(`###try to get image: ${hook.data[field]}`);
 
           loading++;
           imgCount++;
@@ -82,22 +82,22 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
               reject(err);
             }
           } else if (validUrl.isUri(hook.data[field])) {
-            hook.app.debug('SAVE REMOTE IMAGES HOOK');
-            hook.app.debug(`###request url: ${hook.data[field]}`);
+            // hook.app.debug('SAVE REMOTE IMAGES HOOK');
+            // hook.app.debug(`###request url: ${hook.data[field]}`);
             request({
               url: hook.data[field],
               encoding: null,
-              timeout: 15000
+              timeout: 30000
             }, (err, res, body) => {
               if (err) {
                 hook.app.error(err);
                 reject(err);
               }
-              hook.app.debug(`###got answer for: ${hook.data[field]}`);
+              // hook.app.debug(`###got answer for: ${hook.data[field]}`);
               try {
                 const mimeType = res.headers['content-type'];
                 if (mimeType.indexOf('image') !== 0) {
-                  hook.app.log('~~~~~its not an image');
+                  // hook.app.log('~~~~~its not an image');
                   reject('its not an image');
                 }
 
