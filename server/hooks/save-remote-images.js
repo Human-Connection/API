@@ -8,7 +8,23 @@ const path = require('path');
 const request = require('request');
 const faker = require('faker');
 const mime = require('mime/lite');
-// const validUrl = require('valid-url');
+const validUrl = require('valid-url');
+
+function createUploadDirIfNeeded () {
+  const uploadDir = path.resolve('public/uploads');
+  if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir);
+  }
+}
+
+class SaveRemoveImage {
+  constructor (hook) {
+    this.hook = hook;
+  }
+  uploadBlob () {
+
+  }
+}
 
 module.exports = function (options = []) { // eslint-disable-line no-unused-vars
   return function async (hook) {
@@ -21,11 +37,7 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
       let imgCount = 0;
 
       try {
-        let uploadDir = path.resolve('public/uploads');
-        if (!fs.existsSync(uploadDir)) {
-          fs.mkdirSync(uploadDir);
-        }
-
+        createUploadDirIfNeeded();
         const uploadsUrl = hook.app.get('baseURL') + '/uploads/';
 
         // save all given fields and update the hook data
@@ -41,7 +53,7 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
           //   hook.app.debug(`cancel on invalid image url: ${hook.data[field]}`);
           //   return;
           // }
-          hook.app.debug(`try to get image: ${hook.data[field]}`);
+          hook.app.debug(`###try to get image: ${hook.data[field]}`);
 
           loading++;
           imgCount++;
@@ -67,20 +79,25 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
               }
             } catch (err) {
               hook.app.error(err);
+              reject(err);
             }
-          } else {
+          } else if (validUrl.isUri(hook.data[field])) {
+            hook.app.debug('SAVE REMOTE IMAGES HOOK');
+            hook.app.debug(`###request url: ${hook.data[field]}`);
             request({
               url: hook.data[field],
-              encoding: null
+              encoding: null,
+              timeout: 15000
             }, (err, res, body) => {
               if (err) {
                 hook.app.error(err);
                 reject(err);
               }
+              hook.app.debug(`###got answer for: ${hook.data[field]}`);
               try {
                 const mimeType = res.headers['content-type'];
                 if (mimeType.indexOf('image') !== 0) {
-                  hook.app.error('its not an image');
+                  hook.app.log('~~~~~its not an image');
                   reject('its not an image');
                 }
 
@@ -104,6 +121,8 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
                 hook.app.error(err);
               }
             });
+          } else {
+            resolve(hook);
           }
 
           hook.app.debug(`Downloading: ${hook.data[field]}`);
@@ -111,8 +130,10 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
 
         if (imgCount > 0 && loading <= 0) {
           hook.app.debug('Download(s) finished', urls);
+          resolve(hook);
+        } else if (imgCount <= 0) {
+          resolve(hook);
         }
-        resolve(hook);
       } catch (err) {
         // reject(err);
         if (imgCount) {

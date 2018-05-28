@@ -27,9 +27,7 @@ const ngoLogos = [
   'http://www.fetchlogos.com/wp-content/uploads/2015/11/Girl-Scouts-Of-The-Usa-Logo.jpg',
   'http://logos.textgiraffe.com/logos/logo-name/Ngo-designstyle-friday-m.png',
   'http://seeklogo.com/images/N/ngo-logo-BD53A3E024-seeklogo.com.png',
-  'https://d13yacurqjgara.cloudfront.net/users/472003/screenshots/2374442/newlogo_1x.png',
   'https://dcassetcdn.com/design_img/10133/25833/25833_303600_10133_image.jpg',
-  'http://www.logodesigngenius.com/portfolio/portfolio-logo-design/ngo-logo-design/logo-designs-3.png',
   'https://cdn.tutsplus.com/vector/uploads/legacy/articles/08bad_ngologos/20.jpg',
   'https://cdn.tutsplus.com/vector/uploads/legacy/articles/08bad_ngologos/33.jpg',
   null
