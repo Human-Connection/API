@@ -3,7 +3,7 @@ const seedHelpers = require('../../helper/seed-helpers');
 module.exports = (seederstore) => {
   return {
     services: [{
-      count: 60,
+      count: 30,
       path: 'contributions',
       templates: [
         {

@@ -5,7 +5,7 @@ module.exports = (seederstore) => {
   return {
     services: [
       {
-        count: _.size(seederstore.contributions) * 5,
+        count: Math.round(Math.min((_.size(seederstore.users) * (_.size(seederstore.contributions) * 0.7)), 100)),
         path: 'emotions',
         template: {
           contributionId: () => seedHelpers.randomItem(seederstore.contributions)._id.toString(),

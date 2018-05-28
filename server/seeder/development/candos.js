@@ -4,7 +4,7 @@ const { size } = require('lodash');
 module.exports = (seederstore) => {
   return {
     services: [{
-      count: 30,
+      count: 15,
       path: 'contributions',
       templates: [
         {
