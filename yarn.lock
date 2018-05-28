@@ -1907,6 +1907,12 @@ feathers-mongoose@~5.1.2:
     lodash.omit "^4.3.0"
     uberproto "^1.2.0"
 
+feathers-profiler@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/feathers-profiler/-/feathers-profiler-0.1.5.tgz#3a5491386ca1ec3d372e9f291f83a771890086c2"
+  dependencies:
+    debug "^2.2.0"
+
 feathers-query-filters@^2.0.0, feathers-query-filters@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/feathers-query-filters/-/feathers-query-filters-2.1.2.tgz#cdb18224db5e19cc0140d528108e0908d5eb0654"
