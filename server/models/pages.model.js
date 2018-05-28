@@ -6,9 +6,9 @@ module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
   const pages = new mongooseClient.Schema({
     title: { type: String, required: true },
-    slug: { type: String, required: true },
+    slug: { type: String, required: true, index: true },
     type: { type: String, required: true, default: 'page' },
-    key: { type: String, required: true },
+    key: { type: String, required: true, index: true },
     content: { type: String, required: true },
     language: { type: String, required: true, index: true },
     active: { type: Boolean, default: true, index: true },

@@ -26,24 +26,25 @@ module.exports = function (app) {
   });
 
   const contributions = new mongooseClient.Schema({
-    userId: { type: String, required: true },
-    categoryIds: { type: Array },
+    userId: { type: String, required: true, index: true },
+    categoryIds: { type: Array, index: true },
     title: { type: String, required: true },
     // Generated from title
-    slug: { type: String, required: true, unique: true },
-    type: { type: String, required: true },
+    slug: { type: String, required: true, unique: true, index: true },
+    type: { type: String, required: true, index: true },
     cando: candoSchema,
     content: { type: String, required: true },
     // Generated from content
     contentExcerpt: { type: String, required: true },
     teaserImg: { type: String },
-    language: { type: String, required: true },
-    shoutCount: { type: Number, default: 0 },
+    language: { type: String, required: true, index: true },
+    shoutCount: { type: Number, default: 0, index: true },
     meta: metaSchema,
     visibility: {
       type: String,
       enum: ['public', 'friends', 'private'],
-      default: 'public'
+      default: 'public',
+      index: true
     },
     isEnabled: {
       type: Boolean,
@@ -75,7 +76,7 @@ module.exports = function (app) {
         }
       }
     },
-    deleted: { type: Boolean, default: false },
+    deleted: { type: Boolean, default: false, index: true },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
     wasSeeded: { type: Boolean }

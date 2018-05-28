@@ -7,9 +7,9 @@ module.exports = function (app) {
   const { Schema } = mongooseClient;
   const organizations = new Schema({
     name: { type: String, required: true },
-    slug: { type: String, required: true, unique: true },
+    slug: { type: String, required: true, unique: true, index: true },
     followerIds: [],
-    categoryIds: { type: Array },
+    categoryIds: { type: Array, index: true },
     logo: { type: String },
     coverImg: { type: String },
     userId: { type: String, required: true },
@@ -20,7 +20,7 @@ module.exports = function (app) {
       type: String,
       enum: ['ngo', 'npo', 'goodpurpose', 'ev', 'eva']
     },
-    language: { type: String, required: true, default: 'de' },
+    language: { type: String, required: true, default: 'de', index: true },
     // will be generated automatically
     descriptionExcerpt: { type: String },
     addresses: { type: Array, default: [] },
@@ -28,12 +28,14 @@ module.exports = function (app) {
     updatedAt: { type: Date, default: Date.now },
     isEnabled: {
       type: Boolean,
-      default: false
+      default: false,
+      index: true
     },
     reviewedBy: { type: String },
     deleted: {
       type: Boolean,
-      default: false
+      default: false,
+      index: true
     },
     wasSeeded: { type: Boolean }
   });
