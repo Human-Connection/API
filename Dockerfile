@@ -4,6 +4,7 @@ LABEL Description="This image is used to start the hc-api-feathers" Vendor="Huma
 # update unix packages
 RUN apk update && apk upgrade
 RUN rm -rf /var/cache/apk/*
+RUN yarn global add pm2
 
 # expose the app port
 EXPOSE 3030
@@ -14,7 +15,6 @@ EXPOSE 3030
 ENV NODE_ENV=production
 ENV API_PORT=3030
 
-RUN yarn global add pm2
 # start the application in a autohealing cluster
 #CMD NODE_ENV=production pm2 start server/index.js -n api -i 0 --attach
 # as we have issues with pm2 currently in conjunction with nuxt, we use the standard approach here
