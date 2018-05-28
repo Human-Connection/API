@@ -62,7 +62,7 @@ module.exports = {
       unless(isProvider('server'),
         isVerified(),
         unless((hook) => {
-          // TODO: change that to a more sane method by going through the server with an constum service
+          // TODO: change that to a more sane method by going through the server with an custom service
           // only allow upvoteCount increment for non owners
           // the data has to be the exact copy of the valid object
           const valid = {$inc: {upvoteCount: 1}};
