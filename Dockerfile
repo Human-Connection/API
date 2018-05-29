@@ -16,7 +16,9 @@ ENV NODE_ENV=production
 ENV API_PORT=3030
 
 # start the application in a autohealing cluster
-CMD NODE_ENV=production pm2 start server/index.js -n api --attach
+# NOTE: quick fix for server issues, restart api when reaching max of 300 MB Memory Usage (happens in conjunction with 100% CPU Usage)
+# TODO: find better way of dealing with that issue
+CMD NODE_ENV=production pm2 start server/index.js -n api --attach --max-memory-restart 300M
 # CMD NODE_ENV=production pm2 start server/index.js -n api -i 2 --attach
 # as we have issues with pm2 currently in conjunction with nuxt, we use the standard approach here
 # CMD NODE_ENV=production node server/index.js
