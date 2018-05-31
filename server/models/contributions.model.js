@@ -28,7 +28,7 @@ module.exports = function (app) {
   const contributions = new mongooseClient.Schema({
     userId: { type: String, required: true, index: true },
     organizationId: { type: String, index: true },
-    categoryIds: { type: Array },
+    categoryIds: { type: Array, index: true },
     title: { type: String, required: true },
     // Generated from title
     slug: { type: String, required: true, unique: true, index: true },
@@ -80,6 +80,7 @@ module.exports = function (app) {
         }
       }
     },
+    deleted: { type: Boolean, default: false, index: true },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
     wasSeeded: { type: Boolean }

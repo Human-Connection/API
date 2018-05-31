@@ -11,6 +11,7 @@ const thumbnails = require('../../hooks/thumbnails');
 const inviteCode = require('./hooks/invite-code')();
 const search = require('feathers-mongodb-fuzzy-search');
 const isOwnEntry = require('./hooks/is-own-entry');
+const removeAllRelatedUserData = require('./hooks/remove-all-related-user-data');
 
 const { hashPassword } = require('feathers-authentication-local').hooks;
 
@@ -145,7 +146,11 @@ module.exports = {
       ),
       saveRemoteImages(['avatar', 'coverImg'])
     ],
-    remove: [ ...restrict, disableMultiItemChange() ]
+    remove: [
+      ...restrict,
+      disableMultiItemChange(),
+      removeAllRelatedUserData()
+    ]
   },
 
   after: {

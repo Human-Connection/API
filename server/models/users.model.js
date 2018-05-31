@@ -11,10 +11,10 @@ module.exports = function (app) {
     projects: { type: Number, default: 0 }
   }, { minimize: false });
   const users = new mongooseClient.Schema({
-    email: {type: String, required: true, unique: true},
+    email: {type: String, index: true, required: true, unique: true},
     password: { type: String },
     name: { type: String },
-    slug: { type: String },
+    slug: { type: String, index: true },
     gender: { type: String },
     followersCounts: followsSchema,
     followingCounts: followsSchema,
@@ -33,6 +33,7 @@ module.exports = function (app) {
     isVerified: { type: Boolean },
     role: {
       type: String,
+      index: true,
       enum: ['admin', 'moderator', 'manager', 'editor', 'user'],
       default: 'user'
     },

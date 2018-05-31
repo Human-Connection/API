@@ -6,7 +6,7 @@ module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
   const notifications = new mongooseClient.Schema({
     // User this notification is sent to
-    userId: { type: String, required: true },
+    userId: { type: String, required: true, index: true },
     type: {
       type: String,
       required: true,
@@ -20,7 +20,7 @@ module.exports = function (app) {
     relatedUserId: { type: String },
     relatedContributionId: { type: String },
     relatedCommentId: { type: String },
-    unseen: { type: Boolean, default: true },
+    unseen: { type: Boolean, default: true, index: true },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
     wasSeeded: { type: Boolean }

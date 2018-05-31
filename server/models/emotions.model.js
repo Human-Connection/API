@@ -1,12 +1,12 @@
 // emotions-model.js - A mongoose model
-// 
+//
 // See http://mongoosejs.com/docs/models.html
 // for more of what you can do here.
 module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
   const emotions = new mongooseClient.Schema({
-    userId: { type: String, required: true },
-    contributionId: { type: String, required: true },
+    userId: { type: String, required: true, index: true },
+    contributionId: { type: String, required: true, index: true },
     rated: {
       type: String,
       required: true,

@@ -23,7 +23,7 @@ module.exports = function (app) {
     slug: { type: String, required: true, unique: true, index: true },
     followersCounts: followsSchema,
     followingCounts: followsSchema,
-    categoryIds: { type: Array },
+    categoryIds: { type: Array, index: true },
     logo: { type: String },
     coverImg: { type: String },
     userId: { type: String, required: true, index: true },
@@ -50,7 +50,8 @@ module.exports = function (app) {
     tags: { type: Array, index: true },
     deleted: {
       type: Boolean,
-      default: false
+      default: false,
+      index: true
     },
     wasSeeded: { type: Boolean }
   });

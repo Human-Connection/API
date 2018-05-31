@@ -14,8 +14,7 @@ module.exports = (seederstore) => {
           type: 'termsAndConditions',
           key: 'terms-and-conditions',
           content: '<strong>ADD TERMS AND CONDITIONS!</strong>',
-          language: 'en',
-          wasSeeded: true
+          language: 'en'
         }
       },
       {
@@ -25,8 +24,7 @@ module.exports = (seederstore) => {
           type: 'termsAndConditions',
           key: 'terms-and-conditions',
           content: '<strong>FÜGE AGB`s HINZU!</strong>',
-          language: 'de',
-          wasSeeded: true
+          language: 'de'
         }
       },
       {
@@ -34,10 +32,9 @@ module.exports = (seederstore) => {
         template: {
           title: 'Data Privacy',
           type: 'dataPrivacy',
-          key: 'data-privacy',
+          key: 'privacy',
           content: '<strong>ADD PRIVACY POLICY!</strong>',
-          language: 'en',
-          wasSeeded: true
+          language: 'en'
         }
       },
       {
@@ -45,10 +42,9 @@ module.exports = (seederstore) => {
         template: {
           title: 'Datenschutzerklärung',
           type: 'dataPrivacy',
-          key: 'data-privacy',
+          key: 'privacy',
           content: '<strong>FÜGE DATENSCHUTZRICHTLINIEN HINZU!</strong>',
-          language: 'de',
-          wasSeeded: true
+          language: 'de'
         }
       },
       {
@@ -58,8 +54,7 @@ module.exports = (seederstore) => {
           type: 'imprint',
           key: 'imprint',
           content: '<strong>ADD IMPRINT!</strong>',
-          language: 'en',
-          wasSeeded: true
+          language: 'en'
         }
       },
       {
@@ -69,8 +64,7 @@ module.exports = (seederstore) => {
           type: 'imprint',
           key: 'imprint',
           content: '<strong>FÜGE EIN IMPRESSUM HINZU!</strong>',
-          language: 'de',
-          wasSeeded: true
+          language: 'de'
         }
       }
     ]
