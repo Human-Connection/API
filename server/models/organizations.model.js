@@ -23,21 +23,20 @@ module.exports = function (app) {
     slug: { type: String, required: true, unique: true, index: true },
     followersCounts: followsSchema,
     followingCounts: followsSchema,
-    categoryIds: { type: Array, index: true },
+    categoryIds: { type: Array, required: true, index: true },
     logo: { type: String },
     coverImg: { type: String },
     userId: { type: String, required: true, index: true },
-    description: { type: String },
+    description: { type: String, required: true },
+    descriptionExcerpt: { type: String }, // will be generated automatically
     publicEmail: { type: String },
-    website: { type: String },
+    url: { type: String },
     type: {
       type: String,
       index: true,
       enum: ['ngo', 'npo', 'goodpurpose', 'ev', 'eva']
     },
     language: { type: String, required: true, default: 'de', index: true },
-    // will be generated automatically
-    descriptionExcerpt: { type: String },
     addresses: { type: [addressSchema], default: [] },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },

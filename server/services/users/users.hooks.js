@@ -90,13 +90,13 @@ const thumbnailOptions = {
 
 module.exports = {
   before: {
-    all: [
+    all: [],
+    find: [
       search(),
-      search({  // regex search on given fields
+      search({
         fields: ['name', 'email']
       })
     ],
-    find: [],
     get: [],
     create: [
       hashPassword(),

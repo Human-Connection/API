@@ -10,6 +10,7 @@ const isModerator = require('../../hooks/is-moderator-boolean');
 const thumbnails = require('../../hooks/thumbnails');
 const restrictToOwnerOrModerator = require('../../hooks/restrictToOwnerOrModerator');
 const restrictReviewAndEnableChange = require('../../hooks/restrictReviewAndEnableChange');
+const search = require('feathers-mongodb-fuzzy-search');
 const xss = require('../../hooks/xss');
 
 const thumbnailOptions = {
@@ -43,7 +44,11 @@ module.exports = {
       xss({ fields: xssFields })
     ],
     find: [
-      restrictToOwnerOrModerator({ isEnabled: true, reviewedBy: { $ne: null } })
+      restrictToOwnerOrModerator({ isEnabled: true, reviewedBy: { $ne: null } }),
+      search(),
+      search({
+        fields: ['name', 'email']
+      })
     ],
     get: [
       restrictToOwnerOrModerator({ isEnabled: true, reviewedBy: { $ne: null } })

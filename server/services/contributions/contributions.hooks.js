@@ -196,7 +196,6 @@ module.exports = {
     all: [
       xss({fields: xssFields}),
       populate({schema: userSchema}),
-      populate({schema: organizationSchema}),
       populate({schema: categoriesSchema}),
       populate({schema: candosSchema}),
       populate({schema: commentsSchema}),
@@ -211,7 +210,8 @@ module.exports = {
     ],
     find: [
       when(isSingleItem(),
-        getAssociatedCanDos()
+        getAssociatedCanDos(),
+        populate({schema: organizationSchema})
       ),
       thumbnails(thumbs)
     ],
