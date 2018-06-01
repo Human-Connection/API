@@ -26,7 +26,10 @@ const userSchema = {
     service: 'users',
     nameAs: 'user',
     parentField: 'userId',
-    childField: '_id'
+    childField: '_id',
+    query: {
+      $limit: 1
+    }
   }
 };
 

@@ -32,7 +32,10 @@ const reviewerSchema = {
     service: 'users',
     nameAs: 'reviewer',
     parentField: 'reviewedBy',
-    childField: '_id'
+    childField: '_id',
+    query: {
+      $limit: 1
+    }
   }
 };
 

@@ -58,7 +58,10 @@ const userSettingsPrivateSchema = {
     nameAs: 'userSettings',
     parentField: '_id',
     childField: 'userId',
-    asArray: false
+    asArray: false,
+    query: {
+      $limit: 1
+    }
   }
 };
 
@@ -70,6 +73,7 @@ const userSettingsSchema = {
     childField: 'userId',
     query: {
       $select: ['uiLanguage', 'contentLanguages'],
+      $limit: 1
     },
     asArray: false
   }
