@@ -8,6 +8,8 @@ const restrictUserRole = require('./hooks/restrict-user-role');
 const createAdmin = require('./hooks/create-admin');
 const createSlug = require('../../hooks/create-slug');
 const thumbnails = require('../../hooks/thumbnails');
+const isModerator = require('../../hooks/is-moderator-boolean');
+const isSingleItem = require('../../hooks/is-single-item');
 const inviteCode = require('./hooks/invite-code')();
 const search = require('feathers-mongodb-fuzzy-search');
 const isOwnEntry = require('./hooks/is-own-entry');
@@ -155,16 +157,24 @@ module.exports = {
 
   after: {
     all: [
-      populate({ schema: badgesSchema }),
-      populate({ schema: candosSchema }),
-      populate({ schema: userSettingsSchema }),
       cleanupBasicData
     ],
     find: [
+      when(isModerator(),
+        populate({ schema: userSettingsSchema })
+      ),
+      when(isSingleItem(),
+        populate({ schema: badgesSchema }),
+        populate({ schema: candosSchema }),
+        populate({ schema: userSettingsSchema })
+      ),
       thumbnails(thumbnailOptions),
       cleanupPersonalData
     ],
     get: [
+      populate({ schema: badgesSchema }),
+      populate({ schema: candosSchema }),
+      populate({ schema: userSettingsSchema }),
       thumbnails(thumbnailOptions),
       // remove personal data if its not the current authenticated user
       iff(isOwnEntry(false),
