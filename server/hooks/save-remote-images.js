@@ -106,6 +106,9 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
                 const mimeType = res.headers['content-type'];
                 if (mimeType.indexOf('image') !== 0) {
                   hook.app.error('its not an image');
+                  loading--;
+                  hook.data[field] = null;
+                  return;
                   // reject(new Error('its not an image'));
                 }
 
