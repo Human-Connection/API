@@ -1,6 +1,9 @@
 // Use this hook to manipulate incoming or outgoing data.
 // For more information on hooks see: http://docs.feathersjs.com/api/hooks.html
 
+/**
+ * TODO: Refactor and test that hook
+ */
 const errors = require('feathers-errors');
 const { isEmpty } = require('lodash');
 const fs = require('fs');
@@ -78,8 +81,10 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
                 resolve(hook);
               }
             } catch (err) {
+              loading--;
+              hook.data[field] = null;
               hook.app.error(err);
-              reject(err);
+              // reject(err);
             }
           } else if (validUrl.isUri(hook.data[field])) {
             // hook.app.debug('SAVE REMOTE IMAGES HOOK');
@@ -91,14 +96,17 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
             }, (err, res, body) => {
               if (err) {
                 hook.app.error(err);
-                reject(err);
+                loading--;
+                hook.data[field] = null;
+                return;
+                // reject(err);
               }
               // hook.app.debug(`###got answer for: ${hook.data[field]}`);
               try {
                 const mimeType = res.headers['content-type'];
                 if (mimeType.indexOf('image') !== 0) {
                   hook.app.error('its not an image');
-                  reject(new Error('its not an image'));
+                  // reject(new Error('its not an image'));
                 }
 
                 const ext = mime.getExtension(mimeType);
@@ -121,7 +129,9 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
                 }
               } catch (err) {
                 hook.app.error(err);
-                reject(err);
+                loading--;
+                hook.data[field] = null;
+                // reject(err);
               }
             });
           } else {
@@ -138,10 +148,11 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
           resolve(hook);
         }
       } catch (err) {
-        // reject(err);
+        // // reject(err);
         if (imgCount) {
           hook.app.error('Thumbnail download failed');
-          throw new errors.Unprocessable('Thumbnail download failed', { errors: err, urls: urls });
+          // throw new errors.Unprocessable('Thumbnail download failed', { errors: err, urls: urls });
+          resolve(hook);
         } else {
           resolve(hook);
         }
