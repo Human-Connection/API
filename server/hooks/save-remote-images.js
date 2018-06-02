@@ -4,7 +4,6 @@
 /**
  * TODO: Refactor and test that hook
  */
-const errors = require('feathers-errors');
 const { isEmpty } = require('lodash');
 const fs = require('fs');
 const path = require('path');
@@ -32,7 +31,7 @@ function createUploadDirIfNeeded () {
 module.exports = function (options = []) { // eslint-disable-line no-unused-vars
   return function async (hook) {
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
 
       let urls = [];
 
