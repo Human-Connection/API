@@ -25,7 +25,6 @@ const cleanupPersonalData = when(isProvider('external'),
 );
 
 const restrict = [
-  authenticate('jwt'),
   restrictToOwner({
     idField: '_id',
     ownerField: '_id'
@@ -97,6 +96,7 @@ const thumbnailOptions = {
 module.exports = {
   before: {
     all: [
+      authenticate('jwt'),
       search(),
       search({  // regex search on given fields
         fields: ['name', 'email']
@@ -137,7 +137,6 @@ module.exports = {
     ],
     patch: [
       ...restrict,
-      // hashPassword(),
       disableMultiItemChange(),
       lowerCase('email', 'username'),
       // Only set slug once
