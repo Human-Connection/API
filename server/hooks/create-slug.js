@@ -16,7 +16,7 @@ module.exports = function (options = { field: null, overwrite: false, unique: tr
       const titleSlug = slug(hook.data[options.field], {
         lower: true
       });
-      if (options.unique) {
+      if (options.unique !== false) {
         getUniqueSlug(hook.service, titleSlug, null, hook.id)
           .then((uniqueSlug) => {
             hook.data.slug = uniqueSlug;
