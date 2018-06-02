@@ -21,7 +21,11 @@ const userSchema = {
     service: 'users',
     nameAs: 'user',
     parentField: 'userId',
-    childField: '_id'
+    childField: '_id',
+    query: {
+      $limit: 1,
+      $select: ['_id', 'name', 'slug', 'avatar', 'lastActiveAt', 'thumbnails']
+    }
   }
 };
 
@@ -97,20 +101,28 @@ module.exports = {
 
   after: {
     all: [
-      populate({ schema: userSchema }),
       xss({ fields: xssFields }),
-      keepDeletedDataFields()
+      keepDeletedDataFields(),
+      discard('wasSeeded')
     ],
     find: [
-      discard('content', 'user.coverImg', 'badgeIds')
+      populate({ schema: userSchema }),
+      discard('content', 'badgeIds')
     ],
-    get: [],
+    get: [
+      populate({ schema: userSchema })
+    ],
     create: [
+      populate({ schema: userSchema }),
       createMentionNotifications(),
       createNotifications()
     ],
-    update: [],
-    patch: [],
+    update: [
+      createMentionNotifications()
+    ],
+    patch: [
+      createMentionNotifications()
+    ],
     remove: []
   },
 

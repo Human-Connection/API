@@ -13,11 +13,18 @@ const commentSchema = {
     nameAs: 'comment',
     parentField: 'relatedCommentId',
     childField: '_id',
+    query: {
+      $limit: 1
+    },
     include: {
       service: 'users',
       nameAs: 'user',
       parentField: 'userId',
-      childField: '_id'
+      childField: '_id',
+      query: {
+        $limit: 1,
+        $select: ['_id', 'name', 'slug', 'avatar', 'lastActiveAt', 'thumbnails']
+      }
     }
   }
 };
@@ -27,7 +34,10 @@ const contributionSchema = {
     service: 'contributions',
     nameAs: 'contribution',
     parentField: 'relatedContributionId',
-    childField: '_id'
+    childField: '_id',
+    query: {
+      $limit: 1
+    }
   }
 };
 
@@ -36,7 +46,11 @@ const userSchema = {
     service: 'users',
     nameAs: 'user',
     parentField: 'relatedUserId',
-    childField: '_id'
+    childField: '_id',
+    query: {
+      $limit: 1,
+      $select: ['_id', 'name', 'slug', 'avatar', 'lastActiveAt', 'thumbnails']
+    }
   }
 };
 
