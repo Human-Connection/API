@@ -1,4 +1,4 @@
-const { authenticate } = require('feathers-authentication').hooks;
+// const { authenticate } = require('feathers-authentication').hooks;
 const { isProvider, when, iff, discard, populate, disableMultiItemChange, lowerCase } = require('feathers-hooks-common');
 const { restrictToOwner } = require('feathers-authentication-hooks');
 const { addVerification, removeVerification } = require('feathers-authentication-management').hooks;
@@ -96,7 +96,7 @@ const thumbnailOptions = {
 module.exports = {
   before: {
     all: [
-      authenticate('jwt'),
+      // authenticate('jwt'),
       search(),
       search({  // regex search on given fields
         fields: ['name', 'email']
