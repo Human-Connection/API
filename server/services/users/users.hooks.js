@@ -21,7 +21,7 @@ const cleanupBasicData = when(isProvider('external'),
   discard('password', '_computed', 'verifyExpires', 'resetExpires', 'verifyChanges')
 );
 const cleanupPersonalData = when(isProvider('external'),
-  discard('email', 'verifyToken', 'verifyShortToken', 'doiToken', 'systemNnotificationsSeen')
+  discard('email', 'verifyToken', 'verifyShortToken', 'doiToken', 'systemNotificationsSeen')
 );
 
 const restrict = [

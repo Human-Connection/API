@@ -5,7 +5,7 @@ module.exports = (seederstore) => {
 
   return {
     services: [{
-      count: 80,
+      count: 50,
       path: 'users-candos',
       templates: [
         {

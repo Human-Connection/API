@@ -22,7 +22,8 @@ const commentSchema = {
       parentField: 'userId',
       childField: '_id',
       query: {
-        $limit: 1
+        $limit: 1,
+        $select: ['_id', 'name', 'slug', 'avatar', 'lastActiveAt', 'thumbnails']
       }
     }
   }
@@ -47,7 +48,8 @@ const userSchema = {
     parentField: 'relatedUserId',
     childField: '_id',
     query: {
-      $limit: 1
+      $limit: 1,
+      $select: ['_id', 'name', 'slug', 'avatar', 'lastActiveAt', 'thumbnails']
     }
   }
 };
