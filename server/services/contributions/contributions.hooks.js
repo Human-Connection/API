@@ -1,5 +1,5 @@
 const {authenticate} = require('feathers-authentication').hooks;
-const {when, unless, isProvider, populate, softDelete, setNow} = require('feathers-hooks-common');
+const {discard, when, unless, isProvider, populate, softDelete, setNow} = require('feathers-hooks-common');
 const {
   //queryWithCurrentUser,
   associateCurrentUser,
@@ -28,7 +28,11 @@ const userSchema = {
     service: 'users',
     nameAs: 'user',
     parentField: 'userId',
-    childField: '_id'
+    childField: '_id',
+    query: {
+      $limit: 1,
+      $select: ['_id', 'name', 'slug', 'avatar', 'lastActiveAt', 'thumbnails']
+    }
   }
 };
 
@@ -57,6 +61,9 @@ const candosSchema = {
     nameAs: 'candoUsers',
     parentField: '_id',
     childField: 'contributionId',
+    query: {
+      $select: ['_id', 'userId']
+    },
     asArray: true
   }
 };
@@ -68,16 +75,9 @@ const commentsSchema = {
     parentField: '_id',
     childField: 'contributionId',
     query: {
-      $select: ['_id']
+      $select: ['_id', 'contributionId']
     },
     asArray: true
-    //,
-    //include: {
-    //  service: 'users',
-    //  nameAs: 'user',
-    //  parentField: 'userId',
-    //  childField: '_id'
-    //}
   }
 };
 
@@ -206,7 +206,8 @@ module.exports = {
           'createdAt',
           'updatedAt'
         ]
-      })
+      }),
+      discard('wasSeeded')
     ],
     find: [
       when(isSingleItem(),

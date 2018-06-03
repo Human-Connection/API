@@ -13,7 +13,8 @@ const getUniqueSlug = (service, slug, count, id) => {
       };
     }
     service.find({
-      query
+      query,
+      _populate: 'skip'
     }).then((result) => {
       if (result.data.length > 0) {
         count = count ? count + 1 : 1;

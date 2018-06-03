@@ -12,7 +12,7 @@ module.exports = function () {
     require('./candos'),
     require('./users-candos'),
     require('./projects'),
-    // require('./follows'),
+    require('./follows'),
     require('./comments'),
     require('./emotions'),
     require('./invites'),

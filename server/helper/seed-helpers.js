@@ -71,6 +71,10 @@ module.exports = {
     return _.shuffle(ngoLogos).pop();
   },
   randomUnsplashUrl: () => {
+    if (Math.random() < 0.6) {
+      // do not attach images in 60 percent of the cases (faster seeding)
+      return;
+    }
     if (unsplashTopicsTmp.length < 2) {
       unsplashTopicsTmp = _.shuffle(unsplashTopics);
     }

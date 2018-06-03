@@ -56,19 +56,21 @@ module.exports = function(options = {}) { // eslint-disable-line no-unused-vars
           });
           putQuery.$inc[`emotions.${hook.result.rated}.count`] += 1;
 
-          contributionService.patch( hook.result.contributionId, putQuery)
-            .then(contribution => {
+          contributionService.patch(
+            hook.result.contributionId,
+            putQuery,
+            { _populate: 'skip' }
+          ).then(contribution => {
+            calculatePercentValues(contribution);
 
-              calculatePercentValues(contribution);
-
-              contributionService.patch( hook.result.contributionId, {
-                $set: {
-                  emotions: contribution.emotions
-                }
-              }).then(() => {
-                resolve(hook);
-              });
+            contributionService.patch( hook.result.contributionId, {
+              $set: {
+                emotions: contribution.emotions
+              }
+            }).then(() => {
+              resolve(hook);
             });
+          });
         });
     });
   };
