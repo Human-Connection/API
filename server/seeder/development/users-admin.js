@@ -1,3 +1,4 @@
+const seedHelpers = require('../../helper/seed-helpers');
 const { keys } = require('lodash');
 
 module.exports = (seederstore) => {
@@ -14,7 +15,15 @@ module.exports = (seederstore) => {
         timezone: 'Europe/Berlin',
         avatar: '{{internet.avatar}}',
         coverImg: 'https://source.unsplash.com/random/1250x280',
-        badgeIds: () => [keys(seederstore.badges)[0]],
+        badgeIds: () => {
+          let badges = [keys(seederstore.badges)[0]];
+          if (process.NODE_ENV !== 'production') {
+            badges.push(keys(seederstore.badges)[5]);
+            badges.push(keys(seederstore.badges)[10]);
+            badges.push(keys(seederstore.badges)[16]);
+          }
+          return badges;
+        },
         role: 'admin',
         doiToken: null,
         confirmedAt: null,
