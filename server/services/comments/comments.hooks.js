@@ -38,7 +38,13 @@ module.exports = {
       softDelete(),
       xss({ fields: xssFields })
     ],
-    find: [],
+    find: [
+      // We want to deleted comments to show up
+      (hook) => {
+        delete hook.params.query.deleted;
+        return hook;
+      }
+    ],
     get: [],
     create: [
       authenticate('jwt'),
