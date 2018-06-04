@@ -62,7 +62,7 @@ const candosSchema = {
     parentField: '_id',
     childField: 'contributionId',
     query: {
-      $select: ['_id', 'userId']
+      $select: ['_id', 'userId', 'done']
     },
     asArray: true
   }
