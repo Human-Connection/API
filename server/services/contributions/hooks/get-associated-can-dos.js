@@ -28,7 +28,8 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
 
       return contributionService.find({
         query: {
-          type: 'cando'
+          type: 'cando',
+          isEnabled: true
         }
       })
         .then(({data}) => {
