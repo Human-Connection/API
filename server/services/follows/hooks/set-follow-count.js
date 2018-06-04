@@ -16,7 +16,7 @@ module.exports = () => async hook => {
     promises.push(new Promise(async (resolve) => {
       try {
         const query = {$inc: {}};
-        query.$inc['followingCounts.users'] = inc;
+        query.$inc[`followingCounts.${result.foreignService}`] = inc;
         await hook.app.service('users')
           .patch(userId, query);
 
