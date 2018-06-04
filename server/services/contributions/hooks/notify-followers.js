@@ -43,7 +43,7 @@ module.exports = function () {
       }
 
       return hook.app.service('notifications').create(notifications)
-        .then((res) => {
+        .then(() => {
           resolve(hook);
         })
         .catch(error => {

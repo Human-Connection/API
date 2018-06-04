@@ -29,9 +29,9 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
       .replace(/(\ ){2,}/ig, ' ')
       .trim();
 
-      contentSanitized = trunc(contentSanitized, options.length).html
+      contentSanitized = trunc(contentSanitized, options.length).html;
 
-      setByDot(hook.data, 'hasMore', contentSanitized.length < content.length)
+      setByDot(hook.data, 'hasMore', contentSanitized.length < content.length);
 
       // set excerpt
       setByDot(hook.data, `${options.field}Excerpt`, contentSanitized)
@@ -40,7 +40,7 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
       throw new Error(err);
     }
     // trim content
-    setByDot(hook.data, options.field, content.replace(/(\ ){2,}/ig, ' '))
+    setByDot(hook.data, options.field, content.replace(/(\ ){2,}/ig, ' '));
 
     return hook;
   };
