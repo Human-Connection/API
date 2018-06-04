@@ -98,6 +98,7 @@ const xssFields = ['content', 'contentExcerpt', 'cando.reason'];
 module.exports = {
   before: {
     all: [
+      softDelete(),
       xss({fields: xssFields})
     ],
     find: [
@@ -107,14 +108,12 @@ module.exports = {
       search(),
       search({
         fields: ['title', 'content']
-      }),
-      softDelete()
+      })
     ],
     get: [
       unless(isModerator(),
         excludeDisabled()
-      ),
-      softDelete()
+      )
     ],
     create: [
       authenticate('jwt'),
@@ -127,8 +126,7 @@ module.exports = {
       associateCurrentUser(),
       createSlug({field: 'title'}),
       saveRemoteImages(['teaserImg']),
-      createExcerpt(),
-      softDelete()
+      createExcerpt()
     ],
     update: [
       authenticate('jwt'),
@@ -142,7 +140,6 @@ module.exports = {
       ),
       saveRemoteImages(['teaserImg']),
       createExcerpt(),
-      softDelete(),
       setNow('updatedAt')
     ],
     patch: [
@@ -157,7 +154,6 @@ module.exports = {
       ),
       saveRemoteImages(['teaserImg']),
       createExcerpt(),
-      softDelete(),
       setNow('updatedAt'),
       // SoftDelete uses patch to delete items
       // Make changes to deleted items here
@@ -187,8 +183,7 @@ module.exports = {
         canEditOrganization(),
         excludeDisabled(),
         restrictToOwner()
-      ),
-      softDelete()
+      )
     ]
   },
 
