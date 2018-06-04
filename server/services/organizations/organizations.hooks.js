@@ -11,14 +11,15 @@ const thumbnails = require('../../hooks/thumbnails');
 const restrictToOwnerOrModerator = require('../../hooks/restrictToOwnerOrModerator');
 const restrictReviewAndEnableChange = require('../../hooks/restrictReviewAndEnableChange');
 const search = require('feathers-mongodb-fuzzy-search');
+const isSingleItem = require('../../hooks/is-single-item');
 const xss = require('../../hooks/xss');
 
 const thumbnailOptions = {
   logo: {
-    small: '72x72/smart',
-    medium: '120x120/smart',
-    large: '240x240/smart',
-    placeholder: '36x36/smart/filters:blur(30)'
+    small: 'fit-in/72x72/filters:fill(white,true)',
+    medium: 'fit-in/120x120/filters:fill(white,true)',
+    large: 'fit-in/240x240/filters:fill(white,true)',
+    placeholder: 'fit-in/36x36/filters:fill(white,true):blur(30)'
   },
   coverImg: {
     cover: '1102x312/smart',
@@ -38,6 +39,16 @@ const reviewerSchema = {
       $limit: 1,
       $select: ['_id', 'name', 'slug', 'avatar', 'lastActiveAt', 'thumbnails']
     }
+  }
+};
+
+const categoriesSchema = {
+  include: {
+    service: 'categories',
+    nameAs: 'categories',
+    parentField: 'categoryIds',
+    childField: '_id',
+    asArray: true
   }
 };
 
@@ -109,14 +120,18 @@ module.exports = {
   after: {
     all: [
       xss({ fields: xssFields }),
-      populate({ schema: reviewerSchema }),
+      populate({ schema: reviewerSchema })
       // populate({ schema: userSchema }),
       // populate({ schema: followerSchema })
     ],
     find: [
+      when(isSingleItem(),
+        populate({schema: categoriesSchema})
+      ),
       thumbnails(thumbnailOptions)
     ],
     get: [
+      populate({schema: categoriesSchema}),
       thumbnails(thumbnailOptions)
     ],
     create: [
