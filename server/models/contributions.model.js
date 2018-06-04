@@ -89,7 +89,7 @@ module.exports = function (app) {
   contributions.index({
     title: 'text',
     content: 'text',
-    tags: 'text',
+    tags: 'text'
   }, {
     name: 'contributions_full_text',
     default_language: 'en',
