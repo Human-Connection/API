@@ -22,6 +22,6 @@ logger.add(new transports.Console({
       return `${levelColors[info.level]}${date.toLocaleTimeString()} | ${info.level}: ${JSON.stringify(info.message)}\u001b[39m`;
     })
   ),
-  level: env === 'development' || 'test' ? 'debug' : 'warn'
+  level: env === 'development' ? 'debug' : 'warn'
 }));
 module.exports = logger;
