@@ -41,7 +41,10 @@ const organizationSchema = {
     service: 'organizations',
     nameAs: 'organization',
     parentField: 'organizationId',
-    childField: '_id'
+    childField: '_id',
+    query: {
+      $select: ['_id', 'userId', 'name', 'slug', 'logo']
+    }
   }
 };
 
@@ -206,13 +209,14 @@ module.exports = {
     ],
     find: [
       when(isSingleItem(),
-        getAssociatedCanDos(),
-        populate({schema: organizationSchema})
+        getAssociatedCanDos()
       ),
+      populate({schema: organizationSchema}),
       thumbnails(thumbs)
     ],
     get: [
       getAssociatedCanDos(),
+      populate({schema: organizationSchema}),
       thumbnails(thumbs)
     ],
     create: [
