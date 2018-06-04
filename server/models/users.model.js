@@ -18,7 +18,6 @@ module.exports = function (app) {
     gender: { type: String },
     followersCounts: followsSchema,
     followingCounts: followsSchema,
-    isnothere: { type: Boolean },
     timezone: { type: String },
     avatar: { type: String },
     coverImg: { type: String },

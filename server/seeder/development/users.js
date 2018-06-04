@@ -12,7 +12,6 @@ module.exports = (seederstore) => {
         password: '{{internet.password}}',
         name: '{{name.firstName}} {{name.lastName}}',
         slug: '{{lorem.slug}}',
-        isnothere: true,
         timezone: 'Europe/Berlin',
         avatar: () => seedHelpers.randomItem([faker.internet.avatar(), null]),
         isVerified : true,
