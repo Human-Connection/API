@@ -15,13 +15,14 @@ module.exports = function () {
       }
 
       const contribution = hook.result;
-      const creatorId = hook.result.userId;
+      const creatorType = hook.result.organizationId ? 'organizations' : 'users';
+      const creatorId = hook.result.organizationId || hook.result.userId;
 
       // get all followers
       const followers = await hook.app.service('follows').find({
         query: {
-          $limit: 1000,
-          foreignService: 'users',
+          $limit: 5000,
+          foreignService: creatorType,
           foreignId: creatorId
         }
       });
@@ -34,6 +35,7 @@ module.exports = function () {
           userId: follower.userId,
           type: 'following-contribution',
           relatedUserId: creatorId,
+          relatedOrganizationId: hook.result.organizationId || null,
           relatedContributionId: contribution._id
         });
       });

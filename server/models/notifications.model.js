@@ -17,8 +17,9 @@ module.exports = function (app) {
         'following-contribution'
       ]
     },
-    relatedUserId: { type: String },
-    relatedContributionId: { type: String },
+    relatedUserId: { type: String, index: true },
+    relatedContributionId: { type: String, index: true },
+    relatedOrganizationId: { type: String, index: true },
     relatedCommentId: { type: String },
     unseen: { type: Boolean, default: true, index: true },
     createdAt: { type: Date, default: Date.now },

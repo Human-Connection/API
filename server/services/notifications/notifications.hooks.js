@@ -54,6 +54,19 @@ const userSchema = {
   }
 };
 
+const organizationSchema = {
+  include: {
+    service: 'organizations',
+    nameAs: 'organization',
+    parentField: 'relatedOrganizationId',
+    childField: '_id',
+    query: {
+      $limit: 1,
+      $select: ['_id', 'userId', 'name', 'slug', 'logo', 'thumbnails']
+    }
+  }
+};
+
 module.exports = {
   before: {
     all: [
@@ -73,6 +86,7 @@ module.exports = {
 
   after: {
     all: [
+      populate({ schema: organizationSchema }),
       populate({ schema: contributionSchema }),
       populate({ schema: commentSchema }),
       populate({ schema: userSchema })
