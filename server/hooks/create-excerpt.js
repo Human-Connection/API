@@ -4,9 +4,15 @@
 
 const sanitizeHtml = require('sanitize-html');
 const trunc = require('trunc-html');
+const { getByDot, setByDot } = require('feathers-hooks-common');
+const { isEmpty } = require('lodash');
 
 const sanitizeOptions = {
-  allowedTags: [ 'br' ]
+  allowedTags: ['p', 'br', 'a', 'span', 'blockquote'],
+  allowedAttributes: {
+    a: ['href', 'class', 'target', 'data-*' , 'contenteditable'],
+    span: ['contenteditable', 'class', 'data-*']
+  },
 };
 
 module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
@@ -14,25 +20,37 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
 
     options = Object.assign({ length: 120, field: 'content' }, options);
 
-    if(!hook.data || !hook.data[options.field]) {
+    let content = getByDot(hook.data, options.field);
+
+    if(!hook.data || isEmpty(content)) {
       return hook;
     }
 
     try {
       /* eslint no-use-before-define: 0 */  // --> OFF
-      const content = sanitizeHtml(hook.data[options.field], sanitizeOptions)
+      let contentSanitized = sanitizeHtml(content, sanitizeOptions)
       .replace(/\<br\s*\>|\<br\s*\/\>/ig, "\n")
       .replace(/(\ ){2,}/ig, ' ')
       .trim();
-      hook.data[`${options.field}Excerpt`] = trunc(content, options.length, {
-        ignoreTags: ['img', 'script', 'iframe']
-      }).html;
-    } catch (err) {
-      throw new Error('Text content needed!');
-    }
-    hook.data[options.field] = hook.data[options.field]
-      .replace(/(\ ){2,}/ig, ' ')
 
-    return Promise.resolve(hook);
+      contentBefore = trunc(content, 9999999999);
+      const contentTruncated = trunc(contentSanitized, options.length);
+      hook.app.debug('contentBefore');
+      hook.app.debug(contentBefore.text.length);
+      hook.app.debug('contentTruncated');
+      hook.app.debug(contentTruncated.text.length);
+
+      const hasMore = contentBefore.text.length > (contentTruncated.text.length + 20);
+      setByDot(hook.data, 'hasMore', hasMore);
+
+      // set excerpt
+      setByDot(hook.data, `${options.field}Excerpt`, hasMore ? contentTruncated.html : content.replace(/(\ ){2,}/ig, ' '))
+    } catch (err) {
+      throw new Error(err);
+    }
+    // trim content
+    setByDot(hook.data, options.field, content.replace(/(\ ){2,}/ig, ' '));
+
+    return hook;
   };
 };

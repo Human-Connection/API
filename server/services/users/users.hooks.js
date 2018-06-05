@@ -95,14 +95,14 @@ const thumbnailOptions = {
 
 module.exports = {
   before: {
-    all: [
+    all: [],
+    find: [
       // authenticate('jwt'),
       search(),
-      search({  // regex search on given fields
+      search({
         fields: ['name', 'email']
       })
     ],
-    find: [],
     get: [],
     create: [
       hashPassword(),

@@ -6,18 +6,18 @@
 module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
   const followsSchema = mongooseClient.Schema({
-    type: String,
-    id: String
-  });
+    users: { type: Number, default: 0 },
+    organizations: { type: Number, default: 0 },
+    projects: { type: Number, default: 0 }
+  }, { minimize: false });
   const users = new mongooseClient.Schema({
     email: {type: String, index: true, required: true, unique: true},
     password: { type: String },
     name: { type: String },
     slug: { type: String, index: true },
     gender: { type: String },
-    followerIds: [],
-    follows: [followsSchema],
-    isnothere: { type: Boolean },
+    followersCounts: followsSchema,
+    followingCounts: followsSchema,
     timezone: { type: String },
     avatar: { type: String },
     coverImg: { type: String },
@@ -48,7 +48,7 @@ module.exports = function (app) {
     language: { type: String, default: 'en' },
     termsAndConditionsAccepted: { type: Date }, // we display the terms and conditions on registration
     systemNotificationsSeen: { type: Array, default: [] }
-  });
+  }, { minimize: false });
 
   users.index({
     name: 'text'

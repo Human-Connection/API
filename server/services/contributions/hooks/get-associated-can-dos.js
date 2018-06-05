@@ -28,9 +28,10 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
 
       return contributionService.find({
         query: {
-          type: 'cando'
+          type: 'cando',
+          isEnabled: true
         }
-      })
+      }, { _populate: 'skip' })
         .then(({data}) => {
           let associatedCanDos = [];
           while (associatedCanDos.length < limit && data.length) {

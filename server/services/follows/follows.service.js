@@ -1,15 +1,19 @@
 // Initializes the `follows` service on path `/follows`
-const createService = require('./follows.class.js');
+const createService = require('feathers-mongoose');
+// const createService = require('./follows.class.js');
+const createModel = require('../../models/follows.model');
 const hooks = require('./follows.hooks');
 const filters = require('./follows.filters');
 
 module.exports = function () {
   const app = this;
+  const Model = createModel(app);
   const paginate = app.get('paginate');
 
   const options = {
     app,
     name: 'follows',
+    Model,
     paginate
   };
 

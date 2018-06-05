@@ -10,10 +10,16 @@ module.exports = function (app) {
     type: {
       type: String,
       required: true,
-      enum: ['comment','comment-mention','contribution-mention']
+      enum: [
+        'comment',
+        'comment-mention',
+        'contribution-mention',
+        'following-contribution'
+      ]
     },
-    relatedUserId: { type: String },
-    relatedContributionId: { type: String },
+    relatedUserId: { type: String, index: true },
+    relatedContributionId: { type: String, index: true },
+    relatedOrganizationId: { type: String, index: true },
     relatedCommentId: { type: String },
     unseen: { type: Boolean, default: true, index: true },
     createdAt: { type: Date, default: Date.now },

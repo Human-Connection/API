@@ -100,7 +100,7 @@ module.exports = {
         city: faker.address.city(),
         zipCode: faker.address.zipCode(),
         street: faker.address.streetAddress(),
-        country: faker.address.country(),
+        country: faker.address.countryCode(),
         lat: 54.032726 - (Math.random() * 10),
         lng: 6.558838 + (Math.random() * 10)
       });

@@ -10,6 +10,7 @@ module.exports = function (app) {
     content: { type: String, required: true },
     // Generated from content
     contentExcerpt: { type: String, required: true },
+    hasMore: { type: Boolean },
     upvotes: { type: Array, default: [] },
     upvoteCount: { type: Number, default: 0 },
     deleted: { type: Boolean, default: false, index: true },

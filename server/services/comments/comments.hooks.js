@@ -35,12 +35,17 @@ const xssFields = ['content', 'contentExcerpt'];
 module.exports = {
   before: {
     all: [
+      softDelete(),
       xss({ fields: xssFields })
     ],
-    find: [],
-    get: [
-      softDelete()
+    find: [
+      // We want to deleted comments to show up
+      (hook) => {
+        delete hook.params.query.deleted;
+        return hook;
+      }
     ],
+    get: [],
     create: [
       authenticate('jwt'),
       // Allow seeder to seed comments
@@ -48,8 +53,7 @@ module.exports = {
         isVerified()
       ),
       associateCurrentUser(),
-      createExcerpt({ length: 180 }),
-      softDelete()
+      createExcerpt({ length: 180 })
     ],
     update: [
       authenticate('jwt'),
@@ -58,7 +62,6 @@ module.exports = {
         restrictToOwner()
       ),
       createExcerpt({ length: 180 }),
-      softDelete(),
       setNow('updatedAt')
     ],
     patch: [
@@ -76,7 +79,6 @@ module.exports = {
         }, restrictToOwner())
       ),
       createExcerpt({ length: 180 }),
-      softDelete(),
       setNow('updatedAt'),
       // SoftDelete uses patch to delete items
       // Make changes to deleted items here
@@ -94,8 +96,7 @@ module.exports = {
           isVerified(),
           restrictToOwner()
         )
-      ),
-      softDelete()
+      )
     ]
   },
 

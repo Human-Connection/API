@@ -5,6 +5,7 @@
   "frontURL": "WEBAPP_BASE_URL",
   "mongodb": "MONGO_DB",
   "debug": true,
+  "logLevel": "warn",
   "smtpConfig": {
     "host": "SMTP_HOST",
     "port": 587,

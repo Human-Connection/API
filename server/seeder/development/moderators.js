@@ -9,7 +9,6 @@ module.exports = (seederstore) => {
         email: 'test3@test3.de',
         password: '1234',
         name: 'Mike Moderator',
-        isnothere: true,
         timezone: 'Europe/Berlin',
         avatar: '{{internet.avatar}}',
         isVerified : true,
