@@ -39,7 +39,8 @@
     "start": "concurrently 'mongod' 'wait-on tcp:27017 && NODE_ENV=production node server/'",
     "start:win": "concurrently \"mongod\" \"wait-on tcp:27017 &&SET NODE_ENV=production&& node server/\"",
     "dev:debug": "npm run clear && concurrently '$npm_package_config_mongoDev' 'wait-on tcp:27017 && NODE_ENV=development nodemon --inspect server/'",
-    "dev": "npm run clear && concurrently '$npm_package_config_mongoDev' 'wait-on tcp:27017 && NODE_ENV=development DEBUG=feathers nodemon server/'",
+    "dev": "npm run clear && concurrently '$npm_package_config_mongoDev' 'wait-on tcp:27017 && NODE_ENV=development nodemon server/'",
+    "dev:local": "sh scripts/run-local.sh",
     "dev:noseed": "concurrently 'mongod --dbpath data' 'wait-on tcp:27017 && NODE_ENV=development DEBUG=feathers nodemon server/'",
     "dev:win": "npm run clear && concurrently \"mongod --dbpath /data/db\" \"wait-on tcp:27017&&cross-env NODE_ENV=development&&cross-env DEBUG=feathers&& nodemon --inspect server/\"",
     "mocha": "npm run clear && $npm_package_config_concurrently '$npm_package_config_mongoDev &>/dev/null' 'wait-on tcp:27017 && NODE_ENV=test $npm_package_config_mocha'",
@@ -77,6 +78,7 @@
     "feathers-mongodb": "~3.0.0",
     "feathers-mongodb-fuzzy-search": "~1.1.1",
     "feathers-mongoose": "~5.1.2",
+    "feathers-profiler": "^0.1.5",
     "feathers-rest": "~1.8.1",
     "feathers-seeder": "~1.0.10",
     "feathers-socketio": "~2.0.1",
@@ -110,7 +112,6 @@
     "istanbul": "1.1.0-alpha.1",
     "mocha": "~5.2.0",
     "nodemon": "~1.17.4",
-    "shx": "^0.2.2",
     "wait-on": "~2.1.0"
   }
 }

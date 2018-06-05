@@ -27,6 +27,7 @@ module.exports = function (app) {
 
   const contributions = new mongooseClient.Schema({
     userId: { type: String, required: true, index: true },
+    organizationId: { type: String, index: true },
     categoryIds: { type: Array, index: true },
     title: { type: String, required: true },
     // Generated from title
@@ -36,6 +37,7 @@ module.exports = function (app) {
     content: { type: String, required: true },
     // Generated from content
     contentExcerpt: { type: String, required: true },
+    hasMore: { type: Boolean },
     teaserImg: { type: String },
     language: { type: String, required: true, index: true },
     shoutCount: { type: Number, default: 0, index: true },
@@ -48,11 +50,13 @@ module.exports = function (app) {
     },
     isEnabled: {
       type: Boolean,
-      default: true
+      default: true,
+      index: true
     },
     tags: { type: Array },
     emotions: {
       type: Object,
+      index: true,
       default: {
         angry: {
           count: 0,
@@ -85,7 +89,7 @@ module.exports = function (app) {
   contributions.index({
     title: 'text',
     content: 'text',
-    tags: 'text',
+    tags: 'text'
   }, {
     name: 'contributions_full_text',
     default_language: 'en',

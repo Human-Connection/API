@@ -1,8 +1,8 @@
-// const { authenticate } = require('feathers-authentication').hooks;
-const { disallow, populate } = require('feathers-hooks-common');
-const {
-  restrictToOwner
-} = require('feathers-authentication-hooks');
+const { authenticate } = require('feathers-authentication').hooks;
+const { disallow, populate, unless } = require('feathers-hooks-common');
+const { restrictToOwner } = require('feathers-authentication-hooks');
+const isAdmin = require('../../hooks/is-admin');
+
 const restrict = [
   restrictToOwner()
 ];
@@ -13,11 +13,18 @@ const commentSchema = {
     nameAs: 'comment',
     parentField: 'relatedCommentId',
     childField: '_id',
+    query: {
+      $limit: 1
+    },
     include: {
       service: 'users',
       nameAs: 'user',
       parentField: 'userId',
-      childField: '_id'
+      childField: '_id',
+      query: {
+        $limit: 1,
+        $select: ['_id', 'name', 'slug', 'avatar', 'lastActiveAt', 'thumbnails']
+      }
     }
   }
 };
@@ -27,7 +34,10 @@ const contributionSchema = {
     service: 'contributions',
     nameAs: 'contribution',
     parentField: 'relatedContributionId',
-    childField: '_id'
+    childField: '_id',
+    query: {
+      $limit: 1
+    }
   }
 };
 
@@ -36,14 +46,37 @@ const userSchema = {
     service: 'users',
     nameAs: 'user',
     parentField: 'relatedUserId',
-    childField: '_id'
+    childField: '_id',
+    query: {
+      $limit: 1,
+      $select: ['_id', 'name', 'slug', 'avatar', 'lastActiveAt', 'thumbnails']
+    }
+  }
+};
+
+const organizationSchema = {
+  include: {
+    service: 'organizations',
+    nameAs: 'organization',
+    parentField: 'relatedOrganizationId',
+    childField: '_id',
+    query: {
+      $limit: 1,
+      $select: ['_id', 'userId', 'name', 'slug', 'logo', 'thumbnails']
+    }
   }
 };
 
 module.exports = {
   before: {
-    all: [ ],
-    find: [ ...restrict ],
+    all: [
+      authenticate('jwt')
+    ],
+    find: [
+      unless(isAdmin,
+        restrictToOwner()
+      )
+    ],
     get: [ ...restrict ],
     create: [ disallow('external') ],
     update: [ ...restrict ],
@@ -53,6 +86,7 @@ module.exports = {
 
   after: {
     all: [
+      populate({ schema: organizationSchema }),
       populate({ schema: contributionSchema }),
       populate({ schema: commentSchema }),
       populate({ schema: userSchema })

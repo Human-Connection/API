@@ -1,10 +1,10 @@
-const _ = require('lodash');
 const seedHelpers = require('../../helper/seed-helpers');
+const _ = require('lodash');
 
 module.exports = (seederstore) => {
   return {
     services: [{
-      count: _.size(seederstore.contributions) * 3,
+      count: Math.min((_.size(seederstore.contributions) * 3), 100),
       path: 'comments',
       templates: [
         {

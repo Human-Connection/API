@@ -15,7 +15,7 @@ module.exports = function (upsertQuery) {
     }
 
     params.mongoose = Object.assign({}, params.mongoose, { upsert: true });
-    params.query = upsertQuery(context); // { address: '123' }
+    params.query = upsertQuery(context);
 
     return service.patch(null, data, params)
       .then(result => {

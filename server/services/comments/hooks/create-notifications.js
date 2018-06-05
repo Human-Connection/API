@@ -14,7 +14,7 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
       const contributionId = hook.result.contributionId;
       const creatorId = hook.result.userId;
 
-      contributionService.get(contributionId)
+      contributionService.get(contributionId, { _populate: 'skip' })
         .then(result => {
           const userId = result.userId;
 

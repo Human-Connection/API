@@ -10,7 +10,7 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
       }
 
       // Stop, if it was a find method and $limit was not set
-      if (hook.method === 'find' && (!hook.params.query || hook.params.query.$limit !== 1)) {
+      if (hook.method === 'find' && (!hook.params.query || (hook.params.query.$limit !== 1 && !hook.params.query.slug))) {
         return resolve(hook);
       }
 
@@ -21,27 +21,28 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
       }
 
       let currentData = isArray ? hook.result.data[0] : hook.result;
-      if (!currentData.categoryIds || !currentData.categoryIds.length) {
+      let categoryIds = currentData.categoryIds;
+      if (!categoryIds || !categoryIds.length) {
         return resolve(hook);
       }
 
       return contributionService.find({
         query: {
-          type: 'cando'
+          type: 'cando',
+          isEnabled: true
         }
-      })
+      }, { _populate: 'skip' })
         .then(({data}) => {
           let associatedCanDos = [];
-          let categoryIds = currentData.categoryIds;
-          if (categoryIds && categoryIds.length) {
-            while (associatedCanDos.length < limit && data.length) {
-              let item = data.shift();
-              let check = categoryIds.some(category => {
-                return item.categoryIds.includes(category);
+          while (associatedCanDos.length < limit && data.length) {
+            let item = data.shift();
+            let check = categoryIds.some(id => {
+              return item.categoryIds.some(innerId => {
+                return innerId.toString() == id.toString();
               });
-              if (check && item._id.toString() !== currentData._id.toString()) {
-                associatedCanDos.push(item);
-              }
+            });
+            if (check && item._id.toString() !== currentData._id.toString()) {
+              associatedCanDos.push(item);
             }
           }
           if (isArray) {

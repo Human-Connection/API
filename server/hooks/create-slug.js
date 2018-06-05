@@ -3,8 +3,10 @@ const slug = require('slug');
 const getUniqueSlug = require('../helper/get-unique-slug');
 const { isEmpty } = require('lodash');
 
-module.exports = function (options = { field: null, overwrite: false, unique: true }) {
+module.exports = function (options = {}) {
   return function (hook) {
+    options = Object.assign({ field: null, overwrite: false, unique: true }, options);
+
     if (!options.field || !hook.data[options.field]) return hook;
 
     // do not overwrite existing slug
@@ -16,7 +18,7 @@ module.exports = function (options = { field: null, overwrite: false, unique: tr
       const titleSlug = slug(hook.data[options.field], {
         lower: true
       });
-      if (options.unique) {
+      if (options.unique !== false) {
         getUniqueSlug(hook.service, titleSlug, null, hook.id)
           .then((uniqueSlug) => {
             hook.data.slug = uniqueSlug;

@@ -19,6 +19,7 @@ const authentication = require('./authentication');
 const mongoose = require('./mongoose');
 const Raven = require('raven');
 const logger = require('./logger');
+const { profiler }  = require('feathers-profiler');
 
 const app = feathers();
 
@@ -64,6 +65,14 @@ app.configure(authentication);
 
 // Set up our services (see `services/index.js`)
 app.configure(services);
+
+if (process.env.NODE_ENV !== 'production') {
+  app.configure(profiler({
+    stats: 'detail',
+    logger: { log: payload => app.debug(payload.slice(9)) }
+  })); // must be configured after all services
+}
+
 // Configure middleware (see `middleware/index.js`) - always has to be last
 app.configure(middleware);
 app.hooks(appHooks);

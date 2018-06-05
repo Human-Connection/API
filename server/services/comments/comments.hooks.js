@@ -21,7 +21,11 @@ const userSchema = {
     service: 'users',
     nameAs: 'user',
     parentField: 'userId',
-    childField: '_id'
+    childField: '_id',
+    query: {
+      $limit: 1,
+      $select: ['_id', 'name', 'slug', 'avatar', 'lastActiveAt', 'thumbnails']
+    }
   }
 };
 
@@ -31,12 +35,17 @@ const xssFields = ['content', 'contentExcerpt'];
 module.exports = {
   before: {
     all: [
+      softDelete(),
       xss({ fields: xssFields })
     ],
-    find: [],
-    get: [
-      softDelete()
+    find: [
+      // We want to deleted comments to show up
+      (hook) => {
+        delete hook.params.query.deleted;
+        return hook;
+      }
     ],
+    get: [],
     create: [
       authenticate('jwt'),
       // Allow seeder to seed comments
@@ -44,8 +53,7 @@ module.exports = {
         isVerified()
       ),
       associateCurrentUser(),
-      createExcerpt({ length: 180 }),
-      softDelete()
+      createExcerpt({ length: 180 })
     ],
     update: [
       authenticate('jwt'),
@@ -54,7 +62,6 @@ module.exports = {
         restrictToOwner()
       ),
       createExcerpt({ length: 180 }),
-      softDelete(),
       setNow('updatedAt')
     ],
     patch: [
@@ -62,7 +69,7 @@ module.exports = {
       unless(isProvider('server'),
         isVerified(),
         unless((hook) => {
-          // TODO: change that to a more sane method by going through the server with an constum service
+          // TODO: change that to a more sane method by going through the server with an custom service
           // only allow upvoteCount increment for non owners
           // the data has to be the exact copy of the valid object
           const valid = {$inc: {upvoteCount: 1}};
@@ -72,7 +79,6 @@ module.exports = {
         }, restrictToOwner())
       ),
       createExcerpt({ length: 180 }),
-      softDelete(),
       setNow('updatedAt'),
       // SoftDelete uses patch to delete items
       // Make changes to deleted items here
@@ -90,27 +96,34 @@ module.exports = {
           isVerified(),
           restrictToOwner()
         )
-      ),
-      softDelete()
+      )
     ]
   },
 
   after: {
     all: [
-      populate({ schema: userSchema }),
       xss({ fields: xssFields }),
-      keepDeletedDataFields()
+      keepDeletedDataFields(),
+      discard('wasSeeded')
     ],
     find: [
-      discard('content', 'user.coverImg', 'badgeIds')
+      populate({ schema: userSchema }),
+      discard('content', 'badgeIds')
     ],
-    get: [],
+    get: [
+      populate({ schema: userSchema })
+    ],
     create: [
+      populate({ schema: userSchema }),
       createMentionNotifications(),
       createNotifications()
     ],
-    update: [],
-    patch: [],
+    update: [
+      createMentionNotifications()
+    ],
+    patch: [
+      createMentionNotifications()
+    ],
     remove: []
   },
 

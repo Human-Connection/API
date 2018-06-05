@@ -1,5 +1,5 @@
 const {authenticate} = require('feathers-authentication').hooks;
-const {when, unless, isProvider, populate, softDelete, setNow} = require('feathers-hooks-common');
+const {discard, when, unless, isProvider, populate, softDelete, setNow} = require('feathers-hooks-common');
 const {
   //queryWithCurrentUser,
   associateCurrentUser,
@@ -18,6 +18,8 @@ const isModerator = require('../../hooks/is-moderator-boolean');
 const excludeDisabled = require('../../hooks/exclude-disabled');
 const getAssociatedCanDos = require('./hooks/get-associated-can-dos');
 const createMentionNotifications = require('./hooks/create-mention-notifications');
+const notifyFollowers = require('./hooks/notify-followers');
+const canEditOrganization = require('../organizations/hooks/can-edit-organization');
 const isSingleItem = require('../../hooks/is-single-item');
 const xss = require('../../hooks/xss');
 
@@ -26,7 +28,23 @@ const userSchema = {
     service: 'users',
     nameAs: 'user',
     parentField: 'userId',
-    childField: '_id'
+    childField: '_id',
+    query: {
+      $limit: 1,
+      $select: ['_id', 'name', 'slug', 'avatar', 'lastActiveAt', 'thumbnails']
+    }
+  }
+};
+
+const organizationSchema = {
+  include: {
+    service: 'organizations',
+    nameAs: 'organization',
+    parentField: 'organizationId',
+    childField: '_id',
+    query: {
+      $select: ['_id', 'userId', 'name', 'slug', 'logo']
+    }
   }
 };
 
@@ -46,6 +64,9 @@ const candosSchema = {
     nameAs: 'candoUsers',
     parentField: '_id',
     childField: 'contributionId',
+    query: {
+      $select: ['_id', 'userId', 'done']
+    },
     asArray: true
   }
 };
@@ -57,16 +78,9 @@ const commentsSchema = {
     parentField: '_id',
     childField: 'contributionId',
     query: {
-      $select: ['_id']
+      $select: ['_id', 'contributionId']
     },
     asArray: true
-    //,
-    //include: {
-    //  service: 'users',
-    //  nameAs: 'user',
-    //  parentField: 'userId',
-    //  childField: '_id'
-    //}
   }
 };
 
@@ -87,6 +101,7 @@ const xssFields = ['content', 'contentExcerpt', 'cando.reason'];
 module.exports = {
   before: {
     all: [
+      softDelete(),
       xss({fields: xssFields})
     ],
     find: [
@@ -96,31 +111,31 @@ module.exports = {
       search(),
       search({
         fields: ['title', 'content']
-      }),
-      softDelete()
+      })
     ],
     get: [
       unless(isModerator(),
         excludeDisabled()
-      ),
-      softDelete()
+      )
     ],
     create: [
       authenticate('jwt'),
       // Allow seeder to seed contributions
+      associateCurrentUser(),
       unless(isProvider('server'),
-        isVerified()
+        isVerified(),
+        canEditOrganization()
       ),
       associateCurrentUser(),
       createSlug({field: 'title'}),
       saveRemoteImages(['teaserImg']),
-      createExcerpt(),
-      softDelete()
+      createExcerpt()
     ],
     update: [
       authenticate('jwt'),
       unless(isProvider('server'),
-        isVerified()
+        isVerified(),
+        canEditOrganization()
       ),
       unless(isModerator(),
         excludeDisabled(),
@@ -128,13 +143,13 @@ module.exports = {
       ),
       saveRemoteImages(['teaserImg']),
       createExcerpt(),
-      softDelete(),
       setNow('updatedAt')
     ],
     patch: [
       authenticate('jwt'),
       unless(isProvider('server'),
-        isVerified()
+        isVerified(),
+        canEditOrganization()
       ),
       unless(isModerator(),
         excludeDisabled(),
@@ -142,7 +157,6 @@ module.exports = {
       ),
       saveRemoteImages(['teaserImg']),
       createExcerpt(),
-      softDelete(),
       setNow('updatedAt'),
       // SoftDelete uses patch to delete items
       // Make changes to deleted items here
@@ -169,9 +183,10 @@ module.exports = {
     remove: [
       authenticate('jwt'),
       unless(isModerator(),
+        canEditOrganization(),
+        excludeDisabled(),
         restrictToOwner()
-      ),
-      softDelete()
+      )
     ]
   },
 
@@ -189,20 +204,24 @@ module.exports = {
           'createdAt',
           'updatedAt'
         ]
-      })
+      }),
+      discard('wasSeeded')
     ],
     find: [
       when(isSingleItem(),
         getAssociatedCanDos()
       ),
+      populate({schema: organizationSchema}),
       thumbnails(thumbs)
     ],
     get: [
       getAssociatedCanDos(),
+      populate({schema: organizationSchema}),
       thumbnails(thumbs)
     ],
     create: [
       createMentionNotifications(),
+      notifyFollowers(),
       thumbnails(thumbs)
     ],
     update: [

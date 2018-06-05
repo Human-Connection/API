@@ -1,4 +1,4 @@
-const { authenticate } = require('feathers-authentication').hooks;
+// const { authenticate } = require('feathers-authentication').hooks;
 const { isProvider, when, iff, discard, populate, disableMultiItemChange, lowerCase } = require('feathers-hooks-common');
 const { restrictToOwner } = require('feathers-authentication-hooks');
 const { addVerification, removeVerification } = require('feathers-authentication-management').hooks;
@@ -8,6 +8,8 @@ const restrictUserRole = require('./hooks/restrict-user-role');
 const createAdmin = require('./hooks/create-admin');
 const createSlug = require('../../hooks/create-slug');
 const thumbnails = require('../../hooks/thumbnails');
+const isModerator = require('../../hooks/is-moderator-boolean');
+const isSingleItem = require('../../hooks/is-single-item');
 const inviteCode = require('./hooks/invite-code')();
 const search = require('feathers-mongodb-fuzzy-search');
 const isOwnEntry = require('./hooks/is-own-entry');
@@ -19,11 +21,10 @@ const cleanupBasicData = when(isProvider('external'),
   discard('password', '_computed', 'verifyExpires', 'resetExpires', 'verifyChanges')
 );
 const cleanupPersonalData = when(isProvider('external'),
-  discard('email', 'verifyToken', 'verifyShortToken', 'doiToken', 'systemNnotificationsSeen')
+  discard('email', 'verifyToken', 'verifyShortToken', 'doiToken', 'systemNotificationsSeen')
 );
 
 const restrict = [
-  authenticate('jwt'),
   restrictToOwner({
     idField: '_id',
     ownerField: '_id'
@@ -56,7 +57,10 @@ const userSettingsPrivateSchema = {
     nameAs: 'userSettings',
     parentField: '_id',
     childField: 'userId',
-    asArray: false
+    asArray: false,
+    query: {
+      $limit: 1
+    }
   }
 };
 
@@ -68,6 +72,7 @@ const userSettingsSchema = {
     childField: 'userId',
     query: {
       $select: ['uiLanguage', 'contentLanguages'],
+      $limit: 1
     },
     asArray: false
   }
@@ -90,13 +95,14 @@ const thumbnailOptions = {
 
 module.exports = {
   before: {
-    all: [
+    all: [],
+    find: [
+      // authenticate('jwt'),
       search(),
-      search({  // regex search on given fields
+      search({
         fields: ['name', 'email']
       })
     ],
-    find: [],
     get: [],
     create: [
       hashPassword(),
@@ -131,7 +137,6 @@ module.exports = {
     ],
     patch: [
       ...restrict,
-      // hashPassword(),
       disableMultiItemChange(),
       lowerCase('email', 'username'),
       // Only set slug once
@@ -155,16 +160,24 @@ module.exports = {
 
   after: {
     all: [
-      populate({ schema: badgesSchema }),
-      populate({ schema: candosSchema }),
-      populate({ schema: userSettingsSchema }),
       cleanupBasicData
     ],
     find: [
+      when(isModerator(),
+        populate({ schema: userSettingsSchema })
+      ),
+      when(isSingleItem(),
+        populate({ schema: badgesSchema }),
+        populate({ schema: candosSchema }),
+        populate({ schema: userSettingsSchema })
+      ),
       thumbnails(thumbnailOptions),
       cleanupPersonalData
     ],
     get: [
+      populate({ schema: badgesSchema }),
+      populate({ schema: candosSchema }),
+      populate({ schema: userSettingsSchema }),
       thumbnails(thumbnailOptions),
       // remove personal data if its not the current authenticated user
       iff(isOwnEntry(false),
