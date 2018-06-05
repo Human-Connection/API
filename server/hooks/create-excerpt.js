@@ -8,7 +8,11 @@ const { getByDot, setByDot } = require('feathers-hooks-common');
 const { isEmpty } = require('lodash');
 
 const sanitizeOptions = {
-  allowedTags: [ 'br', 'a', 'p' ]
+  allowedTags: ['p', 'br', 'a', 'span', 'blockquote'],
+  allowedAttributes: {
+    a: ['href', 'class', 'target', 'data-*' , 'contenteditable'],
+    span: ['contenteditable', 'class', 'data-*']
+  },
 };
 
 module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
@@ -29,14 +33,19 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
       .replace(/(\ ){2,}/ig, ' ')
       .trim();
 
-      contentSanitized = trunc(contentSanitized, options.length).html;
+      contentBefore = trunc(content, 9999999999);
+      const contentTruncated = trunc(contentSanitized, options.length);
+      hook.app.debug('contentBefore');
+      hook.app.debug(contentBefore.text.length);
+      hook.app.debug('contentTruncated');
+      hook.app.debug(contentTruncated.text.length);
 
-      setByDot(hook.data, 'hasMore', contentSanitized.length < content.length);
+      const hasMore = contentBefore.text.length > (contentTruncated.text.length + 20);
+      setByDot(hook.data, 'hasMore', hasMore);
 
       // set excerpt
-      setByDot(hook.data, `${options.field}Excerpt`, contentSanitized)
+      setByDot(hook.data, `${options.field}Excerpt`, hasMore ? contentTruncated.html : content.replace(/(\ ){2,}/ig, ' '))
     } catch (err) {
-      hook.app.error(err);
       throw new Error(err);
     }
     // trim content
