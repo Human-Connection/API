@@ -37,7 +37,7 @@ const reviewerSchema = {
     childField: '_id',
     query: {
       $limit: 1,
-      $select: ['_id', 'name', 'slug', 'avatar', 'lastActiveAt', 'thumbnails']
+      $select: ['_id', 'name', 'slug', 'avatar', 'lastActiveAt', 'termsAndConditionsAccepted', 'thumbnails']
     }
   }
 };
