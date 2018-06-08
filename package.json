@@ -108,6 +108,7 @@
     "babel-eslint": "~8.2.3",
     "concurrently": "~3.5.1",
     "cross-env": "^5.1.5",
+    "cucumber": "^4.2.1",
     "eslint": "~4.19.1",
     "istanbul": "1.1.0-alpha.1",
     "mocha": "~5.2.0",
