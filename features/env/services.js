@@ -5,12 +5,16 @@ const { spawn } = require('child_process');
 let hcApi;
 
 // Asynchronous Callback
-BeforeAll(() => {
-  hcApi = spawn((process.env.NODE_PATH || 'node'), ['server/'], {
+BeforeAll((callback) => {
+  hcApi = spawn(process.env.NODE_PATH || 'node ', ['server/'], {
     env: {
       NODE_ENV: 'test',
     },
-  }).on('error', (err) => { throw err; });
+    shell: '/bin/sh'
+  }).on('error', (err) => {
+    console.log('Could not start the API backend', err);
+    throw(err);
+  });
 
   hcApi.stdout.on('data', (data) => {
     console.log(`stdout: ${data}`);
@@ -19,6 +23,8 @@ BeforeAll(() => {
   hcApi.stderr.on('data', (data) => {
     console.log(`stderr: ${data}`);
   });
+
+  callback(); // success
 });
 
 // Asynchronous Promise
