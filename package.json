@@ -44,7 +44,8 @@
     "dev:noseed": "concurrently 'mongod --dbpath data' 'wait-on tcp:27017 && NODE_ENV=development DEBUG=feathers nodemon server/'",
     "dev:win": "npm run clear && concurrently \"mongod --dbpath /data/db\" \"wait-on tcp:27017&&cross-env NODE_ENV=development&&cross-env DEBUG=feathers&& nodemon --inspect server/\"",
     "mocha": "npm run clear && $npm_package_config_concurrently '$npm_package_config_mongoDev &>/dev/null' 'wait-on tcp:27017 && NODE_ENV=test $npm_package_config_mocha'",
-    "coverage": "npm run clear && $npm_package_config_concurrently '$npm_package_config_mongoDev &>/dev/null' 'wait-on tcp:27017 && NODE_ENV=test istanbul cover $npm_package_config_mochaCoverage'"
+    "coverage": "npm run clear && $npm_package_config_concurrently '$npm_package_config_mongoDev &>/dev/null' 'wait-on tcp:27017 && NODE_ENV=test istanbul cover $npm_package_config_mochaCoverage'",
+    "cucumber": "cucumber-js"
   },
   "config": {
     "mongoDev": "mongod --dbpath data --quiet",
@@ -106,12 +107,14 @@
   },
   "devDependencies": {
     "babel-eslint": "~8.2.3",
+    "chai": "^4.1.2",
     "concurrently": "~3.5.1",
     "cross-env": "^5.1.5",
     "cucumber": "^4.2.1",
     "eslint": "~4.19.1",
     "istanbul": "1.1.0-alpha.1",
     "mocha": "~5.2.0",
+    "node-fetch": "^2.1.2",
     "nodemon": "~1.17.4",
     "wait-on": "~2.1.0"
   }
