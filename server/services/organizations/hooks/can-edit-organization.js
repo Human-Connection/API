@@ -19,9 +19,9 @@ module.exports = (options = {field: 'organizationId'}) => async hook => {
   const organization = await hook.app.service('organizations').get(organizationId);
 
   // only allow when the user is assigned with the organization
-  if (!organization || !organization.userIds.some(userId => {
-    userId.toString() === currentUserId.toString();
-  })) {
+  if (!organization || !organization.users.some(
+    ({id}) => id === currentUserId.toString()
+  )) {
     throw new errors.Forbidden('you can\'t create or edit for that organization');
   }
 

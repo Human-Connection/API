@@ -2518,6 +2518,10 @@ http-signature@~1.2.0:
     jsprim "^1.2.2"
     sshpk "^1.7.0"
 
+"human-connection-modules@git+https://github.com/Human-Connection/Modules.git":
+  version "1.0.0"
+  resolved "git+https://github.com/Human-Connection/Modules.git#df661d2da572f1b5a330aef25fc64b8837177cbb"
+
 iconv-lite@0.4.19:
   version "0.4.19"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.19.tgz#f7468f60135f5e5dad3399c0a81be9a1603a082b"

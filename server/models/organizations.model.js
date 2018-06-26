@@ -2,6 +2,11 @@
 //
 // See http://mongoosejs.com/docs/models.html
 // for more of what you can do here.
+
+const hcModules = require('human-connection-modules');
+const channelNames = hcModules.collections.socialChannels.names;
+const organizationTypes = hcModules.collections.organizationTypes.names;
+
 module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
   const { Schema } = mongooseClient;
@@ -19,12 +24,20 @@ module.exports = function (app) {
     lng: { type: Number, required: true },
     primary: { type: Boolean, default: false }
   });
-  const channel = mongooseClient.Schema({
+  const channelSchema = mongooseClient.Schema({
     name: { type: String, required: true },
     type: {
       type: String,
-      enum: ['telegram', 'yahoo', 'skype', 'meetup', 'twitter', 'medium'],
+      enum: channelNames,
       required: true
+    }
+  });
+  const userSchema = mongooseClient.Schema({
+    id: { type: String, required: true },
+    role: {
+      type: String,
+      enum: ['admin', 'editor'],
+      default: 'editor'
     }
   });
   const organizations = new Schema({
@@ -36,8 +49,7 @@ module.exports = function (app) {
     logo: { type: String },
     coverImg: { type: String },
     creatorId: { type: String, required: true },
-    ownerIds: { type: [String], default: [] },
-    userIds: { type: [String], default: [] },
+    users: { type: [userSchema], default: [] },
     description: { type: String, required: true },
     descriptionExcerpt: { type: String }, // will be generated automatically
     phone: { type: String },
@@ -46,11 +58,11 @@ module.exports = function (app) {
     type: {
       type: String,
       index: true,
-      enum: ['ngo', 'npo', 'goodpurpose', 'ev', 'eva', 'other']
+      enum: organizationTypes
     },
     language: { type: String, required: true, default: 'de', index: true },
     addresses: { type: [addressSchema], default: [] },
-    channels: { type: [channel], default: [] },
+    channels: { type: [channelSchema], default: [] },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
     isEnabled: {

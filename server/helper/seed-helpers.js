@@ -1,5 +1,7 @@
 const _ = require('lodash');
 const faker = require('faker');
+const hcModules = require('human-connection-modules');
+const channelNames = hcModules.collections.socialChannels.names;
 const unsplashTopics = [
   'love',
   'family',
@@ -118,7 +120,7 @@ module.exports = {
     for (let i = 0; i < count; i++) {
       channels.push({
         name: faker.internet.userName(),
-        type: randomItem(['telegram', 'yahoo', 'skype', 'meetup', 'twitter', 'medium'])
+        type: randomItem(channelNames)
       });
     }
     return channels;

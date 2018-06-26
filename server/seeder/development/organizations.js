@@ -1,4 +1,6 @@
 const seedHelpers = require('../../helper/seed-helpers');
+const hcModules = require('human-connection-modules');
+const organizationTypes = hcModules.collections.organizationTypes.names;
 
 module.exports = (seederstore) => {
   let roleAdmin = ({role}) => role === 'admin';
@@ -14,7 +16,10 @@ module.exports = (seederstore) => {
         coverImg: () => seedHelpers.randomUnsplashUrl(),
         categoryIds: () => seedHelpers.randomCategories(seederstore),
         creatorId: () => seedHelpers.randomItem(seederstore.users, roleAdmin)._id,
-        userIds: () => [seedHelpers.randomItem(seederstore.users, roleAdmin)._id],
+        users: () => [{
+          id: seedHelpers.randomItem(seederstore.users, roleAdmin)._id,
+          role: 'admin'
+        }],
         url: '{{internet.url}}',
         phone: '{{phone.phoneNumber}}',
         publicEmail: '{{internet.email}}',
@@ -40,13 +45,16 @@ module.exports = (seederstore) => {
         coverImg: () => seedHelpers.randomItem([seedHelpers.randomUnsplashUrl(), null]),
         categoryIds: () => seedHelpers.randomCategories(seederstore),
         creatorId: () => seedHelpers.randomItem(seederstore.users)._id,
-        userIds: () => [seedHelpers.randomItem(seederstore.users)._id],
+        users: () => [{
+          id: seedHelpers.randomItem(seederstore.users)._id,
+          role: 'admin'
+        }],
         url: '{{internet.url}}',
         phone: '{{phone.phoneNumber}}',
         publicEmail: '{{internet.email}}',
         addresses: () => seedHelpers.randomAddresses(),
         channels: () => seedHelpers.randomChannels(),
-        type: () => seedHelpers.randomItem(['ngo', 'npo', 'goodpurpose', 'ev', 'eva', 'other']),
+        type: () => seedHelpers.randomItem(organizationTypes),
         description: '{{lorem.text}}',
         deletedAt: null,
         isEnabled: true,
