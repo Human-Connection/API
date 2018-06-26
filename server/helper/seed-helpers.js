@@ -35,17 +35,19 @@ const ngoLogos = [
 
 const difficulties = ['easy', 'medium', 'hard'];
 
+const randomItem = (items, filter) => {
+  let ids = filter
+    ? Object.keys(items)
+      .filter(id => {
+        return filter(items[id]);
+      })
+    : _.keys(items);
+  let randomIds = _.shuffle(ids);
+  return items[randomIds.pop()];
+};
+
 module.exports = {
-  randomItem: (items, filter) => {
-    let ids = filter
-      ? Object.keys(items)
-        .filter(id => {
-          return filter(items[id]);
-        })
-      : _.keys(items);
-    let randomIds = _.shuffle(ids);
-    return items[randomIds.pop()];
-  },
+  randomItem,
   randomItems: (items, key = '_id', min = 1, max = 1) => {
     let randomIds = _.shuffle(_.keys(items));
     let res = [];
@@ -105,7 +107,21 @@ module.exports = {
         lng: 6.558838 + (Math.random() * 10)
       });
     }
+    if (addresses.length) {
+      addresses[0].primary = true;
+    }
     return addresses;
+  },
+  randomChannels: () => {
+    const count = Math.round(Math.random() * 3);
+    let channels = [];
+    for (let i = 0; i < count; i++) {
+      channels.push({
+        name: faker.internet.userName(),
+        type: randomItem(['telegram', 'yahoo', 'skype', 'meetup', 'twitter', 'medium'])
+      });
+    }
+    return channels;
   },
   /**
    * Get array of ids from the given seederstore items after mapping them by the key in the values

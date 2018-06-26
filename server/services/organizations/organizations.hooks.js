@@ -76,11 +76,18 @@ module.exports = {
       ),
       when(isModerator(),
         hook => {
-          hook.data.reviewedBy = hook.params.user.userId;
+          hook.data.reviewedBy = hook.params.user._id;
           return hook;
         }
       ),
-      associateCurrentUser(),
+      // Add current user as creator and user
+      associateCurrentUser({ as: 'creatorId' }),
+      unless(isProvider('server'),
+        hook => {
+          hook.data.userIds = [hook.params.user._id];
+          return hook;
+        }
+      ),
       createSlug({ field: 'name' }),
       createExcerpt({ field: 'description' }),
       saveRemoteImages(['logo', 'coverImg'])
