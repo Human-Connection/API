@@ -53,7 +53,7 @@ module.exports = function (app) {
     description: { type: String, required: true },
     descriptionExcerpt: { type: String }, // will be generated automatically
     phone: { type: String },
-    publicEmail: { type: String },
+    email: { type: String },
     url: { type: String },
     type: {
       type: String,
