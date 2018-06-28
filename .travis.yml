@@ -25,6 +25,7 @@ jobs:
       - yarn add codacy-coverage
       - rm -Rf tmp
       - yarn eslint
+      - yarn test
       - NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha -- test/ --timeout=10000 --exit
       - cat ./coverage/lcov.info | codacy-coverage
       - rm ./config/local.json
