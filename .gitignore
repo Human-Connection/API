@@ -122,3 +122,4 @@ lib/
 rethinkdb_data
 .env
 /config/local.json
+package-lock.json
