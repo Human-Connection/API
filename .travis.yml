@@ -31,3 +31,9 @@ after_success:
     docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
     docker push humanconnection/api-feathers:alpha;
     fi
+
+after_script:
+  - if [ $TRAVIS_BRANCH == "untested_deployment" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then
+    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+    docker push humanconnection/api-feathers:alpha;
+    fi
