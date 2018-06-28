@@ -61,8 +61,10 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
    # start mongodb, feathers and seed database
    $ yarn dev
    $ yarn dev:win if you're on windows
+
    # start mongodb, feathers without seeding the database
    $ yarn dev:noseed
+   
    # start mongodb, feathers for production
    $ yarn start
    ```
@@ -103,10 +105,9 @@ The seeder configuration has two properties:
 
 ## Testing
 
-Simply run `yarn test` and all your tests in the `test/` directory will be run.
+First you will need to install the `nyc` CLI by running `yarn global add nyc` before you run the tests for the first time.
 
-> **Note:** 
-> *At the moment there are some issues with linting while testing, but you can run the tests also with mocha run*
+Then simply run `yarn test` and all your tests in the `test/` directory will be run.
 
 ## Scaffolding
 

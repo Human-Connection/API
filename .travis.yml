@@ -20,14 +20,11 @@ jobs:
       script:
       - docker build -t humanconnection/api-feathers:alpha .
     - script:
-      - cp ./config/local.example.json ./config/local.json
       - yarn install --frozen-lockfile --non-interactive
       - yarn add codacy-coverage
-      - rm -Rf tmp
-      - yarn eslint
-      - NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha -- test/ --timeout=10000 --exit
+      - yarn global add nyc
+      - yarn test:coverage --silent
       - cat ./coverage/lcov.info | codacy-coverage
-      - rm ./config/local.json
 
 after_success:
   - if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then
