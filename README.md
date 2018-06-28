@@ -105,9 +105,7 @@ The seeder configuration has two properties:
 
 ## Testing
 
-First you will need to install the `nyc` CLI by running `yarn global add nyc` before you run the tests for the first time.
-
-Then simply run `yarn test` and all your tests in the `test/` directory will be run.
+Simply run `yarn test` and all your tests in the `test/` directory will be run.
 
 ## Scaffolding
 
