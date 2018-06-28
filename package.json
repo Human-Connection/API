@@ -35,20 +35,22 @@
   "scripts": {
     "clear": "rm -Rf tmp",
     "test": "npm run eslint && cross-env NODE_ENV=test nyc --reporter=text-summary npm run mocha",
+    "test:mongo": "npm run eslint && cross-env NODE_ENV=test nyc --reporter=text-summary npm run mocha:mongo",
     "test:coverage": "npm run eslint && cross-env NODE_ENV=test nyc --reporter=lcovonly --reporter=text-summary npm run mocha",
     "eslint": "eslint server/. test/. --config .eslintrc.json",
     "start": "concurrently 'mongod' 'wait-on tcp:27017 && cross-env NODE_ENV=production node server/'",
     "start:win": "concurrently \"mongod\" \"wait-on tcp:27017 &&SET NODE_ENV=production&& node server/\"",
-    "dev:debug": "npm run clear && concurrently '$npm_package_config_mongoDev' 'wait-on tcp:27017 && cross-env DEBUG=feathers && cross-env NODE_ENV=development nodemon --inspect server/'",
-    "dev": "npm run clear && concurrently '$npm_package_config_mongoDev' 'wait-on tcp:27017 && cross-env DEBUG=feathers && cross-env NODE_ENV=development nodemon server/'",
+    "dev:debug": "npm run clear && concurrently '$npm_package_config_mongoDev &>/dev/null' 'wait-on tcp:27017 && cross-env DEBUG=feathers && cross-env NODE_ENV=development nodemon --inspect server/'",
+    "dev": "npm run clear && concurrently '$npm_package_config_mongoDev &>/dev/null' 'wait-on tcp:27017 && cross-env DEBUG=feathers && cross-env NODE_ENV=development nodemon server/'",
     "dev:local": "sh scripts/run-local.sh",
     "dev:noseed": "concurrently 'mongod --dbpath data' 'wait-on tcp:27017 && NODE_ENV=development DEBUG=feathers nodemon server/'",
     "dev:win": "npm run clear && concurrently \"mongod --dbpath /data/db\" \"wait-on tcp:27017&&cross-env NODE_ENV=development&&cross-env DEBUG=feathers&& nodemon --inspect server/\"",
-    "mocha": "npm run clear && $npm_package_config_concurrently '$npm_package_config_mongoDev &>/dev/null' 'wait-on tcp:27017 && NODE_ENV=test $npm_package_config_mocha'"
+    "mocha": "npm run clear && $npm_package_config_mocha",
+    "mocha:mongo": "$npm_package_config_concurrently '$npm_package_config_mongoDev &>/dev/null' 'wait-on tcp:27017 && npm run mocha'"
   },
   "config": {
     "mongoDev": "mongod --dbpath data --quiet",
-    "mocha": "node_modules/mocha/bin/_mocha test/ --recursive --timeout 10000 --exit",
+    "mocha": "cross-env NODE_ENV=test node_modules/mocha/bin/_mocha test/ --recursive --timeout 10000 --exit",
     "concurrently": "concurrently --kill-others --success first"
   },
   "dependencies": {
