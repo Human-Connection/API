@@ -1,6 +1,6 @@
 const isEnabled = require('../../hooks/is-enabled');
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const { iff } = require('feathers-hooks-common');
+const { iff, lowerCase } = require('feathers-hooks-common');
 
 const isAction = () => {
   let args = Array.from(arguments);
@@ -9,7 +9,9 @@ const isAction = () => {
 
 module.exports = {
   before: {
-    all: [],
+    all: [
+      lowerCase('value.email', 'value.username')
+    ],
     find: [],
     get: [],
     create: [
