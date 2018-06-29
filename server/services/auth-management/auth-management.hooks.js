@@ -1,5 +1,5 @@
 const isEnabled = require('../../hooks/is-enabled');
-const { authenticate } = require('feathers-authentication').hooks;
+const { authenticate } = require('@feathersjs/authentication').hooks;
 const { iff } = require('feathers-hooks-common');
 
 const isAction = () => {

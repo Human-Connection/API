@@ -2,7 +2,7 @@
 
 const { keyBy, isEmpty } = require('lodash');
 const mongoose = require('mongoose');
-const errors = require('feathers-errors');
+const errors = require('@feathersjs/errors');
 
 class Service {
   constructor (options) {

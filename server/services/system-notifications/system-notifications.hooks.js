@@ -1,6 +1,6 @@
 const { unless, isProvider } = require('feathers-hooks-common');
 const { isVerified } = require('feathers-authentication-management').hooks;
-const { authenticate } = require('feathers-authentication').hooks;
+const { authenticate } = require('@feathersjs/authentication').hooks;
 const isAdmin = require('../../hooks/is-admin');
 
 module.exports = {

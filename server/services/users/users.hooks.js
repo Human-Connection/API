@@ -15,7 +15,7 @@ const search = require('feathers-mongodb-fuzzy-search');
 const isOwnEntry = require('./hooks/is-own-entry');
 const removeAllRelatedUserData = require('./hooks/remove-all-related-user-data');
 
-const { hashPassword } = require('feathers-authentication-local').hooks;
+const { hashPassword } = require('@feathersjs/authentication-local').hooks;
 
 const cleanupBasicData = when(isProvider('external'),
   discard('password', '_computed', 'verifyExpires', 'resetExpires', 'verifyChanges')

@@ -5,11 +5,11 @@ const cors = require('cors');
 // const helmet = require('helmet');
 const bodyParser = require('body-parser');
 
-const feathers = require('feathers');
-const configuration = require('feathers-configuration');
-const hooks = require('feathers-hooks');
-const rest = require('feathers-rest');
-const socketio = require('feathers-socketio');
+const feathers = require('@feathersjs/feathers');
+const express = require('@feathersjs/express');
+const configuration = require('@feathersjs/configuration');
+const rest = require('@feathersjs/express/rest');
+const socketio = require('@feathersjs/socketio');
 const seeder = require('./seeder');
 
 const middleware = require('./middleware');
@@ -21,7 +21,7 @@ const Raven = require('raven');
 const logger = require('./logger');
 const { profiler }  = require('feathers-profiler');
 
-const app = feathers();
+const app = express(feathers());
 
 app.configure(require('feathers-logger')(logger));
 
@@ -49,10 +49,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(favicon(path.join(app.get('public'), 'favicon.ico')));
 // Host the public folder
-app.use('/', feathers.static(app.get('public')));
+app.use('/', express.static(app.get('public')));
 
-// Set up Plugins and providers
-app.configure(hooks());
 app.configure(mongoose);
 app.configure(rest());
 
