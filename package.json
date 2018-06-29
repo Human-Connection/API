@@ -3,7 +3,7 @@
   "description": "Human-Connection API",
   "version": "0.1.0",
   "homepage": "https://human-connection.org",
-  "license": "CC-BY-NC-SA-4.0",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/Human-Connection/API.git"
@@ -34,13 +34,10 @@
   },
   "scripts": {
     "clear": "rm -Rf tmp",
-    "nyc": "nyc --reporter=text-summary",
-    "test": "npm run eslint && cross-env NODE_ENV=test npm run nyc npm run mocha",
-    "test:mongo": "npm run eslint && cross-env NODE_ENV=test npm run nyc npm run mocha:mongo",
-    "test:coverage": "npm run eslint && cross-env NODE_ENV=test npm run nyc --reporter=lcovonly npm run mocha",
+    "test": "npm run eslint && cross-env NODE_ENV=test && nyc --reporter=lcovonly --reporter=text-summary npm run mocha",
+    "test:mongo": "npm run eslint && cross-env NODE_ENV=test && nyc --reporter=lcovonly --reporter=text-summary npm run mocha:mongo",
     "eslint": "eslint server/. test/. --config .eslintrc.json",
     "start": "concurrently 'mongod' 'wait-on tcp:27017 && cross-env NODE_ENV=production node server/'",
-    "start:win": "concurrently \"mongod\" \"wait-on tcp:27017 &&SET NODE_ENV=production&& node server/\"",
     "dev:debug": "npm run clear && concurrently '$npm_package_config_mongoDev &>/dev/null' 'wait-on tcp:27017 && cross-env DEBUG=feathers && cross-env NODE_ENV=development nodemon --inspect server/'",
     "dev": "npm run clear && concurrently '$npm_package_config_mongoDev &>/dev/null' 'wait-on tcp:27017 && cross-env DEBUG=feathers && cross-env NODE_ENV=development nodemon server/'",
     "dev:local": "sh scripts/run-local.sh",
@@ -110,7 +107,7 @@
   "devDependencies": {
     "babel-eslint": "~8.2.3",
     "concurrently": "~3.5.1",
-    "cross-env": "^5.1.5",
+    "cross-env": "^5.2.0",
     "eslint": "~4.19.1",
     "istanbul": "1.1.0-alpha.1",
     "mocha": "~5.2.0",

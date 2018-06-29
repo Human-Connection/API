@@ -72,7 +72,7 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
    > ##### IMPORTANT for WIN users: 
    > - make sure you have mongo bin directory added to your PATH
    > - if you picked another data directory during mongodb setup make sure 
-   > to change package.json scripts section for key "dev-win" so it points to
+   > to change package.json scripts section for key "dev:win" so it points to
    > the proper path. Otherwise you will get missing data path errors from mongodb.
    
    If you did it right it will seed some fake data for you and downloads some images and avatar for faster development.

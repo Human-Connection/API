@@ -57,9 +57,19 @@ describe('\'authManagement\' service', () => {
   });
 });
 
+const waitFor = (ms) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, ms);
+  });
+};
+
 const getTokenFromMail = async () => {
   // Get token from tmp email file
   const mailDir = path.join(__dirname, '../../tmp/emails');
+  // wait for the mail to be created first
+  await waitFor(50);
   const fileName = await fs.readdirSync(mailDir)[0];
   const mailFile = path.join(mailDir, fileName);
   const mailContent = await fs.readFileSync(mailFile, 'utf8');

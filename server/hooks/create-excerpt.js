@@ -37,15 +37,15 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
       const contentBefore = trunc(content, 9999999999);
       const contentTruncated = trunc(contentSanitized, options.length);
 
-      // save meta key hasMore to indecate if there is more text then in the excerpt
+      // save meta key hasMore to indicate if there is more text then in the excerpt
       const hasMore = contentBefore.text.length > (contentTruncated.text.length + 20);
       setByDot(hook.data, 'hasMore', hasMore);
 
       // set excerpt
       setByDot(hook.data, `${options.field}Excerpt`, hasMore ? contentTruncated.html : content.replace(/(\ ){2,}/ig, ' '))
     } catch (err) {
-      hook.app.error(err);
-      throw new Error(err);
+      // hook.app.error(err);
+      // throw new Error(err);
     }
     // trim content
     setByDot(hook.data, options.field, content.replace(/(\ ){2,}/ig, ' '));

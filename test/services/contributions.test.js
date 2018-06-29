@@ -67,12 +67,12 @@ describe('\'contributions\' service', () => {
 
     it('creates mention notification', async () => {
       const mentionedUser = await userService.create(userData);
-      const data = {...contributionData};
-      data.content = `<a href="" class="hc-editor-mention-blot" data-hc-mention="{&quot;_id&quot;:&quot;${mentionedUser._id.toString()}&quot;,&quot;slug&quot;:&quot;${mentionedUser.slug}&quot;}">${mentionedUser.name}</a>`;
+      const data = Object.assign({}, contributionData);
+      data.content += ` <a href="" class="hc-editor-mention-blot" data-hc-mention="{&quot;_id&quot;:&quot;${mentionedUser._id.toString()}&quot;,&quot;slug&quot;:&quot;${mentionedUser.slug}&quot;}">${mentionedUser.name}</a>`;
       const contribution = await service.create(data, params);
       const result = await notificationService.find({
         query: {
-          userId: mentionedUser._id
+          userId: mentionedUser._id.toString()
         }
       });
       const notification = result.data[0];
