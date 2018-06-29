@@ -1,5 +1,6 @@
 // const { authenticate } = require('feathers-authentication').hooks;
-const { isProvider, when, iff, discard, populate, disableMultiItemChange, lowerCase } = require('feathers-hooks-common');
+const { isProvider, when, iff, populate, disableMultiItemChange, lowerCase } = require('feathers-hooks-common');
+const { protect } = require('@feathersjs/authentication-local').hooks;
 const { restrictToOwner } = require('feathers-authentication-hooks');
 const { addVerification, removeVerification } = require('feathers-authentication-management').hooks;
 
@@ -17,12 +18,8 @@ const removeAllRelatedUserData = require('./hooks/remove-all-related-user-data')
 
 const { hashPassword } = require('@feathersjs/authentication-local').hooks;
 
-const cleanupBasicData = when(isProvider('external'),
-  discard('password', '_computed', 'verifyExpires', 'resetExpires', 'verifyChanges')
-);
-const cleanupPersonalData = when(isProvider('external'),
-  discard('email', 'verifyToken', 'verifyShortToken', 'doiToken', 'systemNotificationsSeen')
-);
+const cleanupBasicData = protect('password', '_computed', 'verifyExpires', 'resetExpires', 'verifyChanges');
+const cleanupPersonalData = protect('email', 'verifyToken', 'verifyShortToken', 'doiToken', 'systemNotificationsSeen');
 
 const restrict = [
   restrictToOwner({
