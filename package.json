@@ -34,12 +34,11 @@
   },
   "scripts": {
     "clear": "rm -Rf tmp",
-    "test": "npm run eslint && cross-env NODE_ENV=test nyc --reporter=text-summary npm run mocha",
-    "test:mongo": "npm run eslint && cross-env NODE_ENV=test nyc --reporter=text-summary npm run mocha:mongo",
-    "test:coverage": "npm run eslint && cross-env NODE_ENV=test nyc --reporter=lcovonly --reporter=text-summary npm run mocha",
+    "test": "$npm_package_config_nyc npm run mocha",
+    "test:mongo": "$npm_package_config_nyc npm run mocha:mongo",
+    "test:coverage": "$npm_package_config_nyc --reporter=lcovonly npm run mocha",
     "eslint": "eslint server/. test/. --config .eslintrc.json",
     "start": "concurrently 'mongod' 'wait-on tcp:27017 && cross-env NODE_ENV=production node server/'",
-    "start:win": "concurrently \"mongod\" \"wait-on tcp:27017 &&SET NODE_ENV=production&& node server/\"",
     "dev:debug": "npm run clear && concurrently '$npm_package_config_mongoDev &>/dev/null' 'wait-on tcp:27017 && cross-env DEBUG=feathers && cross-env NODE_ENV=development nodemon --inspect server/'",
     "dev": "npm run clear && concurrently '$npm_package_config_mongoDev &>/dev/null' 'wait-on tcp:27017 && cross-env DEBUG=feathers && cross-env NODE_ENV=development nodemon server/'",
     "dev:local": "sh scripts/run-local.sh",
@@ -49,6 +48,7 @@
     "mocha:mongo": "$npm_package_config_concurrently '$npm_package_config_mongoDev &>/dev/null' 'wait-on tcp:27017 && npm run mocha'"
   },
   "config": {
+    "test": "npm run eslint && cross-env NODE_ENV=test nyc --reporter=text-summary",
     "mongoDev": "mongod --dbpath data --quiet",
     "mocha": "cross-env NODE_ENV=test node_modules/mocha/bin/_mocha test/ --recursive --timeout 10000 --exit",
     "concurrently": "concurrently --kill-others --success first"
@@ -108,7 +108,7 @@
   "devDependencies": {
     "babel-eslint": "~8.2.3",
     "concurrently": "~3.5.1",
-    "cross-env": "^5.1.5",
+    "cross-env": "^5.2.0",
     "eslint": "~4.19.1",
     "istanbul": "1.1.0-alpha.1",
     "mocha": "~5.2.0",

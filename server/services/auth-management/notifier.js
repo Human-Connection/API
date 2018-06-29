@@ -124,7 +124,9 @@ module.exports = function (app) {
         app.debug('Sent email', result);
       })
       .catch(err => {
-        app.error('Error sending email', err);
+        if (process.env.NODE_ENV !== 'test') {
+          app.error('Error sending email', err);
+        }
       });
   }
 
