@@ -154,7 +154,7 @@ describe('\'contributions\' service', () => {
     it('returns one contribution', async () => {
       const result = await service.find({ query });
       assert.ok(result.data[0], 'returns data');
-      assert.equal(result.data.length, 1), 'returns only one entry';
+      assert.equal(result.data.length, 1, 'returns only one entry');
     });
 
     it('populates associatedCanDos', async () => {
