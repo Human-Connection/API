@@ -3,7 +3,7 @@
   "description": "Human-Connection API",
   "version": "0.1.0",
   "homepage": "https://human-connection.org",
-  "license": "CC-BY-NC-SA-4.0",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/Human-Connection/API.git"
@@ -36,7 +36,6 @@
     "clear": "rm -Rf tmp",
     "test": "$npm_package_config_nyc npm run mocha",
     "test:mongo": "$npm_package_config_nyc npm run mocha:mongo",
-    "test:coverage": "$npm_package_config_nyc --reporter=lcovonly npm run mocha",
     "eslint": "eslint server/. test/. --config .eslintrc.json",
     "start": "concurrently 'mongod' 'wait-on tcp:27017 && cross-env NODE_ENV=production node server/'",
     "dev:debug": "npm run clear && concurrently '$npm_package_config_mongoDev &>/dev/null' 'wait-on tcp:27017 && cross-env DEBUG=feathers && cross-env NODE_ENV=development nodemon --inspect server/'",
@@ -48,7 +47,7 @@
     "mocha:mongo": "$npm_package_config_concurrently '$npm_package_config_mongoDev &>/dev/null' 'wait-on tcp:27017 && npm run mocha'"
   },
   "config": {
-    "test": "npm run eslint && cross-env NODE_ENV=test nyc --reporter=text-summary",
+    "test": "npm run eslint && cross-env NODE_ENV=test nyc --reporter=text-summary --reporter=lcovonly",
     "mongoDev": "mongod --dbpath data --quiet",
     "mocha": "cross-env NODE_ENV=test node_modules/mocha/bin/_mocha test/ --recursive --timeout 10000 --exit",
     "concurrently": "concurrently --kill-others --success first"
