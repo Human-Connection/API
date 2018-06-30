@@ -45,9 +45,7 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
           }
           return resolve(hook);
         })
-        .catch(err => {
-          // eslint-disable-next-line
-          console.log(err);
+        .catch(() => {
           hook.app.error('issue while fetching associated candos');
           return resolve(hook);
         });
