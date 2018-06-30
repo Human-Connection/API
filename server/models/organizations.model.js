@@ -20,6 +20,8 @@ module.exports = function (app) {
     zipCode: { type: String, required: true },
     city: { type: String, required: true },
     country: { type: String, required: true },
+    phone: { type: String },
+    email: { type: String },
     lat: { type: Number, required: true },
     lng: { type: Number, required: true },
     primary: { type: Boolean, default: false }
