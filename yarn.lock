@@ -158,9 +158,25 @@
     lodash "^4.17.5"
     to-fast-properties "^2.0.0"
 
+"@feathersjs/authentication-local@^1.0.4":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@feathersjs/authentication-local/-/authentication-local-1.2.1.tgz#e8101a7feb8ed9aa418047b957a04eb7958b5f6e"
+  dependencies:
+    "@feathersjs/errors" "^3.0.0"
+    bcryptjs "^2.3.0"
+    debug "^3.1.0"
+    lodash "^4.17.5"
+    passport-local "^1.0.0"
+
 "@feathersjs/commons@^1.3.0":
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@feathersjs/commons/-/commons-1.4.0.tgz#1407c79b690c755afd1087a70471feba6ab03fb0"
+
+"@feathersjs/errors@^3.0.0", "@feathersjs/errors@^3.2.1":
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/@feathersjs/errors/-/errors-3.3.0.tgz#c5fcc163f49d6b139f10d118eec36e8f90818aff"
+  dependencies:
+    debug "^3.1.0"
 
 "@feathersjs/errors@^3.2.0":
   version "3.2.2"
@@ -1205,11 +1221,11 @@ create-error-class@^3.0.0:
   dependencies:
     capture-stack-trace "^1.0.0"
 
-cross-env@^5.1.5:
-  version "5.1.5"
-  resolved "https://registry.yarnpkg.com/cross-env/-/cross-env-5.1.5.tgz#31daf7f3a52ef337c8ddda585f08175cce5d1fa5"
+cross-env@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/cross-env/-/cross-env-5.2.0.tgz#6ecd4c015d5773e614039ee529076669b9d126f2"
   dependencies:
-    cross-spawn "^5.1.0"
+    cross-spawn "^6.0.5"
     is-windows "^1.0.0"
 
 cross-spawn@^3.0.0:
@@ -1231,6 +1247,16 @@ cross-spawn@^5.0.1, cross-spawn@^5.1.0:
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-5.1.0.tgz#e8bd0efee58fcff6f8f94510a0a554bbfa235449"
   dependencies:
     lru-cache "^4.0.1"
+    shebang-command "^1.2.0"
+    which "^1.2.9"
+
+cross-spawn@^6.0.5:
+  version "6.0.5"
+  resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-6.0.5.tgz#4a5ec7c64dfae22c3a14124dbacdee846d80cbc4"
+  dependencies:
+    nice-try "^1.0.4"
+    path-key "^2.0.1"
+    semver "^5.5.0"
     shebang-command "^1.2.0"
     which "^1.2.9"
 
@@ -1890,7 +1916,7 @@ feathers-authentication-jwt@~0.3.2:
     lodash.pick "^4.4.0"
     passport-jwt "^2.2.1"
 
-feathers-authentication-local@^0.4.0, feathers-authentication-local@~0.4.4:
+feathers-authentication-local@~0.4.4:
   version "0.4.4"
   resolved "https://registry.yarnpkg.com/feathers-authentication-local/-/feathers-authentication-local-0.4.4.tgz#eed529520f69e68503291adf6ba76e3e4f615872"
   dependencies:
@@ -1903,14 +1929,14 @@ feathers-authentication-local@^0.4.0, feathers-authentication-local@~0.4.4:
     lodash.pick "^4.4.0"
     passport-local "^1.0.0"
 
-feathers-authentication-management@~1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/feathers-authentication-management/-/feathers-authentication-management-1.0.3.tgz#3dd49dc49a1ef1d7731b42a0cecc731a6406894b"
+feathers-authentication-management@~2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/feathers-authentication-management/-/feathers-authentication-management-2.0.0.tgz#069d7b817e79b2e5ecb271196ac29b93914073c7"
   dependencies:
+    "@feathersjs/authentication-local" "^1.0.4"
+    "@feathersjs/errors" "^3.2.1"
     bcryptjs "^2.3.0"
     debug "^3.0.0"
-    feathers-authentication-local "^0.4.0"
-    feathers-errors "^2.7.1"
     feathers-hooks-common "^3.0.0"
 
 feathers-authentication@~1.3.1:
@@ -1954,7 +1980,7 @@ feathers-configuration@~0.4.2:
     config "^1.21.0"
     debug "^3.0.1"
 
-feathers-errors@^2.0.1, feathers-errors@^2.2.0, feathers-errors@^2.4.0, feathers-errors@^2.5.0, feathers-errors@^2.7.1, feathers-errors@^2.9.1, feathers-errors@~2.9.2:
+feathers-errors@^2.0.1, feathers-errors@^2.2.0, feathers-errors@^2.4.0, feathers-errors@^2.5.0, feathers-errors@^2.9.1, feathers-errors@~2.9.2:
   version "2.9.2"
   resolved "https://registry.yarnpkg.com/feathers-errors/-/feathers-errors-2.9.2.tgz#96ca0e5fe50cc56f0eccc90ce3fa5e1f8840828d"
   dependencies:
@@ -3882,6 +3908,10 @@ negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
 
+nice-try@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.4.tgz#d93962f6c52f2c1558c0fbda6d512819f1efe1c4"
+
 nocache@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/nocache/-/nocache-2.0.0.tgz#202b48021a0c4cbde2df80de15a17443c8b43980"
@@ -4284,7 +4314,7 @@ path-is-inside@^1.0.1, path-is-inside@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/path-is-inside/-/path-is-inside-1.0.2.tgz#365417dede44430d1c11af61027facf074bdfc53"
 
-path-key@^2.0.0:
+path-key@^2.0.0, path-key@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/path-key/-/path-key-2.0.1.tgz#411cadb574c5a140d3a4b1910d40d80cc9f40b40"
 
