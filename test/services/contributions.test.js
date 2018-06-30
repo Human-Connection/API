@@ -12,7 +12,7 @@ const {
 } = require('../assets/contributions');
 const { categoryData } = require('../assets/categories');
 
-describe('\'contributions\' service', () => {
+describe.only('\'contributions\' service', () => {
   let user;
   let params;
 
