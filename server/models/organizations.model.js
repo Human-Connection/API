@@ -23,8 +23,7 @@ module.exports = function (app) {
     phone: { type: String },
     email: { type: String },
     lat: { type: Number, required: true },
-    lng: { type: Number, required: true },
-    primary: { type: Boolean, default: false }
+    lng: { type: Number, required: true }
   });
   const channelSchema = mongooseClient.Schema({
     name: { type: String, required: true },
@@ -59,11 +58,13 @@ module.exports = function (app) {
     url: { type: String },
     type: {
       type: String,
+      required: true,
       index: true,
       enum: organizationTypes
     },
     language: { type: String, required: true, default: 'de', index: true },
     addresses: { type: [addressSchema], default: [] },
+    primaryAddressIndex: { type: Number, default: 0 },
     channels: { type: [channelSchema], default: [] },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },

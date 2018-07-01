@@ -111,9 +111,6 @@ module.exports = {
         lng: 6.558838 + (Math.random() * 10)
       });
     }
-    if (addresses.length) {
-      addresses[0].primary = true;
-    }
     return addresses;
   },
   randomChannels: () => {

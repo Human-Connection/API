@@ -16,10 +16,6 @@ module.exports = (seederstore) => {
         coverImg: () => seedHelpers.randomUnsplashUrl(),
         categoryIds: () => seedHelpers.randomCategories(seederstore),
         creatorId: () => seedHelpers.randomItem(seederstore.users, roleAdmin)._id,
-        users: () => [{
-          id: seedHelpers.randomItem(seederstore.users, roleAdmin)._id,
-          role: 'admin'
-        }],
         url: '{{internet.url}}',
         phone: '{{phone.phoneNumber}}',
         email: '{{internet.email}}',
@@ -45,10 +41,6 @@ module.exports = (seederstore) => {
         coverImg: () => seedHelpers.randomItem([seedHelpers.randomUnsplashUrl(), null]),
         categoryIds: () => seedHelpers.randomCategories(seederstore),
         creatorId: () => seedHelpers.randomItem(seederstore.users)._id,
-        users: () => [{
-          id: seedHelpers.randomItem(seederstore.users)._id,
-          role: 'admin'
-        }],
         url: '{{internet.url}}',
         phone: '{{phone.phoneNumber}}',
         email: '{{internet.email}}',

@@ -26,7 +26,7 @@ module.exports = function restrictToOwnerOrModerator (query = {}) { // eslint-di
     const userId = getByDot(hook, 'params.user._id');
     const users = getByDot(hook, 'params.before.users');
     const isOwner = userId && users &&
-      users.some(({id}) => id === userId.toString())
+      users.some(({id}) => id === userId.toString());
 
     // change the query if the method is find or get
     if (isFindOrGet) {

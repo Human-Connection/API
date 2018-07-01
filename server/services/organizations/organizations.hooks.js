@@ -10,6 +10,7 @@ const isModerator = require('../../hooks/is-moderator-boolean');
 const thumbnails = require('../../hooks/thumbnails');
 const restrictToOwnerOrModerator = require('../../hooks/restrictToOwnerOrModerator');
 const restrictReviewAndEnableChange = require('../../hooks/restrictReviewAndEnableChange');
+const flagPrimaryAddress = require('./hooks/flag-primary-address');
 const search = require('feathers-mongodb-fuzzy-search');
 const isSingleItem = require('../../hooks/is-single-item');
 const xss = require('../../hooks/xss');
@@ -82,12 +83,15 @@ module.exports = {
       ),
       // Add current user as creator and user
       associateCurrentUser({ as: 'creatorId' }),
-      unless(isProvider('server'),
-        hook => {
-          hook.data.userIds = [hook.params.user._id];
-          return hook;
-        }
-      ),
+      hook => {
+        hook.data.users = [
+          {
+            id: hook.params.user._id,
+            role: 'admin'
+          }
+        ];
+        return hook;
+      },
       createSlug({ field: 'name' }),
       createExcerpt({ field: 'description' }),
       saveRemoteImages(['logo', 'coverImg'])
@@ -127,7 +131,8 @@ module.exports = {
   after: {
     all: [
       xss({ fields: xssFields }),
-      populate({ schema: reviewerSchema })
+      populate({ schema: reviewerSchema }),
+      flagPrimaryAddress()
       // populate({ schema: userSchema }),
       // populate({ schema: followerSchema })
     ],
