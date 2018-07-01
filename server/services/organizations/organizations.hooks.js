@@ -86,7 +86,7 @@ module.exports = {
       hook => {
         hook.data.users = [
           {
-            id: hook.params.user._id,
+            id: hook.data.creatorId,
             role: 'admin'
           }
         ];
