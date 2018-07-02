@@ -168,6 +168,12 @@
   dependencies:
     debug "^3.1.0"
 
+"@feathersjs/errors@^3.3.0":
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/@feathersjs/errors/-/errors-3.3.0.tgz#c5fcc163f49d6b139f10d118eec36e8f90818aff"
+  dependencies:
+    debug "^3.1.0"
+
 "@types/node@*":
   version "9.3.0"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-9.3.0.tgz#3a129cda7c4e5df2409702626892cb4b96546dd5"
@@ -1879,15 +1885,13 @@ feathers-authentication-client@^0.3.1:
     feathers-errors "^2.4.0"
     jwt-decode "^2.1.0"
 
-feathers-authentication-hooks@~0.1.6:
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/feathers-authentication-hooks/-/feathers-authentication-hooks-0.1.6.tgz#22c26359bfd597f6c06eb001e060567583c2ada7"
+feathers-authentication-hooks@~0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/feathers-authentication-hooks/-/feathers-authentication-hooks-0.2.0.tgz#334c553421be10812205cced4bc5b30439bffc30"
   dependencies:
-    debug "^3.0.0"
-    feathers-errors "^2.5.0"
-    lodash.get "^4.4.2"
-    lodash.isplainobject "^4.0.6"
-    lodash.set "^4.3.2"
+    "@feathersjs/errors" "^3.3.0"
+    debug "^3.1.0"
+    lodash "^4.17.5"
 
 feathers-authentication-jwt@~0.3.2:
   version "0.3.2"
@@ -3467,10 +3471,6 @@ lodash.reduce@4.6.0, lodash.reduce@^4.4.0:
 lodash.reject@^4.4.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/lodash.reject/-/lodash.reject-4.6.0.tgz#80d6492dc1470864bbf583533b651f42a9f52415"
-
-lodash.set@^4.3.2:
-  version "4.3.2"
-  resolved "https://registry.yarnpkg.com/lodash.set/-/lodash.set-4.3.2.tgz#d8757b1da807dde24816b0d6a84bea1a76230b23"
 
 lodash.some@^4.4.0:
   version "4.6.0"
