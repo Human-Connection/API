@@ -158,9 +158,25 @@
     lodash "^4.17.5"
     to-fast-properties "^2.0.0"
 
+"@feathersjs/authentication-local@^1.0.4":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@feathersjs/authentication-local/-/authentication-local-1.2.1.tgz#e8101a7feb8ed9aa418047b957a04eb7958b5f6e"
+  dependencies:
+    "@feathersjs/errors" "^3.0.0"
+    bcryptjs "^2.3.0"
+    debug "^3.1.0"
+    lodash "^4.17.5"
+    passport-local "^1.0.0"
+
 "@feathersjs/commons@^1.3.0":
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@feathersjs/commons/-/commons-1.4.0.tgz#1407c79b690c755afd1087a70471feba6ab03fb0"
+
+"@feathersjs/errors@^3.0.0", "@feathersjs/errors@^3.2.1":
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/@feathersjs/errors/-/errors-3.3.0.tgz#c5fcc163f49d6b139f10d118eec36e8f90818aff"
+  dependencies:
+    debug "^3.1.0"
 
 "@feathersjs/errors@^3.2.0":
   version "3.2.2"
@@ -1900,7 +1916,7 @@ feathers-authentication-jwt@~0.3.2:
     lodash.pick "^4.4.0"
     passport-jwt "^2.2.1"
 
-feathers-authentication-local@^0.4.0, feathers-authentication-local@~0.4.4:
+feathers-authentication-local@~0.4.4:
   version "0.4.4"
   resolved "https://registry.yarnpkg.com/feathers-authentication-local/-/feathers-authentication-local-0.4.4.tgz#eed529520f69e68503291adf6ba76e3e4f615872"
   dependencies:
@@ -1913,14 +1929,14 @@ feathers-authentication-local@^0.4.0, feathers-authentication-local@~0.4.4:
     lodash.pick "^4.4.0"
     passport-local "^1.0.0"
 
-feathers-authentication-management@~1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/feathers-authentication-management/-/feathers-authentication-management-1.0.3.tgz#3dd49dc49a1ef1d7731b42a0cecc731a6406894b"
+feathers-authentication-management@~2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/feathers-authentication-management/-/feathers-authentication-management-2.0.0.tgz#069d7b817e79b2e5ecb271196ac29b93914073c7"
   dependencies:
+    "@feathersjs/authentication-local" "^1.0.4"
+    "@feathersjs/errors" "^3.2.1"
     bcryptjs "^2.3.0"
     debug "^3.0.0"
-    feathers-authentication-local "^0.4.0"
-    feathers-errors "^2.7.1"
     feathers-hooks-common "^3.0.0"
 
 feathers-authentication@~1.3.1:
@@ -1964,7 +1980,7 @@ feathers-configuration@~0.4.2:
     config "^1.21.0"
     debug "^3.0.1"
 
-feathers-errors@^2.0.1, feathers-errors@^2.2.0, feathers-errors@^2.4.0, feathers-errors@^2.5.0, feathers-errors@^2.7.1, feathers-errors@^2.9.1, feathers-errors@~2.9.2:
+feathers-errors@^2.0.1, feathers-errors@^2.2.0, feathers-errors@^2.4.0, feathers-errors@^2.5.0, feathers-errors@^2.9.1, feathers-errors@~2.9.2:
   version "2.9.2"
   resolved "https://registry.yarnpkg.com/feathers-errors/-/feathers-errors-2.9.2.tgz#96ca0e5fe50cc56f0eccc90ce3fa5e1f8840828d"
   dependencies:
