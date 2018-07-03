@@ -60,12 +60,11 @@ app.configure(socketio());
 // Configure Database Seeder
 app.configure(seeder());
 
-app.configure(channels);
-
 app.configure(authentication);
 
 // Set up our services (see `services/index.js`)
 app.configure(services);
+app.configure(channels);
 
 if (process.env.NODE_ENV !== 'production') {
   app.configure(profiler({

@@ -14,13 +14,16 @@ module.exports = function (app) {
     // real-time connection, e.g. when logging in via REST
     if (connection) {
       // Obtain the logged in user from the connection
-      // const user = connection.user;
+      const user = connection.user;
 
       // The connection is no longer anonymous, remove it
       app.channel('anonymous').leave(connection);
 
       // Add it to the authenticated user channel
       app.channel('authenticated').join(connection);
+
+      if (user.role === 'moderator') { app.channel('moderators').join(connection); }
+      if (user.role === 'admin') { app.channel('admins').join(connection); }
 
       // Channels can be named anything and joined on any condition
 
@@ -36,13 +39,38 @@ module.exports = function (app) {
     }
   });
 
-  app.publish((data, hook) => { // eslint-disable-line no-unused-vars
-    // Here you can add event publishers to channels set up in `channels.js`
-    // To publish only for a specific event use `app.publish(eventname, () => {})`
+  // app.publish((data, hook) => { // eslint-disable-line no-unused-vars
+  //   // Here you can add event publishers to channels set up in `channels.js`
+  //   // To publish only for a specific event use `app.publish(eventname, () => {})`
+  //   // e.g. to publish all service events to all authenticated users use
+  //   return app.channel('authenticated');
+  // });
 
-    // e.g. to publish all service events to all authenticated users use
-    return app.channel('authenticated');
-  });
+  app.service('contributions').publish('patched', () => app.channel('authenticated'));
+
+  app.service('categories').publish(() => app.channel('anonymous', 'authenticated'));
+  app.service('comments').publish(() => app.channel('authenticated'));
+  app.service('follows').publish(() => app.channel('authenticated'));
+  app.service('users-candos').publish(() => app.channel('authenticated'));
+  app.service('notifications').publish(() => app.channel('authenticated'));
+  app.service('system-notifications').publish(() => app.channel('authenticated'));
+
+  app.service('users').publish(() => app.channel('admins'));
+  app.service('organizations').publish(() => app.channel('admins', 'moderators'));
+
+  // app.service('contributions').publish((data) => {
+  //   return [
+  //     // app.channel('anonymous'),
+  //     // app.channel('authenticated')
+  //     app.channel(`contributions/${data._id}`)
+  //   ];
+  // });
+  // app.service('contributions').publish((data) => {
+  //   return app.channel(`contributions/${data.slug}`);
+  // });
+  // app.service('comments').publish((data) => {
+  //   return app.channel(`contributions/${data.slug}`);
+  // });
 
   // Here you can also add service specific event publishers
   // e..g the publish the `users` service `created` event to the `admins` channel
