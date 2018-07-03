@@ -22,8 +22,8 @@ const thumbnailOptions = {
     placeholder: 'fit-in/36x36/filters:fill(white,true):blur(30)'
   },
   coverImg: {
-    cover: '1102x312/smart',
-    coverPlaceholder: '243x100/smart/filters:blur(30)'
+    cover: '1102x/filters:fill(white,true)',
+    coverPlaceholder: '243x/filters:fill(white,true):blur(30)'
   }
 };
 

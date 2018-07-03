@@ -85,8 +85,8 @@ const thumbnailOptions = {
     placeholder: '36x36/smart/filters:blur(30)'
   },
   coverImg: {
-    cover: '1102x312/smart',
-    coverPlaceholder: '243x100/smart/filters:blur(30)'
+    cover: '1102x/filters:fill(white,true):no_upscale()',
+    coverPlaceholder: '243x/filters:fill(white,true):no_upscale():blur(30)'
   }
 };
 
