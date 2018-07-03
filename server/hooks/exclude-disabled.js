@@ -1,5 +1,5 @@
 // Exclude items with isEnabled = false
-const errors = require('feathers-errors');
+const errors = require('@feathersjs/errors');
 
 module.exports = function excludeDisabled() {
   return function (hook) {

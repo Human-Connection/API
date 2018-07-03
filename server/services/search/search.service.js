@@ -1,7 +1,6 @@
 // Initializes the `search` service on path `/search`
 const createService = require('./search.class.js');
 const hooks = require('./search.hooks');
-const filters = require('./search.filters');
 
 module.exports = function () {
   const app = this;
@@ -20,8 +19,4 @@ module.exports = function () {
   const service = app.service('search');
 
   service.hooks(hooks);
-
-  if (service.filter) {
-    service.filter(filters);
-  }
 };

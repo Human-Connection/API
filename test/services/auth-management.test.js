@@ -55,6 +55,26 @@ describe('\'authManagement\' service', () => {
     });
     assert.ok(result, 'password can be reset');
   });
+
+  it('ignores uppercase email on password reset', async () => {
+    await service.create({
+      action: 'sendResetPwd',
+      value: {
+        email: user.email.toUpperCase()
+      }
+    });
+
+    const token = await getTokenFromMail();
+
+    const result = await service.create({
+      action: 'resetPwdLong',
+      value: {
+        token,
+        password: '123456'
+      }
+    });
+    assert.ok(result, 'password can be reset with upper case email');
+  });
 });
 
 const waitFor = (ms) => {
@@ -70,7 +90,7 @@ const getTokenFromMail = async () => {
   const mailDir = path.join(__dirname, '../../tmp/emails');
   // wait for the mail to be created first
   await waitFor(50);
-  const fileName = await fs.readdirSync(mailDir)[0];
+  const fileName = await fs.readdirSync(mailDir).pop();
   const mailFile = path.join(mailDir, fileName);
   const mailContent = await fs.readFileSync(mailFile, 'utf8');
   const $ = await cheerio.load(mailContent);
@@ -78,6 +98,10 @@ const getTokenFromMail = async () => {
   await $('a.btn-primary').each((i, el) => {
     url = el.attribs['href'];
   });
+
+  // delete mail
+  // await fs.unlinkSync(mailFile);
+
   const token = url.split('/').pop();
   return token;
 };

@@ -1,4 +1,4 @@
-const errors = require('feathers-errors');
+const errors = require('@feathersjs/errors');
 
 // ToDo: make this hook universal
 module.exports = function (options = {}) { // eslint-disable-line no-unused-vars

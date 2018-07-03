@@ -29,30 +29,24 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
       return contributionService.find({
         query: {
           type: 'cando',
-          isEnabled: true
-        }
-      }, { _populate: 'skip' })
+          isEnabled: true,
+          categoryIds: {
+            $in: categoryIds
+          },
+          $limit: limit,
+        },
+        _populate: 'skip'
+      })
         .then(({data}) => {
-          let associatedCanDos = [];
-          while (associatedCanDos.length < limit && data.length) {
-            let item = data.shift();
-            let check = categoryIds.some(id => {
-              return item.categoryIds.some(innerId => {
-                return innerId.toString() == id.toString();
-              });
-            });
-            if (check && item._id.toString() !== currentData._id.toString()) {
-              associatedCanDos.push(item);
-            }
-          }
           if (isArray) {
-            hook.result.data[0].associatedCanDos = associatedCanDos;
+            hook.result.data[0].associatedCanDos = data;
           } else {
-            hook.result.associatedCanDos = associatedCanDos;
+            hook.result.associatedCanDos = data;
           }
           return resolve(hook);
         })
         .catch(() => {
+          hook.app.error('issue while fetching associated candos');
           return resolve(hook);
         });
     });

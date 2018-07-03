@@ -1,5 +1,5 @@
 // Check if user is admin
-const errors = require('feathers-errors');
+const errors = require('@feathersjs/errors');
 
 module.exports = () => hook => {
   if(!hook.params || !hook.params.user || hook.params.user.role !== 'admin') {
