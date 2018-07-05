@@ -1,4 +1,3 @@
-const { authenticate } = require('@feathersjs/authentication').hooks;
 const isAdmin = require('../../hooks/is-admin');
 const mapCreateToUpsert = require('../../hooks/map-create-to-upsert');
 
