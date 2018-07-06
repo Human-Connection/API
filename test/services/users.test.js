@@ -105,7 +105,7 @@ describe('\'users\' service', () => {
     it('returns one user', async () => {
       const result = await service.find({ query });
       assert.ok(result.data[0], 'returns data');
-      assert.equal(result.data.length, 1), 'returns only one entry';
+      assert.equal(result.data.length, 1, 'returns only one entry');
     });
 
     it('populates badges, candos and userSettings', async () => {

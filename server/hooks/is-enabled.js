@@ -2,7 +2,7 @@
 // For more information on hooks see: http://docs.feathersjs.com/api/hooks.html
 
 const _ = require('lodash');
-const errors = require('feathers-errors');
+const errors = require('@feathersjs/errors');
 
 module.exports = function isEnabled(options = {}) { // eslint-disable-line no-unused-vars
   return function (hook) {

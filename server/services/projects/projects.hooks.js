@@ -1,4 +1,4 @@
-const { authenticate } = require('feathers-authentication').hooks;
+const { authenticate } = require('@feathersjs/authentication').hooks;
 const createSlug = require('../../hooks/create-slug');
 const saveRemoteImages = require('../../hooks/save-remote-images');
 

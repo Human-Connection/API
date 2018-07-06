@@ -1,4 +1,4 @@
-const { authenticate } = require('feathers-authentication').hooks;
+const { authenticate } = require('@feathersjs/authentication').hooks;
 const { when, isProvider } = require('feathers-hooks-common');
 const isAdmin = require('../../hooks/is-admin');
 

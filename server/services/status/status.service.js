@@ -2,7 +2,6 @@
 const createService = require('./status.class.js');
 const createModel = require('../../models/status.model');
 const hooks = require('./status.hooks');
-const filters = require('./status.filters');
 
 module.exports = function () {
   const app = this;
@@ -23,8 +22,4 @@ module.exports = function () {
   const service = app.service('status');
 
   service.hooks(hooks);
-
-  if (service.filter) {
-    service.filter(filters);
-  }
 };
