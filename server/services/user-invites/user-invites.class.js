@@ -18,7 +18,7 @@ class Service {
     }
     const res = await this.app.service('invites').find(Object.assign(params.query || {}, {
       query: {
-        $limit: 10,
+        $limit: 30,
         invitedByUserId: params.user._id
       }
     }));

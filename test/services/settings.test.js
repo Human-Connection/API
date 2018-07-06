@@ -65,7 +65,7 @@ describe('"settings" service', () => {
     res = await service.create(settingsObject, adminParams);
     settingRes = res.pop();
 
-    const updatedData = merge(settingRes, {
+    let updatedData = merge(settingRes, {
       invites: {
         userCanInvite: false
       }

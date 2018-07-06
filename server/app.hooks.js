@@ -8,13 +8,13 @@ module.exports = {
     find: [],
     get: [],
     create: [
-      discard('_id')
+      discard('_id', '__v')
     ],
     update: [
-      discard('_id')
+      discard('_id', '__v')
     ],
     patch: [
-      discard('_id')
+      discard('_id', '__v')
     ],
     remove: []
   },

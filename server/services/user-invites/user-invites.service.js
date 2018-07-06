@@ -4,7 +4,7 @@ const hooks = require('./user-invites.hooks');
 
 module.exports = function (app) {
 
-  const paginate = app.get('paginate');
+  const paginate = Object.assign(app.get('paginate'), { default: 30 });
 
   const options = {
     paginate,
