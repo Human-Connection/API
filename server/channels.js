@@ -47,6 +47,7 @@ module.exports = function (app) {
   // });
 
   app.service('contributions').publish('patched', () => app.channel('authenticated'));
+  app.service('settings').publish('patched', () => app.channel('anonymous', 'authenticated'));
 
   app.service('categories').publish(() => app.channel('anonymous', 'authenticated'));
   app.service('comments').publish(() => app.channel('authenticated'));

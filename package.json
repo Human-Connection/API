@@ -1,12 +1,20 @@
 {
   "name": "human-connection-api",
   "description": "Human-Connection API",
-  "version": "0.1.0",
+  "version": "0.5.0",
   "homepage": "https://human-connection.org",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/Human-Connection/API.git"
+  },
+  "author": {
+    "name": "Human Connection gGmbH",
+    "email": "developer@human-connection.org"
+  },
+  "bugs": {
+    "url": "https://github.com/Human-Connection/API/issues",
+    "email": "bugfix@human-connection.org"
   },
   "main": "server",
   "keywords": [
@@ -15,15 +23,7 @@
     "api",
     "feathersjs"
   ],
-  "author": {
-    "name": "Human Connection gGmbH",
-    "email": "developer@human-connection.org"
-  },
   "contributors": [],
-  "bugs": {
-    "url": "https://github.com/Human-Connection/API/issues",
-    "email": "bugfix@human-connection.org"
-  },
   "directories": {
     "lib": "server",
     "test": "test/"
@@ -100,6 +100,7 @@
     "shortid": "~2.2.8",
     "slug": "~0.9.1",
     "trunc-html": "^1.1.2",
+    "uuid": "^3.3.2",
     "valid-url": "^1.0.9",
     "winston": "~3.0.0-rc5"
   },
