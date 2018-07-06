@@ -22,7 +22,6 @@ jobs:
     - script:
       - yarn install --frozen-lockfile --non-interactive
       - yarn add codacy-coverage
-      - yarn global add nyc
       - yarn test
       - cat ./coverage/lcov.info | codacy-coverage
 
@@ -30,4 +29,8 @@ after_success:
   - if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then
     docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
     docker push humanconnection/api-feathers:alpha;
+    fi
+  - if [ $TRAVIS_BRANCH == "develop" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then
+    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+    docker push humanconnection/api-feathers:edge;
     fi
