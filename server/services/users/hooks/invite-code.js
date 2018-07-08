@@ -18,8 +18,12 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
       }
       const inviteRes = await hook.app.service('invites').find(query);
       // throw an error if the invite code does not match the one from the invite
-      if (!inviteRes.data.length) {
+      if (inviteRes.data.length !== 1) {
         throw new errors.Forbidden('invite code is invalid');
+      }
+
+      if (inviteRes.data[0].wasUsed) {
+        throw new errors.Forbidden('invite already used');
       }
 
       // set some user data from the invite like batches and roles
