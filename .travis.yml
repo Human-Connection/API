@@ -18,20 +18,21 @@ jobs:
       script: true
     - stage: Build and Test
       script:
-      - docker build -t humanconnection/api-feathers:alpha .
+      - docker build -t humanconnection/api-feathers .
     - script:
-      - cp ./config/local.example.json ./config/local.json
       - yarn install --frozen-lockfile --non-interactive
       - yarn add codacy-coverage
-      - rm -Rf tmp
-      - yarn eslint
       - yarn test
-      - NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha -- test/ --timeout=10000 --exit
       - cat ./coverage/lcov.info | codacy-coverage
-      - rm ./config/local.json
 
 after_success:
   - if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then
     docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+    docker tag humanconnection/api-feathers humanconnection/api-feathers:alpha;
     docker push humanconnection/api-feathers:alpha;
+    fi
+  - if [ $TRAVIS_BRANCH == "develop" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then
+    docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+    docker tag humanconnection/api-feathers humanconnection/api-feathers:edge;
+    docker push humanconnection/api-feathers:edge;
     fi

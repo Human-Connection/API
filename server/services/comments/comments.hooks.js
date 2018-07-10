@@ -1,5 +1,6 @@
-const { authenticate } = require('feathers-authentication').hooks;
+const { authenticate } = require('@feathersjs/authentication').hooks;
 const { unless, isProvider, populate, discard, softDelete, setNow } = require('feathers-hooks-common');
+const { protect } = require('@feathersjs/authentication-local').hooks;
 const {
   //queryWithCurrentUser,
   associateCurrentUser,
@@ -24,7 +25,7 @@ const userSchema = {
     childField: '_id',
     query: {
       $limit: 1,
-      $select: ['_id', 'name', 'slug', 'avatar', 'lastActiveAt', 'thumbnails']
+      $select: ['_id', 'name', 'slug', 'avatar', 'lastActiveAt', 'termsAndConditionsAccepted', 'thumbnails']
     }
   }
 };
@@ -108,7 +109,7 @@ module.exports = {
     ],
     find: [
       populate({ schema: userSchema }),
-      discard('content', 'badgeIds')
+      protect('content', 'badgeIds')
     ],
     get: [
       populate({ schema: userSchema })

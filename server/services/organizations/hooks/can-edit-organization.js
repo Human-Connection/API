@@ -1,5 +1,5 @@
 const { getByDot } = require('feathers-hooks-common');
-const { errors } = require('feathers-errors');
+const { errors } = require('@feathersjs/errors');
 // const { isEmpty } = require('lodash');
 
 module.exports = (options = {field: 'organizationId'}) => async hook => {

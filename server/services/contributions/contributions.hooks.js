@@ -1,4 +1,4 @@
-const {authenticate} = require('feathers-authentication').hooks;
+const {authenticate} = require('@feathersjs/authentication').hooks;
 const {discard, when, unless, isProvider, populate, softDelete, setNow} = require('feathers-hooks-common');
 const {
   //queryWithCurrentUser,
@@ -31,7 +31,7 @@ const userSchema = {
     childField: '_id',
     query: {
       $limit: 1,
-      $select: ['_id', 'name', 'slug', 'avatar', 'lastActiveAt', 'thumbnails']
+      $select: ['_id', 'name', 'slug', 'avatar', 'lastActiveAt', 'termsAndConditionsAccepted', 'thumbnails']
     }
   }
 };

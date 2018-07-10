@@ -1,4 +1,4 @@
-const { authenticate } = require('feathers-authentication').hooks;
+const { authenticate } = require('@feathersjs/authentication').hooks;
 const { disallow, populate, unless } = require('feathers-hooks-common');
 const { restrictToOwner } = require('feathers-authentication-hooks');
 const isAdmin = require('../../hooks/is-admin');
@@ -23,7 +23,7 @@ const commentSchema = {
       childField: '_id',
       query: {
         $limit: 1,
-        $select: ['_id', 'name', 'slug', 'avatar', 'lastActiveAt', 'thumbnails']
+        $select: ['_id', 'name', 'slug', 'avatar', 'lastActiveAt', 'termsAndConditionsAccepted', 'thumbnails']
       }
     }
   }
@@ -49,7 +49,7 @@ const userSchema = {
     childField: '_id',
     query: {
       $limit: 1,
-      $select: ['_id', 'name', 'slug', 'avatar', 'lastActiveAt', 'thumbnails']
+      $select: ['_id', 'name', 'slug', 'avatar', 'lastActiveAt', 'termsAndConditionsAccepted', 'thumbnails']
     }
   }
 };

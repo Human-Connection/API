@@ -12,7 +12,7 @@ const sanitizeOptions = {
   allowedAttributes: {
     a: ['href', 'class', 'target', 'data-*' , 'contenteditable'],
     span: ['contenteditable', 'class', 'data-*']
-  },
+  }
 };
 
 module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
@@ -33,20 +33,19 @@ module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
       .replace(/(\ ){2,}/ig, ' ')
       .trim();
 
-      contentBefore = trunc(content, 9999999999);
+      // we do need to compare the strings to decide if we really need to trim
+      const contentBefore = trunc(content, 9999999999);
       const contentTruncated = trunc(contentSanitized, options.length);
-      hook.app.debug('contentBefore');
-      hook.app.debug(contentBefore.text.length);
-      hook.app.debug('contentTruncated');
-      hook.app.debug(contentTruncated.text.length);
 
+      // save meta key hasMore to indicate if there is more text then in the excerpt
       const hasMore = contentBefore.text.length > (contentTruncated.text.length + 20);
       setByDot(hook.data, 'hasMore', hasMore);
 
       // set excerpt
       setByDot(hook.data, `${options.field}Excerpt`, hasMore ? contentTruncated.html : content.replace(/(\ ){2,}/ig, ' '))
     } catch (err) {
-      throw new Error(err);
+      // hook.app.error(err);
+      // throw new Error(err);
     }
     // trim content
     setByDot(hook.data, options.field, content.replace(/(\ ){2,}/ig, ' '));

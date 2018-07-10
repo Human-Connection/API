@@ -16,7 +16,7 @@ module.exports = (seederstore) => {
         coverImg: 'https://source.unsplash.com/random/1250x280',
         badgeIds: () => {
           let badges = [keys(seederstore.badges)[0]];
-          if (process.NODE_ENV !== 'production') {
+          if (process.env.NODE_ENV !== 'production') {
             badges.push(keys(seederstore.badges)[5]);
             badges.push(keys(seederstore.badges)[10]);
             badges.push(keys(seederstore.badges)[16]);
