@@ -2012,9 +2012,9 @@ feathers-hooks-common@^3.0.0:
     feathers-hooks "^2.0.1"
     traverse "^0.6.6"
 
-feathers-hooks-common@~4.14.0:
-  version "4.14.1"
-  resolved "https://registry.yarnpkg.com/feathers-hooks-common/-/feathers-hooks-common-4.14.1.tgz#d7b085a0d053b11a910b257d91d9390783564922"
+feathers-hooks-common@~4.14.3:
+  version "4.14.3"
+  resolved "https://registry.yarnpkg.com/feathers-hooks-common/-/feathers-hooks-common-4.14.3.tgz#e00793eed1a3f0a79a61fdf91918072a034c20fa"
   dependencies:
     "@feathers-plus/batch-loader" "^0.3.0"
     "@feathersjs/commons" "^1.4.0"
