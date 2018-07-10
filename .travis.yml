@@ -22,7 +22,7 @@ jobs:
     - script:
       - yarn install --frozen-lockfile --non-interactive
       - yarn add codacy-coverage
-      - yarn test
+      - NODE_PATH=$(which node) yarn test
       - cat ./coverage/lcov.info | codacy-coverage
 
 after_success:
