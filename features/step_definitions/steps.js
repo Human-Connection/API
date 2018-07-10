@@ -4,8 +4,6 @@
 const { Given, When, Then } = require('cucumber');
 const fetch = require('node-fetch');
 const { expect } = require('chai');
-const fs = require('fs-extra');
-const { spawnSync } = require('child_process');
 const waitOn = require('wait-on');
 
 const hcBackendUrl = 'http://localhost:3030';
@@ -14,7 +12,6 @@ let currentUser;
 let currentUserPassword;
 let httpResponse;
 let currentUserAccessToken;
-let commandOutput;
 
 function authenticate(email, plainTextPassword) {
   const formData = {
@@ -33,13 +30,6 @@ function authenticate(email, plainTextPassword) {
     .then(json => json.accessToken);
 }
 
-function execute(command) {
-  const script = command.replace(/node\s*/, '');
-  return spawnSync((process.env.NODE_PATH || 'node'), [script], {
-    cwd: './tmp/',
-  });
-}
-
 Given(/^the Human Connection API is up and running(?: on "http:\/\/localhost:3030")?/, (callback) => {
   waitOn({ resources: ['tcp:3030'], timeout: 30000 }, (err) => {
     if (err) throw (err);
@@ -47,7 +37,7 @@ Given(/^the Human Connection API is up and running(?: on "http:\/\/localhost:303
   });
 });
 
-Given("there is a 3rd party application running, e.g. 'Democracy'", () => {
+Given('there is a 3rd party application running, e.g. \'Democracy\'', () => {
   // Just documentation
 });
 
