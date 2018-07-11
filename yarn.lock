@@ -324,7 +324,7 @@ ajv@^4.9.1:
     co "^4.6.0"
     json-stable-stringify "^1.0.1"
 
-ajv@^5.1.0, ajv@^5.2.0, ajv@^5.2.3, ajv@^5.3.0, ajv@^5.5.2:
+ajv@^5.1.0, ajv@^5.2.3, ajv@^5.3.0, ajv@^5.5.2:
   version "5.5.2"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-5.5.2.tgz#73b5eeca3fab653e3d3f9422b341ad42205dc965"
   dependencies:
@@ -1962,15 +1962,15 @@ feathers-authentication-hooks@~0.3.0:
     debug "^3.1.0"
     lodash "^4.17.5"
 
-feathers-authentication-management@~2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/feathers-authentication-management/-/feathers-authentication-management-2.0.0.tgz#069d7b817e79b2e5ecb271196ac29b93914073c7"
+feathers-authentication-management@~2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/feathers-authentication-management/-/feathers-authentication-management-2.0.1.tgz#502c1d544329d57b1934dfe2639d394c694ae2a7"
   dependencies:
     "@feathersjs/authentication-local" "^1.0.4"
     "@feathersjs/errors" "^3.2.1"
     bcryptjs "^2.3.0"
     debug "^3.0.0"
-    feathers-hooks-common "^3.0.0"
+    feathers-hooks-common "^4.14.1"
 
 feathers-blob@~2.0.1:
   version "2.0.1"
@@ -2002,17 +2002,7 @@ feathers-hooks-common@^2.0.3:
     feathers-errors "^2.4.0"
     traverse "0.6.6"
 
-feathers-hooks-common@^3.0.0:
-  version "3.10.0"
-  resolved "https://registry.yarnpkg.com/feathers-hooks-common/-/feathers-hooks-common-3.10.0.tgz#2ae7dc54091ffa4609df8479c0bfa29dcd31d1a7"
-  dependencies:
-    ajv "^5.2.0"
-    debug "^3.0.0"
-    feathers-errors "^2.4.0"
-    feathers-hooks "^2.0.1"
-    traverse "^0.6.6"
-
-feathers-hooks-common@~4.14.3:
+feathers-hooks-common@^4.14.1, feathers-hooks-common@~4.14.3:
   version "4.14.3"
   resolved "https://registry.yarnpkg.com/feathers-hooks-common/-/feathers-hooks-common-4.14.3.tgz#e00793eed1a3f0a79a61fdf91918072a034c20fa"
   dependencies:
@@ -2031,13 +2021,6 @@ feathers-hooks@^1.5.0:
   dependencies:
     feathers-commons "^0.8.6"
     feathers-hooks-common "^2.0.3"
-    uberproto "^1.2.0"
-
-feathers-hooks@^2.0.1:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/feathers-hooks/-/feathers-hooks-2.1.2.tgz#f97af10f38621df816d754766c5c2e180b7df951"
-  dependencies:
-    feathers-commons "^0.8.6"
     uberproto "^1.2.0"
 
 feathers-logger@0.3.2:
