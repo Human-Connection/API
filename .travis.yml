@@ -23,6 +23,7 @@ jobs:
       - yarn install --frozen-lockfile --non-interactive
       - yarn add codacy-coverage
       - yarn run eslint
+      - cp config/cucumber.json config/local.json
       - yarn run test:coverage
       - cat ./coverage/lcov.info | codacy-coverage
 
