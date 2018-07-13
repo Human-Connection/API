@@ -79,6 +79,18 @@ Then('a new post is created', function () {
 });
 
 
+Then('these category ids are stored in your user settings', function () {
+  return this.app.service('usersettings').find({userId: currentUser._id.toString()}).then((settings) => {
+    expect(settings.total).to.eq(1);
+    let usersettings = settings.data[0];
+    expect(usersettings.uiLanguage).to.eq('en');
+    expect(usersettings.filter.categoryIds).to.be.an('array')
+      .that.does.include('5b310ab8b801653c1eb6c426')
+      .that.does.include('5b310ab8b801653c1eb6c427')
+      .that.does.include('5b310ab8b801653c1eb6c428');
+  });
+});
+
 Then('your language {string} is stored in your user settings', function (lang) {
   return this.app.service('usersettings').find({userId: currentUser._id.toString()}).then((settings) => {
     expect(settings.total).to.eq(1);

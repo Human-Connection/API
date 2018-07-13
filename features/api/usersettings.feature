@@ -8,7 +8,7 @@ Feature: Save current newsfeed filters to usersettings
       | email            | password | isVerified |
       | user@example.com |     1234 | true       |
 
-  Scenario: Save user's language
+  Scenario: Save your language
     Given you are authenticated
     When you create your user settings via POST request to "/usersettings" with:
     """
@@ -17,3 +17,21 @@ Feature: Save current newsfeed filters to usersettings
     }
     """
     Then your language "de" is stored in your user settings
+
+  Scenario: Save your filter settings
+    Given you are authenticated
+    When you create your user settings via POST request to "/usersettings" with:
+    """
+    {
+      "contentLanguages" : [ "en" ],
+      "uiLanguage" : "en",
+      "filter": {
+        "categoryIds": [
+          "5b310ab8b801653c1eb6c426",
+          "5b310ab8b801653c1eb6c427",
+          "5b310ab8b801653c1eb6c428"
+        ]
+      }
+    }
+    """
+    Then these category ids are stored in your user settings
