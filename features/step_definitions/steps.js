@@ -30,6 +30,26 @@ function authenticate(email, plainTextPassword) {
     .then(json => json.accessToken);
 }
 
+function postRequest(route, body, callback) {
+  const params = {
+    method: 'post',
+    body,
+    headers: { 'Content-Type': 'application/json' },
+  };
+  if (currentUserAccessToken) {
+    params.headers.Authorization = `Bearer ${currentUserAccessToken}`;
+  }
+  fetch(`${hcBackendUrl}${route}`, params)
+    .then(response => response.json())
+    .catch((err) => {
+      throw (err);
+    })
+    .then((json) => {
+      httpResponse = json;
+      callback();
+    });
+}
+
 Given(/^the Human Connection API is up and running(?: on "http:\/\/localhost:3030")?/, (callback) => {
   waitOn({ resources: ['tcp:3030'], timeout: 30000 }, (err) => {
     if (err) throw (err);
@@ -53,25 +73,7 @@ Given('you are authenticated', () => authenticate(currentUser.email, currentUser
   currentUserAccessToken = accessToken;
 }));
 
-When('you send a POST request to {string} with:', (route, body, callback) => {
-  const params = {
-    method: 'post',
-    body,
-    headers: { 'Content-Type': 'application/json' },
-  };
-  if (currentUserAccessToken) {
-    params.headers.Authorization = `Bearer ${currentUserAccessToken}`;
-  }
-  fetch(`${hcBackendUrl}${route}`, params)
-    .then(response => response.json())
-    .catch((err) => {
-      throw (err);
-    })
-    .then((json) => {
-      httpResponse = json;
-      callback();
-    });
-});
+When('you send a POST request to {string} with:', (route, body, callback) => postRequest(route, body, callback));
 
 Then('there is an access token in the response:', (jsonResponse) => {
   expect(httpResponse.accessToken).to.be.a('string');
@@ -86,5 +88,24 @@ Then('a new post is created', function () {
     expect(contributions.total).to.eq(1);
     expect(contributions.data[0].type).to.eq('post');
   });
+});
+
+
+Then('your language {string} is stored in your user settings', function (lang) {
+  return this.app.service('usersettings').find({userId: currentUser._id.toString()}).then((settings) => {
+    expect(settings.total).to.eq(1);
+    expect(settings.data[0].uiLanguage).to.eq(lang);
+  });
+});
+
+Then('debug', function() {
+  // eslint-disable-next-line no-debugger
+  debugger;
+});
+
+When('you create your user settings via POST request to {string} with:', function (route, body, callback) {
+  let jsonBody = JSON.parse(body);
+  jsonBody.userId = currentUser._id.toString();
+  postRequest(route, JSON.stringify(jsonBody), callback);
 });
 
