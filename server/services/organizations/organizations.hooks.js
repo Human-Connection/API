@@ -11,6 +11,7 @@ const thumbnails = require('../../hooks/thumbnails');
 const restrictToOwnerOrModerator = require('../../hooks/restrictToOwnerOrModerator');
 const restrictReviewAndEnableChange = require('../../hooks/restrictReviewAndEnableChange');
 const flagPrimaryAddress = require('./hooks/flag-primary-address');
+const populateUsersData = require('./hooks/populate-users-data');
 const search = require('feathers-mongodb-fuzzy-search');
 const isSingleItem = require('../../hooks/is-single-item');
 const xss = require('../../hooks/xss');
@@ -143,6 +144,7 @@ module.exports = {
       thumbnails(thumbnailOptions)
     ],
     get: [
+      populateUsersData(),
       populate({schema: categoriesSchema}),
       thumbnails(thumbnailOptions)
     ],
