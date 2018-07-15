@@ -105,7 +105,7 @@
     "winston": "~3.0.0-rc5"
   },
   "devDependencies": {
-    "babel-eslint": "~8.2.3",
+    "babel-eslint": "~8.2.6",
     "concurrently": "~3.6.0",
     "cross-env": "^5.2.0",
     "eslint": "~4.19.1",
