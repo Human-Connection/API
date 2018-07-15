@@ -120,10 +120,10 @@ module.exports = {
       createNotifications()
     ],
     update: [
-      createMentionNotifications()
+      // createMentionNotifications()
     ],
     patch: [
-      createMentionNotifications()
+      // createMentionNotifications()
     ],
     remove: []
   },

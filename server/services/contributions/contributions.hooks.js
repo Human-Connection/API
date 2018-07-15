@@ -225,11 +225,11 @@ module.exports = {
       thumbnails(thumbs)
     ],
     update: [
-      createMentionNotifications(),
+      // createMentionNotifications(),
       thumbnails(thumbs)
     ],
     patch: [
-      createMentionNotifications(),
+      // createMentionNotifications(),
       thumbnails(thumbs)
     ],
     remove: [
