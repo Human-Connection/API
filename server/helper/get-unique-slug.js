@@ -4,6 +4,7 @@ const getUniqueSlug = (service, slug, count, id) => {
 
     // Test if we already have data with this slug
     const query = {
+      $disableSoftDelete: true,
       slug: testSlug
     };
     // ignore entry with given id (if set)
