@@ -81,6 +81,29 @@ describe('\'contributions\' service', () => {
       assert.ok(notification.relatedContributionId, 'has relatedContributionId');
       assert.equal(notification.relatedContributionId, contribution._id, 'has correct relatedContributionId');
     });
+
+    context('given soft-deleted contribution', () => {
+      const contributionAttributes = {
+        title: 'title',
+        type: 'post',
+        content: 'blah',
+        language: 'en',
+      };
+
+      beforeEach(async () => {
+        const deletedContributionAttributes = Object.assign({}, contributionAttributes, {
+          deleted: true,
+          slug: 'title'
+        });
+        await service.create(deletedContributionAttributes, params);
+      });
+
+      it('increments title slug', async () => {
+        let contribution = await service.create(contributionAttributes, params);
+        assert.ok(contribution, 'created contribution');
+        assert.equal(contribution.slug, 'title1');
+      });
+    });
   });
 
   describe('contributions patch', () => {
