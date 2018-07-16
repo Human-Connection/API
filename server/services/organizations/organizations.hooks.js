@@ -149,12 +149,16 @@ module.exports = {
       thumbnails(thumbnailOptions)
     ],
     create: [
+      populateUsersData(),
       thumbnails(thumbnailOptions)
     ],
     update: [
+      populateUsersData(),
       thumbnails(thumbnailOptions)
     ],
-    patch: [],
+    patch: [
+      populateUsersData()
+    ],
     remove: []
   },
 
