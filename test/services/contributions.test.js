@@ -104,6 +104,29 @@ describe('\'contributions\' service', () => {
         assert.equal(contribution.slug, 'title1');
       });
     });
+
+    context('given disabled contribution', () => {
+      const contributionAttributes = {
+        title: 'title',
+        type: 'post',
+        content: 'blah',
+        language: 'en',
+      };
+
+      beforeEach(async () => {
+        const disabledContributionAttributes = Object.assign({}, contributionAttributes, {
+          isEnabled: false,
+          slug: 'title'
+        });
+        await service.create(disabledContributionAttributes, params);
+      });
+
+      it('increments title slug', async () => {
+        let contribution = await service.create(contributionAttributes, params);
+        assert.ok(contribution, 'created contribution');
+        assert.equal(contribution.slug, 'title1');
+      });
+    });
   });
 
   describe('contributions patch', () => {
