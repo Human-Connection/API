@@ -4,7 +4,6 @@ const getUniqueSlug = (service, slug, count, id) => {
 
     // Test if we already have data with this slug
     const query = {
-      $disableSoftDelete: true,
       slug: testSlug
     };
     // ignore entry with given id (if set)
@@ -15,6 +14,7 @@ const getUniqueSlug = (service, slug, count, id) => {
     }
     service.find({
       query,
+      $disableSoftDelete: true,
       _populate: 'skip'
     }).then((result) => {
       if (result.data.length > 0) {
