@@ -10,6 +10,7 @@ const createSlug = require('../../hooks/create-slug');
 const saveRemoteImages = require('../../hooks/save-remote-images');
 const createExcerpt = require('../../hooks/create-excerpt');
 const patchDeletedData = require('../../hooks/patch-deleted-data');
+const includeAll = require('../../hooks/include-all');
 const cleanupRelatedItems = require('../../hooks/cleanup-related-items');
 const keepDeletedDataFields = require('../../hooks/keep-deleted-data-fields');
 const search = require('feathers-mongodb-fuzzy-search');
@@ -108,6 +109,9 @@ module.exports = {
       unless(isModerator(),
         excludeDisabled()
       ),
+      when(isProvider('server'),
+        includeAll()
+      ),
       search(),
       search({
         fields: ['title', 'content']
@@ -163,7 +167,6 @@ module.exports = {
       patchDeletedData({
         data: {
           $set: {
-            title: 'DELETED',
             type: 'DELETED',
             content: 'DELETED',
             contentExcerpt: 'DELETED',
@@ -225,11 +228,11 @@ module.exports = {
       thumbnails(thumbs)
     ],
     update: [
-      createMentionNotifications(),
+      // createMentionNotifications(),
       thumbnails(thumbs)
     ],
     patch: [
-      createMentionNotifications(),
+      // createMentionNotifications(),
       thumbnails(thumbs)
     ],
     remove: [

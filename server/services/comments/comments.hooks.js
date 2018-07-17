@@ -41,7 +41,7 @@ module.exports = {
     ],
     find: [
       // We want to deleted comments to show up
-      (hook) => {
+      hook => {
         delete hook.params.query.deleted;
         return hook;
       }
@@ -120,10 +120,10 @@ module.exports = {
       createNotifications()
     ],
     update: [
-      createMentionNotifications()
+      // createMentionNotifications()
     ],
     patch: [
-      createMentionNotifications()
+      // createMentionNotifications()
     ],
     remove: []
   },
