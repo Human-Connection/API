@@ -1,7 +1,7 @@
 Feature: Individual Blacklist
   As a user
   I want to click on a button to blacklist certain user profiles
-  In order to stop seeing contributions of this account, because I don't like them
+  In order to stop seeing user content of this account, because I don't like them
 
   Background:
     Given this is your user account:
