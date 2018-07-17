@@ -1,10 +1,10 @@
-Feature: Save current newsfeed filters to usersettings
+Feature: Save preferred language settings
   As a user of human connection
-  You would like to have my latest newsfeed filter settings saved
-  In order to see the same selection of content next time I log in
+  You would like to have my preferred language saved
+  So when I log in the next time, the UI switches to my language automatically
 
   Background:
-    Given there is a user in Human Connection with these credentials:
+    Given this is your user account:
       | email            | password | isVerified |
       | user@example.com |     1234 | true       |
 

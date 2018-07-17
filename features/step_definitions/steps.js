@@ -49,12 +49,19 @@ function postRequest(route, body, callback) {
     });
 }
 
-Given('there is a user in Human Connection with these credentials:', function (dataTable) {
+
+Given('this is your user account:', function (dataTable) {
   const params = dataTable.hashes()[0];
   currentUserPassword = params.password;
   return this.app.service('users').create(params).then((user) => {
     currentUser = user;
   });
+});
+
+Given('these user accounts exist:', function (dataTable) {
+  return Promise.all(dataTable.hashes().map(params => {
+    return this.app.service('users').create(params);
+  }));
 });
 
 Given('you are authenticated', () => authenticate(currentUser.email, currentUserPassword).then((accessToken) => {
@@ -109,3 +116,9 @@ When('you create your user settings via POST request to {string} with:', functio
   postRequest(route, JSON.stringify(jsonBody), callback);
 });
 
+Then('you will stop seeing posts of the user with id {string}', function (userId) {
+  return this.app.service('usersettings').find({userId: currentUser._id.toString()}).then((settings) => {
+    expect(settings.total).to.eq(1);
+    expect(settings.data[0].blacklist).to.be.an('array').that.does.include(userId);
+  });
+});
