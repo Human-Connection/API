@@ -5,7 +5,7 @@ Feature: Save preferred language settings
 
   Background:
     Given the Human Connection API is up and running
-    And this your user account:
+    And this is your user account:
       | email            | password | isVerified |
       | user@example.com |     1234 | true       |
 

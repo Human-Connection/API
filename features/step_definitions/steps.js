@@ -76,7 +76,7 @@ Given('there is a 3rd party application running, e.g. \'Democracy\'', () => {
   // Just documentation
 });
 
-Given('this your user account:', function (dataTable) {
+Given('this is your user account:', function (dataTable) {
   const params = dataTable.hashes()[0];
   currentUserPassword = params.password;
   return this.app.service('users').create(params).then((user) => {

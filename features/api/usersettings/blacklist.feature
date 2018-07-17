@@ -1,11 +1,11 @@
 Feature: Individual Blacklist
   As a user
   I want to click on a button to blacklist certain user profiles
-  In order to stop seeing contributions of this account, because I don't like them
+  In order to stop seeing user content of this account, because I don't like them
 
   Background:
     Given the Human Connection API is up and running
-    And this your user account:
+    And this is your user account:
       | email            | password | isVerified |
       | user@example.com |     1234 | true       |
     And these user accounts exist:
