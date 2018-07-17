@@ -34,9 +34,10 @@
   },
   "scripts": {
     "clear": "rm -Rf tmp",
-    "test": "npm run eslint && cross-env NODE_ENV=test && nyc --reporter=lcovonly --reporter=text-summary npm run mocha",
+    "test": "npm run mocha && npm run cucumber",
+    "test:coverage": "nyc --reporter=lcovonly --reporter=text-summary npm run test",
     "test:mongo": "npm run eslint && cross-env NODE_ENV=test && nyc --reporter=lcovonly --reporter=text-summary npm run mocha:mongo",
-    "eslint": "eslint server/. test/. --config .eslintrc.json",
+    "eslint": "eslint server/. test/. features/. --config .eslintrc.json",
     "start": "concurrently 'mongod' 'wait-on tcp:27017 && cross-env NODE_ENV=production node server/'",
     "dev:debug": "npm run clear && concurrently '$npm_package_config_mongoDev &>/dev/null' 'wait-on tcp:27017 && cross-env DEBUG=feathers && cross-env NODE_ENV=development nodemon --inspect server/'",
     "dev": "npm run clear && concurrently '$npm_package_config_mongoDev &>/dev/null' 'wait-on tcp:27017 && cross-env DEBUG=feathers && cross-env NODE_ENV=development nodemon server/'",
@@ -44,7 +45,9 @@
     "dev:noseed": "concurrently 'mongod --dbpath data' 'wait-on tcp:27017 && NODE_ENV=development DEBUG=feathers nodemon server/'",
     "dev:win": "npm run clear && concurrently \"mongod --dbpath /data/db\" \"wait-on tcp:27017&&cross-env NODE_ENV=development&&cross-env DEBUG=feathers&& nodemon --inspect server/\"",
     "mocha": "npm run clear && $npm_package_config_mocha",
-    "mocha:mongo": "$npm_package_config_concurrently '$npm_package_config_mongoDev &>/dev/null' 'wait-on tcp:27017 && npm run mocha'"
+    "mocha:mongo": "$npm_package_config_concurrently '$npm_package_config_mongoDev &>/dev/null' 'wait-on tcp:27017 && npm run mocha'",
+    "cucumber": "npm run clear && concurrently --kill-others --success first 'cross-env NODE_ENV=test node server/' 'wait-on tcp:3030 && cross-env NODE_ENV=test cucumber-js'",
+    "cucumber:mongo": "npm run clear && concurrently --kill-others --success first '$npm_package_config_mongoDev &>/dev/null || sleep infinity' 'wait-on tcp:27017 && cross-env NODE_ENV=test node server/' 'wait-on tcp:3030 && cross-env NODE_ENV=test cucumber-js'"
   },
   "config": {
     "mongoDev": "mongod --dbpath data --quiet",
@@ -106,11 +109,14 @@
   },
   "devDependencies": {
     "babel-eslint": "~8.2.6",
+    "chai": "^4.1.2",
+    "cucumber": "^4.2.1",
     "concurrently": "~3.6.0",
     "cross-env": "^5.2.0",
     "eslint": "~4.19.1",
     "istanbul": "1.1.0-alpha.1",
     "mocha": "~5.2.0",
+    "node-fetch": "^2.1.2",
     "nodemon": "~1.18.1",
     "nyc": "^12.0.2",
     "wait-on": "~2.1.0"
