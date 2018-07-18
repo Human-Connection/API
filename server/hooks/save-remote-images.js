@@ -8,9 +8,9 @@ const { isEmpty } = require('lodash');
 const fs = require('fs');
 const path = require('path');
 const request = require('request');
-const faker = require('faker');
 const mime = require('mime/lite');
 const validUrl = require('valid-url');
+const uuid = require('uuid/v1');
 
 function createUploadDirIfNeeded () {
   const uploadDir = path.resolve('public/uploads');
@@ -60,8 +60,7 @@ module.exports = function (options = []) { // eslint-disable-line no-unused-vars
           loading++;
           imgCount++;
           // TODO: fix that to use the data _id or somethink similar
-          let uuid = faker.fake('{{random.uuid}}');
-          const imgName = `${field}_${uuid}`;
+          const imgName = `${field}_${uuid()}`;
           let imgPath = path.resolve('public', 'uploads/' + imgName);
 
           if (typeof hook.data[field] === 'object') {

@@ -1,5 +1,6 @@
-const { authenticate } = require('feathers-authentication').hooks;
+const { authenticate } = require('@feathersjs/authentication').hooks;
 const { unless, isProvider, populate, discard, softDelete, setNow } = require('feathers-hooks-common');
+const { protect } = require('@feathersjs/authentication-local').hooks;
 const {
   //queryWithCurrentUser,
   associateCurrentUser,
@@ -40,7 +41,7 @@ module.exports = {
     ],
     find: [
       // We want to deleted comments to show up
-      (hook) => {
+      hook => {
         delete hook.params.query.deleted;
         return hook;
       }
@@ -108,7 +109,7 @@ module.exports = {
     ],
     find: [
       populate({ schema: userSchema }),
-      discard('content', 'badgeIds')
+      protect('content', 'badgeIds')
     ],
     get: [
       populate({ schema: userSchema })
@@ -119,10 +120,10 @@ module.exports = {
       createNotifications()
     ],
     update: [
-      createMentionNotifications()
+      // createMentionNotifications()
     ],
     patch: [
-      createMentionNotifications()
+      // createMentionNotifications()
     ],
     remove: []
   },

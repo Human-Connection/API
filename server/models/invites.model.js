@@ -1,5 +1,5 @@
 // invites-model.js - A mongoose model
-// 
+//
 // See http://mongoosejs.com/docs/models.html
 // for more of what you can do here.
 module.exports = function (app) {
@@ -12,6 +12,7 @@ module.exports = function (app) {
       enum: ['admin', 'moderator', 'manager', 'editor', 'user'],
       default: 'user'
     },
+    invitedByUserId: { type: String },
     language: { type: String },
     badgeIds: [],
     wasUsed: { type: Boolean },

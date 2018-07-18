@@ -67,12 +67,12 @@ describe('\'contributions\' service', () => {
 
     it('creates mention notification', async () => {
       const mentionedUser = await userService.create(userData);
-      const data = {...contributionData};
-      data.content = `<a href="" class="hc-editor-mention-blot" data-hc-mention="{&quot;_id&quot;:&quot;${mentionedUser._id.toString()}&quot;,&quot;slug&quot;:&quot;${mentionedUser.slug}&quot;}">${mentionedUser.name}</a>`;
+      const data = Object.assign({}, contributionData);
+      data.content += ` <a href="" class="hc-editor-mention-blot" data-hc-mention="{&quot;_id&quot;:&quot;${mentionedUser._id.toString()}&quot;,&quot;slug&quot;:&quot;${mentionedUser.slug}&quot;}">${mentionedUser.name}</a>`;
       const contribution = await service.create(data, params);
       const result = await notificationService.find({
         query: {
-          userId: mentionedUser._id
+          userId: mentionedUser._id.toString()
         }
       });
       const notification = result.data[0];
@@ -80,6 +80,52 @@ describe('\'contributions\' service', () => {
       assert.ok(notification.userId, 'has userId');
       assert.ok(notification.relatedContributionId, 'has relatedContributionId');
       assert.equal(notification.relatedContributionId, contribution._id, 'has correct relatedContributionId');
+    });
+
+    context('given soft-deleted contribution', () => {
+      const contributionAttributes = {
+        title: 'title',
+        type: 'post',
+        content: 'blah',
+        language: 'en',
+      };
+
+      beforeEach(async () => {
+        const deletedContributionAttributes = Object.assign({}, contributionAttributes, {
+          deleted: true,
+          slug: 'title'
+        });
+        await service.create(deletedContributionAttributes, params);
+      });
+
+      it('increments title slug', async () => {
+        let contribution = await service.create(contributionAttributes, params);
+        assert.ok(contribution, 'created contribution');
+        assert.equal(contribution.slug, 'title1');
+      });
+    });
+
+    context('given disabled contribution', () => {
+      const contributionAttributes = {
+        title: 'title',
+        type: 'post',
+        content: 'blah',
+        language: 'en',
+      };
+
+      beforeEach(async () => {
+        const disabledContributionAttributes = Object.assign({}, contributionAttributes, {
+          isEnabled: false,
+          slug: 'title'
+        });
+        await service.create(disabledContributionAttributes, params);
+      });
+
+      it('increments title slug', async () => {
+        let contribution = await service.create(contributionAttributes, params);
+        assert.ok(contribution, 'created contribution');
+        assert.equal(contribution.slug, 'title1');
+      });
     });
   });
 
@@ -154,7 +200,7 @@ describe('\'contributions\' service', () => {
     it('returns one contribution', async () => {
       const result = await service.find({ query });
       assert.ok(result.data[0], 'returns data');
-      assert.equal(result.data.length, 1), 'returns only one entry';
+      assert.equal(result.data.length, 1, 'returns only one entry');
     });
 
     it('populates associatedCanDos', async () => {

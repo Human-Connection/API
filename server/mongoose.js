@@ -12,7 +12,7 @@ module.exports = function () {
     connectTimeoutMS: 10000,
     socketTimeoutMS: 10000
   }, function () {
-    if (process.NODE_ENV !== 'production' && app.get('seeder').dropDatabase === true) {
+    if (process.env.NODE_ENV !== 'production' && app.get('seeder').dropDatabase === true) {
       mongoose.connection.dropDatabase().then(() => {
         app.debug('>>>>>> DROPED DATABASE <<<<<<');
         let uploadDir = path.resolve('public/uploads');

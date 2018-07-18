@@ -1,7 +1,6 @@
 // Initializes the `admin` service on path `/admin`
 const createService = require('./admin.class.js');
 const hooks = require('./admin.hooks');
-const filters = require('./admin.filters');
 
 module.exports = function () {
   const app = this;
@@ -20,8 +19,4 @@ module.exports = function () {
   const service = app.service('admin');
 
   service.hooks(hooks);
-
-  if (service.filter) {
-    service.filter(filters);
-  }
 };

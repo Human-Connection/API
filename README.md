@@ -5,7 +5,10 @@
 
 <p align="center">
   <a href="https://travis-ci.org/Human-Connection/API"><img src="https://img.shields.io/travis/Human-Connection/API/master.svg" alt="Build Status"></a>
-  <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-green.svg" "Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)" /></a>
+  <a href="https://github.com/Human-Connection/WebApp/blob/develop/LICENSE.md"><img src="https://img.shields.io/badge/license-MIT-green.svg" "MIT" /></a>
+  <a href="https://app.fossa.io/projects/git%2Bgithub.com%2FHuman-Connection%2FAPI?ref=badge_shield" alt="FOSSA Status"><img src="https://app.fossa.io/api/projects/git%2Bgithub.com%2FHuman-Connection%2FAPI.svg?type=shield"/></a>
+  <a href="https://discord.gg/NgVpvx9" alt="Discord Channel">
+<img src="https://img.shields.io/discord/443107904757694465.svg" alt="Discord" /></a>
 </p>
 
 # Human-Connection API
@@ -61,8 +64,10 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
    # start mongodb, feathers and seed database
    $ yarn dev
    $ yarn dev:win if you're on windows
+
    # start mongodb, feathers without seeding the database
    $ yarn dev:noseed
+   
    # start mongodb, feathers for production
    $ yarn start
    ```
@@ -70,7 +75,7 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
    > ##### IMPORTANT for WIN users: 
    > - make sure you have mongo bin directory added to your PATH
    > - if you picked another data directory during mongodb setup make sure 
-   > to change package.json scripts section for key "dev-win" so it points to
+   > to change package.json scripts section for key "dev:win" so it points to
    > the proper path. Otherwise you will get missing data path errors from mongodb.
    
    If you did it right it will seed some fake data for you and downloads some images and avatar for faster development.
@@ -105,9 +110,6 @@ The seeder configuration has two properties:
 
 Simply run `yarn test` and all your tests in the `test/` directory will be run.
 
-> **Note:** 
-> *At the moment there are some issues with linting while testing, but you can run the tests also with mocha run*
-
 ## Scaffolding
 
 Feathers has a powerful command line interface. Here are a few things it can do:
@@ -129,6 +131,6 @@ The HC platform is documented in our [gitbook](https://www.gitbook.com/book/huma
 
 ## License 
 
-<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by-nc-sa.svg"/></a>
+Copyright (c) 2018 [Human-Connection.org](https://human-connection.org)
 
-[Creative Commons (CC BY-NC-SA 4.0) License](https://creativecommons.org/licenses/by-nc-sa/4.0/) not for commercial use. 
+Licensed under the [MIT](https://github.com/Human-Connection/WebApp/blob/develop/LICENSE.md) license.
