@@ -1,4 +1,4 @@
-const { unless, when, isProvider, populate, softDelete, stashBefore, discard } = require('feathers-hooks-common');
+const { unless, when, isProvider, populate, softDelete, stashBefore, discard, disallow } = require('feathers-hooks-common');
 const { isVerified } = require('feathers-authentication-management').hooks;
 const { authenticate } = require('feathers-authentication').hooks;
 const { associateCurrentUser } = require('feathers-authentication-hooks');
@@ -8,7 +8,7 @@ const createExcerpt = require('../../hooks/create-excerpt');
 const isModerator = require('../../hooks/is-moderator-boolean');
 // const excludeDisabled = require('../../hooks/exclude-disabled');
 const thumbnails = require('../../hooks/thumbnails');
-const isAdminOwnerOrModerator = require('../../hooks/is-adminowner-or-moderator-boolean');
+const isAdminOwnerOrModerator = require('../../hooks/is-adminowner-or-moderator');
 const restrictToOwnerOrModerator = require('../../hooks/restrictToOwnerOrModerator');
 const restrictReviewAndEnableChange = require('../../hooks/restrictReviewAndEnableChange');
 const flagPrimaryAddress = require('./hooks/flag-primary-address');
@@ -132,7 +132,9 @@ module.exports = {
       authenticate('jwt'),
       isVerified(),
       stashBefore(),
-      restrictToOwnerOrModerator({ isEnabled: true })
+      unless(isAdminOwnerOrModerator(),
+        disallow()
+      )
     ]
   },
 

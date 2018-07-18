@@ -3,11 +3,11 @@ const { getByDot } = require('feathers-hooks-common');
 // Check if user is owner and has admin role on this item, or is moderator
 module.exports = () => hook => {
   if (hook.type !== 'before') {
-    throw new Error('The "isAdminOwnerOrModeratorBoolean" hook should only be used as a "before" hook.');
+    throw new Error('The "isAdminOwnerOrModerator" hook should only be used as a "before" hook.');
   }
 
   if (!getByDot(hook, 'params.before')) {
-    throw new Error('The "isAdminOwnerOrModeratorBoolean" hook should be used after the "stashBefore()" hook');
+    throw new Error('The "isAdminOwnerOrModerator" hook should be used after the "stashBefore()" hook');
   }
 
   // If no user is given -> deny

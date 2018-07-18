@@ -16,7 +16,7 @@ const {
 } = require('../assets/organizations');
 const { categoryData } = require('../assets/categories');
 
-describe.only('\'organizations\' service', () => {
+describe('\'organizations\' service', () => {
   let user;
   let category;
   let params;
@@ -179,7 +179,7 @@ describe.only('\'organizations\' service', () => {
     });
   });
 
-  describe.only('organizations admin roles', () => {
+  describe('organizations admin roles', () => {
     let user2;
     let organization;
 
@@ -207,9 +207,14 @@ describe.only('\'organizations\' service', () => {
         newUser.id.toString(), user2._id.toString(), 'new user has correct id'
       );
     });
+
+    it('admin can delete organization', async () => {
+      const result = await service.remove(organization._id, params);
+      assert.strictEqual(result.deleted, true, 'organization is deleted');
+    });
   });
 
-  describe.only('organizations editor roles', () => {
+  describe('organizations editor roles', () => {
     let editor;
     let user2;
     let editorParams;
@@ -259,6 +264,16 @@ describe.only('\'organizations\' service', () => {
       data.users[1].role = 'admin';
       const result = await service.patch(organization._id, data, editorParams);
       assert.notEqual(result.users[1].role, 'admin', 'has not changed role');
+    });
+
+    it('editor cannot delete organization', async () => {
+      let error = false;
+      try {
+        await service.remove(organization._id, editorParams);
+      } catch (e) {
+        error = e;
+      }
+      assert.ok(error, 'throws an error');
     });
   });
 });
