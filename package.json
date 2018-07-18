@@ -117,7 +117,7 @@
     "istanbul": "1.1.0-alpha.1",
     "mocha": "~5.2.0",
     "node-fetch": "^2.1.2",
-    "nodemon": "~1.18.1",
+    "nodemon": "~1.18.3",
     "nyc": "^12.0.2",
     "wait-on": "~2.1.0"
   }
