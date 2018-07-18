@@ -17,6 +17,7 @@ const search = require('feathers-mongodb-fuzzy-search');
 const thumbnails = require('../../hooks/thumbnails');
 const isModerator = require('../../hooks/is-moderator-boolean');
 const excludeDisabled = require('../../hooks/exclude-disabled');
+const excludeBlacklisted = require('../../hooks/exclude-blacklisted');
 const getAssociatedCanDos = require('./hooks/get-associated-can-dos');
 const createMentionNotifications = require('./hooks/create-mention-notifications');
 const notifyFollowers = require('./hooks/notify-followers');
@@ -109,6 +110,8 @@ module.exports = {
       unless(isModerator(),
         excludeDisabled()
       ),
+      authenticate('jwt'),
+      excludeBlacklisted(),
       when(isProvider('server'),
         includeAll()
       ),
