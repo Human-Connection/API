@@ -4,7 +4,8 @@ const service = app.service('organizations');
 const userService = app.service('users');
 const categoryService = app.service('categories');
 const {
-  //userData,
+  userData,
+  userData2,
   adminData
 } = require('../assets/users');
 const {
@@ -15,7 +16,7 @@ const {
 } = require('../assets/organizations');
 const { categoryData } = require('../assets/categories');
 
-describe('\'organizations\' service', () => {
+describe.only('\'organizations\' service', () => {
   let user;
   let category;
   let params;
@@ -153,10 +154,6 @@ describe('\'organizations\' service', () => {
     });
   });
 
-  // ToDo: Check roles
-  // Only admin can add or delete users and change roles
-  // describe('organizations user roles', () => {})
-
   describe('organizations addresses', () => {
     beforeEach(async () => {
       organizationData.addresses = [
@@ -179,6 +176,89 @@ describe('\'organizations\' service', () => {
       assert.strictEqual(
         address.primary, true, 'address has primary flag'
       );
+    });
+  });
+
+  describe.only('organizations admin roles', () => {
+    let user2;
+    let organization;
+
+    beforeEach(async () => {
+      user2 = await userService.create(userData2);
+      organization = await service.create(organizationData, params);
+    });
+
+    afterEach(async () => {
+      user2 = null;
+      organization = null;
+    });
+
+    it('admin can add user to organization', async () => {
+      const data = {
+        users: [
+          ...organization.users,
+          { id: user2._id }
+        ]
+      };
+      const result = await service.patch(organization._id, data, params);
+      const newUser = result.users[1];
+      assert.ok(newUser, 'has new user');
+      assert.strictEqual(
+        newUser.id.toString(), user2._id.toString(), 'new user has correct id'
+      );
+    });
+  });
+
+  describe.only('organizations editor roles', () => {
+    let editor;
+    let user2;
+    let editorParams;
+    let organization;
+
+    beforeEach(async () => {
+      editor = await userService.create(userData);
+      editorParams = {
+        user: editor
+      };
+      organization = await service.create(organizationData, params);
+      const data = {
+        users: [
+          ...organization.users,
+          {
+            id: editor._id,
+            role: 'editor'
+          }
+        ]
+      };
+      organization = await service.patch(organization._id, data, params);
+      user2 = await userService.create(userData2);
+    });
+
+    afterEach(async () => {
+      editor = null;
+      user2 = null;
+      editorParams = null;
+      organization = null;
+    });
+
+    it('editor cannot add user to organization', async () => {
+      const data = {
+        users: [
+          ...organization.users,
+          { id: user2._id }
+        ]
+      };
+      const result = await service.patch(organization._id, data, editorParams);
+      assert.strictEqual(result.users[2], undefined, 'has not added user');
+    });
+
+    it('editor cannot change roles on user', async () => {
+      const data = {
+        users: organization.users
+      };
+      data.users[1].role = 'admin';
+      const result = await service.patch(organization._id, data, editorParams);
+      assert.notEqual(result.users[1].role, 'admin', 'has not changed role');
     });
   });
 });

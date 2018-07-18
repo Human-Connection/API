@@ -1,4 +1,4 @@
-// Add flag on primary address
+// Populate user data on organization users
 const alterItems = require('../../../helper/alter-items');
 
 module.exports = () => alterItems(handleItem);

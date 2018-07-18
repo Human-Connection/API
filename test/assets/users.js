@@ -16,7 +16,17 @@ const userData = {
   role: 'user'
 };
 
+const userData2 = {
+  email: 'test3@test3.de',
+  password: '1234',
+  name: 'Smith',
+  timezone: 'Europe/Berlin',
+  badgeIds: [],
+  role: 'user'
+};
+
 module.exports = {
   adminData,
-  userData
+  userData,
+  userData2
 };
