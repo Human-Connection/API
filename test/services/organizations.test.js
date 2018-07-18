@@ -16,7 +16,7 @@ const {
 } = require('../assets/organizations');
 const { categoryData } = require('../assets/categories');
 
-describe('\'organizations\' service', () => {
+describe.only('\'organizations\' service', () => {
   let user;
   let category;
   let params;
@@ -53,7 +53,7 @@ describe('\'organizations\' service', () => {
     assert.ok(service, 'registered the service');
   });
 
-  describe('organizations create', () => {
+  describe.only('organizations create', () => {
     it('runs create', async () => {
       const organization = await service.create(organizationData, params);
       assert.ok(organization, 'created organization');
@@ -91,6 +91,23 @@ describe('\'organizations\' service', () => {
         firstUser.role,
         'admin',
         'user is admin'
+      );
+    });
+
+    it('cannot add users on creation', async () => {
+      const user2 = await userService.create(userData2);
+      organizationData.users = [{ id: user2._id }];
+      const organization = await service.create(organizationData, params);
+      const users = organization.users;
+      assert.equal(
+        users[0].id,
+        user._id.toString(),
+        'has correct user id'
+      );
+      assert.equal(
+        users[1],
+        undefined,
+        'does not have second user'
       );
     });
   });
@@ -176,6 +193,33 @@ describe('\'organizations\' service', () => {
       assert.strictEqual(
         address.primary, true, 'address has primary flag'
       );
+    });
+  });
+
+  describe.only('organizations users', () => {
+    let user2;
+    let organization;
+
+    beforeEach(async () => {
+      user2 = await userService.create(userData2);
+      organization = await service.create(organizationData, params);
+    });
+
+    afterEach(async () => {
+      user2 = null;
+      organization = null;
+    });
+
+    it('a user can only be added once', async () => {
+      const data = {
+        users: [
+          ...organization.users,
+          { id: user2._id },
+          { id: user2._id }
+        ]
+      };
+      const result = await service.patch(organization._id, data, params);
+      assert.strictEqual(result.users[2], undefined, 'has not same user twice');
     });
   });
 

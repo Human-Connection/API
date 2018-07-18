@@ -12,6 +12,7 @@ const isAdminOwnerOrModerator = require('../../hooks/is-adminowner-or-moderator'
 const restrictToOwnerOrModerator = require('../../hooks/restrictToOwnerOrModerator');
 const restrictReviewAndEnableChange = require('../../hooks/restrictReviewAndEnableChange');
 const flagPrimaryAddress = require('./hooks/flag-primary-address');
+const makeUsersUnique = require('./hooks/make-users-unique');
 const populateUsersData = require('./hooks/populate-users-data');
 const search = require('feathers-mongodb-fuzzy-search');
 const isSingleItem = require('../../hooks/is-single-item');
@@ -83,6 +84,8 @@ module.exports = {
           return hook;
         }
       ),
+      // Users cannot be manually added on creation
+      discard('users'),
       // Add current user as creator and user
       associateCurrentUser({ as: 'creatorId' }),
       hook => {
@@ -109,6 +112,7 @@ module.exports = {
       unless(isAdminOwnerOrModerator(),
         discard('users')
       ),
+      makeUsersUnique(),
       createSlug({ field: 'name', overwrite: true }),
       createExcerpt({ field: 'description' }),
       saveRemoteImages(['logo', 'coverImg'])
@@ -124,6 +128,7 @@ module.exports = {
       unless(isAdminOwnerOrModerator(),
         discard('users')
       ),
+      makeUsersUnique(),
       createSlug({ field: 'name', overwrite: true }),
       createExcerpt({ field: 'description' }),
       saveRemoteImages(['logo', 'coverImg'])
