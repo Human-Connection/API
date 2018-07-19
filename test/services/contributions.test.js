@@ -4,6 +4,7 @@ const service = app.service('contributions');
 const userService = app.service('users');
 const notificationService = app.service('notifications');
 const categoryService = app.service('categories');
+const usersettingsService = app.service('usersettings');
 const { userData, adminData } = require('../assets/users');
 const {
   contributionData,
@@ -146,6 +147,44 @@ describe('\'contributions\' service', () => {
       }, params);
       assert.ok(result, 'returns data');
       assert.equal(result.title, 'Test', 'patched data');
+    });
+  });
+
+  describe('contributions get', () => {
+    let id;
+    describe('by a blacklisted user', () => {
+      beforeEach(async () => {
+        let usersettings = await usersettingsService.create({
+          userId: user._id,
+          blacklist: ['4711']
+        });
+        let data = {
+          ...contributionData,
+          content: 'I am blacklisted',
+          userId: '4711'
+        };
+        const contribution = await service.create(data, params);
+        id = contribution._id;
+      });
+
+      it('returns contribution', async () => {
+        const contribution = await service.get(id, params);
+        assert.equal(contribution.content, 'I am blacklisted');
+      });
+
+      context('when authenticated', () => {
+        let params;
+        beforeEach(() => {
+          const user = { _id: 'test' }
+          params = { user }
+        });
+
+        it('throws an error', async () => {
+          assert.throws(async function(){
+            await service.get(id, params);
+          }, 'This item is blacklisted');
+        });
+      });
     });
   });
 
