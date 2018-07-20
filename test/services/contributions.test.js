@@ -5,6 +5,7 @@ const userService = app.service('users');
 const notificationService = app.service('notifications');
 const categoryService = app.service('categories');
 const usersettingsService = app.service('usersettings');
+const usersService = app.service('users');
 const { userData, adminData } = require('../assets/users');
 const {
   contributionData,
@@ -42,6 +43,52 @@ describe('\'contributions\' service', () => {
 
   it('registered the service', () => {
     assert.ok(service, 'registered the service');
+  });
+
+  describe('contribution get', () => {
+    let id;
+    let blacklistedUser;
+
+    context('given a blacklist', () => {
+      beforeEach(async() => {
+        blacklistedUser = await usersService.create({
+          email: 'bad.guy@example.org',
+          name: 'Bad guy'
+        });
+        await usersettingsService.create({
+          userId: user._id,
+          blacklist: [blacklistedUser._id]
+        });
+      });
+
+      let createContribution = async (data) => {
+        const contribution = await service.create(data, params);
+        return contribution._id;
+      };
+
+      context('author is fine', () => {
+        it('returns contribution', async () => {
+          data = { ...contributionData };
+          id = await createContribution(data);
+          const contribution = await service.get(id, { ...params, provider: 'test'});
+          assert.ok(contribution);
+        });
+      });
+
+      context('author is blacklisted', () => {
+        it('throws an error', async () => {
+          data = {
+            ...contributionData,
+            content: 'I am blacklisted',
+            userId: blacklistedUser._id
+          };
+          id = await createContribution(data);
+          assert.throws(async function(){
+            await service.get(id, {...params, provider: 'test'});
+          }, 'This item is blacklisted');
+        });
+      });
+    });
   });
 
   describe('contributions create', () => {
@@ -150,43 +197,6 @@ describe('\'contributions\' service', () => {
     });
   });
 
-  describe('contributions get', () => {
-    let id;
-    describe('by a blacklisted user', () => {
-      beforeEach(async () => {
-        let usersettings = await usersettingsService.create({
-          userId: user._id,
-          blacklist: ['4711']
-        });
-        let data = {
-          ...contributionData,
-          content: 'I am blacklisted',
-          userId: '4711'
-        };
-        const contribution = await service.create(data, params);
-        id = contribution._id;
-      });
-
-      it('returns contribution', async () => {
-        const contribution = await service.get(id, params);
-        assert.equal(contribution.content, 'I am blacklisted');
-      });
-
-      context('when authenticated', () => {
-        let params;
-        beforeEach(() => {
-          const user = { _id: 'test' }
-          params = { user }
-        });
-
-        it('throws an error', async () => {
-          assert.throws(async function(){
-            await service.get(id, params);
-          }, 'This item is blacklisted');
-        });
-      });
-    });
-  });
 
   describe('contributions find', () => {
     beforeEach(async () => {

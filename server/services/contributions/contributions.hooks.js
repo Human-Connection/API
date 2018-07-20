@@ -110,11 +110,10 @@ module.exports = {
       unless(isModerator(),
         excludeDisabled()
       ),
-      authenticate('jwt'),
-      excludeBlacklisted(),
       when(isProvider('server'),
         includeAll()
       ),
+      excludeBlacklisted(),
       search(),
       search({
         fields: ['title', 'content']
@@ -123,7 +122,8 @@ module.exports = {
     get: [
       unless(isModerator(),
         excludeDisabled()
-      )
+      ),
+      excludeBlacklisted(),
     ],
     create: [
       authenticate('jwt'),
