@@ -1,20 +1,14 @@
 {
-  "host": "localhost",
-  "port": 3030,
-  "baseURL": "http://localhost:3030",
-  "frontURL": "http://localhost:3000",
+  "port": 3031,
+  "baseURL": "http://localhost:3031",
+  "seeder": {
+    "runOnInit": false,
+    "dropDatabase": false
+  },
   "smtpConfig": {
     "host": "0.0.0.0",
     "port": 1025,
     "ignoreTLS": true
   },
-  "thumbor": {
-    "url": "",
-    "key": ""
-  },
-  "seeder": {
-    "runOnInit": false,
-    "dropDatabase": false
-  },
-  "defaultEmail": "no-replay@human-connection.org"
+  "mongodb": "mongodb://localhost:27017/hc_api_test"
 }

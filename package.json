@@ -46,8 +46,8 @@
     "dev:win": "npm run clear && concurrently \"mongod --dbpath /data/db\" \"wait-on tcp:27017&&cross-env NODE_ENV=development&&cross-env DEBUG=feathers&& nodemon --inspect server/\"",
     "mocha": "npm run clear && $npm_package_config_mocha",
     "mocha:mongo": "$npm_package_config_concurrently '$npm_package_config_mongoDev &>/dev/null' 'wait-on tcp:27017 && npm run mocha'",
-    "cucumber": "npm run clear && concurrently --kill-others --success first 'cross-env NODE_ENV=test node server/' 'wait-on tcp:3030 && cross-env NODE_ENV=test cucumber-js'",
-    "cucumber:mongo": "npm run clear && concurrently --kill-others --success first '$npm_package_config_mongoDev &>/dev/null || sleep infinity' 'wait-on tcp:27017 && cross-env NODE_ENV=test node server/' 'wait-on tcp:3030 && cross-env NODE_ENV=test cucumber-js'"
+    "cucumber": "npm run clear && concurrently --kill-others --success first 'cross-env NODE_ENV=cucumber node server/' 'wait-on tcp:3031 && cross-env NODE_ENV=cucumber cucumber-js'",
+    "cucumber:mongo": "npm run clear && concurrently --kill-others --success first '$npm_package_config_mongoDev &>/dev/null || sleep infinity' 'wait-on tcp:27017 && cross-env NODE_ENV=cucumber node server/' 'wait-on tcp:3031 && cross-env NODE_ENV=cucumber cucumber-js'"
   },
   "config": {
     "mongoDev": "mongod --dbpath data --quiet",

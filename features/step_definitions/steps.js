@@ -6,7 +6,7 @@ const fetch = require('node-fetch');
 const { expect } = require('chai');
 const waitOn = require('wait-on');
 
-const hcBackendUrl = 'http://localhost:3030';
+const hcBackendUrl = 'http://localhost:3031';
 
 let currentUser;
 let currentUserPassword;
@@ -50,8 +50,8 @@ function postRequest(route, body, callback) {
     });
 }
 
-Given(/^the Human Connection API is up and running(?: on "http:\/\/localhost:3030")?/, (callback) => {
-  waitOn({ resources: ['tcp:3030'], timeout: 30000 }, (err) => {
+Given(/^the Human Connection API is up and running(?: on "http:\/\/localhost:3031")?/, (callback) => {
+  waitOn({ resources: ['tcp:3031'], timeout: 30000 }, (err) => {
     if (err) throw (err);
     return callback();
   });
