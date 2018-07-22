@@ -30,12 +30,11 @@ module.exports = function (app) {
     type: {
       type: String,
       enum: channelNames,
-      required: true,
-      unique: true
+      required: true
     }
   });
   const userSchema = mongooseClient.Schema({
-    id: { type: String, required: true, unique: true },
+    id: { type: String, required: true },
     role: {
       type: String,
       enum: ['admin', 'editor'],

@@ -16,7 +16,7 @@ const {
 } = require('../assets/organizations');
 const { categoryData } = require('../assets/categories');
 
-describe.only('\'organizations\' service', () => {
+describe('\'organizations\' service', () => {
   let user;
   let category;
   let params;
@@ -53,7 +53,7 @@ describe.only('\'organizations\' service', () => {
     assert.ok(service, 'registered the service');
   });
 
-  describe.only('organizations create', () => {
+  describe('organizations create', () => {
     it('runs create', async () => {
       const organization = await service.create(organizationData, params);
       assert.ok(organization, 'created organization');
@@ -196,7 +196,7 @@ describe.only('\'organizations\' service', () => {
     });
   });
 
-  describe.only('organizations users', () => {
+  describe('organizations users', () => {
     let user2;
     let organization;
 
