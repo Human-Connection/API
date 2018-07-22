@@ -29,4 +29,3 @@ module.exports = {
   contributionData2,
   contributionCandoData
 };
-

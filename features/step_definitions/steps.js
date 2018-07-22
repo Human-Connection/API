@@ -1,9 +1,9 @@
 /* eslint no-unused-expressions: off */
 /* eslint func-names: off */
 /* eslint no-underscore-dangle: off */
-const { Given, When, Then } = require('cucumber');
+const {Given, When, Then} = require('cucumber');
 const fetch = require('node-fetch');
-const { expect } = require('chai');
+const {expect} = require('chai');
 const waitOn = require('wait-on');
 
 const hcBackendUrl = 'http://localhost:3030';
@@ -15,7 +15,7 @@ let currentUserAccessToken;
 let lastPost;
 let blacklistedUser;
 
-function authenticate(email, plainTextPassword) {
+function authenticate (email, plainTextPassword) {
   const formData = {
     email,
     password: plainTextPassword,
@@ -24,7 +24,7 @@ function authenticate(email, plainTextPassword) {
   return fetch(`${hcBackendUrl}/authentication`, {
     method: 'post',
     body: JSON.stringify(formData),
-    headers: { 'Content-Type': 'application/json' },
+    headers: {'Content-Type': 'application/json'},
   }).then(response => response.json())
     .catch((err) => {
       throw (err);
@@ -32,24 +32,24 @@ function authenticate(email, plainTextPassword) {
     .then(json => json.accessToken);
 }
 
-function postRequest(route, body, callback) {
+function postRequest (route, body, callback) {
   const params = {
     method: 'post',
     body,
-    headers: { 'Content-Type': 'application/json' },
+    headers: {'Content-Type': 'application/json'},
   };
   return request(params, route, callback);
 }
 
-function getRequest(route, callback){
+function getRequest (route, callback) {
   const params = {
     method: 'get',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {'Content-Type': 'application/json'},
   };
   return request(params, route, callback);
 }
 
-function request(params, route, callback) {
+function request (params, route, callback) {
   const requestParams = Object.assign({}, params);
   if (currentUserAccessToken) {
     requestParams.headers.Authorization = `Bearer ${currentUserAccessToken}`;
@@ -66,7 +66,7 @@ function request(params, route, callback) {
 }
 
 Given(/^the Human Connection API is up and running(?: on "http:\/\/localhost:3030")?/, (callback) => {
-  waitOn({ resources: ['tcp:3030'], timeout: 30000 }, (err) => {
+  waitOn({resources: ['tcp:3030'], timeout: 30000}, (err) => {
     if (err) throw (err);
     return callback();
   });
@@ -119,7 +119,7 @@ Then('your language {string} is stored in your user settings', function (lang) {
   });
 });
 
-Then('debug', function() {
+Then('debug', function () {
   // eslint-disable-next-line no-debugger
   debugger;
 });
@@ -143,8 +143,8 @@ Given('you blacklisted the user {string} before', async function (blacklistedUse
   const params = {
     userId: currentUser._id,
     blacklist: [blacklistedUser._id]
-  }
-  return this.app.service('usersettings').create(params)
+  };
+  return this.app.service('usersettings').create(params);
 });
 
 When('this user publishes a post', function () {
@@ -154,8 +154,8 @@ When('this user publishes a post', function () {
     language: 'en',
     type: 'post',
     userId: blacklistedUser._id
-  }
-  return this.app.service('contributions').create(params)
+  };
+  return this.app.service('contributions').create(params);
 });
 
 When('you read your current news feed', function (callback) {
@@ -167,7 +167,7 @@ Then('this post is not included', function () {
 });
 
 Given('there is a post {string} by user {string}', async function (postTitle, userName) {
-  const users = await this.app.service('users').find({ query: {name: userName} });
+  const users = await this.app.service('users').find({query: {name: userName}});
   const user = users.data[0];
   const params = {
     title: postTitle,
@@ -175,8 +175,8 @@ Given('there is a post {string} by user {string}', async function (postTitle, us
     language: 'en',
     type: 'post',
     userId: user._id
-  }
-  lastPost = await this.app.service('contributions').create(params)
+  };
+  lastPost = await this.app.service('contributions').create(params);
   return lastPost;
 });
 
@@ -186,7 +186,7 @@ Given('the blacklisted user wrote a comment on that post:', function (comment) {
     content: comment,
     contributionId: lastPost._id
   };
-  return this.app.service('comments').create(commentParams)
+  return this.app.service('comments').create(commentParams);
 });
 
 When('you read through the comments of that post', function (callback) {

@@ -8,7 +8,7 @@ module.exports = function excludeDisabled() {
     }
 
     // If it was an internal call then skip this hook
-    if (!hook.params.provider) {
+    if (!hook.params.provider || hook.params.query.$disableStashBefore) {
       return hook;
     }
 
@@ -20,21 +20,13 @@ module.exports = function excludeDisabled() {
     // look up the document and throw a Forbidden error if the item is not enabled
     // Set provider as undefined so we avoid an infinite loop if this hook is
     // set on the resource we are requesting.
-    var params = Object.assign({}, hook.params, { provider: undefined });
-
-    return hook.service.get(hook.id, params).then(function (data) {
-      if (data.toJSON) {
-        data = data.toJSON();
-      } else if (data.toObject) {
-        data = data.toObject();
-      }
-
-      if (!data || !data.isEnabled) {
+    if (hook.params.before) {
+      const isEnabled = hook.params.before.isEnabled;
+      if (!isEnabled) {
         throw new errors.Forbidden('This item is disabled.');
       }
-
-      return hook;
-    });
+    }
+    return hook;
   };
 };
 

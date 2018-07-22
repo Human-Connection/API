@@ -1,6 +1,5 @@
-const { restrictToOwner } = require('feathers-authentication-hooks');
-const mapCreateToUpsert = require('../../hooks/map-create-to-upsert');
-const auth = require('@feathersjs/authentication');
+const { associateCurrentUser, restrictToOwner } = require('feathers-authentication-hooks');
+const {authenticate} = require('@feathersjs/authentication').hooks;
 
 module.exports = {
   before: {
@@ -8,22 +7,19 @@ module.exports = {
     find: [],
     get: [],
     create:  [
-      auth.hooks.authenticate('jwt'),
-      mapCreateToUpsert(context => {
-        const { data } = context;
-        return { userId: data.userId };
-      })
+      authenticate('jwt'),
+      associateCurrentUser()
     ],
     update: [
-      auth.hooks.authenticate('jwt'),
+      authenticate('jwt'),
       restrictToOwner()
     ],
     patch: [
-      auth.hooks.authenticate('jwt'),
+      authenticate('jwt'),
       restrictToOwner()
     ],
     remove: [
-      auth.hooks.authenticate('jwt'),
+      authenticate('jwt'),
       restrictToOwner()
     ]
   },

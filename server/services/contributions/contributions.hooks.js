@@ -1,5 +1,5 @@
 const {authenticate} = require('@feathersjs/authentication').hooks;
-const {discard, when, unless, isProvider, populate, softDelete, setNow} = require('feathers-hooks-common');
+const {discard, when, unless, isProvider, populate, softDelete, setNow, stashBefore } = require('feathers-hooks-common');
 const {
   //queryWithCurrentUser,
   associateCurrentUser,
@@ -120,6 +120,7 @@ module.exports = {
       })
     ],
     get: [
+      stashBefore(),
       unless(isModerator(),
         excludeDisabled()
       ),
@@ -139,6 +140,7 @@ module.exports = {
       createExcerpt()
     ],
     update: [
+      stashBefore(),
       authenticate('jwt'),
       unless(isProvider('server'),
         isVerified(),
@@ -153,6 +155,7 @@ module.exports = {
       setNow('updatedAt')
     ],
     patch: [
+      stashBefore(),
       authenticate('jwt'),
       unless(isProvider('server'),
         isVerified(),
@@ -187,6 +190,7 @@ module.exports = {
       })
     ],
     remove: [
+      stashBefore(),
       authenticate('jwt'),
       unless(isModerator(),
         canEditOrganization(),

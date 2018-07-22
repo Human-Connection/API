@@ -48,6 +48,7 @@ describe('\'contributions\' service', () => {
   describe('contribution get', () => {
     let id;
     let blacklistedUser;
+    let blacklistedUserParams;
 
     context('given a blacklist', () => {
       beforeEach(async() => {
@@ -55,10 +56,13 @@ describe('\'contributions\' service', () => {
           email: 'bad.guy@example.org',
           name: 'Bad guy'
         });
+        blacklistedUserParams = {
+          user: blacklistedUser
+        };
         await usersettingsService.create({
-          userId: user._id,
-          blacklist: [blacklistedUser._id]
-        });
+          blacklist: [blacklistedUser._id],
+          uiLanguage: 'en'
+        }, params);
       });
 
       let createContribution = async (data) => {
@@ -68,23 +72,20 @@ describe('\'contributions\' service', () => {
 
       context('author is fine', () => {
         it('returns contribution', async () => {
-          data = { ...contributionData };
-          id = await createContribution(data);
+          id = await createContribution(contributionData);
           const contribution = await service.get(id, { ...params, provider: 'test'});
           assert.ok(contribution);
         });
       });
 
-      context('author is blacklisted', () => {
+      context.only('author is blacklisted', () => {
         it('throws an error', async () => {
-          data = {
-            ...contributionData,
-            content: 'I am blacklisted',
-            userId: blacklistedUser._id
-          };
-          id = await createContribution(data);
-          assert.throws(async function(){
-            await service.get(id, {...params, provider: 'test'});
+          const contribution = await service.create(
+            contributionData,
+            blacklistedUserParams
+          );
+          await assert.throws(async function(){
+            await service.get(contribution._id, {...params, provider: 'test'});
           }, 'This item is blacklisted');
         });
       });
