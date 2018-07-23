@@ -104,6 +104,21 @@ describe('\'comments\' service', () => {
           assert.equal(comment.content, 'Original content');
           assert.equal(comment.contentExcerpt, 'Original content');
         });
+
+        context('usersettings exist, but without blacklist', () => {
+          beforeEach(async() => {
+            await usersettingsService.create({
+              userId: user._id
+            });
+          });
+
+          it('is visible', async () => {
+            const comments = await service.find(params);
+            const comment = comments.data[1];
+            assert.equal(comment.content, 'Original content');
+            assert.equal(comment.contentExcerpt, 'Original content');
+          });
+        });
       });
 
       context('who is blacklisted', () => {

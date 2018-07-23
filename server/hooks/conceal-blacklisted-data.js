@@ -10,7 +10,7 @@ const defaults = {
 const handleItem = options => item => {
   //TODO: Why is `item.userId` undefined here?
   //item = {_id: ObjectID, contributionId: "5b313a787ddf96720e45721f"} 
-  if (options.blacklist.includes(item.userId)){
+  if (options.blacklist && options.blacklist.includes(item.userId)){
     item = {...item, ...options.data};
   }
   return item;
