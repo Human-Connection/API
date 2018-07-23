@@ -82,7 +82,7 @@
     "feathers-mongodb-fuzzy-search": "~1.1.1",
     "feathers-mongoose": "~6.1.2",
     "feathers-profiler": "^0.1.5",
-    "feathers-seeder": "~1.0.10",
+    "feathers-seeder": "~2.0.0",
     "fs-blob-store": "~5.2.1",
     "fs-extra": "~4.0.2",
     "handlebars": "~4.0.11",
