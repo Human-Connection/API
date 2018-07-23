@@ -4,7 +4,6 @@ const service = app.service('contributions');
 const userService = app.service('users');
 const notificationService = app.service('notifications');
 const categoryService = app.service('categories');
-const usersService = app.service('users');
 const usersettingsService = app.service('usersettings');
 const { userData, adminData } = require('../assets/users');
 const {
@@ -178,7 +177,7 @@ describe('\'contributions\' service', () => {
     describe('of an author', () => {
       let author;
       beforeEach(async() => {
-        author = await usersService.create({
+        author = await userService.create({
           email: 'bad.guy@example.org',
           name: 'Bad guy'
         });

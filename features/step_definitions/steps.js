@@ -144,8 +144,8 @@ Given('you blacklisted the user {string} before', async function (blacklistedUse
   const params = {
     userId: currentUser._id,
     blacklist: [blacklistedUser._id]
-  }
-  return this.app.service('usersettings').create(params)
+  };
+  return this.app.service('usersettings').create(params);
 });
 
 When('this user publishes a post', function () {
@@ -155,8 +155,8 @@ When('this user publishes a post', function () {
     language: 'en',
     type: 'post',
     userId: blacklistedUser._id
-  }
-  return this.app.service('contributions').create(params)
+  };
+  return this.app.service('contributions').create(params);
 });
 
 When('you read your current news feed', function (callback) {
@@ -176,8 +176,8 @@ Given('there is a post {string} by user {string}', async function (postTitle, us
     language: 'en',
     type: 'post',
     userId: user._id
-  }
-  lastPost = await this.app.service('contributions').create(params)
+  };
+  lastPost = await this.app.service('contributions').create(params);
   return lastPost;
 });
 
@@ -187,7 +187,7 @@ Given('the blacklisted user wrote a comment on that post:', function (comment) {
     content: comment,
     contributionId: lastPost._id
   };
-  return this.app.service('comments').create(commentParams)
+  return this.app.service('comments').create(commentParams);
 });
 
 When('you read through the comments of that post', function (callback) {

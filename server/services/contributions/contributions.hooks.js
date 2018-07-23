@@ -107,12 +107,12 @@ module.exports = {
       xss({fields: xssFields})
     ],
     find: [
-      unless(isModerator(),
-        excludeDisabled()
-      ),
       iff(
         hook => hook.params.headers && hook.params.headers.authorization,
         authenticate('jwt')
+      ),
+      unless(isModerator(),
+        excludeDisabled()
       ),
       excludeBlacklisted(),
       when(isProvider('server'),

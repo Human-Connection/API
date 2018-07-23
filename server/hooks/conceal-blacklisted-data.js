@@ -24,7 +24,7 @@ module.exports = function concealBlacklistedData(options = defaults) {
     if (hook.method === 'find' || hook.id === null) {
       const authenticatedUser = hook.params.user;
       if (!authenticatedUser){
-        return hook
+        return hook;
       }
       const usersettings = await hook.app.service('usersettings').find({query: {userId: authenticatedUser._id}});
       if (usersettings.total <= 0){
@@ -35,6 +35,6 @@ module.exports = function concealBlacklistedData(options = defaults) {
     }
 
     return hook;
-  }
+  };
 };
 
