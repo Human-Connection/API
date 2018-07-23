@@ -3,6 +3,7 @@ const app = require('../../server/app');
 const service = app.service('comments');
 const contributionService = app.service('contributions');
 const userService = app.service('users');
+const usersettingsService = app.service('usersettings');
 
 const { userData } = require('../assets/users');
 const { contributionData } = require('../assets/contributions');
@@ -79,6 +80,56 @@ describe('\'comments\' service', () => {
     it('runs find', async () => {
       const result = await service.find();
       assert.ok(result.data[0], 'returns data');
+    });
+
+    describe('of an author', () => {
+      let author;
+      beforeEach(async() => {
+        author = await userService.create({
+          email: 'bad.guy@example.org',
+          name: 'Bad guy'
+        });
+        const data = {
+          ...commentData,
+          userId: author._id,
+          content: 'Original content'
+        };
+        await service.create(data);
+      });
+
+      context('who is not blacklisted', () => {
+        it('is visible', async () => {
+          const comments = await service.find(params);
+          const comment = comments.data[1];
+          assert.equal(comment.content, 'Original content');
+          assert.equal(comment.contentExcerpt, 'Original content');
+        });
+      });
+
+      context('who is blacklisted', () => {
+        beforeEach(async() => {
+          await usersettingsService.create({
+            userId: user._id,
+            blacklist: [author._id]
+          });
+        });
+
+        it('is concealed', async () => {
+          const comments = await service.find(params);
+          const comment = comments.data[1];
+          assert.equal(comment.content, 'Comments of this blacklisted user are not visible.');
+          assert.equal(comment.contentExcerpt, 'Comments of this blacklisted user are not visible.');
+        });
+
+        context('but if user is not authenticated', () => {
+          it('is visible', async () => {
+            const comments = await service.find();
+            const comment = comments.data[1];
+            assert.equal(comment.content, 'Original content');
+            assert.equal(comment.contentExcerpt, 'Original content');
+          });
+        });
+      });
     });
   });
 });

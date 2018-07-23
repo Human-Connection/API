@@ -187,7 +187,7 @@ describe('\'contributions\' service', () => {
       });
 
       context('who is not blacklisted', () => {
-        it('contribution is included', async () => {
+        it('is included', async () => {
           const contributions = await service.find(params);
           assert.equal(contributions.total, 2);
         });
@@ -201,13 +201,13 @@ describe('\'contributions\' service', () => {
           });
         });
 
-        it('contribution is filtered', async () => {
+        it('is filtered', async () => {
           const contributions = await service.find(params);
           assert.equal(contributions.total, 1);
         });
 
         context('but if user is not authenticated', () => {
-          it('contribution is filtered', async () => {
+          it('is not filtered', async () => {
             const contributions = await service.find();
             assert.equal(contributions.total, 2);
           });
