@@ -4,6 +4,8 @@ const service = app.service('contributions');
 const userService = app.service('users');
 const notificationService = app.service('notifications');
 const categoryService = app.service('categories');
+const usersService = app.service('users');
+const usersettingsService = app.service('usersettings');
 const { userData, adminData } = require('../assets/users');
 const {
   contributionData,
@@ -171,6 +173,46 @@ describe('\'contributions\' service', () => {
         undefined,
         'does not populate'
       );
+    });
+
+    describe('of an author', () => {
+      let author;
+      beforeEach(async() => {
+        author = await usersService.create({
+          email: 'bad.guy@example.org',
+          name: 'Bad guy'
+        });
+        const data = { ...contributionData, userId: author._id };
+        await service.create(data);
+      });
+
+      context('who is not blacklisted', () => {
+        it('contribution is included', async () => {
+          const contributions = await service.find(params);
+          assert.equal(contributions.total, 2);
+        });
+      });
+
+      context('who is blacklisted', () => {
+        beforeEach(async() => {
+          await usersettingsService.create({
+            userId: user._id,
+            blacklist: [author._id]
+          });
+        });
+
+        it('contribution is filtered', async () => {
+          const contributions = await service.find(params);
+          assert.equal(contributions.total, 1);
+        });
+
+        context('but if user is not authenticated', () => {
+          it('contribution is filtered', async () => {
+            const contributions = await service.find();
+            assert.equal(contributions.total, 2);
+          });
+        });
+      });
     });
   });
 

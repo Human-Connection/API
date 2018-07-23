@@ -1,5 +1,5 @@
 const {authenticate} = require('@feathersjs/authentication').hooks;
-const {discard, when, unless, isProvider, populate, softDelete, setNow} = require('feathers-hooks-common');
+const {iff, discard, when, unless, isProvider, populate, softDelete, setNow} = require('feathers-hooks-common');
 const {
   //queryWithCurrentUser,
   associateCurrentUser,
@@ -110,7 +110,10 @@ module.exports = {
       unless(isModerator(),
         excludeDisabled()
       ),
-      authenticate('jwt'),
+      iff(
+        hook => hook.params.headers && hook.params.headers.authorization,
+        authenticate('jwt')
+      ),
       excludeBlacklisted(),
       when(isProvider('server'),
         includeAll()
