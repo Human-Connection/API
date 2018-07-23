@@ -8,10 +8,13 @@ const defaults = {
 };
 
 const handleItem = options => item => {
-  //TODO: Why is `item.userId` undefined here?
-  //item = {_id: ObjectID, contributionId: "5b313a787ddf96720e45721f"} 
-  if (options.blacklist && options.blacklist.includes(item.userId)){
-    item = {...item, ...options.data};
+  if (options.blacklist){
+    let found = options.blacklist.find((userId) => {
+      return userId.toString() === item.userId;
+    });
+    if (found){
+      item = {...item, ...options.data};
+    }
   }
   return item;
 };
