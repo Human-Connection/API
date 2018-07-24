@@ -65,33 +65,44 @@ describe('\'usersettings\' service', () => {
 
         context('own account', () => {
           it('rejects', async () => {
-            assert.throws(async () => {
+            try {
               let data = {
                 userId: user._id,
                 blacklist: [user._id]
               };
               await service.create(data);
-            });
-            const usersettings = await service.find({userId: user._id});
-            const blacklist = usersettings.data[0].blacklist;
-            assert.equal(blacklist.length, 0);
+            } catch(BadRequest) {
+              const usersettings = await service.find({userId: user._id});
+              assert.equal(usersettings.total, 0);
+              return;
+            }
+            assert.fail('Blacklisting yourself was not rejected');
           });
         });
 
         context('moderator account', () => {
           it('rejects', async () => {
-            await testSetup({role: 'moderator'});
-            const usersettings = await service.find({userId: user._id});
-            const blacklist = usersettings.data[0].blacklist;
-            assert.equal(blacklist.length, 0);
+            try {
+              await testSetup({role: 'moderator'});
+            } catch(BadRequest){
+              const usersettings = await service.find({userId: user._id});
+              assert.equal(usersettings.total, 0);
+              return;
+            }
+            assert.fail('Blacklisting a moderator was not rejected');
           });
         });
+
         context('admin account', () => {
           it('rejects', async () => {
-            await testSetup({role: 'admin'});
-            const usersettings = await service.find({userId: user._id});
-            const blacklist = usersettings.data[0].blacklist;
-            assert.equal(blacklist.length, 0);
+            try {
+              await testSetup({role: 'admin'});
+            } catch(BadRequest){
+              const usersettings = await service.find({userId: user._id});
+              assert.equal(usersettings.total, 0);
+              return;
+            }
+            assert.fail('Blacklisting an admin user was not rejected');
           });
         });
       });
