@@ -110,7 +110,7 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
 
    You don't have a background process running for  mongodb?
    Just open another terminal and run:
- 
+
    ```bash
 	 # open up another terminal and run:
    $ yarn run mongo

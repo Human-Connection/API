@@ -2,11 +2,10 @@ const assert = require('assert');
 const app = require('../../server/app');
 const service = app.service('usersettings');
 const userService = app.service('users');
-const { userData, adminData } = require('../assets/users');
+const { userData } = require('../assets/users');
 
 describe('\'usersettings\' service', () => {
   let user;
-  let params;
 
   before(function(done) {
     this.server = app.listen(3031);
@@ -25,15 +24,11 @@ describe('\'usersettings\' service', () => {
     beforeEach(async () => {
       await app.get('mongooseClient').connection.dropDatabase();
       user = await userService.create(userData);
-      params = {
-        user
-      };
     });
 
     afterEach(async () => {
       await app.get('mongooseClient').connection.dropDatabase();
       user = null;
-      params = null;
     });
 
     describe('create', () => {
@@ -45,7 +40,7 @@ describe('\'usersettings\' service', () => {
         assert.ok(usersettings);
       });
 
-      describe.only('blacklist', () => {
+      describe('blacklist', () => {
         const testSetup = async (blacklistedUserData) => {
           let blacklistedUser = await userService.create({
             ...userData,
@@ -75,7 +70,7 @@ describe('\'usersettings\' service', () => {
                 userId: user._id,
                 blacklist: [user._id]
               };
-              const usersettings = await service.create(data);
+              await service.create(data);
             });
             const usersettings = await service.find({userId: user._id});
             const blacklist = usersettings.data[0].blacklist;
