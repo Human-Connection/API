@@ -98,7 +98,7 @@
     "raven": "~2.6.1",
     "request": "~2.87.0",
     "request-promise": "~4.2.2",
-    "sanitize-html": "^1.18.2",
+    "sanitize-html": "^1.18.3",
     "serve-favicon": "~2.5.0",
     "shortid": "~2.2.12",
     "slug": "~0.9.1",
