@@ -110,8 +110,8 @@ module.exports = function (app) {
   }
 
   function sendEmail (email) {
-    // Save copy to /tmp/emails while in debug or test mode
-    if (app.get('debug') || process.NODE_ENV === 'test') {
+    // Save copy to /tmp/emails while in debug mode
+    if (process.env.NODE_ENV !== 'production') {
       const filename = String(Date.now()) + '.html';
       const filepath = path.join(__dirname, '../../../tmp/emails/', filename);
       fs.outputFileSync(filepath, email.html);
@@ -124,7 +124,10 @@ module.exports = function (app) {
         app.debug('Sent email', result);
       })
       .catch(err => {
-        app.error('Error sending email', err);
+        if (process.env.NODE_ENV !== 'test') {
+          app.error('Error sending email', err);
+          app.debug(err.message);
+        }
       });
   }
 

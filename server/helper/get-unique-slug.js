@@ -14,6 +14,7 @@ const getUniqueSlug = (service, slug, count, id) => {
     }
     service.find({
       query,
+      _includeAll: true,
       _populate: 'skip'
     }).then((result) => {
       if (result.data.length > 0) {

@@ -14,7 +14,7 @@
   },
   "seeder": {
     "runOnInit": true,
-    "dropDatabase": true
+    "dropDatabase": false
   },
   "defaultEmail": "no-replay@human-connection.org"
 }

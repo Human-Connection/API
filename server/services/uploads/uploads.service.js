@@ -1,6 +1,5 @@
 // Initializes the `uploads` service on path `/uploads`
 const hooks = require('./uploads.hooks');
-const filters = require('./uploads.filters');
 
 // File Service
 // feathers-blob service
@@ -43,8 +42,4 @@ module.exports = function () {
   const service = app.service('uploads');
 
   service.hooks(hooks);
-
-  if (service.filter) {
-    service.filter(filters);
-  }
 };

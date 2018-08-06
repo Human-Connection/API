@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 
 const { asyncForEach, genInviteCode } = require('../../helper/seed-helpers');
-const { keyBy, isEmpty, isString } = require('lodash');
+const { keyBy, isEmpty, isString, difference, merge } = require('lodash');
 
 class Service {
   constructor (options) {
@@ -147,9 +147,31 @@ class Service {
               }
             });
             if (!userWithEmail.total) {
+              // create new user
               const res = await this.app.service('invites').create(query);
               output.push(res);
+            } else if (userWithEmail.total === 1 && difference(query.badgeIds, userWithEmail.data[0].badgeIds).length) {
+              // update badges of existing user
+
+              let user = await this.app.service('users').find({
+                query: {
+                  email: invite.email,
+                  $select: '_id'
+                }
+              });
+              if (!user.total === 1) {
+                return;
+              }
+              user = user.data.pop();
+              let res = await this.app.service('users').patch(user._id, {
+                $set: {
+                  badgeIds: merge(query.badgeIds, userWithEmail.data[0].badgeIds)
+                }
+              });
+              res.wasUpdated = true;
+              output.push(res);
             }
+
           } catch (err) {
             this.app.error(err);
           }

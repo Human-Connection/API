@@ -1,5 +1,5 @@
 const { getByDot } = require('feathers-hooks-common');
-const errors = require('feathers-errors');
+const errors = require('@feathersjs/errors');
 
 module.exports = function restrictToOwnerOrModerator (query = {}) { // eslint-disable-line no-unused-vars
   return function (hook) {

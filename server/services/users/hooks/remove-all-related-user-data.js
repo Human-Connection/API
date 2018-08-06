@@ -1,5 +1,5 @@
 
-const errors = require('feathers-errors');
+const errors = require('@feathersjs/errors');
 
 module.exports = () => {
   return async (hook) => {
