@@ -74,7 +74,7 @@
     "feathers-authentication-hooks": "~0.3.0",
     "feathers-authentication-management": "~2.0.1",
     "feathers-blob": "~2.0.1",
-    "feathers-hooks-common": "~4.14.3",
+    "feathers-hooks-common": "~4.16.0",
     "feathers-logger": "0.3.2",
     "feathers-mailer": "~2.0.0",
     "feathers-memory": "~2.1.3",
