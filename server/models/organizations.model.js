@@ -2,6 +2,11 @@
 //
 // See http://mongoosejs.com/docs/models.html
 // for more of what you can do here.
+
+const hcModules = require('human-connection-modules');
+const channelNames = hcModules.collections.socialChannels.names;
+const organizationTypes = hcModules.collections.organizationTypes.names;
+
 module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
   const { Schema } = mongooseClient;
@@ -15,8 +20,26 @@ module.exports = function (app) {
     zipCode: { type: String, required: true },
     city: { type: String, required: true },
     country: { type: String, required: true },
+    phone: { type: String },
+    email: { type: String },
     lat: { type: Number, required: true },
     lng: { type: Number, required: true }
+  });
+  const channelSchema = mongooseClient.Schema({
+    name: { type: String, required: true },
+    type: {
+      type: String,
+      enum: channelNames,
+      required: true
+    }
+  });
+  const userSchema = mongooseClient.Schema({
+    id: { type: String, required: true },
+    role: {
+      type: String,
+      enum: ['admin', 'editor'],
+      default: 'editor'
+    }
   });
   const organizations = new Schema({
     name: { type: String, required: true, index: true },
@@ -26,18 +49,23 @@ module.exports = function (app) {
     categoryIds: { type: Array, required: true, index: true },
     logo: { type: String },
     coverImg: { type: String },
-    userId: { type: String, required: true, index: true },
+    creatorId: { type: String, required: true },
+    users: { type: [userSchema], default: [] },
     description: { type: String, required: true },
     descriptionExcerpt: { type: String }, // will be generated automatically
-    publicEmail: { type: String },
+    phone: { type: String },
+    email: { type: String },
     url: { type: String },
     type: {
       type: String,
+      required: true,
       index: true,
-      enum: ['ngo', 'npo', 'goodpurpose', 'ev', 'eva']
+      enum: organizationTypes
     },
     language: { type: String, required: true, default: 'de', index: true },
     addresses: { type: [addressSchema], default: [] },
+    primaryAddressIndex: { type: Number, default: 0 },
+    channels: { type: [channelSchema], default: [] },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
     isEnabled: {

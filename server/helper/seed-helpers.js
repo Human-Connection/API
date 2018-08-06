@@ -1,5 +1,7 @@
 const _ = require('lodash');
 const faker = require('faker');
+const hcModules = require('human-connection-modules');
+const channelNames = hcModules.collections.socialChannels.names;
 const unsplashTopics = [
   'love',
   'family',
@@ -35,17 +37,19 @@ const ngoLogos = [
 
 const difficulties = ['easy', 'medium', 'hard'];
 
+const randomItem = (items, filter) => {
+  let ids = filter
+    ? Object.keys(items)
+      .filter(id => {
+        return filter(items[id]);
+      })
+    : _.keys(items);
+  let randomIds = _.shuffle(ids);
+  return items[randomIds.pop()];
+};
+
 module.exports = {
-  randomItem: (items, filter) => {
-    let ids = filter
-      ? Object.keys(items)
-        .filter(id => {
-          return filter(items[id]);
-        })
-      : _.keys(items);
-    let randomIds = _.shuffle(ids);
-    return items[randomIds.pop()];
-  },
+  randomItem,
   randomItems: (items, key = '_id', min = 1, max = 1) => {
     let randomIds = _.shuffle(_.keys(items));
     let res = [];
@@ -101,11 +105,24 @@ module.exports = {
         zipCode: faker.address.zipCode(),
         street: faker.address.streetAddress(),
         country: faker.address.countryCode(),
+        email: faker.internet.email(),
+        phone: faker.phone.phoneNumber(),
         lat: 54.032726 - (Math.random() * 10),
         lng: 6.558838 + (Math.random() * 10)
       });
     }
     return addresses;
+  },
+  randomChannels: () => {
+    const count = Math.round(Math.random() * 3);
+    let channels = [];
+    for (let i = 0; i < count; i++) {
+      channels.push({
+        name: faker.internet.userName(),
+        type: randomItem(channelNames)
+      });
+    }
+    return channels;
   },
   /**
    * Get array of ids from the given seederstore items after mapping them by the key in the values

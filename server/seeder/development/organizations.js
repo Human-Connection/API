@@ -1,4 +1,6 @@
 const seedHelpers = require('../../helper/seed-helpers');
+const hcModules = require('human-connection-modules');
+const organizationTypes = hcModules.collections.organizationTypes.names;
 
 module.exports = (seederstore) => {
   let roleAdmin = ({role}) => role === 'admin';
@@ -13,11 +15,13 @@ module.exports = (seederstore) => {
         logo: () => seedHelpers.randomLogo(),
         coverImg: () => seedHelpers.randomUnsplashUrl(),
         categoryIds: () => seedHelpers.randomCategories(seederstore),
-        userId: () => seedHelpers.randomItem(seederstore.users, roleAdmin)._id,
+        creatorId: () => seedHelpers.randomItem(seederstore.users, roleAdmin)._id,
         url: '{{internet.url}}',
-        publicEmail: '{{internet.email}}',
+        phone: '{{phone.phoneNumber}}',
+        email: '{{internet.email}}',
         addresses: () => seedHelpers.randomAddresses(),
-        type: () => seedHelpers.randomItem(['ngo', 'npo', 'goodpurpose', 'ev', 'eva']),
+        channels: () => seedHelpers.randomChannels(),
+        type: () => seedHelpers.randomItem(['ngo', 'npo', 'goodpurpose', 'ev', 'eva', 'other']),
         description: '{{lorem.text}}',
         deletedAt: null,
         isEnabled: true,
@@ -36,11 +40,13 @@ module.exports = (seederstore) => {
         logo: () => seedHelpers.randomLogo(),
         coverImg: () => seedHelpers.randomItem([seedHelpers.randomUnsplashUrl(), null]),
         categoryIds: () => seedHelpers.randomCategories(seederstore),
-        userId: () => seedHelpers.randomItem(seederstore.users)._id,
+        creatorId: () => seedHelpers.randomItem(seederstore.users)._id,
         url: '{{internet.url}}',
-        publicEmail: '{{internet.email}}',
+        phone: '{{phone.phoneNumber}}',
+        email: '{{internet.email}}',
         addresses: () => seedHelpers.randomAddresses(),
-        type: () => seedHelpers.randomItem(['ngo', 'npo', 'goodpurpose', 'ev', 'eva']),
+        channels: () => seedHelpers.randomChannels(),
+        type: () => seedHelpers.randomItem(organizationTypes),
         description: '{{lorem.text}}',
         deletedAt: null,
         isEnabled: true,

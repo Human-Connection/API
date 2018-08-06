@@ -1,4 +1,4 @@
-const { unless, when, isProvider, populate, softDelete, stashBefore } = require('feathers-hooks-common');
+const { unless, when, isProvider, populate, softDelete, stashBefore, discard, disallow } = require('feathers-hooks-common');
 const { isVerified } = require('feathers-authentication-management').hooks;
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const { associateCurrentUser } = require('feathers-authentication-hooks');
@@ -8,8 +8,12 @@ const createExcerpt = require('../../hooks/create-excerpt');
 const isModerator = require('../../hooks/is-moderator-boolean');
 // const excludeDisabled = require('../../hooks/exclude-disabled');
 const thumbnails = require('../../hooks/thumbnails');
+const isAdminOwnerOrModerator = require('../../hooks/is-adminowner-or-moderator');
 const restrictToOwnerOrModerator = require('../../hooks/restrictToOwnerOrModerator');
 const restrictReviewAndEnableChange = require('../../hooks/restrictReviewAndEnableChange');
+const flagPrimaryAddress = require('./hooks/flag-primary-address');
+const makeUsersUnique = require('./hooks/make-users-unique');
+const populateUsersData = require('./hooks/populate-users-data');
 const search = require('feathers-mongodb-fuzzy-search');
 const isSingleItem = require('../../hooks/is-single-item');
 const xss = require('../../hooks/xss');
@@ -76,11 +80,23 @@ module.exports = {
       ),
       when(isModerator(),
         hook => {
-          hook.data.reviewedBy = hook.params.user.userId;
+          hook.data.reviewedBy = hook.params.user._id;
           return hook;
         }
       ),
-      associateCurrentUser(),
+      // Users cannot be manually added on creation
+      discard('users'),
+      // Add current user as creator and user
+      associateCurrentUser({ as: 'creatorId' }),
+      hook => {
+        hook.data.users = [
+          {
+            id: hook.data.creatorId,
+            role: 'admin'
+          }
+        ];
+        return hook;
+      },
       createSlug({ field: 'name' }),
       createExcerpt({ field: 'description' }),
       saveRemoteImages(['logo', 'coverImg'])
@@ -93,6 +109,10 @@ module.exports = {
       stashBefore(),
       restrictReviewAndEnableChange(),
       restrictToOwnerOrModerator({ isEnabled: true }),
+      unless(isAdminOwnerOrModerator(),
+        discard('users')
+      ),
+      makeUsersUnique(),
       createSlug({ field: 'name', overwrite: true }),
       createExcerpt({ field: 'description' }),
       saveRemoteImages(['logo', 'coverImg'])
@@ -105,6 +125,10 @@ module.exports = {
       stashBefore(),
       restrictReviewAndEnableChange(),
       restrictToOwnerOrModerator({ isEnabled: true }),
+      unless(isAdminOwnerOrModerator(),
+        discard('users')
+      ),
+      makeUsersUnique(),
       createSlug({ field: 'name', overwrite: true }),
       createExcerpt({ field: 'description' }),
       saveRemoteImages(['logo', 'coverImg'])
@@ -113,14 +137,17 @@ module.exports = {
       authenticate('jwt'),
       isVerified(),
       stashBefore(),
-      restrictToOwnerOrModerator({ isEnabled: true })
+      unless(isAdminOwnerOrModerator(),
+        disallow()
+      )
     ]
   },
 
   after: {
     all: [
       xss({ fields: xssFields }),
-      populate({ schema: reviewerSchema })
+      populate({ schema: reviewerSchema }),
+      flagPrimaryAddress()
       // populate({ schema: userSchema }),
       // populate({ schema: followerSchema })
     ],
@@ -131,16 +158,21 @@ module.exports = {
       thumbnails(thumbnailOptions)
     ],
     get: [
+      populateUsersData(),
       populate({schema: categoriesSchema}),
       thumbnails(thumbnailOptions)
     ],
     create: [
+      populateUsersData(),
       thumbnails(thumbnailOptions)
     ],
     update: [
+      populateUsersData(),
       thumbnails(thumbnailOptions)
     ],
-    patch: [],
+    patch: [
+      populateUsersData()
+    ],
     remove: []
   },
 
