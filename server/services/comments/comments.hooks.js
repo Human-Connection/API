@@ -30,6 +30,16 @@ const userSchema = {
   }
 };
 
+const commentSchema = {
+  include: {
+    service: 'comments',
+    nameAs: 'children',
+    parentField: '_id',
+    childField: 'parentCommentId',
+    asArray: true
+  }
+};
+
 const xssFields = ['content', 'contentExcerpt'];
 
 //ToDo: Only let users create comments for contributions they are allowed to
@@ -112,7 +122,8 @@ module.exports = {
       protect('content', 'badgeIds')
     ],
     get: [
-      populate({ schema: userSchema })
+      populate({ schema: userSchema }),
+      populate({schema: commentSchema})
     ],
     create: [
       populate({ schema: userSchema }),
