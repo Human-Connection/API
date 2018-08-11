@@ -2,12 +2,6 @@
 const fs = require('fs-extra');
 const path = require('path');
 
-// setup local env is not available
-let configDir = path.resolve('config');
-if (process.env.NODE_ENV !== 'production' && !fs.existsSync(configDir + '/local.json')) {
-  fs.copySync(configDir + '/local.example.json', configDir + '/local.json');
-}
-
 const app = require('./app');
 const port = app.get('port');
 const host = app.get('host');
