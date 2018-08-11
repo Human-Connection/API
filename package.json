@@ -41,14 +41,10 @@
     "test:coverage": "nyc --reporter=lcovonly --reporter=text-summary yarn run test",
     "eslint": "eslint server/. test/. features/. --config .eslintrc.json",
     "start": "node server/",
-    "dev:debug": "yarn run clear && concurrently '$npm_package_config_mongoDev &>/dev/null' 'wait-on tcp:27017 && cross-env DEBUG=feathers && cross-env NODE_ENV=development nodemon --inspect server/'",
-    "dev": "yarn run clear && concurrently '$npm_package_config_mongoDev &>/dev/null' 'wait-on tcp:27017 && cross-env DEBUG=feathers && cross-env NODE_ENV=development nodemon server/'",
-    "dev:local": "sh scripts/run-local.sh",
+    "dev": "cross-env DEBUG=feathers && nodemon server/",
+    "dev:debug": "cross-env DEBUG=feathers nodemon --inspect server/",
     "mocha": "cross-env NODE_ENV=test node_modules/mocha/bin/_mocha test/ --recursive --timeout 10000 --exit",
-    "cucumber": "yarn run clear && concurrently --kill-others --success first 'cross-env NODE_ENV=test node server/' 'wait-on tcp:3031 && cross-env NODE_ENV=test cucumber-js'"
-  },
-  "config": {
-    "concurrently": "concurrently --kill-others --success first"
+    "cucumber": "concurrently --kill-others --success first 'cross-env NODE_ENV=test node server/' 'wait-on tcp:3031 && cross-env NODE_ENV=test cucumber-js'"
   },
   "dependencies": {
     "@feathersjs/authentication": "^2.1.7",
