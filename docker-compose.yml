@@ -8,9 +8,13 @@ services:
       - "9229:9229" # node inspect
     links:
       - mongo
+      - maildev
     environment:
       - NODE_ENV=development
     command: yarn run dev
+    volumes:
+      - .:/API
+      - docker_config:/API/config
   mongo:
     image: mongo
     command: "--smallfiles --logpath=/dev/null"
@@ -19,3 +23,5 @@ services:
     ports:
       - "1080:80"
       - "1025:25"
+volumes:
+  docker_config:
