@@ -4,7 +4,6 @@
 const { Given, When, Then } = require('cucumber');
 const fetch = require('node-fetch');
 const { expect } = require('chai');
-const waitOn = require('wait-on');
 
 const hcBackendUrl = 'http://localhost:3031';
 

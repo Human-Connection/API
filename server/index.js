@@ -1,7 +1,4 @@
 /* eslint-disable no-console */
-const fs = require('fs-extra');
-const path = require('path');
-
 const app = require('./app');
 const port = app.get('port');
 const host = app.get('host');
