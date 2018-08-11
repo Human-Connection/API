@@ -35,14 +35,20 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
    $ cd ./API
    $ yarn
    ```
+4. Setup database seeder for local development (recommended)
 
-4. Setup local mailserver (optional)
+   Run
+   ```sh
+   cp config/local.example.json config/local.json
+   ```
+
+5. Setup local mailserver (optional)
    
    >  **Note:** 
    >  *You only have to start that mailserver when you want to register, reset your password or test emails in any form, it
    >  does not affect the rest of the application.*
         
-   Copy `config/local.example.json` to `config/local.json` and install the [MailDev](https://github.com/djfarrelly/MailDev)
+   Install the [MailDev](https://github.com/djfarrelly/MailDev)
    server to catch all sent emails in a nice web interface.
     
    ``` bash
@@ -57,7 +63,7 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
    You could also insert your smtp credentials into the local.json but that is not recommended as all emails would be sent
    to the given addresses which should not happen in development.
    
-5. Start server
+6. Start server
 
    Make sure that the `data` folder exists according to the `mongod --dbpath` in `package.json` to write the data into, then start the server:
    ``` bash
@@ -81,7 +87,7 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
    If you did it right it will seed some fake data for you and downloads some images and avatar for faster development.
    Now you should be able to list some post at [http://localhost:3030/contributions](http://localhost:3030/contributions)
 
-6. Setup and Start Thumbnail Service (optional)
+7. Setup and Start Thumbnail Service (optional)
 
    We are using [Thumbor](https://github.com/thumbor/thumbor) as a Thumbnail Microservice.
    You can install it locally if you like but this is totally optional.
@@ -97,14 +103,7 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
 
 If you need to configure anything you can do so inside the `config/local.json` file. For that the `config/local.example.json` will contain always a minimal setup to get it working.
 
-If, f.ex., you want to change listen address, port or URL, you can do so. Entries in the `config/local.json` will override entries in the `config/default.json`.
-
-**Note on the seeder configuration**
-The seeder configuration has two properties:
-- **dropDatabase:** drop the whole database on (re)start.
-- **runOnInit:** run the seeder always on server (re)start (when database is empty).
-
-> **Note** *You can switch the `dropDatabase` entry after seeding and it will persist the seeded data.* 
+E.g. if you want to change listen address, port or URL, you can do so. Entries in the `config/local.json` will override entries in the `config/default.json`.
 
 ## Testing
 
