@@ -16,5 +16,5 @@
     "runOnInit": false,
     "dropDatabase": false
   },
-  "defaultEmail": "no-replay@human-connection.org"
+  "defaultEmail": "no-reply@human-connection.org"
 }
