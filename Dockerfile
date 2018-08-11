@@ -6,31 +6,21 @@ RUN apk update && apk upgrade
 RUN rm -rf /var/cache/apk/*
 RUN yarn global add pm2
 
-# expose the app port
-EXPOSE 3030
-
-# set environment variables
-# ENV NPM_CONFIG_PRODUCTION=false
-# ENV HOST=0.0.0.0
-ENV NODE_ENV=production
-ENV API_PORT=3030
-
-# start the application in a autohealing cluster
-# NOTE: quick fix for server issues, restart api when reaching max of 300 MB Memory Usage (happens in conjunction with 100% CPU Usage)
-# TODO: find better way of dealing with that issue
-CMD NODE_ENV=production pm2 start server/index.js -n api --attach --max-memory-restart 1024M
-# CMD NODE_ENV=production pm2 start server/index.js -n api -i 2 --attach
-# as we have issues with pm2 currently in conjunction with nuxt, we use the standard approach here
-# CMD NODE_ENV=production node server/index.js
-
 # create working directory
-RUN mkdir -p /var/www/
-WORKDIR /var/www/
+RUN mkdir -p /API
+WORKDIR /API
 
 # install app dependencies
-COPY package.json /var/www/
-COPY yarn.lock /var/www/
+COPY package.json /API
+COPY yarn.lock /API
 RUN yarn install --frozen-lockfile --non-interactive
 
 # copy the code to the docker image
-COPY . /var/www/
+COPY . /API
+
+# setup local configuration
+COPY ./config/docker/* /API/config/
+
+# expose the app port
+EXPOSE 3030
+EXPOSE 9229

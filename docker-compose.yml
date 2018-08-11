@@ -1,16 +1,21 @@
-version: '2'
+version: '3'
 
 services:
-  mongo-cluster:
-    image: mongo
-    ports:
-      - "27017:27017"
-    command: "--smallfiles --logpath=/dev/null"
   api:
     build: .
     ports:
       - "3030:3030"
+      - "9229:9229" # node inspect
     links:
-      - mongo-cluster
+      - mongo
     environment:
-      PORT: 3030
+      - NODE_ENV=development
+    command: yarn run dev
+  mongo:
+    image: mongo
+    command: "--smallfiles --logpath=/dev/null"
+  maildev:
+    image: djfarrelly/maildev
+    ports:
+      - "1080:80"
+      - "1025:25"

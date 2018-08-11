@@ -1,0 +1,7 @@
+{
+  "mongodb": "mongodb://mongo:27017/hc_api",
+  "seeder": {
+    "runOnInit": true,
+    "dropDatabase": false
+  }
+}
