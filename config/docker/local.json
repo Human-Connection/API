@@ -1,8 +1,0 @@
-{
-  "host": "0.0.0.0",
-  "smtpConfig": {
-    "host": "maildev",
-    "port": 25,
-    "ignoreTLS": true
-  }
-}

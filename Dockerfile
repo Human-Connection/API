@@ -6,6 +6,9 @@ EXPOSE 3030
 # chrome debugging
 EXPOSE 9229
 
+# override configuration by instance name in docker container
+ENV NODE_APP_INSTANCE=docker
+
 # update unix packages
 RUN apk update && apk upgrade
 RUN rm -rf /var/cache/apk/*
@@ -22,8 +25,6 @@ RUN yarn install --frozen-lockfile --non-interactive
 
 # copy the code to the docker image
 COPY . /API
-# setup local configuration
-COPY ./config/docker/* /API/config/
 
 # start the application in a autohealing cluster
 # NOTE: quick fix for server issues, restart api when reaching max of 300 MB Memory Usage (happens in conjunction with 100% CPU Usage)
