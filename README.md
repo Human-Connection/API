@@ -39,7 +39,7 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
 
    Run
    ```sh
-   cp config/local.example.json config/local.json
+   $ cp config/local.example.json config/local.json
    ```
 
 5. Setup local mailserver (optional)
@@ -74,6 +74,8 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
   # or if you are on windows, run:
   $ yarn run mongo:win
   ```
+   > ##### IMPORTANT for Windows users:
+   > - make sure you have mongo bin directory added to your PATH
 
   Start the API server with the following commands:
    ``` bash
@@ -85,8 +87,6 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
    $ NODE_ENV=production yarn start
    ```
 
-   > ##### IMPORTANT for WIN users:
-   > - make sure you have mongo bin directory added to your PATH
 
    Now, your API should be running at [http://localhost:3030](http://localhost:3030).
    If you seeded your database, you will see some contributions at [http://localhost:3030/contributions](http://localhost:3030/contributions).
@@ -114,13 +114,13 @@ for details.
 
 Run the entire test suite with:
 ```bash
-yarn run test
+$ yarn run test
 ```
 
 If you want you can run specific tests:
 ```bash
-yarn run mocha
-yarn run cucumber
+$ yarn run mocha
+$ yarn run cucumber
 ```
 
 
