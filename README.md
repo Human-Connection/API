@@ -129,14 +129,12 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
 
 7. Setup and Start Thumbnail Service (optional)
 
-   We are using [Thumbor](https://github.com/thumbor/thumbor) as a Thumbnail Microservice.
-   You can install it locally if you like but this is totally optional.
-
-   **Install OR use docker**
-
-   - At first you have to [install](http://thumbor.readthedocs.io/en/latest/installing.html) it locally and start it in the console with `thumbor` **OR** run it with docker `docker run -p 8000:8000 apsl/thumbor`
-   - Set the `thumbor.url` in `config/local.json` to `http://localhost:8888` (with docker `http://localhost:8000`) if not defined differently. The `thumbor.key` does not necessarily have to be defined, it just makes the URL more secure.
-
+   Install [Thumbor](https://github.com/thumbor/thumbor) locally on your machine according to the [documentation](http://thumbor.readthedocs.io/en/latest/installing.html) and start it with:
+   ```sh
+   $ thumbor
+   ```
+   Set the `thumbor.url` in `config/local.json` to `http://localhost:8888`.
+   The `thumbor.key` does not necessarily have to be defined, it just makes the URL more secure.
    > Do not forget to always start it if you choose that setup or otherwise you will not see any pictures at all.
 
 ### Local Configuration

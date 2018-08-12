@@ -20,3 +20,5 @@ services:
     ports:
       - "1080:80"
       - "1025:25"
+  thumbor:
+    image: apsl/thumbor
