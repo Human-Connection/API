@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  mongo:
+    networks:
+      hc-network:
+        ipv4_address: 172.25.0.10
+  api:
+    networks:
+      hc-network:
+        ipv4_address: 172.25.0.11
+  maildev:
+    networks:
+      hc-network:
+        ipv4_address: 172.25.0.12
+  thumbor:
+    networks:
+      hc-network:
+        ipv4_address: 172.25.0.13
+networks:
+  hc-network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      -
+        subnet: 172.25.0.0/16
