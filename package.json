@@ -96,7 +96,7 @@
     "nyc": "^12.0.2",
     "quill-url-embeds": "^1.2.5",
     "raven": "~2.6.1",
-    "request": "~2.87.0",
+    "request": "~2.88.0",
     "request-promise": "~4.2.2",
     "sanitize-html": "^1.18.4",
     "serve-favicon": "~2.5.0",
