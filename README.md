@@ -65,19 +65,19 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
 
 6. Start server
 
-  You don't have a background process running for mongodb?
-  Just open another terminal and run:
-
-  ```bash
-	# open up another terminal and run:
-  $ yarn run mongo
-  # or if you are on windows, run:
-  $ yarn run mongo:win
-  ```
+   You don't have a background process running for  mongodb?
+   Just open another terminal and run:
+ 
+   ```bash
+	 # open up another terminal and run:
+   $ yarn run mongo
+   # or if you are on windows, run:
+   $ yarn run mongo:win
+   ```
    > ##### IMPORTANT for Windows users:
    > - make sure you have mongo bin directory added to your PATH
 
-  Start the API server with the following commands:
+   Start the API server with the following commands:
    ``` bash
    $ yarn dev
 
