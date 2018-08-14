@@ -39,6 +39,13 @@ And debug your app with [Chrome Dev Tools](chrome://inspect).
 Change configuration in `config/docker/local-development.json` or
 `config/docker/local.json` and rerun `docker-compose up --build`.
 
+#### Local Staging Environment
+
+To get an environment which is close to production, run the following:
+```sh
+$ docker-compose -f docker-compose.yml -f docker-compose.staging.yml up --build
+```
+
 ### Testing in Docker
 
 Run the entire test suite with:
@@ -127,15 +134,6 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
    Now, your API should be running at [http://localhost:3030](http://localhost:3030).
    If you seeded your database, you will see some contributions at [http://localhost:3030/contributions](http://localhost:3030/contributions).
 
-7. Setup and Start Thumbnail Service (optional)
-
-   Install [Thumbor](https://github.com/thumbor/thumbor) locally on your machine according to the [documentation](http://thumbor.readthedocs.io/en/latest/installing.html) and start it with:
-   ```sh
-   $ thumbor
-   ```
-   Set the `thumbor.url` in `config/local.json` to `http://localhost:8888`.
-   The `thumbor.key` does not necessarily have to be defined, it just makes the URL more secure.
-   > Do not forget to always start it if you choose that setup or otherwise you will not see any pictures at all.
 
 ### Local Configuration
 
