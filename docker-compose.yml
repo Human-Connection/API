@@ -3,19 +3,32 @@ version: '3'
 services:
   api:
     build: .
-    links:
+    depends_on:
       - mongo
       - maildev
-    command: yarn run dev
+      - thumbor
+    networks:
+      - hc-network
     volumes:
       - .:/API
   mongo:
     image: mongo
+    networks:
+      - hc-network
     command: "--smallfiles --logpath=/dev/null"
   maildev:
     image: djfarrelly/maildev
+    networks:
+      - hc-network
     ports:
       - "1080:80"
       - "1025:25"
   thumbor:
     image: apsl/thumbor
+    networks:
+      - hc-network
+    ports:
+      - "8000:8000"
+
+networks:
+  hc-network:

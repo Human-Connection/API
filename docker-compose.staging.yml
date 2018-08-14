@@ -1,24 +1,15 @@
 version: '3'
 
 services:
-  mongo:
-    networks:
-      hc-network:
-        ipv4_address: 172.25.0.10
   api:
-    environment:
-      - NODE_ENV=development
     networks:
       hc-network:
         ipv4_address: 172.25.0.11
-  maildev:
-    networks:
-      hc-network:
-        ipv4_address: 172.25.0.12
   thumbor:
     networks:
       hc-network:
         ipv4_address: 172.25.0.13
+
 networks:
   hc-network:
     driver: bridge
