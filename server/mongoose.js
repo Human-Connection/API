@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const mongoose = require('mongoose');
 const fs = require('fs-extra');
 const path = require('path');
