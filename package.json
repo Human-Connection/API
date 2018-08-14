@@ -41,7 +41,7 @@
     "test:coverage": "nyc --reporter=lcovonly --reporter=text-summary yarn run test",
     "eslint": "eslint server/. test/. features/. --config .eslintrc.json",
     "start": "node server/",
-    "dev": "cross-env DEBUG=feathers* && nodemon server/",
+    "dev": "cross-env DEBUG=feathers* nodemon server/",
     "dev:debug": "cross-env DEBUG=feathers* nodemon --inspect=0.0.0.0:9229 server/",
     "mocha": "yarn run clear && cross-env NODE_ENV=test mocha --recursive --timeout 10000 --exit",
     "cucumber": "concurrently --kill-others --success first 'cross-env NODE_ENV=test node server/' 'wait-on tcp:3031 && cross-env NODE_ENV=test cucumber-js'"
