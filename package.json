@@ -43,7 +43,7 @@
     "start": "node server/",
     "dev": "cross-env DEBUG=feathers* && nodemon server/",
     "dev:debug": "cross-env DEBUG=feathers* nodemon --inspect=0.0.0.0:9229 server/",
-    "mocha": "cross-env NODE_ENV=test mocha --recursive --timeout 10000 --exit",
+    "mocha": "yarn run clear && cross-env NODE_ENV=test mocha --recursive --timeout 10000 --exit",
     "cucumber": "concurrently --kill-others --success first 'cross-env NODE_ENV=test node server/' 'wait-on tcp:3031 && cross-env NODE_ENV=test cucumber-js'"
   },
   "dependencies": {
