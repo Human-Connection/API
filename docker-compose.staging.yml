@@ -6,6 +6,8 @@ services:
       hc-network:
         ipv4_address: 172.25.0.10
   api:
+    environment:
+      - NODE_ENV=development
     networks:
       hc-network:
         ipv4_address: 172.25.0.11

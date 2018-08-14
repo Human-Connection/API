@@ -3,11 +3,10 @@ LABEL Description="This image is used to start the hc-api-feathers" Vendor="Huma
 
 # expose the app port
 EXPOSE 3030
-# chrome debugging
-EXPOSE 9229
 
 # override configuration by instance name in docker container
 ENV NODE_APP_INSTANCE=docker
+ENV NODE_ENV=production
 
 # update unix packages
 RUN apk update && apk upgrade
