@@ -110,6 +110,17 @@ a list of availabe defaults in `config/default.json`.
 See [node-config documentation](https://github.com/lorenwest/node-config/wiki/Configuration-Files)
 for details.
 
+E.g. if you want to access the server from your mobile over WiFi, you should
+replace `localhost` in your settings with your IP address in the local network:
+```json
+{
+  "host": "192.168.188.22",
+  "baseURL": "http://192.168.188.22:3030",
+  "frontURL": "http://192.168.188.22:3000"
+}
+
+```
+
 ## Testing
 
 Run the entire test suite with:
