@@ -25,7 +25,7 @@ const replyUserData = {
 describe('\'reply comments\' service', () => {
   let user;
   let replyUser;
-  let params;
+  let params, replyParams;
   let contribution;
   let comment;
 
@@ -45,6 +45,9 @@ describe('\'reply comments\' service', () => {
 
     params = {
       user
+    };
+    replyParams = {
+      replyUser
     };
 
     contribution = await contributionService.create(contributionData, params);
@@ -72,20 +75,28 @@ describe('\'reply comments\' service', () => {
     assert.ok(service, 'Registered the comments service');
   });
 
-  describe('create reply to comment', () => {
+  describe('reply comment Tests', () => {
     it('runs create reply to comment', async () => {
       comment = await service.create(commentData, params);
 
       replyData.parentCommentId = comment._id;
-      const reply = await service.create(replyData, params);
+      const reply = await service.create(replyData, replyParams);
 
       assert.ok(comment, 'created comment');
       assert.ok(reply, 'created reply to comment');
 
       assert.equal(comment._id, reply.parentCommentId, 'created nested comment');
+    });
+    it('comment has child comment', async () => {
+      comment = await service.create(commentData, params);
 
-      console.log('Comment: ' + JSON.stringify(comment, null, 2));
-      console.log('ReplyComment: ' + JSON.stringify(reply, null, 2));
+      replyData.parentCommentId = comment._id;
+      const reply = await service.create(replyData, replyParams);
+
+      comment = await service.get(comment._id);
+
+      assert.ok(comment.children, 'has children property');
+      assert.equal(comment.children.length, 1, 'comment has nested comment');
     });
   });
 });

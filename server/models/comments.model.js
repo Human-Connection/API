@@ -7,7 +7,7 @@ module.exports = function (app) {
   const comments = new mongooseClient.Schema({
     userId: { type: String, required: true, index: true },
     contributionId: { type: String, required: true, index: true },
-    parentCommentId: { type: String, default: '' },
+    parentCommentId: { type: String },
     content: { type: String, required: true },
     // Generated from content
     contentExcerpt: { type: String, required: true },

@@ -30,13 +30,24 @@ const userSchema = {
   }
 };
 
+//ToDo: When higher depth in nested comments is wanted, here you need to add new nested includes to get the children of nested comments and users to the comments.
 const commentSchema = {
   include: {
     service: 'comments',
     nameAs: 'children',
     parentField: '_id',
     childField: 'parentCommentId',
-    asArray: true
+    asArray: true,
+    include: {
+      service: 'users',
+      nameAs: 'user',
+      parentField: 'userId',
+      childField: '_id',
+      query: {
+        $limit: 1,
+        $select: ['_id', 'name', 'slug', 'avatar', 'lastActiveAt', 'termsAndConditionsAccepted', 'thumbnails']
+      }
+    }
   }
 };
 
@@ -119,11 +130,12 @@ module.exports = {
     ],
     find: [
       populate({ schema: userSchema }),
+      populate({ schema: commentSchema }),
       protect('content', 'badgeIds')
     ],
     get: [
       populate({ schema: userSchema }),
-      populate({schema: commentSchema})
+      populate({ schema: commentSchema })
     ],
     create: [
       populate({ schema: userSchema }),

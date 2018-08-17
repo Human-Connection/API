@@ -51,7 +51,7 @@
   },
   "config": {
     "mongoDev": "mongod --dbpath data --quiet",
-    "mocha": "cross-env NODE_ENV=test node_modules/mocha/bin/_mocha test/ --recursive --timeout 10000 --exit",
+    "mocha": "cross-env NODE_ENV=test mocha --recursive --timeout 10000 --exit",
     "concurrently": "concurrently --kill-others --success first"
   },
   "dependencies": {
@@ -110,9 +110,9 @@
   "devDependencies": {
     "babel-eslint": "~8.2.6",
     "chai": "^4.1.2",
-    "cucumber": "^4.2.1",
     "concurrently": "~3.6.1",
     "cross-env": "^5.2.0",
+    "cucumber": "^4.2.1",
     "eslint": "~4.19.1",
     "istanbul": "1.1.0-alpha.1",
     "mocha": "~5.2.0",
