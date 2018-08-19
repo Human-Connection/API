@@ -4,6 +4,10 @@ LABEL Description="This image is used to start the hc-api-feathers" Vendor="Huma
 # expose the app port
 EXPOSE 3030
 
+# override configuration by instance name in docker container
+ENV NODE_APP_INSTANCE=docker
+ENV NODE_ENV=production
+
 # create working directory
 RUN mkdir -p /API
 WORKDIR /API
@@ -17,14 +21,10 @@ RUN yarn global add pm2
 # install app dependencies
 COPY package.json /API
 COPY yarn.lock /API
-RUN yarn install --frozen-lockfile --non-interactive
+RUN yarn install --production=false --frozen-lockfile --non-interactive
 
 RUN apk del build-dependencies
 
-# override configuration by instance name in docker container
-ENV NODE_APP_INSTANCE=docker
-# must be after `yarn install`
-ENV NODE_ENV=production
 
 # copy the code to the docker image
 COPY . /API

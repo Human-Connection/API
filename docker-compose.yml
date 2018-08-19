@@ -7,8 +7,6 @@ services:
       - mongo
     networks:
       - hc-network
-    volumes:
-      - .:/API
   mongo:
     image: mongo
     networks:
