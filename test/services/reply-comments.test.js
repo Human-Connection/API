@@ -91,7 +91,7 @@ describe('\'reply comments\' service', () => {
       comment = await service.create(commentData, params);
 
       replyData.parentCommentId = comment._id;
-      const reply = await service.create(replyData, replyParams);
+      await service.create(replyData, replyParams);
 
       comment = await service.get(comment._id);
 
