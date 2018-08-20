@@ -34,7 +34,6 @@ describe('\'comments\' service', () => {
   });
 
   afterEach(async () => {
-    await app.get('mongooseClient').connection.dropDatabase();
     user = null;
     params = null;
     contribution = null;

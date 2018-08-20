@@ -30,7 +30,7 @@ const userSchema = {
   }
 };
 
-//ToDo: When higher depth in nested comments is wanted, here you need to add new nested includes to get the children of nested comments and users to the comments.
+//Info: When higher depth in nested comments is wanted, here you need to add new nested includes to get the children of nested comments and users to the comments.
 const commentSchema = {
   include: {
     service: 'comments',
