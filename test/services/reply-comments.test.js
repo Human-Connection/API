@@ -75,13 +75,13 @@ describe('\'reply comments\' service', () => {
       it('response includes parentCommentId', async () => {
         const reply = await service.create(replyData, { user: replyUser });
         assert.ok(reply, 'created reply to comment');
-        assert.equal(comment._id, reply.parentCommentId);
+        assert.strictEqual(comment._id.toString(), reply.parentCommentId);
       });
     });
 
     context('given a reply to the comment', () => {
       beforeEach(async () => {
-        replyData.content = 'I am a content'
+        replyData.content = 'I am a reply'
         await service.create(replyData, { user: replyUser });
       });
 
@@ -89,20 +89,27 @@ describe('\'reply comments\' service', () => {
         it('has replies', async () => {
           comment = await service.get(comment._id);
           assert.ok(comment.children, 'has children property');
-          assert.equal(comment.children.length, 1, 'comment has nested comment');
-          assert.equal(comment.children[0].content, 'I am a content');
+          assert.strictEqual(comment.children.length, 1, 'comment has nested comment');
+          assert.strictEqual(comment.children[0].content, 'I am a reply');
         });
       });
 
       describe('find', async () => {
         it('returns the comment and its reply', async () => {
           let comments = await service.find();
-          assert.equal(comments.total, 2);
+          assert.strictEqual(comments.total, 2);
         });
 
-        it('comments includes reply', async () => {
-          // TODO: check first comment is our parent comment
-          // TODO: parent comment includes reply
+        it('comment includes reply', async () => {
+
+          let commentsRes = await service.find();
+          let comments = commentsRes.data
+          let parent = comments[0]
+          let reply = comments[1]
+
+          assert.ok(parent.children, 'parent has children')
+          assert.strictEqual(parent.children[0].content, 'I am a reply')
+          assert.strictEqual(reply.children.length, 0)
         });
       });
     });
