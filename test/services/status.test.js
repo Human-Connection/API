@@ -16,7 +16,7 @@ describe('\'status\' service', () => {
 
   it('get maintenance mode', async () => {
     const status = await service.find();
-    assert.equal(status.maintenance, false);
+    assert.strictEqual(status.maintenance, false);
   });
 
   it('set maintenance mode to true', async () => {
@@ -24,11 +24,11 @@ describe('\'status\' service', () => {
       maintenance: true
     }, { secret: app.get('apiSecret') });
     const status1 = await service.find();
-    assert.equal(status1.maintenance, true);
+    assert.strictEqual(status1.maintenance, true);
 
     const status2 = await service.update({}, {
       maintenance: false
     }, { secret: app.get('apiSecret') });
-    assert.equal(status2.maintenance, false);
+    assert.strictEqual(status2.maintenance, false);
   });
 });

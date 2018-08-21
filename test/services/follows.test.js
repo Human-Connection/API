@@ -100,7 +100,7 @@ describe('\'follows\' service', () => {
     //   assert.ok(notification, 'Created notification');
     //   assert.ok(notification.userId, 'Has userId');
     //   assert.ok(notification.relatedfollowsId, 'Has relatedfollowsId');
-    //   assert.equal(notification.relatedfollowsId, follows._id, 'Has correct relatedfollowsId');
+    //   assert.strictEqual(notification.relatedfollowsId, follows._id, 'Has correct relatedfollowsId');
     // });
   });
 });

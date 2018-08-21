@@ -58,14 +58,14 @@ describe('\'users\' service', () => {
         name: 'Alice'
       }, userParams);
       assert.ok(result, 'Patched user');
-      assert.equal(result.name, 'Alice', 'Patched user name');
+      assert.strictEqual(result.name, 'Alice', 'Patched user name');
     });
 
     it('generates slug from name', async () => {
       const result = await service.patch(user._id, {
         name: 'Alice'
       }, userParams);
-      assert.equal(result.slug, 'alice');
+      assert.strictEqual(result.slug, 'alice');
     });
   });
 
@@ -105,7 +105,7 @@ describe('\'users\' service', () => {
     it('returns one user', async () => {
       const result = await service.find({ query });
       assert.ok(result.data[0], 'returns data');
-      assert.equal(result.data.length, 1, 'returns only one entry');
+      assert.strictEqual(result.data.length, 1, 'returns only one entry');
     });
 
     it('populates badges, candos and userSettings', async () => {

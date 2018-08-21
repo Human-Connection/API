@@ -62,7 +62,7 @@ describe('\'comments\' service', () => {
         { user }
       );
       assert.ok(result, 'returns result');
-      assert.equal(result.content, 'Test', 'patched content');
+      assert.strictEqual(result.content, 'Test', 'patched content');
     });
   });
 
