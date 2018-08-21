@@ -25,7 +25,6 @@ const replyUserData = {
 describe('\'reply comments\' service', () => {
   let user;
   let replyUser;
-  let params, replyParams;
   let contribution;
   let comment;
 
@@ -40,29 +39,18 @@ describe('\'reply comments\' service', () => {
 
   beforeEach(async () => {
     await app.get('mongooseClient').connection.dropDatabase();
+
     user = await userService.create(userData);
     replyUser = await userService.create(replyUserData);
+    contribution = await contributionService.create(contributionData, { user });
 
-    params = {
-      user
-    };
-    replyParams = {
-      replyUser
-    };
-
-    contribution = await contributionService.create(contributionData, params);
-
-    commentData.userId = user._id;
     commentData.contributionId = contribution._id;
-
-    replyData.userId = replyUser._id;
     replyData.contributionId = contribution._id;
   });
 
   afterEach(async () => {
-    await app.get('mongooseClient').connection.dropDatabase();
     user = null;
-    params = null;
+    replyUser = null;
     contribution = null;
     comment = null;
     delete commentData.userId;
@@ -77,10 +65,11 @@ describe('\'reply comments\' service', () => {
 
   describe('reply comment Tests', () => {
     it('runs create reply to comment', async () => {
-      comment = await service.create(commentData, params);
+      comment = await service.create(commentData, { user });
 
       replyData.parentCommentId = comment._id;
-      const reply = await service.create(replyData, replyParams);
+      replyData.userId = replyUser._id;
+      const reply = await service.create(replyData, { replyUser });
 
       assert.ok(comment, 'created comment');
       assert.ok(reply, 'created reply to comment');
@@ -88,10 +77,11 @@ describe('\'reply comments\' service', () => {
       assert.equal(comment._id, reply.parentCommentId, 'created nested comment');
     });
     it('comment has child comment', async () => {
-      comment = await service.create(commentData, params);
+      comment = await service.create(commentData, { user });
 
       replyData.parentCommentId = comment._id;
-      await service.create(replyData, replyParams);
+      replyData.userId = replyUser._id;
+      await service.create(replyData, { replyUser });
 
       comment = await service.get(comment._id);
 
