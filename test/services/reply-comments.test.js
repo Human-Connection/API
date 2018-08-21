@@ -59,34 +59,53 @@ describe('\'reply comments\' service', () => {
     delete replyData.contributionId;
   });
 
-  it('registered the service', () => {
+  it('registers the service', () => {
     assert.ok(service, 'Registered the comments service');
   });
 
-  describe('reply comment Tests', () => {
-    it('runs create reply to comment', async () => {
+  context('given a comment', () => {
+    let comment;
+    beforeEach(async () => {
       comment = await service.create(commentData, { user });
-
       replyData.parentCommentId = comment._id;
-      replyData.userId = replyUser._id;
-      const reply = await service.create(replyData, { replyUser });
-
-      assert.ok(comment, 'created comment');
-      assert.ok(reply, 'created reply to comment');
-
-      assert.equal(comment._id, reply.parentCommentId, 'created nested comment');
     });
-    it('comment has child comment', async () => {
-      comment = await service.create(commentData, { user });
 
-      replyData.parentCommentId = comment._id;
-      replyData.userId = replyUser._id;
-      await service.create(replyData, { replyUser });
 
-      comment = await service.get(comment._id);
-
-      assert.ok(comment.children, 'has children property');
-      assert.equal(comment.children.length, 1, 'comment has nested comment');
+    describe('create a reply', () => {
+      it('response includes parentCommentId', async () => {
+        const reply = await service.create(replyData, { user: replyUser });
+        assert.ok(reply, 'created reply to comment');
+        assert.equal(comment._id, reply.parentCommentId);
+      });
     });
+
+    context('given a reply to the comment', () => {
+      beforeEach(async () => {
+        replyData.content = 'I am a content'
+        await service.create(replyData, { user: replyUser });
+      });
+
+      describe('get parent comment', () => {
+        it('has replies', async () => {
+          comment = await service.get(comment._id);
+          assert.ok(comment.children, 'has children property');
+          assert.equal(comment.children.length, 1, 'comment has nested comment');
+          assert.equal(comment.children[0].content, 'I am a content');
+        });
+      });
+
+      describe('find', async () => {
+        it('returns the comment and its reply', async () => {
+          let comments = await service.find();
+          assert.equal(comments.total, 2);
+        });
+
+        it('comments includes reply', async () => {
+          // TODO: check first comment is our parent comment
+          // TODO: parent comment includes reply
+        });
+      });
+    });
+
   });
 });
