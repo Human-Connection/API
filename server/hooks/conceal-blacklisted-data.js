@@ -10,7 +10,7 @@ const defaults = {
 const handleItem = options => item => {
   if (options.blacklist){
     let found = options.blacklist.find((userId) => {
-      return userId.toString() === item.userId;
+      return String(userId) === item.userId;
     });
     if (found){
       item = {...item, ...options.data};
