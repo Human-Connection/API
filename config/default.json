@@ -11,8 +11,8 @@
     "max": 100
   },
   "thumbor": {
-    "url": "",
-    "key": ""
+    "url": false,
+    "key": false
   },
   "apiSecret": "TE9TqAk2xK[9EFJL",
   "sentry": {},
