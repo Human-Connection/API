@@ -4,9 +4,8 @@
 const { Given, When, Then } = require('cucumber');
 const fetch = require('node-fetch');
 const { expect } = require('chai');
-const waitOn = require('wait-on');
 
-const hcBackendUrl = 'http://localhost:3030';
+const hcBackendUrl = 'http://localhost:3031';
 
 let currentUser;
 let currentUserPassword;
@@ -49,17 +48,6 @@ function postRequest(route, body, callback) {
       callback();
     });
 }
-
-Given(/^the Human Connection API is up and running(?: on "http:\/\/localhost:3030")?/, (callback) => {
-  waitOn({ resources: ['tcp:3030'], timeout: 30000 }, (err) => {
-    if (err) throw (err);
-    return callback();
-  });
-});
-
-Given('there is a 3rd party application running, e.g. \'Democracy\'', () => {
-  // Just documentation
-});
 
 Given('there is a user in Human Connection with these credentials:', function (dataTable) {
   const params = dataTable.hashes()[0];

@@ -11,14 +11,20 @@
     "max": 100
   },
   "thumbor": {
-    "url": "",
-    "key": ""
+    "url": false,
+    "key": false
   },
   "apiSecret": "TE9TqAk2xK[9EFJL",
   "sentry": {},
   "seeder": {
-    "runOnInit": true,
-    "dropDatabase": true
+    "runOnInit": false,
+    "dropDatabase": false
+  },
+  "defaultEmail": "no-reply@human-connection.org",
+  "smtpConfig": {
+    "host": "0.0.0.0",
+    "port": 1025,
+    "ignoreTLS": true
   },
   "mongodb": "mongodb://localhost:27017/hc_api",
   "authentication": {

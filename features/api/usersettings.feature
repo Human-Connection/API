@@ -4,8 +4,7 @@ Feature: Save current newsfeed filters to usersettings
   In order to see the same selection of content next time I log in
 
   Background:
-    Given the Human Connection API is up and running
-    And there is a user in Human Connection with these credentials:
+    Given there is a user in Human Connection with these credentials:
       | email            | password | isVerified |
       | user@example.com |     1234 | true       |
 

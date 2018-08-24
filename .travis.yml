@@ -21,10 +21,8 @@ jobs:
       - docker build -t humanconnection/api-feathers .
     - script:
       - yarn install --frozen-lockfile --non-interactive
-      - yarn add codacy-coverage
-      - yarn run eslint
-      - cp config/cucumber.json config/local.json
-      - yarn run test:coverage
+      - yarn global add codacy-coverage
+      - yarn run ci
       - cat ./coverage/lcov.info | codacy-coverage
 
 after_success:
