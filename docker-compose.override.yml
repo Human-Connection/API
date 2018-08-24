@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  api:
+    environment:
+      - NODE_ENV=development
+    ports:
+      - "3030:3030"
+      - "9229:9229" # node inspect
+    volumes:
+      - .:/API
+      - /API/node_modules
+    command: yarn run dev

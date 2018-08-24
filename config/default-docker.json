@@ -1,0 +1,4 @@
+{
+  "mongodb": "mongodb://mongo:27017/hc_api",
+  "host": "0.0.0.0"
+}

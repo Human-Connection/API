@@ -17,6 +17,49 @@ The API for a better world. More information under [human-connection.org](https:
 
 > **Note:** This is only the API part of Human-Connection, you have to also checkout the [WebApp](https://github.com/Human-Connection/WebApp) which uses this API.
 
+## Installation via docker
+
+Make sure you have a recent version of [docker](https://www.docker.com/) and [docker-compose](https://docs.docker.com/compose/).
+
+Run:
+```bash
+$ docker-compose up --build
+```
+Now, your API should be running at [http://localhost:3030](http://localhost:3030)
+and you can see some contributions at [http://localhost:3030/contributions](http://localhost:3030/contributions).
+
+For debugging you can run:
+```bash
+$ docker-compose run --rm --service-ports api yarn run dev:debug
+```
+And debug your app with [Chrome Dev Tools](chrome://inspect).
+
+### Configuration in Docker
+
+Change configuration in `config/docker/local-development.json` or
+`config/docker/local.json` and rerun `docker-compose up --build`.
+
+#### Local Staging Environment
+
+To get an environment which is close to production, run the following:
+```sh
+$ docker-compose -f docker-compose.yml -f docker-compose.staging.yml up --build
+```
+
+### Testing in Docker
+
+Run the entire test suite with:
+```bash
+$ docker-compose run --rm api yarn run test
+```
+
+If you want you can run specific tests:
+```bash
+$ docker-compose run --rm api yarn run mocha
+$ docker-compose run --rm api yarn run cucumber
+```
+
+
 ## Local installation
 
 > we recommand to install the project locally for the best development ease and performance
@@ -91,19 +134,8 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
    Now, your API should be running at [http://localhost:3030](http://localhost:3030).
    If you seeded your database, you will see some contributions at [http://localhost:3030/contributions](http://localhost:3030/contributions).
 
-7. Setup and Start Thumbnail Service (optional)
 
-   We are using [Thumbor](https://github.com/thumbor/thumbor) as a Thumbnail Microservice.
-   You can install it locally if you like but this is totally optional.
-
-   **Install OR use docker**
-
-   - At first you have to [install](http://thumbor.readthedocs.io/en/latest/installing.html) it locally and start it in the console with `thumbor` **OR** run it with docker `docker run -p 8000:8000 apsl/thumbor`
-   - Set the `thumbor.url` in `config/local.json` to `http://localhost:8888` (with docker `http://localhost:8000`) if not defined differently. The `thumbor.key` does not necessarily have to be defined, it just makes the URL more secure.
-
-   > Do not forget to always start it if you choose that setup or otherwise you will not see any pictures at all.
-
-### Local configuration
+### Local Configuration
 
 You can override any default configuration in `config/local.json`. You can find
 a list of availabe defaults in `config/default.json`.
@@ -121,7 +153,7 @@ replace `localhost` in your settings with your IP address in the local network:
 
 ```
 
-## Testing
+### Local Testing
 
 Run the entire test suite with:
 ```bash
