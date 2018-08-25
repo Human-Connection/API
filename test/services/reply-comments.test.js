@@ -26,7 +26,6 @@ describe('\'reply comments\' service', () => {
   let user;
   let replyUser;
   let contribution;
-  let comment;
 
   before(function(done) {
     this.server = app.listen(3031);
@@ -52,7 +51,6 @@ describe('\'reply comments\' service', () => {
     user = null;
     replyUser = null;
     contribution = null;
-    comment = null;
     delete commentData.userId;
     delete commentData.contributionId;
     delete replyData.userId;
@@ -81,7 +79,7 @@ describe('\'reply comments\' service', () => {
 
     context('given a reply to the comment', () => {
       beforeEach(async () => {
-        replyData.content = 'I am a reply'
+        replyData.content = 'I am a reply';
         await service.create(replyData, { user: replyUser });
       });
 
@@ -103,13 +101,13 @@ describe('\'reply comments\' service', () => {
         it('comment includes reply', async () => {
 
           let commentsRes = await service.find();
-          let comments = commentsRes.data
-          let parent = comments[0]
-          let reply = comments[1]
+          let comments = commentsRes.data;
+          let parent = comments[0];
+          let reply = comments[1];
 
-          assert.ok(parent.children, 'parent has children')
-          assert.strictEqual(parent.children[0].content, 'I am a reply')
-          assert.strictEqual(reply.children.length, 0)
+          assert.ok(parent.children, 'parent has children');
+          assert.strictEqual(parent.children[0].content, 'I am a reply');
+          assert.strictEqual(reply.children.length, 0);
         });
       });
     });
