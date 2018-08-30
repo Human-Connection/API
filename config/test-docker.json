@@ -1,0 +1,3 @@
+{
+  "mongodb": "mongodb://mongo:27017/hc_api_test"
+}

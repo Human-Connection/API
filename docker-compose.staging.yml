@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  api:
+    image: humanconnection/api-feathers
+    build:
+      context: .
+    environment:
+      - NODE_ENV=staging
+    depends_on:
+      - maildev
+      - thumbor
+    ports:
+      - "3030:3030"
+    networks:
+      hc-network:
+        ipv4_address: 172.25.0.11
+  thumbor:
+    networks:
+      hc-network:
+        ipv4_address: 172.25.0.13
+  maildev:
+    image: djfarrelly/maildev
+    networks:
+      - hc-network
+    ports:
+      - "1080:80"
+      - "1025:25"
+  thumbor:
+    image: apsl/thumbor
+    networks:
+      - hc-network
+    ports:
+      - "8000:8000"
+
+networks:
+  hc-network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      -
+        subnet: 172.25.0.0/16

@@ -17,13 +17,56 @@ The API for a better world. More information under [human-connection.org](https:
 
 > **Note:** This is only the API part of Human-Connection, you have to also checkout the [WebApp](https://github.com/Human-Connection/WebApp) which uses this API.
 
-## Development
+## Installation via docker
+
+Make sure you have a recent version of [docker](https://www.docker.com/) and [docker-compose](https://docs.docker.com/compose/).
+
+Run:
+```bash
+$ docker-compose up --build
+```
+Now, your API should be running at [http://localhost:3030](http://localhost:3030)
+and you can see some contributions at [http://localhost:3030/contributions](http://localhost:3030/contributions).
+
+For debugging you can run:
+```bash
+$ docker-compose run --rm --service-ports api yarn run dev:debug
+```
+And debug your app with [Chrome Dev Tools](chrome://inspect).
+
+### Configuration in Docker
+
+Change configuration in `config/docker/local-development.json` or
+`config/docker/local.json` and rerun `docker-compose up --build`.
+
+#### Local Staging Environment
+
+To get an environment which is close to production, run the following:
+```sh
+$ docker-compose -f docker-compose.yml -f docker-compose.staging.yml up --build
+```
+
+### Testing in Docker
+
+Run the entire test suite with:
+```bash
+$ docker-compose run --rm api yarn run test
+```
+
+If you want you can run specific tests:
+```bash
+$ docker-compose run --rm api yarn run mocha
+$ docker-compose run --rm api yarn run cucumber
+```
+
+
+## Local installation
 
 > we recommand to install the project locally for the best development ease and performance
 
 Getting up and running is as easy as 1, 2, 3, 4 ... 5.
 
-1. Make sure you have [NodeJS](https://nodejs.org/), [yarn](https://yarnpkg.com), [mongoDB](https://www.mongodb.com/download-center#community) installed.
+1. Make sure you have a recent version of [NodeJS](https://nodejs.org/), [yarn](https://yarnpkg.com) and [mongoDB](https://www.mongodb.com/download-center#community) installed.
 
 2. Clone this repo
    ``` bash
@@ -35,87 +78,101 @@ Getting up and running is as easy as 1, 2, 3, 4 ... 5.
    $ cd ./API
    $ yarn
    ```
+4. Setup database seeder for local development (recommended)
 
-4. Setup local mailserver (optional)
-   
-   >  **Note:** 
+   Run
+   ```sh
+   $ cp config/local.example.json config/local.json
+   ```
+
+5. Setup local mailserver (optional)
+
+   >  **Note:**
    >  *You only have to start that mailserver when you want to register, reset your password or test emails in any form, it
    >  does not affect the rest of the application.*
-        
-   Copy `config/local.example.json` to `config/local.json` and install the [MailDev](https://github.com/djfarrelly/MailDev)
+
+   Install the [MailDev](https://github.com/djfarrelly/MailDev)
    server to catch all sent emails in a nice web interface.
-    
+
    ``` bash
    # install mail dev (only has to be done once)
-   $ npm install -g maildev
-   
-   # start the server, it will output the web url 
+   $ yarn global add maildev
+
+   # start the server, it will output the web url
    # which normally is http://localhost:1080
    $ maildev
    ```
-   
+
    You could also insert your smtp credentials into the local.json but that is not recommended as all emails would be sent
    to the given addresses which should not happen in development.
-   
-5. Start server
 
-   Make sure that the `data` folder exists according to the `mongod --dbpath` in `package.json` to write the data into, then start the server:
+6. Start server
+
+   You don't have a background process running for  mongodb?
+   Just open another terminal and run:
+ 
+   ```bash
+	 # open up another terminal and run:
+   $ yarn run mongo
+   # or if you are on windows, run:
+   $ yarn run mongo:win
+   ```
+   > ##### IMPORTANT for Windows users:
+   > - make sure you have mongo bin directory added to your PATH
+
+   Start the API server with the following commands:
    ``` bash
-   # start mongodb, feathers and seed database
    $ yarn dev
-   $ yarn dev:win if you're on windows
 
-   # start mongodb, feathers without seeding the database
-   $ yarn dev:noseed
-   
-   # start mongodb, feathers for production
+   # without hot reload
    $ yarn start
+   # you can customize the environment like this:
+   $ NODE_ENV=production yarn start
    ```
 
-   > ##### IMPORTANT for WIN users: 
-   > - make sure you have mongo bin directory added to your PATH
-   > - if you picked another data directory during mongodb setup make sure 
-   > to change package.json scripts section for key "dev:win" so it points to
-   > the proper path. Otherwise you will get missing data path errors from mongodb.
-   
-   If you did it right it will seed some fake data for you and downloads some images and avatar for faster development.
-   Now you should be able to list some post at [http://localhost:3030/contributions](http://localhost:3030/contributions)
 
-6. Setup and Start Thumbnail Service (optional)
+   Now, your API should be running at [http://localhost:3030](http://localhost:3030).
+   If you seeded your database, you will see some contributions at [http://localhost:3030/contributions](http://localhost:3030/contributions).
 
-   We are using [Thumbor](https://github.com/thumbor/thumbor) as a Thumbnail Microservice.
-   You can install it locally if you like but this is totally optional.
-   
-   **Install OR use docker**
-   
-   - At first you have to [install](http://thumbor.readthedocs.io/en/latest/installing.html) it locally and start it in the console with `thumbor` **OR** run it with docker `docker run -p 8000:8000 apsl/thumbor`
-   - Set the `thumbor.url` in `config/local.json` to `http://localhost:8888` (with docker `http://localhost:8000`) if not defined differently. The `thumbor.key` does not necessarily have to be defined, it just makes the URL more secure.
-   
-   > Do not forget to always start it if you choose that setup or otherwise you will not see any pictures at all.
 
-## Local configuration
+### Local Configuration
 
-If you need to configure anything you can do so inside the `config/local.json` file. For that the `config/local.example.json` will contain always a minimal setup to get it working.
+You can override any default configuration in `config/local.json`. You can find
+a list of availabe defaults in `config/default.json`.
+See [node-config documentation](https://github.com/lorenwest/node-config/wiki/Configuration-Files)
+for details.
 
-If, f.ex., you want to change listen address, port or URL, you can do so. Entries in the `config/local.json` will override entries in the `config/default.json`.
+E.g. if you want to access the server from your mobile over WiFi, you should
+replace `localhost` in your settings with your IP address in the local network:
+```json
+{
+  "host": "192.168.188.22",
+  "baseURL": "http://192.168.188.22:3030",
+  "frontURL": "http://192.168.188.22:3000"
+}
 
-**Note on the seeder configuration**
-The seeder configuration has two properties:
-- **dropDatabase:** drop the whole database on (re)start.
-- **runOnInit:** run the seeder always on server (re)start (when database is empty).
+```
 
-> **Note** *You can switch the `dropDatabase` entry after seeding and it will persist the seeded data.* 
+### Local Testing
 
-## Testing
+Run the entire test suite with:
+```bash
+$ yarn run test
+```
 
-Simply run `yarn test` and all your tests in the `test/` directory will be run.
+If you want you can run specific tests:
+```bash
+$ yarn run mocha
+$ yarn run cucumber
+```
+
 
 ## Scaffolding
 
 Feathers has a powerful command line interface. Here are a few things it can do:
 
 ``` bash
-$ npm install -g feathers-cli             # Install Feathers CLI
+$ yarn global add feathers-cli             # Install Feathers CLI
 
 $ feathers generate service               # Generate a new Service
 $ feathers generate hook                  # Generate a new Hook
@@ -129,7 +186,7 @@ For more information on all the framework related things visit [docs.feathersjs.
 
 The HC platform is documented in our [gitbook](https://www.gitbook.com/book/human-connection/documentation/) (work in progress).
 
-## License 
+## License
 
 Copyright (c) 2018 [Human-Connection.org](https://human-connection.org)
 
