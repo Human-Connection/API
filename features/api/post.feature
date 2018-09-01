@@ -5,8 +5,7 @@ Feature: Publish a post to Human Connection
 
 
   Background:
-    Given the Human Connection API is up and running
-    And there is a user in Human Connection with these credentials:
+    Given there is a user in Human Connection with these credentials:
       | email            | password |
       | user@example.com |     1234 |
 

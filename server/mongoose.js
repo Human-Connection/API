@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const mongoose = require('mongoose');
 const fs = require('fs-extra');
 const path = require('path');
@@ -5,13 +6,14 @@ const path = require('path');
 module.exports = function () {
   const app = this;
 
+  mongoose.Promise = global.Promise;
   mongoose.connect(app.get('mongodb'), {
     useMongoClient: true,
     autoReconnect: true,
     keepAlive: 1,
     connectTimeoutMS: 10000,
     socketTimeoutMS: 10000
-  }, function () {
+  }).then(() => {
     if (process.env.NODE_ENV !== 'production' && app.get('seeder').dropDatabase === true) {
       mongoose.connection.dropDatabase().then(() => {
         app.debug('>>>>>> DROPED DATABASE <<<<<<');
@@ -25,7 +27,8 @@ module.exports = function () {
     } else {
       app.emit('mongooseInit');
     }
+  },(err) => {
+    console.log(err);
   });
-  mongoose.Promise = global.Promise;
   app.set('mongooseClient', mongoose);
 };

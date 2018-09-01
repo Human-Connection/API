@@ -1,0 +1,16 @@
+{
+  "baseURL": "http://172.25.0.11:3030",
+  "seeder": {
+    "runOnInit": true,
+    "dropDatabase": true
+  },
+  "smtpConfig": {
+    "host": "maildev",
+    "port": 25,
+    "ignoreTLS": true
+  },
+  "thumbor": {
+    "url": "http://localhost:8000",
+    "key": ""
+  }
+}

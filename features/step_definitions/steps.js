@@ -4,9 +4,8 @@
 const { Given, When, Then } = require('cucumber');
 const fetch = require('node-fetch');
 const { expect } = require('chai');
-const waitOn = require('wait-on');
 
-const hcBackendUrl = 'http://localhost:3030';
+const hcBackendUrl = 'http://localhost:3031';
 
 let currentUser;
 let currentUserPassword;
@@ -50,17 +49,6 @@ function postRequest(route, body, callback) {
     });
 }
 
-Given(/^the Human Connection API is up and running(?: on "http:\/\/localhost:3030")?/, (callback) => {
-  waitOn({ resources: ['tcp:3030'], timeout: 30000 }, (err) => {
-    if (err) throw (err);
-    return callback();
-  });
-});
-
-Given('there is a 3rd party application running, e.g. \'Democracy\'', () => {
-  // Just documentation
-});
-
 Given('there is a user in Human Connection with these credentials:', function (dataTable) {
   const params = dataTable.hashes()[0];
   currentUserPassword = params.password;
@@ -90,6 +78,18 @@ Then('a new post is created', function () {
   });
 });
 
+
+Then('these category ids are stored in your user settings', function () {
+  return this.app.service('usersettings').find({userId: currentUser._id.toString()}).then((settings) => {
+    expect(settings.total).to.eq(1);
+    let usersettings = settings.data[0];
+    expect(usersettings.uiLanguage).to.eq('en');
+    expect(usersettings.filter.categoryIds).to.be.an('array')
+      .that.does.include('5b310ab8b801653c1eb6c426')
+      .that.does.include('5b310ab8b801653c1eb6c427')
+      .that.does.include('5b310ab8b801653c1eb6c428');
+  });
+});
 
 Then('your language {string} is stored in your user settings', function (lang) {
   return this.app.service('usersettings').find({userId: currentUser._id.toString()}).then((settings) => {
