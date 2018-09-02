@@ -51,7 +51,7 @@ describe('\'shouts\' shoutService', () => {
       foreignService: 'contributions'
     });
 
-    assert.strictEqual(shoutUser2Contribution1.foreignId, contribution1._id);
+    assert.strictEqual(shoutUser2Contribution1.foreignId, new String(contribution1._id).toString());
     assert.strictEqual(shoutUser2Contribution1.foreignService, 'contributions');
 
     // should have one shout
@@ -90,7 +90,7 @@ describe('\'shouts\' shoutService', () => {
     assert.strictEqual(contribution1.shoutCount, 2);
   });
 
-  it('remove a shut', async () => {
+  it('remove a shout', async () => {
     await shoutService.remove(shoutUser2Contribution1._id);
 
     // should have one shout

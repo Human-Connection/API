@@ -79,7 +79,7 @@ describe('\'contributions\' service', () => {
       assert.ok(notification, 'created notification');
       assert.ok(notification.userId, 'has userId');
       assert.ok(notification.relatedContributionId, 'has relatedContributionId');
-      assert.strictEqual(notification.relatedContributionId, contribution._id, 'has correct relatedContributionId');
+      assert.strictEqual(notification.relatedContributionId, new String(contribution._id).toString(), 'has correct relatedContributionId');
     });
 
     context('given soft-deleted contribution', () => {
