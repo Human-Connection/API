@@ -193,7 +193,7 @@ $ feathers help                           # Show all commands
 
 For more information on all the framework related things visit [docs.feathersjs.com](http://docs.feathersjs.com).
 
-The HC platform is documented in our [gitbook](https://www.gitbook.com/book/human-connection/documentation/) (work in progress).
+The HC platform is documented in our [docs](https://docs.human-connection.org/) (work in progress).
 
 Connect with other developers over [Discord](https://discord.gg/mVmjvNF).
 
