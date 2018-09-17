@@ -195,6 +195,8 @@ For more information on all the framework related things visit [docs.feathersjs.
 
 The HC platform is documented in our [gitbook](https://www.gitbook.com/book/human-connection/documentation/) (work in progress).
 
+Connect with other developers over [Discord](https://discord.gg/mVmjvNF).
+
 ## License
 
 Copyright (c) 2018 [Human-Connection.org](https://human-connection.org)
