@@ -155,6 +155,15 @@ replace `localhost` in your settings with your IP address in the local network:
 
 ### Local Testing
 
+Test Logins
+
+| Role      | E-Mail         | Password |
+| --------- | -------------- | -------- | 
+| Admin     | test@test.de   | 1234     |
+| Moderator | test2@test2.de | 1234     |
+| User      | test3@test3.de | 1234     |
+
+
 Run the entire test suite with:
 ```bash
 $ yarn run test
