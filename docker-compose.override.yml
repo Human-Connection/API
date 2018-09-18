@@ -11,3 +11,4 @@ services:
       - .:/API
       - /API/node_modules
     command: yarn run dev
+    tty: true
