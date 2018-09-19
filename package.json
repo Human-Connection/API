@@ -72,7 +72,7 @@
     "feathers-memory": "~2.1.3",
     "feathers-mongodb": "~3.3.0",
     "feathers-mongodb-fuzzy-search": "~1.1.1",
-    "feathers-mongoose": "~6.1.2",
+    "feathers-mongoose": "~6.1.4",
     "feathers-profiler": "^0.1.5",
     "feathers-seeder": "~2.0.0",
     "fs-blob-store": "~5.2.1",

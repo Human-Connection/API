@@ -2920,9 +2920,9 @@ feathers-mongodb@~3.3.0:
     lodash.omit "^4.5.0"
     uberproto "^2.0.4"
 
-feathers-mongoose@~6.1.2:
-  version "6.1.2"
-  resolved "https://registry.yarnpkg.com/feathers-mongoose/-/feathers-mongoose-6.1.2.tgz#642f2c522c4ed445014f960cbb6c8b65ea8d9373"
+feathers-mongoose@~6.1.4:
+  version "6.1.4"
+  resolved "https://registry.yarnpkg.com/feathers-mongoose/-/feathers-mongoose-6.1.4.tgz#57bbd9d80ed31c81ebee8aca0f435c950d569299"
   dependencies:
     "@feathersjs/commons" "^1.3.0"
     "@feathersjs/errors" "^3.2.0"
