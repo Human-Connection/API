@@ -17,7 +17,7 @@ It uses the FeathersJS, NodeJS, yarn and mongoDB.<br />
 
 ## Help
 The HC platform and its setup is documented in our [gitbook](https://www.gitbook.com/book/human-connection/documentation/) (work in progress).<br />
-You can get help here too: https://discord.gg/mVmjvNF<br />
+Connect with other developers over [Discord](https://discord.gg/mVmjvNF)<br />
 
 ## License 
 Copyright (c) 2018 [Human-Connection.org](https://human-connection.org)<br />
