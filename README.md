@@ -16,7 +16,7 @@ This is the backend of HC.<br />
 It uses the FeathersJS, NodeJS, yarn and mongoDB.<br />
 
 ## Help
-The HC platform and its setup is documented in our [gitbook](https://www.gitbook.com/book/human-connection/documentation/) (work in progress).<br />
+The HC platform and its setup is documented in our [docs](https://docs.human-connection.org/) (work in progress).<br />
 Connect with other developers over [Discord](https://discord.gg/mVmjvNF)<br />
 
 ## License 
