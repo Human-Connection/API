@@ -2867,9 +2867,9 @@ feathers-errors@^2.9.1:
   dependencies:
     debug "^3.0.0"
 
-feathers-hooks-common@^4.14.1, feathers-hooks-common@~4.14.3:
-  version "4.14.3"
-  resolved "https://registry.yarnpkg.com/feathers-hooks-common/-/feathers-hooks-common-4.14.3.tgz#e00793eed1a3f0a79a61fdf91918072a034c20fa"
+feathers-hooks-common@^4.14.1, feathers-hooks-common@~4.17.6:
+  version "4.17.6"
+  resolved "https://registry.yarnpkg.com/feathers-hooks-common/-/feathers-hooks-common-4.17.6.tgz#0e59d36b940557d1bcb1baebd49b02efbf272495"
   dependencies:
     "@feathers-plus/batch-loader" "^0.3.0"
     "@feathersjs/commons" "^1.4.0"
