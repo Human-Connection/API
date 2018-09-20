@@ -2827,9 +2827,9 @@ fast-safe-stringify@^2.0.4:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/fast-safe-stringify/-/fast-safe-stringify-2.0.4.tgz#4fe828718aa61dbcf9119c3c24e79cc4dea973b2"
 
-feathers-authentication-hooks@~0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/feathers-authentication-hooks/-/feathers-authentication-hooks-0.3.0.tgz#6320633aaaaf046d3bc5f4ead541362095487d4e"
+feathers-authentication-hooks@~0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/feathers-authentication-hooks/-/feathers-authentication-hooks-0.3.1.tgz#a6c595ef626f5c289492d304ad6364ae547dae76"
   dependencies:
     "@feathersjs/errors" "^3.3.0"
     debug "^3.1.0"
