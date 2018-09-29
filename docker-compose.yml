@@ -21,6 +21,7 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "/etc/resolv.conf:/etc/resolv.conf"
+      - "./dns-proxy-server.config.json:/app/conf/config.json"
     ports:
       - 5380:5380
     hostname: dns.mageddo
