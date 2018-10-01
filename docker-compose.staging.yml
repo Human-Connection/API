@@ -24,17 +24,9 @@ services:
       - "1025:25"
 
   thumbor:
-    container_name: thumbor
-    hostname: thumbor
+    container_name: thumbor.127.0.0.1.xip.io
     image: apsl/thumbor
     networks:
       - hc-network
     ports:
       - "8000:8000"
-
-networks:
-  hc-network:
-    name: hc-network
-    driver: bridge
-    ipam:
-      driver: default

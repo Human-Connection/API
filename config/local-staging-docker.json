@@ -9,7 +9,7 @@
     "ignoreTLS": true
   },
   "thumbor": {
-    "url": "http://thumbor:8000",
+    "url": "http://thumbor.127.0.0.1.xip.io:8000",
     "key": ""
   }
 }
