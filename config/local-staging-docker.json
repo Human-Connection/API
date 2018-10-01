@@ -1,8 +1,7 @@
 {
-  "baseURL": "http://172.25.0.11:3030",
   "seeder": {
     "runOnInit": true,
-    "dropDatabase": true
+    "dropDatabase": false
   },
   "smtpConfig": {
     "host": "maildev",
@@ -10,7 +9,7 @@
     "ignoreTLS": true
   },
   "thumbor": {
-    "url": "http://localhost:8000",
+    "url": "http://thumbor.127.0.0.1.xip.io:8000",
     "key": ""
   }
 }
