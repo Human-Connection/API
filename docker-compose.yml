@@ -1,17 +1,32 @@
-version: '3'
+version: '3.5'
 
 services:
   api:
+    container_name: api.127.0.0.1.xip.io
     build: .
     depends_on:
       - mongo
     networks:
       - hc-network
+
   mongo:
     image: mongo
     networks:
       - hc-network
     command: "--smallfiles --logpath=/dev/null"
 
+    #  dns-proxy-server:
+    #    image: defreitas/dns-proxy-server
+    #    volumes:
+    #      - "/var/run/docker.sock:/var/run/docker.sock"
+    #      - "/etc/resolv.conf:/etc/resolv.conf"
+    #      - "./dns-proxy-server.config.json:/app/conf/config.json"
+    #    ports:
+    #      - 5380:5380
+    #    hostname: dns.mageddo
+    #    networks:
+    #      - hc-network
+
 networks:
   hc-network:
+    name: hc-network

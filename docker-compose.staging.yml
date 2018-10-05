@@ -1,9 +1,7 @@
-version: '3'
+version: '3.5'
 
 services:
   api:
-    container_name: api_api
-    hostname: api_api
     image: humanconnection/api-feathers:edge
     build:
       context: .
@@ -18,8 +16,6 @@ services:
       - hc-network
 
   maildev:
-    container_name: api_maildev
-    hostname: api_maildev
     image: djfarrelly/maildev
     networks:
       - hc-network
@@ -28,25 +24,9 @@ services:
       - "1025:25"
 
   thumbor:
-    container_name: api_thumbor
-    hostname: api_thumbor
+    container_name: thumbor.127.0.0.1.xip.io
     image: apsl/thumbor
     networks:
       - hc-network
     ports:
       - "8000:8000"
-
-  dns-proxy-server:
-    image: defreitas/dns-proxy-server
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
-      - "/etc/resolv.conf:/etc/resolv.conf"
-    ports:
-      - 5380:5380
-    hostname: dns.mageddo
-
-networks:
-  hc-network:
-    driver: bridge
-    ipam:
-      driver: default
