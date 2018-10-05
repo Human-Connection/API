@@ -79,7 +79,7 @@ describe('\'contributions\' service', () => {
       assert.ok(notification, 'created notification');
       assert.ok(notification.userId, 'has userId');
       assert.ok(notification.relatedContributionId, 'has relatedContributionId');
-      assert.equal(notification.relatedContributionId, contribution._id, 'has correct relatedContributionId');
+      assert.strictEqual(notification.relatedContributionId, new String(contribution._id).toString(), 'has correct relatedContributionId');
     });
 
     context('given soft-deleted contribution', () => {
@@ -101,7 +101,7 @@ describe('\'contributions\' service', () => {
       it('increments title slug', async () => {
         let contribution = await service.create(contributionAttributes, params);
         assert.ok(contribution, 'created contribution');
-        assert.equal(contribution.slug, 'title1');
+        assert.strictEqual(contribution.slug, 'title1');
       });
     });
 
@@ -124,7 +124,7 @@ describe('\'contributions\' service', () => {
       it('increments title slug', async () => {
         let contribution = await service.create(contributionAttributes, params);
         assert.ok(contribution, 'created contribution');
-        assert.equal(contribution.slug, 'title1');
+        assert.strictEqual(contribution.slug, 'title1');
       });
     });
   });
@@ -145,7 +145,7 @@ describe('\'contributions\' service', () => {
         title: 'Test'
       }, params);
       assert.ok(result, 'returns data');
-      assert.equal(result.title, 'Test', 'patched data');
+      assert.strictEqual(result.title, 'Test', 'patched data');
     });
   });
 
@@ -200,7 +200,7 @@ describe('\'contributions\' service', () => {
     it('returns one contribution', async () => {
       const result = await service.find({ query });
       assert.ok(result.data[0], 'returns data');
-      assert.equal(result.data.length, 1, 'returns only one entry');
+      assert.strictEqual(result.data.length, 1, 'returns only one entry');
     });
 
     it('populates associatedCanDos', async () => {

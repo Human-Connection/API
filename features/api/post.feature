@@ -1,4 +1,4 @@
-Feature: Import a post from an organization and publish it in Human Connection
+Feature: Publish a post to Human Connection
   As a user of human connection
   You would like to publish a post programmatically
   In order to automate things

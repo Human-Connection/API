@@ -39,7 +39,7 @@ describe('\'shouts\' shoutService', () => {
     });
 
     // should have zero shouts
-    assert.equal(contribution1.shoutCount, 0);
+    assert.strictEqual(contribution1.shoutCount, 0);
   });
 
   it('shout a contribution', async () => {
@@ -51,12 +51,12 @@ describe('\'shouts\' shoutService', () => {
       foreignService: 'contributions'
     });
 
-    assert.equal(shoutUser2Contribution1.foreignId, contribution1._id);
-    assert.equal(shoutUser2Contribution1.foreignService, 'contributions');
+    assert.strictEqual(shoutUser2Contribution1.foreignId, new String(contribution1._id).toString());
+    assert.strictEqual(shoutUser2Contribution1.foreignService, 'contributions');
 
     // should have one shout
     contribution1 = await app.service('contributions').get(contribution1._id);
-    assert.equal(contribution1.shoutCount, 1);
+    assert.strictEqual(contribution1.shoutCount, 1);
 
     // create shout
     shoutUser1Contribution1 = await shoutService.create({
@@ -68,7 +68,7 @@ describe('\'shouts\' shoutService', () => {
 
     // should have two shout
     contribution1 = await app.service('contributions').get(contribution1._id);
-    assert.equal(contribution1.shoutCount, 2);
+    assert.strictEqual(contribution1.shoutCount, 2);
 
     // TODO / FIXME: for some kind of reason the database ignores the compound index on userId and foreignId while on test mode
     /*
@@ -87,14 +87,14 @@ describe('\'shouts\' shoutService', () => {
     contribution1 = await app.service('contributions').get(contribution1._id);
 
     // should still have two shout
-    assert.equal(contribution1.shoutCount, 2);
+    assert.strictEqual(contribution1.shoutCount, 2);
   });
 
-  it('remove a shut', async () => {
+  it('remove a shout', async () => {
     await shoutService.remove(shoutUser2Contribution1._id);
 
     // should have one shout
     contribution1 = await app.service('contributions').get(contribution1._id);
-    assert.equal(contribution1.shoutCount, 1);
+    assert.strictEqual(contribution1.shoutCount, 1);
   });
 });

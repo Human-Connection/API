@@ -30,6 +30,27 @@ const userSchema = {
   }
 };
 
+//Info: When higher depth in nested comments is wanted, here you need to add new nested includes to get the children of nested comments and users to the comments.
+const commentSchema = {
+  include: {
+    service: 'comments',
+    nameAs: 'children',
+    parentField: '_id',
+    childField: 'parentCommentId',
+    asArray: true,
+    include: {
+      service: 'users',
+      nameAs: 'user',
+      parentField: 'userId',
+      childField: '_id',
+      query: {
+        $limit: 1,
+        $select: ['_id', 'name', 'slug', 'avatar', 'lastActiveAt', 'termsAndConditionsAccepted', 'thumbnails']
+      }
+    }
+  }
+};
+
 const xssFields = ['content', 'contentExcerpt'];
 
 //ToDo: Only let users create comments for contributions they are allowed to
@@ -109,10 +130,12 @@ module.exports = {
     ],
     find: [
       populate({ schema: userSchema }),
+      populate({ schema: commentSchema }),
       protect('content', 'badgeIds')
     ],
     get: [
-      populate({ schema: userSchema })
+      populate({ schema: userSchema }),
+      populate({ schema: commentSchema })
     ],
     create: [
       populate({ schema: userSchema }),
