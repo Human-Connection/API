@@ -1,5 +1,5 @@
 const {authenticate} = require('@feathersjs/authentication').hooks;
-const {discard, when, unless, isProvider, populate, softDelete, setNow} = require('feathers-hooks-common');
+const {iff, discard, when, unless, isProvider, populate, softDelete, setNow} = require('feathers-hooks-common');
 const {
   //queryWithCurrentUser,
   associateCurrentUser,
@@ -17,6 +17,7 @@ const search = require('feathers-mongodb-fuzzy-search');
 const thumbnails = require('../../hooks/thumbnails');
 const isModerator = require('../../hooks/is-moderator-boolean');
 const excludeDisabled = require('../../hooks/exclude-disabled');
+const excludeBlacklisted = require('../../hooks/exclude-blacklisted');
 const getAssociatedCanDos = require('./hooks/get-associated-can-dos');
 const createMentionNotifications = require('./hooks/create-mention-notifications');
 const notifyFollowers = require('./hooks/notify-followers');
@@ -106,9 +107,14 @@ module.exports = {
       xss({fields: xssFields})
     ],
     find: [
+      iff(
+        hook => hook.params.headers && hook.params.headers.authorization,
+        authenticate('jwt')
+      ),
       unless(isModerator(),
         excludeDisabled()
       ),
+      excludeBlacklisted(),
       when(isProvider('server'),
         includeAll()
       ),
