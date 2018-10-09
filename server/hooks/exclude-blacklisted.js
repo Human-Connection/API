@@ -13,8 +13,12 @@ module.exports = function excludeBlacklisted() {
       if (usersettings.total <= 0){
         return hook;
       }
-      const blacklist = usersettings.data[0].blacklist;
-      hook.params.query.userId = {$nin: blacklist};
+      const { blacklist } = usersettings.data[0];
+      if (blacklist) {
+        let { query } = hook.params;
+        query.userId = query.userId || {};
+        query.userId.$nin = blacklist;
+      }
       return hook;
     }
 
