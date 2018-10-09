@@ -5,8 +5,7 @@ Feature: Import a post from an organization and publish it in Human Connection
 
 
   Background:
-    Given the Human Connection API is up and running
-    And there is a user in Human Connection with these credentials:
+    Given this is your user account:
       | email            | password |
       | user@example.com |     1234 |
 

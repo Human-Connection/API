@@ -1,5 +1,5 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const { unless, isProvider, populate, discard, softDelete, setNow } = require('feathers-hooks-common');
+const { iff, unless, isProvider, populate, discard, softDelete, setNow } = require('feathers-hooks-common');
 const { protect } = require('@feathersjs/authentication-local').hooks;
 const {
   //queryWithCurrentUser,
@@ -10,6 +10,7 @@ const {
 const { isVerified } = require('feathers-authentication-management').hooks;
 const createExcerpt = require('../../hooks/create-excerpt');
 const patchDeletedData = require('../../hooks/patch-deleted-data');
+const concealBlacklistedData = require('../../hooks/conceal-blacklisted-data');
 const keepDeletedDataFields = require('../../hooks/keep-deleted-data-fields');
 const createNotifications = require('./hooks/create-notifications');
 const createMentionNotifications = require('./hooks/create-mention-notifications');
@@ -41,12 +42,21 @@ module.exports = {
     ],
     find: [
       // We want to deleted comments to show up
+      iff(
+        hook => hook.params.headers && hook.params.headers.authorization,
+        authenticate('jwt')
+      ),
       hook => {
         delete hook.params.query.deleted;
         return hook;
       }
     ],
-    get: [],
+    get: [
+      iff(
+        hook => hook.params.headers && hook.params.headers.authorization,
+        authenticate('jwt')
+      )
+    ],
     create: [
       authenticate('jwt'),
       // Allow seeder to seed comments
@@ -109,10 +119,24 @@ module.exports = {
     ],
     find: [
       populate({ schema: userSchema }),
-      protect('content', 'badgeIds')
+      protect('content', 'badgeIds'),
+      concealBlacklistedData({
+        data: {
+          content: 'Comments of this blacklisted user are not visible.',
+          contentExcerpt: 'Comments of this blacklisted user are not visible.',
+          hasMore: false
+        }
+      })
     ],
     get: [
-      populate({ schema: userSchema })
+      populate({ schema: userSchema }),
+      concealBlacklistedData({
+        data: {
+          content: 'Comments of this blacklisted user are not visible.',
+          contentExcerpt: 'Comments of this blacklisted user are not visible.',
+          hasMore: false
+        }
+      })
     ],
     create: [
       populate({ schema: userSchema }),

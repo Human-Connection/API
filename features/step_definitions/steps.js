@@ -4,14 +4,15 @@
 const { Given, When, Then } = require('cucumber');
 const fetch = require('node-fetch');
 const { expect } = require('chai');
-const waitOn = require('wait-on');
 
-const hcBackendUrl = 'http://localhost:3030';
+const hcBackendUrl = 'http://localhost:3031';
 
 let currentUser;
 let currentUserPassword;
 let httpResponse;
 let currentUserAccessToken;
+let lastPost;
+let blacklistedUser;
 
 function authenticate(email, plainTextPassword) {
   const formData = {
@@ -36,10 +37,23 @@ function postRequest(route, body, callback) {
     body,
     headers: { 'Content-Type': 'application/json' },
   };
+  return request(params, route, callback);
+}
+
+function getRequest(route, callback){
+  const params = {
+    method: 'get',
+    headers: { 'Content-Type': 'application/json' },
+  };
+  return request(params, route, callback);
+}
+
+function request(params, route, callback) {
+  const requestParams = Object.assign({}, params);
   if (currentUserAccessToken) {
-    params.headers.Authorization = `Bearer ${currentUserAccessToken}`;
+    requestParams.headers.Authorization = `Bearer ${currentUserAccessToken}`;
   }
-  fetch(`${hcBackendUrl}${route}`, params)
+  fetch(`${hcBackendUrl}${route}`, requestParams)
     .then(response => response.json())
     .catch((err) => {
       throw (err);
@@ -50,23 +64,19 @@ function postRequest(route, body, callback) {
     });
 }
 
-Given(/^the Human Connection API is up and running(?: on "http:\/\/localhost:3030")?/, (callback) => {
-  waitOn({ resources: ['tcp:3030'], timeout: 30000 }, (err) => {
-    if (err) throw (err);
-    return callback();
-  });
-});
 
-Given('there is a 3rd party application running, e.g. \'Democracy\'', () => {
-  // Just documentation
-});
-
-Given('there is a user in Human Connection with these credentials:', function (dataTable) {
+Given('this is your user account:', function (dataTable) {
   const params = dataTable.hashes()[0];
   currentUserPassword = params.password;
   return this.app.service('users').create(params).then((user) => {
     currentUser = user;
   });
+});
+
+Given('these user accounts exist:', function (dataTable) {
+  return Promise.all(dataTable.hashes().map(params => {
+    return this.app.service('users').create(params);
+  }));
 });
 
 Given('you are authenticated', () => authenticate(currentUser.email, currentUserPassword).then((accessToken) => {
@@ -91,8 +101,20 @@ Then('a new post is created', function () {
 });
 
 
-Then('your language {string} is stored in your user settings', function (lang) {
+Then('these category ids are stored in your user settings', function () {
   return this.app.service('usersettings').find({userId: currentUser._id.toString()}).then((settings) => {
+    expect(settings.total).to.eq(1);
+    let usersettings = settings.data[0];
+    expect(usersettings.uiLanguage).to.eq('en');
+    expect(usersettings.filter.categoryIds).to.be.an('array')
+      .that.does.include('5b310ab8b801653c1eb6c426')
+      .that.does.include('5b310ab8b801653c1eb6c427')
+      .that.does.include('5b310ab8b801653c1eb6c428');
+  });
+});
+
+Then('your language {string} is stored in your user settings', function (lang) {
+  return this.app.service('usersettings').find({query: {userId: currentUser._id.toString()}}).then((settings) => {
     expect(settings.total).to.eq(1);
     expect(settings.data[0].uiLanguage).to.eq(lang);
   });
@@ -109,3 +131,71 @@ When('you create your user settings via POST request to {string} with:', functio
   postRequest(route, JSON.stringify(jsonBody), callback);
 });
 
+Then('you will stop seeing posts of the user with id {string}', function (blacklistedUserId) {
+  return this.app.service('usersettings').find({userId: currentUser._id.toString()}).then((settings) => {
+    expect(settings.total).to.eq(1);
+    expect(settings.data[0].blacklist).to.be.an('array').that.does.include(blacklistedUserId);
+  });
+});
+
+Given('you blacklisted the user {string} before', async function (blacklistedUserName) {
+  const res = await this.app.service('users').find({query: {name: blacklistedUserName}});
+  blacklistedUser = res.data[0];
+  const params = {
+    userId: currentUser._id,
+    blacklist: [blacklistedUser._id]
+  };
+  return this.app.service('usersettings').create(params);
+});
+
+When('this user publishes a post', function () {
+  const params = {
+    title: 'Awful title',
+    content: 'disgusting content',
+    language: 'en',
+    type: 'post',
+    userId: blacklistedUser._id
+  };
+  return this.app.service('contributions').create(params);
+});
+
+When('you read your current news feed', function (callback) {
+  getRequest('/contributions', callback);
+});
+
+Then('this post is not included', function () {
+  expect(httpResponse.data).to.be.an('array').that.is.empty;
+});
+
+Given('there is a post {string} by user {string}', async function (postTitle, userName) {
+  const users = await this.app.service('users').find({ query: {name: userName} });
+  const user = users.data[0];
+  const params = {
+    title: postTitle,
+    content: 'blah',
+    language: 'en',
+    type: 'post',
+    userId: user._id
+  };
+  lastPost = await this.app.service('contributions').create(params);
+  return lastPost;
+});
+
+Given('the blacklisted user wrote a comment on that post:', function (comment) {
+  const commentParams = {
+    userId: blacklistedUser._id,
+    content: comment,
+    contributionId: lastPost._id
+  };
+  return this.app.service('comments').create(commentParams);
+});
+
+When('you read through the comments of that post', function (callback) {
+  getRequest('/comments', callback);
+});
+
+Then('you will see a hint instead of a comment:', function (hint) {
+  const comment = httpResponse.data[0];
+  expect(comment.content).to.eq(hint);
+  expect(comment.contentExcerpt).to.eq(hint);
+});
