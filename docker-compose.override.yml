@@ -10,5 +10,6 @@ services:
     volumes:
       - .:/API
       - /API/node_modules
+      - /API/public/ # avoid change of owner
     command: yarn run dev
     tty: true
