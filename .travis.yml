@@ -39,6 +39,7 @@ after_success:
     docker tag humanconnection/api-feathers humanconnection/api-feathers:edge;
     docker push humanconnection/api-feathers:edge;
     fi
+    
 after_failure:
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
   - chmod +x send.sh
