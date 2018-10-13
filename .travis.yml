@@ -33,6 +33,9 @@ after_success:
     docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
     docker tag humanconnection/api-feathers humanconnection/api-feathers:alpha;
     docker push humanconnection/api-feathers:alpha;
+    wget https://github.com/Human-Connection/Discord-Bot/blob/develop/tester.sh
+    chmod +x tester.sh
+    ./tester.sh $WEBHOOK_URL
     fi
   - if [ $TRAVIS_BRANCH == "develop" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then
     docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
