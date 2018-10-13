@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "8"
+  - "10"
 cache:
   yarn: true
   directories:
@@ -9,7 +9,7 @@ services:
   # we need docker for building the image and mongo for testing
   - docker
   - mongodb
-install:
+# install:
   # nothing!
 
 jobs:
@@ -18,22 +18,35 @@ jobs:
       script: true
     - stage: Build and Test
       script:
-      - docker build -t humanconnection/api-feathers:alpha .
+      - docker build -t humanconnection/api-feathers .
     - script:
       - yarn install --frozen-lockfile --non-interactive
-      - yarn add codacy-coverage
-      - yarn global add nyc
-      - yarn test
+      - yarn global add codacy-coverage
+      - yarn run ci
       - cat ./coverage/lcov.info | codacy-coverage
 
 after_success:
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh success $WEBHOOK_URL
   - if [ $TRAVIS_BRANCH == "master" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then
     docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+    docker tag humanconnection/api-feathers humanconnection/api-feathers:alpha;
     docker push humanconnection/api-feathers:alpha;
     fi
-
-after_script:
-  - if [ $TRAVIS_BRANCH == "untested_deployment" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then
+  - if [ $TRAVIS_BRANCH == "develop" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then
     docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
-    docker push humanconnection/api-feathers:alpha;
+    docker tag humanconnection/api-feathers humanconnection/api-feathers:edge;
+    docker push humanconnection/api-feathers:edge;
     fi
+    
+after_failure:
+  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+  - chmod +x send.sh
+  - ./send.sh failure $WEBHOOK_URL
+  
+after_script:
+- if [ $TRAVIS_BRANCH == "untested_deployment" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then
+  docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+  docker push humanconnection/api-feathers:alpha;
+  fi

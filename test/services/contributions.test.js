@@ -4,6 +4,7 @@ const service = app.service('contributions');
 const userService = app.service('users');
 const notificationService = app.service('notifications');
 const categoryService = app.service('categories');
+const usersettingsService = app.service('usersettings');
 const { userData, adminData } = require('../assets/users');
 const {
   contributionData,
@@ -81,6 +82,52 @@ describe('\'contributions\' service', () => {
       assert.ok(notification.relatedContributionId, 'has relatedContributionId');
       assert.equal(notification.relatedContributionId, contribution._id, 'has correct relatedContributionId');
     });
+
+    context('given soft-deleted contribution', () => {
+      const contributionAttributes = {
+        title: 'title',
+        type: 'post',
+        content: 'blah',
+        language: 'en',
+      };
+
+      beforeEach(async () => {
+        const deletedContributionAttributes = Object.assign({}, contributionAttributes, {
+          deleted: true,
+          slug: 'title'
+        });
+        await service.create(deletedContributionAttributes, params);
+      });
+
+      it('increments title slug', async () => {
+        let contribution = await service.create(contributionAttributes, params);
+        assert.ok(contribution, 'created contribution');
+        assert.equal(contribution.slug, 'title1');
+      });
+    });
+
+    context('given disabled contribution', () => {
+      const contributionAttributes = {
+        title: 'title',
+        type: 'post',
+        content: 'blah',
+        language: 'en',
+      };
+
+      beforeEach(async () => {
+        const disabledContributionAttributes = Object.assign({}, contributionAttributes, {
+          isEnabled: false,
+          slug: 'title'
+        });
+        await service.create(disabledContributionAttributes, params);
+      });
+
+      it('increments title slug', async () => {
+        let contribution = await service.create(contributionAttributes, params);
+        assert.ok(contribution, 'created contribution');
+        assert.equal(contribution.slug, 'title1');
+      });
+    });
   });
 
   describe('contributions patch', () => {
@@ -126,6 +173,46 @@ describe('\'contributions\' service', () => {
         'does not populate'
       );
     });
+
+    describe('of an author', () => {
+      let author;
+      beforeEach(async() => {
+        author = await userService.create({
+          email: 'bad.guy@example.org',
+          name: 'Bad guy'
+        });
+        const data = { ...contributionData, userId: author._id };
+        await service.create(data);
+      });
+
+      context('who is not blacklisted', () => {
+        it('is included', async () => {
+          const contributions = await service.find(params);
+          assert.equal(contributions.total, 2);
+        });
+      });
+
+      context('who is blacklisted', () => {
+        beforeEach(async() => {
+          await usersettingsService.create({
+            userId: user._id,
+            blacklist: [author._id]
+          });
+        });
+
+        it('is filtered', async () => {
+          const contributions = await service.find(params);
+          assert.equal(contributions.total, 1);
+        });
+
+        context('but if user is not authenticated', () => {
+          it('is not filtered', async () => {
+            const contributions = await service.find();
+            assert.equal(contributions.total, 2);
+          });
+        });
+      });
+    });
   });
 
   describe('contributions find by slug', () => {
@@ -154,7 +241,7 @@ describe('\'contributions\' service', () => {
     it('returns one contribution', async () => {
       const result = await service.find({ query });
       assert.ok(result.data[0], 'returns data');
-      assert.equal(result.data.length, 1), 'returns only one entry';
+      assert.equal(result.data.length, 1, 'returns only one entry');
     });
 
     it('populates associatedCanDos', async () => {

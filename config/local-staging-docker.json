@@ -1,0 +1,15 @@
+{
+  "seeder": {
+    "runOnInit": true,
+    "dropDatabase": false
+  },
+  "smtpConfig": {
+    "host": "maildev",
+    "port": 25,
+    "ignoreTLS": true
+  },
+  "thumbor": {
+    "url": "http://thumbor.127.0.0.1.xip.io:8000",
+    "key": ""
+  }
+}

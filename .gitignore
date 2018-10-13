@@ -34,6 +34,7 @@ node_modules
 .classpath
 .c9/
 .vscode
+/.vs
 *.launch
 .settings/
 *.sublime-workspace
@@ -123,3 +124,4 @@ rethinkdb_data
 .env
 /config/local.json
 package-lock.json
+/.github

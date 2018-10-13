@@ -1,5 +1,5 @@
 // Check if user is moderator
-const errors = require('feathers-errors');
+const errors = require('@feathersjs/errors');
 
 module.exports = () => hook => {
   if(!hook.params || !hook.params.user || !['admin','moderator'].includes(hook.params.user.role)) {

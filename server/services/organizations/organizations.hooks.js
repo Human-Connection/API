@@ -1,6 +1,6 @@
 const { unless, when, isProvider, populate, softDelete, stashBefore } = require('feathers-hooks-common');
 const { isVerified } = require('feathers-authentication-management').hooks;
-const { authenticate } = require('feathers-authentication').hooks;
+const { authenticate } = require('@feathersjs/authentication').hooks;
 const { associateCurrentUser } = require('feathers-authentication-hooks');
 const createSlug = require('../../hooks/create-slug');
 const saveRemoteImages = require('../../hooks/save-remote-images');

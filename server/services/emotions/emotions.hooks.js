@@ -1,4 +1,4 @@
-const { authenticate } = require('feathers-authentication').hooks;
+const { authenticate } = require('@feathersjs/authentication').hooks;
 const emotionRatingHook = require('./hooks/emotion-rating');
 const { isVerified } = require('feathers-authentication-management').hooks;
 const hooks = require('feathers-hooks-common');
