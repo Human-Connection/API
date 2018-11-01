@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <noscript>enable js </noscript>
+
+    <input style="height:1.2em; width:50em" ></input>
+    <div id="ExampleTableContainer">BeispielContent:</div>
+    <style>
+    table{margin-top:2em}
+    td{margin:0; border: 1px solid black}</style>
+
+    <script type ="text/javascript">
+//#1 generating standallone test environment
+//#1.0 little Example of Database extraction
+    var postList = new Object();
+    postList =  {
+      'Post1':{
+        'title':'Schwarmdumm',
+        'themes':['management', 'psychology', 'society', 'developement'],
+        'tags':['Planung','Umsetzung'],
+        'author':'Gunter Dueck'
+      },
+
+      'Post2':{
+        'title':'Resonanz',
+        'themes':['society', 'psychology'],
+        'tags':['Wahrnehmung'],
+        'author':'Hartmut Rosa'
+      },
+
+      'Post3':{
+        'title':'Wir sind dran',
+        'themes':['society','environent'],
+        'tags':['Nachhaltigkeit', 'Wirtschaft', 'Wachstum'],
+        'author':'Club of Rome'
+      },
+
+      'Post4':{
+        'title':'Helden',
+        'themes':['society','psychology'],
+        'tags':['Verdrängung', 'Wut', 'Amok'],
+        'author':'Franco >Bifo< Berarf'
+      },
+
+      'Post5':{
+        'title':'Miteinander reden',
+        'themes':['psychology'],
+        'tags':['Umgang'],
+        'author':'Schulz von Thun'
+      },
+
+      'Post6':{
+        'title':'Wohlstand ohne Wachstum',
+        'themes':['society','environent','psychology'],
+        'tags':['Nachhaltigkeit', 'Wirtschaft', 'Wachstum'],
+        'author':'Tim Jackson'
+      }
+
+    };
+  //#1.1 print of Example of Database extraction table as html for this standalone test environment
+    var table = document.createElement('table');
+    table.innerHTML = (function(){
+      var tableContent ='';
+      for (Post in postList){
+        tableContent += '<tr>';
+          for(PostAttribute in postList[Post]){
+            tableContent += '<td>'+ PostAttribute + ': ' + (""+postList[Post][PostAttribute]).replace(/,/g,", ") +'</td>';
+          }
+          //console.log(Post);
+        tableContent += '</tr>';
+      }
+return tableContent;
+})()
+document.getElementById('ExampleTableContainer').append(table);
+  //console.log(postList);
+
+//#1.2 input Eventlistener for this standalone test environment:
+document.getElementsByTagName('Input')[0].addEventListener('keyup',function(e){
+  realTimeSearch(e);
+})
+
+
+//#1.3show all Attributenodes(#2.1) of Posts (as (Json)Objects (#1.0))
+getAttributeSelection(postList);
+
+//end of (#1) generating test environment----------------------------------------------------------------------------------------------------
+
+//#2 executive functions
+
+//#2.1 -> #2.4.1 -> #2.5.1  fetch Node attributes for optionaluse of advanced search options (not implemented)
+function getAttributeSelection(referedObject){
+  var Oattribute = execRecursiveFunction(referedObject, 'fetchObjectAttributeNodes', 'false', 'AttriNodes');
+  //console.log(Oattribute);
+}
+
+//#2.2 conclusion of functions triggered by input
+function realTimeSearch(e){
+  console.clear();//clears for outputrefresh
+  //#2.2.1 -> #2.4.2 -> #2.5.2, #2.5.3, #2.5.4  Generate a copy of the object with fetched values for congruencing ammount of letters of input to match
+  var fetchedCongruencevalues = execRecursiveFunction(postList, 'getCongruenceValues', e['target'].value);
+  //console.log(fetchedCongruencevalues);
+  var sortableCongruenceValues = convertToSortable(fetchedCongruencevalues);
+  //#2.2.2 -> #2.4.3 -> #2.5.5, #2.5.6   return sorted objects with congruencing values into console
+  console.log(execRecursiveFunction(sortableCongruenceValues,'sortBySum','false','sort'));
+}
+
+//#2.3 converts Object to sortable Array
+function convertToSortable(JsonObject, optionalDepthLimit){
+  var sortArray =[], i=0;
+  if(Object.keys(JsonObject).length==1){
+    if(typeof(optionalDepthLimit) != 'undefined'){
+      if(optionalDepthLimit !=0){
+        return converrtToSortable(JsonObject[Object.keys(JsonObject)[0]],optionalDepthLimit--);
+      }else{
+        return [JsonObject];
+      }
+    }else{
+      if(Object.keys(JsonObject[Object.keys(JsonObject)[0]]).length>1){//first multiple key values:
+        var count = 0, counted, tempName;
+        for(sortName in JsonObject[Object.keys(JsonObject)[0]]){
+          counted = 0;
+          if(count == 0){
+            tempName = sortName;
+          }else{
+            for(let i= 0; i< tempName.length; i++){
+              sortName[i]==tempName[i]? counted++ :0;
+            }
+          }
+          count++;
+          counted > sortName.length / 2 ? count++ : 0;//minimum half of nodeName is same like others? ->double count (first count isnt doubled)
+        }
+        if(Object.keys(JsonObject[Object.keys(JsonObject)[0]]).length*2-1 == count){//(-1 of first not counted) has multiple positive answers ?
+          return (generateSortable(JsonObject[Object.keys(JsonObject)[0]]));
+        }else{
+          return [JsonObject] ;//there is only one result which cant be sorted in comparison to others
+        }
+
+      }else{
+        return convertToSortable(JsonObject[Object.keys(JsonObject)[0]]);//go lvl deeper
+      }
+    }
+  }
+
+//2.3.1 converts Object with multiple nodes to an Array
+  function generateSortable(JsonObject){
+    var sortArray =[], i=0;
+    if(Object.prototype.toString.call(JsonObject)=='[object Object]'){
+      for( key in JsonObject){
+        var input = new Object(); input[key] = JsonObject[key];
+        sortArray.push(input);
+      }
+      return sortArray;
+    }
+  }
+}
+
+
+//#2.4 List of function constellation Presets for recursing function
+
+//Syntax of execFunctionSetting per purpose, dividing in different cases per Object(proto)types:
+/* var nameForPurpose{
+                      'caseObject':functioNnameForObjects',
+                      'caseArray':'functioNnameForArrays',
+                      'caseString':'functioNnameForStrings',
+                      'caseNumber':'functioNnameForNumbers'
+                    }
+*/
+var execrfncSets = {
+                      //#2.4.1
+                      'fetchObjectAttributeNodes':{
+                        'caseObject':'fetchAtributeNodes',//-> #2.5.1
+                        'caseArray':'',
+                        'caseString':'',
+                        'caseNumber':''
+                      },
+                      //#2.4.2
+                      'getCongruenceValues':{
+                        'caseObject':'ifValCloneObjectNodeAndConclude',//-> #2.5.2
+                        'caseArray':'cloneArrayNodeConcludeVal',//-> #2.5.3
+                        'caseString':'calcCongruenceSub',//-> #2.5.4
+                        'caseNumber':'calcCongruenceSub'//-> #2.5.4
+                      },
+                      //#2.4.3
+                      'sortBySum':{
+                        'caseObject':'parseObjectForSortBySum',//-> #2.5.5
+                        'caseArray':'sortArrayBySum',//-> #2.5.6
+                        'caseString':'',
+                        'caseNumber':''
+                      }
+                    }
+
+//#2.5 Pool of all recursive functions:
+var rfFunctions = {
+            //#2.5.1 fetch Node attributes for optionaluse of advanced search options (not implemented)
+            fetchAtributeNodes(ro, ef, opa, lvl, vco){
+              if(opa == 'false'){
+                if(Object.keys(ro).length > 1){
+                  for(attr in ro){
+                    var newlvl = lvl.slice(0)
+                    newlvl[lvl.length] = attr;
+                    recursiveFunction(ro[attr], ef, 'true', newlvl, vco);
+                  }
+                  if('Array' in JSON.parse(JSON.stringify(vco))){
+                    vco[lvl[lvl.length-1]]=JSON.parse(JSON.stringify(vco))['Array'].slice(); delete vco['Array'];
+                  }
+                }else{
+                  var newlvl = lvl.slice(0);
+                  newlvl[lvl.length] = Object.keys(ro)[0];
+                  if(Object.prototype.toString.call(ro[Object.keys(ro)[0]])=='[object Array]' && ro[Object.keys(ro)[0]].length > 0){
+
+                    vco[newlvl[newlvl.length-2]] = newlvl[newlvl.length-1];
+
+                  }else if(Object.prototype.toString.call(vco) == '[object Object]'){
+                    var newlvl = lvl.slice(0);
+                    newlvl[lvl.length] = Object.keys(ro)[0];
+                    recursiveFunction(ro[Object.keys(ro)[0]], ef, 'false', newlvl, vco);
+                    if('Array' in JSON.parse(JSON.stringify(vco))){
+                      vco[newlvl[newlvl.length-1]]=JSON.parse(JSON.stringify(vco))['Array'].slice(); delete vco['Array'];
+                    }
+                  }
+                }
+              }else{
+                for(attr in ro){
+                  var newlvl = lvl.slice(0);
+                  newlvl[lvl.length] = attr;
+                  if(Object.prototype.toString.call(vco) == '[object Object]'){
+                    if (! (attr in vco)){
+                      Object.prototype.toString.call(vco) == '[object Object]' //if vco is object and
+                      ? Object.keys(vco).length == 0 ? // vco Object is empty
+                      vco['Array'] = [].slice():0 :0; //convert vco into empty array
+                    }
+                  }
+                  var addition;
+                  if(  Object.prototype.toString.call(JSON.parse(JSON.stringify(ro[attr]))) == '[object Object]'){//refered is Object Node
+                    addition = new Object(); addition[attr] = {};
+                    addition[attr] = recursiveFunction(ro[attr], ef, 'false', newlvl, addition[attr]);
+                  }else{
+                    addition = attr;
+                  }
+
+                  var foundSum = 0;
+                  if(vco['Array'].length  == 0){ //if array empty
+                    vco['Array'].push(addition);    //push first attr
+                  }else{
+                    for (i=0;i<vco['Array'].length;i++){  //else count if attr already existing
+                      attr == vco['Array'][i] ?
+                      foundSum++ :0;
+                    }
+                    foundSum == 0? vco['Array'].push(addition) :0; //if count alredy existing == 0 allowed to add attribute to array
+                  }
+                }
+              }
+            },
+
+            //#2.5.2
+            ifValCloneObjectNodeAndConclude:function(ro, ef, opa, lvl, vco){
+                var tempVCO = new Object();
+                typeof(vco[lvl[lvl.length-1]]) == 'undefined' ? vco[lvl[lvl.length-1]]={}:0;//init valueObjectCopyNode if not exists
+                for(attr in ro){
+                  var newlvl = lvl.slice(0), vcoCopy;
+                  newlvl[lvl.length]= attr;
+                  recursiveFunction(ro[attr], ef, opa, newlvl,  vco[lvl[lvl.length-1]]);
+                  vcoCopy = JSON.parse(JSON.stringify(vco));
+                }
+
+                if(typeof(vcoCopy[lvl[lvl.length-1]]) != 'undefined'){
+                //#A copy* for void key congruencing
+                  if(lvl[lvl.length-1] == 'Same' || lvl[lvl.length-1] == 'lowerCase' || lvl[lvl.length-1] == 'emptySpaces' || lvl[lvl.length-1] == 'Sum'){
+                    vco[lvl[lvl.length-1] + '*'] = JSON.parse(JSON.stringify(vco[lvl[lvl.length-1]]));
+                    delete vco[lvl[lvl.length-1]];
+                    lvl[lvl.length-1] = lvl[lvl.length-1]+'*';
+                  }else{
+                  //delete empty nodes
+                    Object.keys(vcoCopy[lvl[lvl.length-1]]).length == 0 ? delete vco[lvl[lvl.length-1]] :0;
+                  }
+                  if(lvl[lvl.length-1] in vco && lvl.length>1){
+                    if(! Object.keys(vco[lvl[lvl.length-1]]).length == 0){
+                      var su=0, sa=0, lc=0, es=0;
+                      for(attri in vco[lvl[lvl.length-1]]){
+                        su += vco[lvl[lvl.length-1]][attri]['Sum'];
+                        sa += vco[lvl[lvl.length-1]][attri]['Same'];
+                        lc += vco[lvl[lvl.length-1]][attri]['lowerCase'];
+                        es += vco[lvl[lvl.length-1]][attri]['emptySpaces'];
+                      }
+                      vco[lvl[lvl.length-1]]['Sum']= su;
+                      vco[lvl[lvl.length-1]]['Same']= sa;
+                      vco[lvl[lvl.length-1]]['lowerCase']= lc;
+                      vco[lvl[lvl.length-1]]['emptySpaces']= es;
+                    }
+                  }
+                }
+            },
+
+            //#2.5.3
+            cloneArrayNodeConcludeVal:function(ro, ef, opa, lvl, vco){
+              //Clonenode and write summary of congruencing chars for each Arrayelement--------------
+              var tempVCO = new Object();
+              for(attr in ro){
+                var newlvl=lvl.slice(0), vcoCopy; //copy level path and
+                newlvl[lvl.length]= attr;         //add curent attribute
+                recursiveFunction(ro[attr], ef, opa, newlvl, vco);
+                if(typeof(vco)!='undefined'){
+                  vcoCopy = (JSON.parse(JSON.stringify(vco)));
+                  if(lvl[lvl.length-1] in vcoCopy){
+                    if(Object.keys(vcoCopy[lvl[lvl.length-1]]).length !=0){
+                      !(lvl[lvl.length-1] in tempVCO) ? tempVCO[lvl[lvl.length-1]] = new Object():0; //clone ArrayName as later value copy object attribute / node
+                      [lvl[lvl.length-1]] in vcoCopy
+                      && !(ro[attr] in tempVCO[lvl[lvl.length-1]])
+                      && ro[attr] in vcoCopy[lvl[lvl.length-1]] ?
+                        tempVCO[lvl[lvl.length-1]][ro[attr]] = vcoCopy[lvl[lvl.length-1]][ro[attr]]:0; //clone content of array as later value copy object subattribute / subnode
+                    }
+                  }
+                }
+              }
+  //conclude congruencing Values and sum / levelup to entire Array------------------vv
+              if(typeof(Object.keys(tempVCO)[0]) != 'undefined' ){
+                var su=0, sa=0, lc=0, es=0;
+                for(attri in tempVCO[Object.keys(tempVCO)[0]]){
+          //#A copy* void key congruencing
+                  attri == 'Same' || attri == 'lowerCase' || attri == 'emptySpaces' || attri == 'Sum' ?
+                    tempVCO[Object.keys(tempVCO)[0]][attri + '*'] = tempVCO[Object.keys(tempVCO)[0]][attri]:0;
+
+                  su += tempVCO[Object.keys(tempVCO)[0]][attri]['Sum'];
+                  sa += tempVCO[Object.keys(tempVCO)[0]][attri]['Same'];
+                  lc += tempVCO[Object.keys(tempVCO)[0]][attri]['lowerCase'];
+                  es += tempVCO[Object.keys(tempVCO)[0]][attri]['emptySpaces'];
+                }
+                tempVCO[Object.keys(tempVCO)[0]]['Sum']=su; tempVCO[Object.keys(tempVCO)[0]]['Same']=sa;
+                tempVCO[Object.keys(tempVCO)[0]]['lowerCase']=lc; tempVCO[Object.keys(tempVCO)[0]]['emptySpaces']=es;
+                //copy back clone to Node
+                vco[Object.keys(tempVCO)[0]] = tempVCO[Object.keys(tempVCO)[0]];
+              }
+            },
+
+            //#2.5.4
+            calcCongruenceSub:function(ro, ef, opa, lvl, vco){
+              //console.log('focus',ro);
+                var sumSame=0, sumLowerCase=0, sumEmptySpace=0;
+                for(var iInput=0; iInput<(opa.slice(0).split(' ')).length; iInput++){
+                  for(var iInputOverage=0; ((opa.slice(0).split(' '))[iInput].length>ro.length ?
+                    (iInputOverage<=(opa.slice(0).split(' '))[iInput].length-ro.length) :
+                      (iInputOverage==0)); iInputOverage++){
+                    nOpa = opa.slice(0).split(' ')[iInput].slice(iInputOverage,(
+                      (opa.slice(0).split(' '))[iInput].length>ro.length?
+                        (ro.length+iInputOverage):
+                        (opa.slice(0).split(' '))[iInput].length)); //hardcopy new fitting outer parameters (whitespacesplitteed "Input")
+
+                    for(var iterationWidth=0; iterationWidth <= ((ro+"").length -nOpa.length); iterationWidth++){// (ro+"") converts number to string
+                      var countSame=0, countLowerCase=0, countEmptySpace=0;
+                      for(var iterateROatribute = iterationWidth;
+                        iterateROatribute< iterationWidth + nOpa.length;
+                        iterateROatribute++){
+                          nOpa[iterateROatribute-iterationWidth] == (ro+"")[iterateROatribute] ? countSame++ : 0; // (ro+"") converts number to string
+                          nOpa[iterateROatribute-iterationWidth].toLowerCase() == (ro+"")[iterateROatribute].toLowerCase() ? countLowerCase++ : 0;
+
+                          (ro[iterateROatribute + 1]== ' '|| iterateROatribute == (ro+"").length-1 )
+                          && nOpa[iterateROatribute-iterationWidth].toLowerCase() == (ro+"")[iterateROatribute].toLowerCase() // (ro+"") converts number to string
+                          && nOpa.length+iInputOverage == opa.slice(0).split(' ')[iInput].length && iterateROatribute-iterationWidth == nOpa.length-1 ? countEmptySpace++ : 0;
+
+                          if(iterateROatribute-iterationWidth == nOpa.length -1){
+                            if(nOpa.length<5){
+                              if(countLowerCase > nOpa.length-1){
+                                sumSame += countSame, sumLowerCase += countLowerCase, sumEmptySpace += countEmptySpace;
+                              }
+                            }else{
+                              if(countLowerCase + countEmptySpace > nOpa.length*0.8){ //0.8 = 20% tolerance for searches over 4 characters
+                                sumSame += countSame, sumLowerCase += countLowerCase, sumEmptySpace += countEmptySpace;
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+
+                  if((sumLowerCase + sumEmptySpace) > 0 ){
+                    if(typeof(vco) != 'undefined'){
+                      if(parseInt(lvl[lvl.length-1]) == lvl[lvl.length-1]){//is Array
+                        vco[lvl[lvl.length-2]]=new Object();
+                        vco[lvl[lvl.length-2]][ro] = {'Same':sumSame};
+                        vco[lvl[lvl.length-2]][ro]['lowerCase'] = sumLowerCase;
+                        vco[lvl[lvl.length-2]][ro]['emptySpaces'] = sumEmptySpace;
+                        vco[lvl[lvl.length-2]][ro]['Sum'] = sumSame + sumLowerCase + sumEmptySpace;
+                      }else{//is Object
+                        //#A void key congruencing
+                        var vkc;
+                        lvl[lvl.length-1] == 'Same' || lvl[lvl.length-1] == 'lowerCase' || lvl[lvl.length-1] == 'emptySpaces' || lvl[lvl.length-1] == 'Sum' ?
+                        vkc = lvl[lvl.length-1] + '*' : vkc = lvl[lvl.length-1];
+
+                        vco[vkc] = new Object();
+                        vco[vkc] = {'Same':sumSame};
+                        vco[vkc]['lowerCase'] = sumLowerCase;
+                        vco[vkc]['emptySpaces'] = sumEmptySpace;
+                        vco[vkc]['Sum'] = sumSame + sumLowerCase +sumEmptySpace;
+                      }//console.log(ro,vco)
+                    }
+                  }
+                },
+
+                //#2.5.5
+                parseObjectForSortBySum(ro, ef, opa, lvl, vco){
+
+                  //outside parameters ("opa") indicating if keyword Sum was found
+
+                    var newlvl = lvl.slice(0); newlvl[lvl.length]= Object.keys(ro)[0];
+                  switch(opa){
+                    case 'false':
+                      recursiveFunction(ro[Object.keys(ro)[0]], ef, 'false', newlvl, vco);//repeat one lvl deeper till opened lvl is an Array
+                    break;
+
+                    case 'insideSortArray': //is Object inside Array
+                      if('Sum' in ro){ //look for keyword 'Sum'
+                        vco['su'] = ro['Sum'];
+                      }else{ //if keyword 'Sum not found go lvl deeper'
+                        recursiveFunction(ro[Object.keys(ro)[0]], ef, 'insideSortArray', newlvl, vco);
+                      }
+                    break;
+
+                    default:
+                    break;
+                  }
+                },
+
+                //#2.5.6
+                sortArrayBySum(ro, ef, opa, lvl, vco){
+                //Preparing for Quicksort:---------------------------------------
+                //console.log('sort',JSON.parse(JSON.stringify(ro)));
+                  var tempNewArray=[];
+                  for(var i=0;i<ro.length;i++){
+                    if(Object.prototype.toString.call(ro[i])=='[object Object]' && ro[i]!='Sum'){
+                        recursiveFunction(ro[i],ef,'insideSortArray',lvl,vco);
+                        sortKeyVal = new Object(); sortKeyVal[i] = vco['su'];
+                        tempNewArray.push(sortKeyVal);
+                        //console.log(Object.keys(tempNewArray[i])[0],':',tempNewArray[i][Object.keys(tempNewArray[i])[0]]);
+                      }
+                    }
+
+                    //compute Average of {Index:Value} -key-values-aray-values:
+                  function getAverage(focusedArray){
+                    var ArrayValSum = 0;
+                    for(var i=0;i<focusedArray.length;i++){
+                      ArrayValSum += focusedArray[i][Object.keys(focusedArray[i])[0]];
+                    }
+                    return (ArrayValSum / (focusedArray.length));
+                  }
+
+                  //onelooped Quicksort-By-Average-instead-of-Pivot from last till first
+                  function loopSort(ArrayToSort){//init with Index iterating Arrays from behind
+                    for(let repeat = true ,sortArrayIndex = 1; repeat == true; 0){
+                      if(ArrayToSort[ArrayToSort.length-sortArrayIndex].length > 1){
+                        var Average = getAverage(ArrayToSort[ArrayToSort.length-sortArrayIndex]);
+                        //shift loop for shifting already finished splits back
+                        for(let shiftindex=ArrayToSort.length; ArrayToSort[shiftindex-1].length<2; shiftindex--){
+                          //console.log('shifted', shiftindex, JSON.parse(JSON.stringify(ArrayToSort[shiftindex-1])));
+                          ArrayToSort[shiftindex]=JSON.parse(JSON.stringify(ArrayToSort[shiftindex-1]));
+                        }
+                        //overwrite doublette of last shifted finished with empty Array to fill with bigger values
+                        sortArrayIndex==1? //no shift happened till yet?
+                          ArrayToSort[ArrayToSort.length-sortArrayIndex+1]=[]: //add empty Array behind only existing ones
+                          ArrayToSort[ArrayToSort.length-sortArrayIndex]=[]; //overwrite doublette of last shifted
+                        sortArrayIndex++; //focus Array to split again after entire Array to sort gained by 1 because of shifting and overwriting dooublette
+                        var tempSmaller = [], firstEqual = true; //init temporary Array to accumulate all values from the smaller half
+                        //console.log('before', JSON.parse(JSON.stringify(ArrayToSort)),ArrayToSort.length,sortArrayIndex);
+                        for(let arrayValIndex = 0;arrayValIndex < ArrayToSort[ArrayToSort.length-sortArrayIndex].length; arrayValIndex++){
+                          //if equal values
+                          if(ArrayToSort[ArrayToSort.length-sortArrayIndex][arrayValIndex][Object.keys(ArrayToSort[ArrayToSort.length-sortArrayIndex][arrayValIndex])[0]]== Average){
+                            if(firstEqual== true){//firstequal up to "bigger"...
+                              firstEqual = false //split by toggle
+                              //console.log('first',Average, '==',ArrayToSort[ArrayToSort.length-sortArrayIndex][arrayValIndex][Object.keys(ArrayToSort[ArrayToSort.length-sortArrayIndex][arrayValIndex])[0]]);
+                              ArrayToSort[ArrayToSort.length-sortArrayIndex+1][ArrayToSort[ArrayToSort.length-sortArrayIndex+1].length] =
+                              JSON.parse(JSON.stringify(ArrayToSort[ArrayToSort.length-sortArrayIndex][arrayValIndex]));
+                            }else{//...others down to "smaller"
+                              //console.log(Average, '==',ArrayToSort[ArrayToSort.length-sortArrayIndex][arrayValIndex][Object.keys(ArrayToSort[ArrayToSort.length-sortArrayIndex][arrayValIndex])[0]]);
+                              tempSmaller[tempSmaller.length] = JSON.parse(JSON.stringify(ArrayToSort[ArrayToSort.length-sortArrayIndex][arrayValIndex]));
+                            }
+                          //if not equal value
+                          }else{//smaller down
+                            if(ArrayToSort[ArrayToSort.length-sortArrayIndex][arrayValIndex][Object.keys(ArrayToSort[ArrayToSort.length-sortArrayIndex][arrayValIndex])[0]] < Average){
+                              //console.log(Average, '>',ArrayToSort[ArrayToSort.length-sortArrayIndex][arrayValIndex][Object.keys(ArrayToSort[ArrayToSort.length-sortArrayIndex][arrayValIndex])[0]]);
+                              tempSmaller[tempSmaller.length]= JSON.parse(JSON.stringify(ArrayToSort[ArrayToSort.length-sortArrayIndex][arrayValIndex]));
+                              //console.log('down',JSON.parse(JSON.stringify(ArrayToSort[ArrayToSort.length-sortArrayIndex][arrayValIndex])),' to ',tempSmaller.slice(0));
+                            }else{//bigger up
+                              //console.log(Average, '<',ArrayToSort[ArrayToSort.length-sortArrayIndex][arrayValIndex][Object.keys(ArrayToSort[ArrayToSort.length-sortArrayIndex][arrayValIndex])[0]]);
+                              ArrayToSort[ArrayToSort.length-sortArrayIndex+1][ArrayToSort[ArrayToSort.length-sortArrayIndex+1].length] =
+                              JSON.parse(JSON.stringify(ArrayToSort[ArrayToSort.length-sortArrayIndex][arrayValIndex]));
+                              //console.log('up ', JSON.parse(JSON.stringify(ArrayToSort[ArrayToSort.length-sortArrayIndex][arrayValIndex])),' to ', ArrayToSort[ArrayToSort.length-sortArrayIndex+1].slice(0));
+                            }
+                          }
+                        }
+                        //console.log('after', JSON.parse(JSON.stringify(ArrayToSort)),ArrayToSort.length,sortArrayIndex);
+                        ArrayToSort[ArrayToSort.length-sortArrayIndex] = tempSmaller.slice(0); //overwrite finished splited Array by Array of smaller half
+                        sortArrayIndex--; //set back fokus to check if bigger half still needs to split (length>1)
+                      }else{
+                        ArrayToSort.length == JSON.parse(JSON.stringify(sortArrayIndex))?
+                          repeat=false:
+                          sortArrayIndex++;
+                      }
+                    }
+                    for(let i=0;i<ArrayToSort.length;i++){
+                      ArrayToSort[i]=JSON.parse(JSON.stringify(ArrayToSort[i][0]));
+                    }
+
+                    return ArrayToSort;
+                  }
+                  if(ro.length>0){
+                    var arraySorting =  loopSort([tempNewArray])
+                    delete vco[Object.keys(vco)[0]];
+                    for(let i = arraySorting.length-1; i> -1; i--){
+                      vco[arraySorting.length-i] = JSON.parse(JSON.stringify(ro[Object.keys(arraySorting[i])[0]]));
+                    }
+                  }
+                }
+
+                  }//end of recursive functions pool
+
+//#2.6 recursive function section
+
+//#2.6.1 preparing and initialisation of repeating recursive functioNnameForArrays
+function execRecursiveFunction(referedObject,  execFunctions, outerParams, clonePrename, lvlDepth){
+  var nameOfReferedObject, res=new Object(), cloneObjectName;//res = ValueCloneObject
+  for (property in window){
+    typeof(referedObject)=='object' && window[property] === referedObject ? nameOfReferedObject = property : 0;
+  }
+  typeof(nameOfReferedObject)=='undefined' ? nameOfReferedObject='':0;
+
+  typeof(clonePrename) == 'undefined' || clonePrename== '' ? //set ValueCloneObject name to name of referenced object + 'Cloned' as default if empty
+    cloneObjectName = nameOfReferedObject + 'Cloned' : cloneObjectName = clonePrename + nameOfReferedObject;
+    var lvlPath;
+  typeof(lvlDepth) == 'undefined' ? lvlPath = [cloneObjectName] : lvlPath = lvlDepth; //begin level path with valueCloneObject root as defaullt if empty
+
+  recursiveFunction(referedObject,  execFunctions, outerParams, lvlPath, res);
+
+  if(res.length !=0 && typeof(referedObject)!='undefined'){
+    return res; //return result
+  }
+}
+
+//#2.6.2 repeating recursive function
+function recursiveFunction(referedObject, execFunctions, outerParams, lvlPath, valCloneObject){
+  //console.log('called',lvlPath[lvlPath.length-1],' ',Object.prototype.toString.call(referedObject));
+  execrffuncs( execFunctions,
+    'case'+Object.prototype.toString.call(referedObject).slice(8,Object.prototype.toString.call(referedObject).length-1), //build object type dependency
+    [referedObject, execFunctions, outerParams, lvlPath, valCloneObject]);
+
+  function execrffuncs( fncs, fCase, innerParams){
+    fCase in execrfncSets[fncs] ?
+    execrfncSets[fncs][fCase].length == 0 ? 0 :
+    rfFunctions[execrfncSets[fncs][fCase]].apply(this,innerParams):0;
+  }
+  return valCloneObject;
+}
+
+    </script>
+</head>
+<body ></body>
