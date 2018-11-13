@@ -124,6 +124,7 @@ module.exports = {
         data: {
           content: 'Comments of this blacklisted user are not visible.',
           contentExcerpt: 'Comments of this blacklisted user are not visible.',
+          isBlacklisted: true,
           hasMore: false
         }
       })
@@ -134,6 +135,7 @@ module.exports = {
         data: {
           content: 'Comments of this blacklisted user are not visible.',
           contentExcerpt: 'Comments of this blacklisted user are not visible.',
+          isBlacklisted: true,
           hasMore: false
         }
       })

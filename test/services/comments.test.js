@@ -136,6 +136,12 @@ describe('\'comments\' service', () => {
           assert.equal(comment.contentExcerpt, 'Comments of this blacklisted user are not visible.');
         });
 
+        it('sends isBlacklisted: true', async () => {
+          const comments = await service.find(params);
+          const comment = comments.data[1];
+          assert.equal(comment.isBlacklisted, true);
+        });
+
         context('but if user is not authenticated', () => {
           it('is visible', async () => {
             const comments = await service.find();
