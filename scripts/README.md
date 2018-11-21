@@ -16,9 +16,27 @@ All parameters must be supplied as environment variables:
 | MONGODB\PASSWORD      | yes       |
 | MONGODB\_DATABASE     | yes       |
 | OUTPUT                |           |
+| GPG\_PASSWORD         |           |
+
+If you set `GPG_PASSWORD`, the resulting archive will be encrypted (symmetrically, with the given passphrase).
+This is recommended if you dump the database on your personal laptop because of data security.
 
 After exporting these environment variables to your bash, run:
-```
+
+```bash
 ./remote-dump.sh
+```
+
+
+# Import into your local mongo db (optional)
+
+Run (but change the file name accordingly):
+```bash
+mongorestore --gzip --archive=human-connection-dump_2018-11-21.archive
+```
+
+If you previously encrypted your dump, run:
+```bash
+gpg --decrypt human-connection-dump_2018-11-21.archive.gpg | mongorestore --gzip --archive
 ```
 
