@@ -12,8 +12,8 @@ All parameters must be supplied as environment variables:
 |-----------------------|-----------|
 | SSH\_USERNAME         | yes       |
 | SSH\_HOST             | yes       |
-| MONGODB\USERNAME      | yes       |
-| MONGODB\PASSWORD      | yes       |
+| MONGODB\_USERNAME     | yes       |
+| MONGODB\_PASSWORD     | yes       |
 | MONGODB\_DATABASE     | yes       |
 | OUTPUT                |           |
 | GPG\_PASSWORD         |           |
