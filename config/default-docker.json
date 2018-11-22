@@ -9,7 +9,7 @@
     }
   },
   "seeder": {
-    "runOnInit": true,
+    "runOnInit": false,
     "dropDatabase": false
   }
 }
