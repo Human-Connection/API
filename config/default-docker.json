@@ -7,9 +7,5 @@
     "jwt": {
       "audience": "http://webapp.127.0.0.1.xip.io:3030"
     }
-  },
-  "seeder": {
-    "runOnInit": false,
-    "dropDatabase": false
   }
 }
