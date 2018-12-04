@@ -21,9 +21,8 @@ jobs:
       - docker build -t humanconnection/api-feathers .
     - script:
       - yarn install --frozen-lockfile --non-interactive
-      - yarn global add codacy-coverage
-      - yarn run ci
-      - cat ./coverage/lcov.info | codacy-coverage
+      - yarn global add codecov
+      - yarn run ci && codecov
 
 after_success:
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
