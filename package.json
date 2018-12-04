@@ -39,7 +39,7 @@
     "mongo:win": "mongod --dbpath /data/db --quiet",
     "test": "yarn run mocha && yarn run cucumber",
     "test:coverage": "nyc --reporter=lcovonly --reporter=text-summary yarn run test",
-    "test:report": "nyc report --reporter=text-lcov > coverage.lcov"
+    "test:report": "nyc report --reporter=text-lcov > coverage.lcov",
     "eslint": "eslint server/. test/. features/. --config .eslintrc.json",
     "start": "node server/",
     "dev": "cross-env DEBUG=feathers* nodemon server/",
