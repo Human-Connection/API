@@ -37,7 +37,7 @@
     "clean": "rm -Rf tmp",
     "mongo": "mongod --dbpath data --quiet",
     "mongo:win": "mongod --dbpath /data/db --quiet",
-    "test": "yarn run mocha && yarn run cucumber",
+    "test": "nyc --reporter=text-lcov yarn run mocha && yarn run cucumber",
     "test:coverage": "nyc report --reporter=text-lcov > coverage.lcov",
     "eslint": "eslint server/. test/. features/. --config .eslintrc.json",
     "start": "node server/",
