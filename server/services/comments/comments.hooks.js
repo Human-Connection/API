@@ -105,9 +105,15 @@ module.exports = {
       })
     ],
     remove: [
-      authenticate('jwt'),
-      unless(isProvider('server'),
-        unless(isModerator(),
+      iff(isProvider('server'),
+        softDelete(),
+        authenticate('jwt')
+      ).else( // isProvider == false
+        iff(isModerator(),
+          softDelete(),
+          authenticate('jwt')
+        ).else( // isModerator == false
+          authenticate('jwt'),
           isVerified(),
           restrictToOwner(),
           softDelete()
