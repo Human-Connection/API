@@ -97,52 +97,27 @@ describe('\'comments\' service', () => {
         await service.create(data);
       });
 
-      context('who is not blacklisted', () => {
+      it('is visible', async () => {
+        const comments = await service.find(params);
+        const comment = comments.data[1];
+        assert.equal(comment.content, 'Original content');
+        assert.equal(comment.contentExcerpt, 'Original content');
+      });
+
+      context('usersettings exist', () => {
+        // we had a blacklist once, the test below was checking if certain
+        // attributes are unaltered
+        beforeEach(async() => {
+          await usersettingsService.create({
+            userId: user._id
+          });
+        });
+
         it('is visible', async () => {
           const comments = await service.find(params);
           const comment = comments.data[1];
           assert.equal(comment.content, 'Original content');
           assert.equal(comment.contentExcerpt, 'Original content');
-        });
-
-        context('usersettings exist, but without blacklist', () => {
-          beforeEach(async() => {
-            await usersettingsService.create({
-              userId: user._id
-            });
-          });
-
-          it('is visible', async () => {
-            const comments = await service.find(params);
-            const comment = comments.data[1];
-            assert.equal(comment.content, 'Original content');
-            assert.equal(comment.contentExcerpt, 'Original content');
-          });
-        });
-      });
-
-      context('who is blacklisted', () => {
-        beforeEach(async() => {
-          await usersettingsService.create({
-            userId: user._id,
-            blacklist: [author._id]
-          });
-        });
-
-        it('is concealed', async () => {
-          const comments = await service.find(params);
-          const comment = comments.data[1];
-          assert.equal(comment.content, 'Comments of this blacklisted user are not visible.');
-          assert.equal(comment.contentExcerpt, 'Comments of this blacklisted user are not visible.');
-        });
-
-        context('but if user is not authenticated', () => {
-          it('is visible', async () => {
-            const comments = await service.find();
-            const comment = comments.data[1];
-            assert.equal(comment.content, 'Original content');
-            assert.equal(comment.contentExcerpt, 'Original content');
-          });
         });
       });
     });

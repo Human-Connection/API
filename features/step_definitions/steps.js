@@ -12,7 +12,6 @@ let currentUserPassword;
 let httpResponse;
 let currentUserAccessToken;
 let lastPost;
-let blacklistedUser;
 
 function authenticate(email, plainTextPassword) {
   const formData = {
@@ -131,34 +130,6 @@ When('you create your user settings via POST request to {string} with:', functio
   postRequest(route, JSON.stringify(jsonBody), callback);
 });
 
-Then('you will stop seeing posts of the user with id {string}', function (blacklistedUserId) {
-  return this.app.service('usersettings').find({userId: currentUser._id.toString()}).then((settings) => {
-    expect(settings.total).to.eq(1);
-    expect(settings.data[0].blacklist).to.be.an('array').that.does.include(blacklistedUserId);
-  });
-});
-
-Given('you blacklisted the user {string} before', async function (blacklistedUserName) {
-  const res = await this.app.service('users').find({query: {name: blacklistedUserName}});
-  blacklistedUser = res.data[0];
-  const params = {
-    userId: currentUser._id,
-    blacklist: [blacklistedUser._id]
-  };
-  return this.app.service('usersettings').create(params);
-});
-
-When('this user publishes a post', function () {
-  const params = {
-    title: 'Awful title',
-    content: 'disgusting content',
-    language: 'en',
-    type: 'post',
-    userId: blacklistedUser._id
-  };
-  return this.app.service('contributions').create(params);
-});
-
 When('you read your current news feed', function (callback) {
   getRequest('/contributions', callback);
 });
@@ -179,15 +150,6 @@ Given('there is a post {string} by user {string}', async function (postTitle, us
   };
   lastPost = await this.app.service('contributions').create(params);
   return lastPost;
-});
-
-Given('the blacklisted user wrote a comment on that post:', function (comment) {
-  const commentParams = {
-    userId: blacklistedUser._id,
-    content: comment,
-    contributionId: lastPost._id
-  };
-  return this.app.service('comments').create(commentParams);
 });
 
 When('you read through the comments of that post', function (callback) {

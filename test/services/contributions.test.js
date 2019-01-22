@@ -191,27 +191,6 @@ describe('\'contributions\' service', () => {
           assert.equal(contributions.total, 2);
         });
       });
-
-      context('who is blacklisted', () => {
-        beforeEach(async() => {
-          await usersettingsService.create({
-            userId: user._id,
-            blacklist: [author._id]
-          });
-        });
-
-        it('is filtered', async () => {
-          const contributions = await service.find(params);
-          assert.equal(contributions.total, 1);
-        });
-
-        context('but if user is not authenticated', () => {
-          it('is not filtered', async () => {
-            const contributions = await service.find();
-            assert.equal(contributions.total, 2);
-          });
-        });
-      });
     });
   });
 
