@@ -10,7 +10,6 @@ const {
 const { isVerified } = require('feathers-authentication-management').hooks;
 const createExcerpt = require('../../hooks/create-excerpt');
 const patchDeletedData = require('../../hooks/patch-deleted-data');
-const concealBlacklistedData = require('../../hooks/conceal-blacklisted-data');
 const keepDeletedDataFields = require('../../hooks/keep-deleted-data-fields');
 const createNotifications = require('./hooks/create-notifications');
 const createMentionNotifications = require('./hooks/create-mention-notifications');
@@ -119,24 +118,10 @@ module.exports = {
     ],
     find: [
       populate({ schema: userSchema }),
-      protect('content', 'badgeIds'),
-      concealBlacklistedData({
-        data: {
-          content: 'Comments of this blacklisted user are not visible.',
-          contentExcerpt: 'Comments of this blacklisted user are not visible.',
-          hasMore: false
-        }
-      })
+      protect('content', 'badgeIds')
     ],
     get: [
-      populate({ schema: userSchema }),
-      concealBlacklistedData({
-        data: {
-          content: 'Comments of this blacklisted user are not visible.',
-          contentExcerpt: 'Comments of this blacklisted user are not visible.',
-          hasMore: false
-        }
-      })
+      populate({ schema: userSchema })
     ],
     create: [
       populate({ schema: userSchema }),
