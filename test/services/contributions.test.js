@@ -4,7 +4,6 @@ const service = app.service('contributions');
 const userService = app.service('users');
 const notificationService = app.service('notifications');
 const categoryService = app.service('categories');
-const usersettingsService = app.service('usersettings');
 const { userData, adminData } = require('../assets/users');
 const {
   contributionData,
