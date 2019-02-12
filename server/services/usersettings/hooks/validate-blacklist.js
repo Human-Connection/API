@@ -3,6 +3,7 @@ const { BadRequest } = require('@feathersjs/errors');
 const validateBlacklist = () => {
   return async (hook) => {
     const { data } = hook;
+    if (!data) return hook;
     const blacklist = data.blacklist;
     if (!blacklist) return hook;
     const userId = data.userId;
