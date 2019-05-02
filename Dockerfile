@@ -1,4 +1,4 @@
-FROM node:10-alpine
+FROM node:12.1-alpine
 LABEL Description="This image is used to start the hc-api-feathers" Vendor="Human-Connection gGmbH" Version="1.0" Maintainer="Human-Connection gGmbH (developer@human-connection.org)"
 
 # expose the app port
