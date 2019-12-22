@@ -1,5 +1,11 @@
 {
   "baseURL": "http://api.127.0.0.1.xip.io:3030",
+  "frontURL": "http://webapp.127.0.0.1.xip.io:3030",
   "mongodb": "mongodb://mongo:27017/hc_api",
-  "host": "0.0.0.0"
+  "host": "0.0.0.0",
+  "authentication": {
+    "jwt": {
+      "audience": "http://webapp.127.0.0.1.xip.io:3030"
+    }
+  }
 }
