@@ -43,3 +43,9 @@ after_failure:
   - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
   - chmod +x send.sh
   - ./send.sh failure $WEBHOOK_URL
+  
+after_script:
+- if [ $TRAVIS_BRANCH == "untested_deployment" ] && [ $TRAVIS_EVENT_TYPE == "push" ]; then
+  docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+  docker push humanconnection/api-feathers:alpha;
+  fi
